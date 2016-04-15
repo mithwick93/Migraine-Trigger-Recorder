@@ -29,7 +29,7 @@ public interface DatabaseDefinition {
     //
     String ACTIVITY_RECORD_TABLE = "activity_record";
     String BODY_AREA_RECORD_TABLE = "body_area_record";
-    String LOCATION_RECORD_TABLE = "location_record";
+    //    String LOCATION_RECORD_TABLE = "location_record";
     String MEDICINE_RECORD_TABLE = "medicine_record";
     String RELIEF_RECORD_TABLE = "relief_record";
     String SYMPTOM_RECORD_TABLE = "symptom_record";
@@ -64,6 +64,7 @@ public interface DatabaseDefinition {
     String RECORD_START_TIME_KEY = "start_time";
     String RECORD_END_TIME_KEY = "end_time";
     String RECORD_INTENSITY_KEY = "intensity";
+    String RECORD_LOCATION_ID_KEY = "location_id";
 
     // RELIEF_TABLE Columns names
     String RELIEF_ID_KEY = "relief_id";
@@ -96,9 +97,9 @@ public interface DatabaseDefinition {
     String BODY_AREA_RECORD_AREA_ID_KEY = "area_id";
     String BODY_AREA_RECORD_RECORD_ID_KEY = "record_id";
 
-    // LOCATION_RECORD_TABLE  Columns names
-    String LOCATION_RECORD_LOCATION_ID_KEY = "location_id";
-    String LOCATION_RECORD_RECORD_ID_KEY = "record_id";
+//    // LOCATION_RECORD_TABLE  Columns names
+//    String LOCATION_RECORD_LOCATION_ID_KEY = "location_id";
+//    String LOCATION_RECORD_RECORD_ID_KEY = "record_id";
 
     // MEDICINE_RECORD_TABLE  Columns names
     String MEDICINE_RECORD_MEDICINE_ID_KEY = "medicine_id";
@@ -178,8 +179,10 @@ public interface DatabaseDefinition {
                     "  start_time INT DEFAULT NULL,\n" +
                     "  end_time INT DEFAULT NULL,\n" +
                     "  intensity INT DEFAULT NULL,\n" +
+                    "  location_id INT DEFAULT NULL,\n" +
                     "  \n" +
-                    "  PRIMARY KEY (record_id)  \n" +
+                    "  PRIMARY KEY (record_id),\n" +
+                    "  CONSTRAINT fk_migraine_record_location_id FOREIGN KEY (location_id) REFERENCES location(location_id)\n" +
                     "  \n" +
                     ");";
 
@@ -243,7 +246,7 @@ public interface DatabaseDefinition {
                     "  record_id INT,  \n" +
                     "  \n" +
                     "  PRIMARY KEY (activity_id,record_id),\n" +
-                    "  CONSTRAINT fk_activity_record_activity_id FOREIGN KEY (activity_id) REFERENCES activity(activity_id) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+                    "  CONSTRAINT fk_activity_record_activity_id FOREIGN KEY (activity_id) REFERENCES activity(activity_id),\n" +
                     "  CONSTRAINT fk_activity_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
                     "  \n" +
                     ");";
@@ -256,23 +259,23 @@ public interface DatabaseDefinition {
                     "  record_id INT,\n" +
                     "  \n" +
                     "  PRIMARY KEY (area_id,record_id),\n" +
-                    "  CONSTRAINT fk_body_area_record_area_id FOREIGN KEY (area_id) REFERENCES body_area(area_id) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+                    "  CONSTRAINT fk_body_area_record_area_id FOREIGN KEY (area_id) REFERENCES body_area(area_id),\n" +
                     "  CONSTRAINT fk_body_area_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
                     "  \n" +
                     ");";
 
-    //Create LOCATION_RECORD_TABLE
-    String LOCATION_RECORD_CREATE =
-            "CREATE TABLE location_record(\n" +
-                    "\n" +
-                    "  location_id INT,\n" +
-                    "  record_id INT,\n" +
-                    "  \n" +
-                    "  PRIMARY KEY (location_id,record_id),\n" +
-                    "  CONSTRAINT fk__location_record_location_id FOREIGN KEY (location_id) REFERENCES location(location_id) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
-                    "  CONSTRAINT fk_location_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
-                    "  \n" +
-                    ");";
+//    //Create LOCATION_RECORD_TABLE
+//    String LOCATION_RECORD_CREATE =
+//            "CREATE TABLE location_record(\n" +
+//                    "\n" +
+//                    "  location_id INT,\n" +
+//                    "  record_id INT,\n" +
+//                    "  \n" +
+//                    "  PRIMARY KEY (location_id,record_id),\n" +
+//                    "  CONSTRAINT fk__location_record_location_id FOREIGN KEY (location_id) REFERENCES location(location_id) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+//                    "  CONSTRAINT fk_location_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
+//                    "  \n" +
+//                    ");";
 
     //Create MEDICINE_RECORD_TABLE
     String MEDICINE_RECORD_CREATE =
@@ -283,7 +286,7 @@ public interface DatabaseDefinition {
                     "  effective TEXT NOT NULL DEFAULT 'f',\n" +
                     "  \n" +
                     "  PRIMARY KEY (medicine_id,record_id),\n" +
-                    "  CONSTRAINT fk_medicine_record_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicine(medicine_id) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+                    "  CONSTRAINT fk_medicine_record_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicine(medicine_id),\n" +
                     "  CONSTRAINT fk_medicine_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
                     "  \n" +
                     ");";
@@ -297,7 +300,7 @@ public interface DatabaseDefinition {
                     "  effective TEXT NOT NULL DEFAULT 'f',\n" +
                     "  \n" +
                     "  PRIMARY KEY (relief_id,record_id),\n" +
-                    "  CONSTRAINT fk_relief_record_relief_id FOREIGN KEY (relief_id) REFERENCES relief(relief_id) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+                    "  CONSTRAINT fk_relief_record_relief_id FOREIGN KEY (relief_id) REFERENCES relief(relief_id),\n" +
                     "  CONSTRAINT fk_relief_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
                     "  \n" +
                     ");";
@@ -310,7 +313,7 @@ public interface DatabaseDefinition {
                     "  record_id INT,\n" +
                     "  \n" +
                     "  PRIMARY KEY (symptom_id,record_id),\n" +
-                    "  CONSTRAINT fk_symptom_record_symptom_id FOREIGN KEY (symptom_id) REFERENCES symptom(symptom_id) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+                    "  CONSTRAINT fk_symptom_record_symptom_id FOREIGN KEY (symptom_id) REFERENCES symptom(symptom_id),\n" +
                     "  CONSTRAINT fk_symptom_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
                     "  \n" +
                     ");";
@@ -323,7 +326,7 @@ public interface DatabaseDefinition {
                     "  record_id INT,\n" +
                     "  \n" +
                     "  PRIMARY KEY (trigger_id,record_id),\n" +
-                    "  CONSTRAINT fk_trigger_record_trigger_id FOREIGN KEY (trigger_id) REFERENCES migraine_trigger(trigger_id) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+                    "  CONSTRAINT fk_trigger_record_trigger_id FOREIGN KEY (trigger_id) REFERENCES migraine_trigger(trigger_id),\n" +
                     "  CONSTRAINT fk_trigger_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
                     "  \n" +
                     ");";
@@ -449,11 +452,15 @@ public interface DatabaseDefinition {
 
 
     //Set all table with comma separated like USER_TABLE,ABC_TABLE
+//    String[] ALL_TABLES = {
+//            ACTIVITY_RECORD_TABLE, BODY_AREA_RECORD_TABLE, LOCATION_RECORD_TABLE, MEDICINE_RECORD_TABLE, RELIEF_RECORD_TABLE, SYMPTOM_RECORD_TABLE, TRIGGER_RECORD_TABLE,
+//            ACTIVITY_TABLE, BODY_AREA_TABLE, LOCATION_TABLE, MEDICINE_TABLE,
+//            RELIEF_TABLE, RELIEF_TABLE, SYMPTOM_TABLE, TRIGGER_TABLE, WEATHER_DATA_TABLE,
+//            RECORD_TABLE};
     String[] ALL_TABLES = {
-            ACTIVITY_RECORD_TABLE, BODY_AREA_RECORD_TABLE, LOCATION_RECORD_TABLE, MEDICINE_RECORD_TABLE, RELIEF_RECORD_TABLE, SYMPTOM_RECORD_TABLE, TRIGGER_RECORD_TABLE,
-            ACTIVITY_TABLE, BODY_AREA_TABLE, LOCATION_TABLE, MEDICINE_TABLE,
-            RELIEF_TABLE, RELIEF_TABLE, SYMPTOM_TABLE, TRIGGER_TABLE, WEATHER_DATA_TABLE,
-            RECORD_TABLE};
-
+            ACTIVITY_RECORD_TABLE, BODY_AREA_RECORD_TABLE, MEDICINE_RECORD_TABLE, RELIEF_RECORD_TABLE, SYMPTOM_RECORD_TABLE, TRIGGER_RECORD_TABLE,
+            ACTIVITY_TABLE, BODY_AREA_TABLE, MEDICINE_TABLE, RELIEF_TABLE, SYMPTOM_TABLE, TRIGGER_TABLE, WEATHER_DATA_TABLE,
+            RECORD_TABLE,
+            LOCATION_TABLE};
 
 }

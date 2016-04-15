@@ -74,7 +74,7 @@ public class DatabaseHandler implements DatabaseDefinition {
 
                 db.execSQL(ACTIVITY_RECORD_CREATE);
                 db.execSQL(BODY_AREA_RECORD_CREATE);
-                db.execSQL(LOCATION_RECORD_CREATE);
+//                db.execSQL(LOCATION_RECORD_CREATE);
                 db.execSQL(MEDICINE_RECORD_CREATE);
                 db.execSQL(RELIEF_RECORD_CREATE);
                 db.execSQL(SYMPTOM_RECORD_CREATE);
