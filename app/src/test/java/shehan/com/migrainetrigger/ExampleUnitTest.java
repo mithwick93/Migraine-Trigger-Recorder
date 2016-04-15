@@ -6,7 +6,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import shehan.com.migrainetrigger.view.MainActivity;
+import shehan.com.migrainetrigger.view.activity.MainActivity;
 
 import static org.junit.Assert.assertEquals;
 

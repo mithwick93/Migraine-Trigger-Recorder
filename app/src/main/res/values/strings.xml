@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">Migraine Trigger</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_severity">Severity</string>
+    <string name="nav_answers">Answers</string>
+    <string name="nav_f_a_q">F.A.Q.</string>
+    <string name="nav_records">Records</string>
+    <string name="nav_report">Report</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_about">About</string>
+    <string name="dev_email">mithwick93@gmail.com</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_welcome">Welcome</string>
+    <string name="app_icon">app icon</string>
+
 </resources>
