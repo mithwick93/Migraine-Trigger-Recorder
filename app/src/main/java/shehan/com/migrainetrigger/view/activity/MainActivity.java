@@ -12,19 +12,36 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import shehan.com.migrainetrigger.R;
-import shehan.com.migrainetrigger.view.fragment.HomeFragment;
-import shehan.com.migrainetrigger.view.fragment.SeverityFragment;
+import shehan.com.migrainetrigger.view.fragment.dummy.AboutFragment;
+import shehan.com.migrainetrigger.view.fragment.dummy.AlternativeFragment;
+import shehan.com.migrainetrigger.view.fragment.dummy.CausesFragment;
+import shehan.com.migrainetrigger.view.fragment.dummy.ComplicationsFragment;
+import shehan.com.migrainetrigger.view.fragment.dummy.DefinitionFragment;
+import shehan.com.migrainetrigger.view.fragment.dummy.DiagnosisFragment;
+import shehan.com.migrainetrigger.view.fragment.dummy.PreventionFragment;
+import shehan.com.migrainetrigger.view.fragment.dummy.RemediesFragment;
+import shehan.com.migrainetrigger.view.fragment.dummy.RiskFragment;
+import shehan.com.migrainetrigger.view.fragment.dummy.SymptomsFragment;
+import shehan.com.migrainetrigger.view.fragment.dummy.TreatmentsFragment;
+import shehan.com.migrainetrigger.view.fragment.main.FAQTopicsFragment;
+import shehan.com.migrainetrigger.view.fragment.main.HomeFragment;
+import shehan.com.migrainetrigger.view.fragment.main.SeverityFragment;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity
+        extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, FAQTopicsFragment.OnTopicSelectedListener {
 
     private FloatingActionButton fab;
+    private int lastFragment;
+
+    //region activity default
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +50,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Feature not implemented", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
-            fab.setVisibility(View.VISIBLE);
-        }
+        fabAction();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -59,24 +65,30 @@ public class MainActivity extends AppCompatActivity
             navigationView.setNavigationItemSelectedListener(this);
         }
 
-        if (savedInstanceState == null) {
+//        if (savedInstanceState == null) {
+            setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
+//        }
 
-            Fragment homeFragment = new HomeFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, homeFragment);
-            fragmentTransaction.commit();
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setTitle(R.string.nav_home);
-            }
+        this.lastFragment = -1;
 
-        }
-
+        Log.d("Main-onCreate", "onCreate success");
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        int count = getFragmentManager().getBackStackEntryCount();
+//
+//        if (drawer != null) {
+//            if (drawer.isDrawerOpen(GravityCompat.START)) {
+//                drawer.closeDrawer(GravityCompat.START);
+//            } else if (count > 0) {
+//                    getFragmentManager().popBackStack();
+//            } else {
+//                super.onBackPressed();
+//            }
+//        }
+
         if (drawer != null) {
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
@@ -95,12 +107,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        //Settings menu
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -108,80 +117,51 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    //endregion
+
+
+    //region interface implementations
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        //Navigation drawer logic
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Fragment homeFragment = new HomeFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, homeFragment);
-            fragmentTransaction.commit();
+            Log.d("Main-navigation", "Home selected");
+            setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
 
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setTitle(R.string.nav_home);
-            }
-
-            if (fab != null) {
-                fab.setVisibility(View.VISIBLE);
-            }
-
-            Toast toast = Toast.makeText(this, "Feature not  fully implemented", Toast.LENGTH_SHORT);
-            toast.show();
         } else if (id == R.id.nav_severity) {
-            Fragment severityFragment = new SeverityFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, severityFragment);
-            fragmentTransaction.commit();
-
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setTitle(R.string.nav_severity);
-            }
-            if (fab != null) {
-                fab.setVisibility(View.INVISIBLE);
-            }
+            Log.d("Main-navigation", "Severity selected");
+            setFragment(new SeverityFragment(), R.string.nav_severity, View.INVISIBLE, false);
 
         } else if (id == R.id.nav_answers) {
-            if (fab != null) {
-                fab.setVisibility(View.INVISIBLE);
-            }
-            Toast toast = Toast.makeText(this, "Feature not implemented", Toast.LENGTH_SHORT);
-            toast.show();
+            Log.d("Main-navigation", "Answers selected");
+            notImplemented();
+
         } else if (id == R.id.nav_faq) {
-            if (fab != null) {
-                fab.setVisibility(View.INVISIBLE);
-            }
-            Toast toast = Toast.makeText(this, "Feature not implemented", Toast.LENGTH_SHORT);
-            toast.show();
+            Log.d("Main-navigation", "F.A.Q selected");
+            setFragment(new FAQTopicsFragment(), R.string.nav_f_a_q, View.INVISIBLE, false);
+
         } else if (id == R.id.nav_record) {
-            if (fab != null) {
-                fab.setVisibility(View.INVISIBLE);
-            }
-            Toast toast = Toast.makeText(this, "Feature not implemented", Toast.LENGTH_SHORT);
-            toast.show();
+            Log.d("Main-navigation", "Record selected");
+            notImplemented();
+
         } else if (id == R.id.nav_report) {
-            if (fab != null) {
-                fab.setVisibility(View.INVISIBLE);
-            }
-            Toast toast = Toast.makeText(this, "Feature not implemented", Toast.LENGTH_SHORT);
-            toast.show();
+            Log.d("Main-navigation", "Report selected");
+            notImplemented();
+
         } else if (id == R.id.nav_settings) {
-            if (fab != null) {
-                fab.setVisibility(View.INVISIBLE);
-            }
-            Toast toast = Toast.makeText(this, "Feature not implemented", Toast.LENGTH_SHORT);
-            toast.show();
+            Log.d("Main-navigation", "Settings selected");
+            notImplemented();
+
         } else if (id == R.id.nav_about) {
-            if (fab != null) {
-                fab.setVisibility(View.INVISIBLE);
-            }
-            Toast toast = Toast.makeText(this, "Feature not implemented", Toast.LENGTH_SHORT);
-            toast.show();
+            Log.d("Main-navigation", "About selected");
+            setFragment(new AboutFragment(), R.string.nav_about, View.INVISIBLE, false);
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer != null) {
@@ -189,4 +169,139 @@ public class MainActivity extends AppCompatActivity
         }
         return true;
     }
+
+    /**
+     * @param clickPosition clicked position of f.a.q topics
+     */
+    @Override
+    public void onFragmentInteraction(int clickPosition) {
+        Fragment sectionFragment = null;
+        switch (clickPosition) {
+
+            case 0:
+                sectionFragment = new DefinitionFragment();
+                Log.d("Main-FAQSelect", "DefinitionFragment");
+                break;
+            case 1:
+                sectionFragment = new SymptomsFragment();
+                Log.d("Main-FAQSelect", "SymptomsFragment");
+                break;
+            case 2:
+                sectionFragment = new CausesFragment();
+                Log.d("Main-FAQSelect", "CausesFragment");
+                break;
+            case 3:
+                sectionFragment = new RiskFragment();
+                Log.d("Main-FAQSelect", "RiskFragment");
+                break;
+            case 4:
+                sectionFragment = new ComplicationsFragment();
+                Log.d("Main-FAQSelect", "ComplicationsFragment");
+                break;
+            case 5:
+                sectionFragment = new DiagnosisFragment();
+                Log.d("Main-FAQSelect", "DiagnosisFragment");
+                break;
+            case 6:
+                sectionFragment = new TreatmentsFragment();
+                Log.d("Main-FAQSelect", "TreatmentsFragment");
+                break;
+            case 7:
+                sectionFragment = new RemediesFragment();
+                Log.d("Main-FAQSelect", "RemediesFragment");
+                break;
+            case 8:
+                sectionFragment = new AlternativeFragment();
+                Log.d("Main-FAQSelect", "AlternativeFragment");
+                break;
+            case 9:
+                sectionFragment = new PreventionFragment();
+                Log.d("Main-FAQSelect", "PreventionFragment");
+                break;
+        }
+
+        if (sectionFragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            fragmentTransaction.replace(R.id.container_body, sectionFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+            Log.d("Main-FAQSelect", "Section shown :" + fragmentManager.toString());
+        }
+    }
+
+    //endregion
+
+    //region methods
+
+    /**
+     * Floating action button behaviour
+     */
+    private void fabAction() {
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Feature not implemented", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+            fab.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Change fragment in main activity
+     *
+     * @param fragment      fragment to show
+     * @param toolBarTitle  tool bar title
+     * @param fabVisibility fab visibility
+     */
+    private void setFragment(Fragment fragment,
+                             int toolBarTitle,
+                             int fabVisibility,
+                             boolean addToBackStack) {
+
+        Log.d("Main-setFragment", fragment.toString() + " , " + Integer.toString(toolBarTitle) + " , " + Integer.toString(fabVisibility));
+        String tag = getString(toolBarTitle);
+
+        if (lastFragment == toolBarTitle) {
+            Log.d("Main-setFragment", "Fragment already in view");
+//            return;
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.replace(R.id.container_body, fragment, tag);
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(null);
+        }
+        fragmentTransaction.commit();
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(toolBarTitle);
+        }
+
+        if (fab != null) {
+            fab.setVisibility(fabVisibility);
+        }
+
+        //Track last fragment
+        lastFragment = toolBarTitle;
+    }
+
+    private void notImplemented() {
+        if (fab != null) {
+            fab.setVisibility(View.INVISIBLE);
+        }
+        Toast toast = Toast.makeText(this, "Feature not implemented", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    //endregion
 }

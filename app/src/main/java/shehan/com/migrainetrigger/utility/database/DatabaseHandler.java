@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import shehan.com.migrainetrigger.utility.MyApplication;
+import shehan.com.migrainetrigger.utility.MigraineTriggerApplication;
 
 /**
  * This singleton class is used to get connection to SQLiteDatabase
@@ -30,8 +30,10 @@ public class DatabaseHandler implements DatabaseDefinition {
         if (DBHelper == null) {
             synchronized (DatabaseHandler.class) {
                 DBHelper = new DataBaseHelper();
+                Log.d("DatabaseHandler", "new DataBaseHelper()");
             }
         }
+        Log.d("DatabaseHandler", "return getWritableDatabase");
         return DBHelper.getWritableDatabase();
     }
 
@@ -45,8 +47,10 @@ public class DatabaseHandler implements DatabaseDefinition {
         if (DBHelper == null) {
             synchronized (DatabaseHandler.class) {
                 DBHelper = new DataBaseHelper();
+                Log.d("DatabaseHandler", "new DataBaseHelper()");
             }
         }
+        Log.d("DatabaseHandler", "return getReadableDatabase");
         return DBHelper.getReadableDatabase();
     }
 
@@ -55,7 +59,7 @@ public class DatabaseHandler implements DatabaseDefinition {
      */
     public static class DataBaseHelper extends SQLiteOpenHelper {
         public DataBaseHelper() {
-            super(MyApplication.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
+            super(MigraineTriggerApplication.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         @Override
@@ -88,8 +92,6 @@ public class DatabaseHandler implements DatabaseDefinition {
                 db.execSQL(RELIEF_INSERT);
                 db.execSQL(SYMPTOM_INSERT);
                 db.execSQL(TRIGGER_INSERT);
-
-
                 Log.d("DatabaseHandler", "Create queries run successfully");
             } catch (Exception exception) {
                 Log.i("DatabaseHandler", "Exception onCreate() exception : " + exception.getMessage());

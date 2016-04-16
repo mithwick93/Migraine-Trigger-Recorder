@@ -6,15 +6,19 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_48dp"
             android:title="@string/nav_home" />
         <item
             android:id="@+id/nav_severity"
+            android:icon="@drawable/ic_warning_black_48dp"
             android:title="@string/nav_severity" />
         <item
             android:id="@+id/nav_answers"
+            android:icon="@drawable/ic_spellcheck_black_48dp"
             android:title="@string/nav_answers" />
         <item
             android:id="@+id/nav_faq"
+            android:icon="@drawable/ic_help_black_48dp"
             android:title="@string/nav_f_a_q" />
     </group>
 
@@ -23,9 +27,11 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_record"
+            android:icon="@drawable/ic_assignment_black_48dp"
             android:title="@string/nav_records" />
         <item
             android:id="@+id/nav_report"
+            android:icon="@drawable/ic_insert_chart_black_48dp"
             android:title="@string/nav_report" />
     </group>
 
@@ -34,9 +40,11 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_black_48dp"
             android:title="@string/nav_settings" />
         <item
             android:id="@+id/nav_about"
+            android:icon="@drawable/ic_info_black_48dp"
             android:title="@string/nav_about" />
     </group>
 

@@ -7,15 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.view.model.SeverityData;
 
 /**
  * Created by Shehan on 4/15/2016.SeverityViewAdapter
  */
+public class SeverityViewAdapter
+        extends RecyclerView.Adapter<SeverityViewAdapter.ViewHolder> {
 
 
-public class SeverityViewAdapter extends RecyclerView.Adapter<SeverityViewAdapter.ViewHolder> {
     private SeverityData[] severityData;
 
     public SeverityViewAdapter(SeverityData[] severityData) {
@@ -25,10 +27,10 @@ public class SeverityViewAdapter extends RecyclerView.Adapter<SeverityViewAdapte
     // Create new views (invoked by the layout manager)
     @Override
     public SeverityViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+                                                             int viewType) {
         // create a new view
         @SuppressLint("InflateParams") View itemLayoutView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.severity_item, null);
+                .inflate(R.layout.item_severity, null);
 
         // create ViewHolder
 
@@ -47,8 +49,14 @@ public class SeverityViewAdapter extends RecyclerView.Adapter<SeverityViewAdapte
         viewHolder.txtViewDesc.setText(severityData[position].getDescription());
         viewHolder.imgViewIcon.setImageResource(severityData[position].getImageUrl());
 
-
     }
+
+    // Return the size of your itemsData (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return severityData.length;
+    }
+
 
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -65,10 +73,4 @@ public class SeverityViewAdapter extends RecyclerView.Adapter<SeverityViewAdapte
         }
     }
 
-
-    // Return the size of your itemsData (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-        return severityData.length;
-    }
 }
