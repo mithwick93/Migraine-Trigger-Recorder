@@ -301,5 +301,33 @@ Obesity is also thought to be a factor in migraine headaches, and regular exerci
     <string name="prevention_section_3_body">"If you're a woman who has migraines and estrogen seems to trigger or make your headaches worse, you may want to avoid or reduce the medications you take that contain estrogen.
 
 These medications include birth control pills and hormone replacement therapy. Talk with your doctor about the appropriate alternatives or dosages for you."</string>
+    <string name="title_activity_add_record">AddRecordActivity</string>
+
+    <string name="cancelButtonGeneral">Cancel</string>
+    <string name="confirmButtonGeneral">OK</string>
+
+    <string name="cancelButtonDialog">Dismiss</string>
+    <string name="confirmButtonDialog">Confirm</string>
+
+    <string name="levelOfInformationDialog">Choose information level</string>
+    <string-array name="levelOfInformationOptions">
+        <item>Basic</item>
+        <item>Intermediate</item>
+        <item>Full</item>
+    </string-array>
+
+    <string name="migraineIntensityLevelDialog">Choose intensity</string>
+    <string-array name="migraineIntensityLevel">
+        <item>1 - Hurts a bit</item>
+        <item>2 - Hurts a little</item>
+        <item>3 - Hurts little more</item>
+        <item>4- Mild</item>
+        <item>5 - Hurts more</item>
+        <item>6 - Moderate</item>
+        <item>7 - Hurts a lot</item>
+        <item>8 - Severe</item>
+        <item>9 - Hurts the most</item>
+        <item>10- Worst ever</item>
+    </string-array>
 
 </resources>

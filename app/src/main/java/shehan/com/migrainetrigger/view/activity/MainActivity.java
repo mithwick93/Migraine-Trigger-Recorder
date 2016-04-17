@@ -1,9 +1,10 @@
 package shehan.com.migrainetrigger.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,7 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import java.sql.SQLRecoverableException;
+
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.data.builders.RecordBuilder;
 import shehan.com.migrainetrigger.view.fragment.dummy.AboutFragment;
 import shehan.com.migrainetrigger.view.fragment.dummy.AlternativeFragment;
 import shehan.com.migrainetrigger.view.fragment.dummy.CausesFragment;
@@ -47,10 +54,10 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        fabAction();
+        fabSetup();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -65,9 +72,9 @@ public class MainActivity
             navigationView.setNavigationItemSelectedListener(this);
         }
 
-//        if (savedInstanceState == null) {
+        if (savedInstanceState == null) {
             setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
-//        }
+        }
 
         this.lastFragment = -1;
 
@@ -139,7 +146,7 @@ public class MainActivity
 
         } else if (id == R.id.nav_answers) {
             Log.d("Main-navigation", "Answers selected");
-            notImplemented();
+            showNotImplemented();
 
         } else if (id == R.id.nav_faq) {
             Log.d("Main-navigation", "F.A.Q selected");
@@ -147,15 +154,15 @@ public class MainActivity
 
         } else if (id == R.id.nav_record) {
             Log.d("Main-navigation", "Record selected");
-            notImplemented();
+            showNotImplemented();
 
         } else if (id == R.id.nav_report) {
             Log.d("Main-navigation", "Report selected");
-            notImplemented();
+            showNotImplemented();
 
         } else if (id == R.id.nav_settings) {
             Log.d("Main-navigation", "Settings selected");
-            notImplemented();
+            showNotImplemented();
 
         } else if (id == R.id.nav_about) {
             Log.d("Main-navigation", "About selected");
@@ -238,7 +245,7 @@ public class MainActivity
     /**
      * Floating action button behaviour
      */
-    private void fabAction() {
+    private void fabSetup() {
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -246,11 +253,24 @@ public class MainActivity
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Feature not implemented", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Log.d("MainActivity-fab","Launching information level dialog");
+                    new MaterialDialog.Builder(MainActivity.this)
+                            .title(R.string.levelOfInformationDialog)
+                            .items(R.array.levelOfInformationOptions)
+                            .negativeText(R.string.cancelButtonDialog)
+                            .itemsCallback(new MaterialDialog.ListCallback() {
+                                @Override
+                                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                    Intent intent = new Intent(MainActivity.this, AddRecordActivity.class);
+                                    intent.putExtra("levelOfInformation",which);
+                                    Log.d("MainActivity-fab-dialog","Launching new record activity");
+                                    startActivity(intent);
+                                }
+                            })
+                            .show();
+
                 }
             });
-            fab.setVisibility(View.VISIBLE);
         }
     }
 
@@ -265,6 +285,9 @@ public class MainActivity
                              int toolBarTitle,
                              int fabVisibility,
                              boolean addToBackStack) {
+
+        //TODO : fix fragment overlapping bug -> suggested fix >> move F.A.Q fragment to new activity
+
 
         Log.d("Main-setFragment", fragment.toString() + " , " + Integer.toString(toolBarTitle) + " , " + Integer.toString(fabVisibility));
         String tag = getString(toolBarTitle);
@@ -295,7 +318,7 @@ public class MainActivity
         lastFragment = toolBarTitle;
     }
 
-    private void notImplemented() {
+    private void showNotImplemented() {
         if (fab != null) {
             fab.setVisibility(View.INVISIBLE);
         }
