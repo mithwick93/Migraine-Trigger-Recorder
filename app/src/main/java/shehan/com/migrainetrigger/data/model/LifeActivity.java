@@ -3,12 +3,12 @@ package shehan.com.migrainetrigger.data.model;
 /**
  * Created by Shehan on 4/13/2016.
  */
-public class Activity {
+public class LifeActivity {
     private int activityId;
     private String activityName;
     private int priority;
 
-    public Activity(int activityId, String activityName, int priority) {
+    public LifeActivity(int activityId, String activityName, int priority) {
         this.activityId = activityId;
         this.activityName = activityName;
         this.priority = priority;

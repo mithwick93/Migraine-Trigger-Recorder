@@ -1,6 +1,6 @@
 package shehan.com.migrainetrigger.data.builders;
 
-import shehan.com.migrainetrigger.data.model.Activity;
+import shehan.com.migrainetrigger.data.model.LifeActivity;
 
 public class ActivityBuilder {
     private int activityId;
@@ -22,7 +22,7 @@ public class ActivityBuilder {
         return this;
     }
 
-    public Activity createActivity() {
-        return new Activity(activityId, activityName, priority);
+    public LifeActivity createActivity() {
+        return new LifeActivity(activityId, activityName, priority);
     }
 }

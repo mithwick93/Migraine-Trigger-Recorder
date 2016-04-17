@@ -17,7 +17,11 @@
 
             <include
                 android:id="@+id/basic_layout"
-                layout="@layout/item_add_record_basic" />
+                layout="@layout/item_record_basic" />
+
+            <include
+                android:id="@+id/weather_layout"
+                layout="@layout/item_record_weather" />
 
         </LinearLayout>
     </ScrollView>

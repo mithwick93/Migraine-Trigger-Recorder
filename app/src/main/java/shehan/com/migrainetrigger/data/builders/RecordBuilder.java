@@ -3,8 +3,8 @@ package shehan.com.migrainetrigger.data.builders;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import shehan.com.migrainetrigger.data.model.Activity;
 import shehan.com.migrainetrigger.data.model.BodyArea;
+import shehan.com.migrainetrigger.data.model.LifeActivity;
 import shehan.com.migrainetrigger.data.model.Location;
 import shehan.com.migrainetrigger.data.model.Medicine;
 import shehan.com.migrainetrigger.data.model.Record;
@@ -18,7 +18,7 @@ public class RecordBuilder {
     private int intensity;
     private Timestamp startTime;
     private Timestamp endTime;
-    private ArrayList<Activity> activities;
+    private ArrayList<LifeActivity> activities;
     private ArrayList<BodyArea> bodyAreas;
     private Location location;
     private ArrayList<Medicine> medicines;
@@ -47,7 +47,7 @@ public class RecordBuilder {
         return this;
     }
 
-    public RecordBuilder setActivities(ArrayList<Activity> activities) {
+    public RecordBuilder setActivities(ArrayList<LifeActivity> activities) {
         this.activities = activities;
         return this;
     }

@@ -71,7 +71,7 @@ public class AddRecordFullFragment extends Fragment {
         edit_txt_relief = (EditText) view.findViewById(R.id.txt_record_relief);
         edit_txt_relief_effective = (EditText) view.findViewById(R.id.txt_record_effective_reliefs);
 
-        Log.d("AddRecordFull-onCreate","variables initialized, onCreate complete");
+        Log.d("AddRecordFull-onCreate", "variables initialized, onCreate complete");
         return view;
     }
 

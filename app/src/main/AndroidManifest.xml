@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".view.activity.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +22,9 @@
         <activity
             android:name=".view.activity.AddRecordActivity"
             android:label="@string/title_activity_add_record"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
     </application>
 

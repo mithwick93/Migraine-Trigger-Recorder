@@ -55,7 +55,7 @@ public class AddRecordIntermediateFragment extends Fragment {
         edit_txt_symptoms = (EditText) view.findViewById(R.id.txt_record_symptoms);
         edit_txt_activities = (EditText) view.findViewById(R.id.txt_record_activities);
 
-        Log.d("AddRecordInter-onCreate","variables initialized, onCreate complete");
+        Log.d("AddRecordInter-onCreate", "variables initialized, onCreate complete");
         return view;
     }
 

@@ -6,14 +6,15 @@ package shehan.com.migrainetrigger.utility.database;
  */
 public interface DatabaseDefinition {
 
+    //region Definitions
     // Database Name
     String DATABASE_NAME = "MigraineTrigger";
 
     //Database Version (Increase one if want to also upgrade your database)
     int DATABASE_VERSION = 1;// started at 1
-
+    //endregion
     //
-    // Table names
+    //region Table names
     //------------
     //
     String ACTIVITY_TABLE = "activity";
@@ -36,9 +37,9 @@ public interface DatabaseDefinition {
     String TRIGGER_RECORD_TABLE = "trigger_record";
     //
     //
-
+    //endregion
     //
-    // Table column names
+    //region Table column names
     //------------
     //
     // ACTIVITY_TABLE Columns names
@@ -84,7 +85,7 @@ public interface DatabaseDefinition {
     // WEATHER_DATA_TABLE Columns names
     String WEATHER_DATA_ID_KEY = "weather_id";
     String WEATHER_DATA_HUMIDITY_KEY = "humidity";
-    String WEATHER_DATA_END_PRESSURE_KEY = "pressure";
+    String WEATHER_DATA_PRESSURE_KEY = "pressure";
     String WEATHER_DATA_TEMPERATURE_KEY = "temperature";
     String WEATHER_DATA_RECORD_ID_KEY = "record_id";
     //
@@ -119,17 +120,15 @@ public interface DatabaseDefinition {
     String TRIGGER_RECORD_TRIGGER_ID_KEY = "trigger_id";
     String TRIGGER_RECORD_RECORD_ID_KEY = "record_id";
     //
+    //endregion
     //
-
-    //
-    //
-    //Create table syntax
+    //region Create table syntax
     //-------------------
     //Create ACTIVITY_TABLE
     String ACTIVITY_CREATE =
             "CREATE TABLE activity(\n" +
                     "\n" +
-                    "  activity_id INT,\n" +
+                    "  activity_id INT AUTO INCREMENT,\n" +
                     "  activity_name TEXT UNIQUE NOT NULL,\n" +
                     "  priority INT UNIQUE NOT NULL,\n" +
                     "  \n" +
@@ -141,7 +140,7 @@ public interface DatabaseDefinition {
     String BODY_AREA_CREATE =
             "CREATE TABLE body_area(\n" +
                     "\n" +
-                    "  area_id INT,\n" +
+                    "  area_id INT AUTO INCREMENT,\n" +
                     "  area_name TEXT UNIQUE NOT NULL,\n" +
                     "  \n" +
                     "  PRIMARY KEY (area_id)\n" +
@@ -152,7 +151,7 @@ public interface DatabaseDefinition {
     String LOCATION_CREATE =
             "CREATE TABLE location(\n" +
                     "\n" +
-                    "  location_id INT,\n" +
+                    "  location_id INT AUTO INCREMENT,\n" +
                     "  location_name TEXT UNIQUE NOT NULL,\n" +
                     "  \n" +
                     "  PRIMARY KEY (location_id)\n" +
@@ -163,7 +162,7 @@ public interface DatabaseDefinition {
     String MEDICINE_CREATE =
             "CREATE TABLE medicine(\n" +
                     "\n" +
-                    "  medicine_id INT,\n" +
+                    "  medicine_id INT AUTO INCREMENT,\n" +
                     "  medicine_name TEXT UNIQUE NOT NULL,\n" +
                     "  priority INT UNIQUE NOT NULL,\n" +
                     "  \n" +
@@ -175,7 +174,7 @@ public interface DatabaseDefinition {
     String RECORD_CREATE =
             "CREATE TABLE migraine_record(\n" +
                     "\n" +
-                    "  record_id INT,\n" +
+                    "  record_id INT AUTO INCREMENT,\n" +
                     "  start_time INT DEFAULT NULL,\n" +
                     "  end_time INT DEFAULT NULL,\n" +
                     "  intensity INT DEFAULT NULL,\n" +
@@ -190,7 +189,7 @@ public interface DatabaseDefinition {
     String RELIEF_CREATE =
             "CREATE TABLE relief(\n" +
                     "\n" +
-                    "  relief_id INT,\n" +
+                    "  relief_id INT AUTO INCREMENT,\n" +
                     "  relief_name TEXT UNIQUE NOT NULL,\n" +
                     "  priority INT UNIQUE NOT NULL,\n" +
                     "  \n" +
@@ -202,7 +201,7 @@ public interface DatabaseDefinition {
     String SYMPTOM_CREATE =
             "CREATE TABLE symptom(\n" +
                     "\n" +
-                    "  symptom_id INT,\n" +
+                    "  symptom_id INT AUTO INCREMENT,\n" +
                     "  symptom_name TEXT UNIQUE NOT NULL,\n" +
                     "  priority INT UNIQUE NOT NULL,\n" +
                     "  \n" +
@@ -214,7 +213,7 @@ public interface DatabaseDefinition {
     String TRIGGER_CREATE =
             "CREATE TABLE migraine_trigger(\n" +
                     "\n" +
-                    "  trigger_id INT,\n" +
+                    "  trigger_id INT AUTO INCREMENT,\n" +
                     "  trigger_name TEXT UNIQUE NOT NULL,\n" +
                     "  priority INT UNIQUE NOT NULL,\n" +
                     "  \n" +
@@ -226,7 +225,7 @@ public interface DatabaseDefinition {
     String WEATHER_DATA_CREATE =
             "CREATE TABLE weather_data(\n" +
                     "\n" +
-                    "  weather_id INT,\n" +
+                    "  weather_id INT AUTO INCREMENT,\n" +
                     "  record_id INT,\n" +
                     "  humidity REAL DEFAULT NULL,\n" +
                     "  pressure REAL DEFAULT NULL,\n" +
@@ -330,12 +329,9 @@ public interface DatabaseDefinition {
                     "  CONSTRAINT fk_trigger_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
                     "  \n" +
                     ");";
+    //endregion
     //
-    //
-
-    //
-    //
-    //Insert table syntax
+    //region Insert table syntax
     //-------------------
 
     //Insert ACTIVITY_TABLE
@@ -450,17 +446,13 @@ public interface DatabaseDefinition {
                     "(12,'Stress',11)\n" +
                     ";";
 
-
-    //Set all table with comma separated like USER_TABLE,ABC_TABLE
-//    String[] ALL_TABLES = {
-//            ACTIVITY_RECORD_TABLE, BODY_AREA_RECORD_TABLE, LOCATION_RECORD_TABLE, MEDICINE_RECORD_TABLE, RELIEF_RECORD_TABLE, SYMPTOM_RECORD_TABLE, TRIGGER_RECORD_TABLE,
-//            ACTIVITY_TABLE, BODY_AREA_TABLE, LOCATION_TABLE, MEDICINE_TABLE,
-//            RELIEF_TABLE, RELIEF_TABLE, SYMPTOM_TABLE, TRIGGER_TABLE, WEATHER_DATA_TABLE,
-//            RECORD_TABLE};
+    //endregion
+    //
+    //region All table names
     String[] ALL_TABLES = {
             ACTIVITY_RECORD_TABLE, BODY_AREA_RECORD_TABLE, MEDICINE_RECORD_TABLE, RELIEF_RECORD_TABLE, SYMPTOM_RECORD_TABLE, TRIGGER_RECORD_TABLE,
             ACTIVITY_TABLE, BODY_AREA_TABLE, MEDICINE_TABLE, RELIEF_TABLE, SYMPTOM_TABLE, TRIGGER_TABLE, WEATHER_DATA_TABLE,
             RECORD_TABLE,
             LOCATION_TABLE};
-
+    //endregion
 }

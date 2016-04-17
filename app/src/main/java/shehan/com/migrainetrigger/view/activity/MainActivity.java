@@ -2,7 +2,6 @@ package shehan.com.migrainetrigger.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -19,13 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import java.sql.SQLRecoverableException;
-
 import shehan.com.migrainetrigger.R;
-import shehan.com.migrainetrigger.data.builders.RecordBuilder;
 import shehan.com.migrainetrigger.view.fragment.dummy.AboutFragment;
 import shehan.com.migrainetrigger.view.fragment.dummy.AlternativeFragment;
 import shehan.com.migrainetrigger.view.fragment.dummy.CausesFragment;
@@ -253,7 +248,7 @@ public class MainActivity
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("MainActivity-fab","Launching information level dialog");
+                    Log.d("MainActivity-fab", "Launching information level dialog");
                     new MaterialDialog.Builder(MainActivity.this)
                             .title(R.string.levelOfInformationDialog)
                             .items(R.array.levelOfInformationOptions)
@@ -262,8 +257,8 @@ public class MainActivity
                                 @Override
                                 public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                     Intent intent = new Intent(MainActivity.this, AddRecordActivity.class);
-                                    intent.putExtra("levelOfInformation",which);
-                                    Log.d("MainActivity-fab-dialog","Launching new record activity");
+                                    intent.putExtra("levelOfInformation", which);
+                                    Log.d("MainActivity-fab-dialog", "Launching new record activity");
                                     startActivity(intent);
                                 }
                             })

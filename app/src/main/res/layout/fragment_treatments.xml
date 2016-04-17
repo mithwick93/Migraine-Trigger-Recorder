@@ -35,10 +35,10 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentStart="true"
                         android:text="@string/treatment_heading_1"
+                        android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold"
                         android:textSize="25sp"
-                        android:textAlignment="center" />
+                        android:textStyle="bold" />
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
@@ -328,10 +328,10 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentStart="true"
                         android:text="@string/treatment_heading_2"
+                        android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textStyle="bold"
                         android:textSize="25sp"
-                        android:textAlignment="center" />
+                        android:textStyle="bold" />
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>

@@ -13,7 +13,7 @@ public class Record {
     private Timestamp endTime;
 
     //Holders
-    private ArrayList<Activity> activities;
+    private ArrayList<LifeActivity> activities;
     private ArrayList<BodyArea> bodyAreas;
     private Location location;
     private ArrayList<Medicine> medicines;
@@ -23,7 +23,7 @@ public class Record {
     private WeatherData weatherData;
 
     public Record(int recordId, int intensity, Timestamp startTime, Timestamp endTime,
-                  ArrayList<Activity> activities, ArrayList<BodyArea> bodyAreas, Location location,
+                  ArrayList<LifeActivity> activities, ArrayList<BodyArea> bodyAreas, Location location,
                   ArrayList<Medicine> medicines, ArrayList<Relief> reliefs, ArrayList<Symptom> symptoms,
                   ArrayList<Trigger> triggers, WeatherData weatherData) {
 
@@ -73,11 +73,11 @@ public class Record {
         this.endTime = endTime;
     }
 
-    public ArrayList<Activity> getActivities() {
+    public ArrayList<LifeActivity> getActivities() {
         return activities;
     }
 
-    public void setActivities(ArrayList<Activity> activities) {
+    public void setActivities(ArrayList<LifeActivity> activities) {
         this.activities = activities;
     }
 

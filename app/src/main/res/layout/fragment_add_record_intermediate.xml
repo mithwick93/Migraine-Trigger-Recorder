@@ -16,15 +16,15 @@
 
             <include
                 android:id="@+id/basic_layout"
-                layout="@layout/item_add_record_basic" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_margin="5dp"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+                layout="@layout/item_record_basic" />
+
+            <include
+                android:id="@+id/weather_layout"
+                layout="@layout/item_record_weather" />
+
             <include
                 android:id="@+id/intermediate"
-                layout="@layout/item_add_record_intermediate" />
+                layout="@layout/item_record_intermediate" />
 
         </LinearLayout>
     </ScrollView>

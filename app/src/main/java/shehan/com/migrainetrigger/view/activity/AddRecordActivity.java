@@ -1,15 +1,17 @@
 package shehan.com.migrainetrigger.view.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.view.fragment.record.AddRecordBasicFragment;
@@ -18,7 +20,7 @@ import shehan.com.migrainetrigger.view.fragment.record.AddRecordIntermediateFrag
 
 public class AddRecordActivity
         extends AppCompatActivity
-        implements AddRecordBasicFragment.AddRecordBasicListener,AddRecordIntermediateFragment.AddRecordIntermediateListener,AddRecordFullFragment.AddRecordFullListener{
+        implements AddRecordBasicFragment.AddRecordBasicListener, AddRecordIntermediateFragment.AddRecordIntermediateListener, AddRecordFullFragment.AddRecordFullListener {
 
     private int levelOfInformation;
     private Toast mToast;
@@ -42,37 +44,27 @@ public class AddRecordActivity
 
     @Override
     public void onBackPressed() {
-        Toast toast = Toast.makeText(this, "Record discarded", Toast.LENGTH_LONG);
-        toast.show();
-        super.onBackPressed();
-    }
+        new MaterialDialog.Builder(this)
+                .title("Discard new record")
+                .content("Do you want to discard the new Migraine record ?")
+                .positiveText("Discard")
+                .negativeText(R.string.cancelButtonGeneral)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        showToast("Record discarded");
+                        AddRecordActivity.super.onBackPressed();
+                    }
+                })
+                .show();
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.new_record_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //Settings menu
-        int id = item.getItemId();
-
-        if (id == R.id.action_finish) {
-            showToast("Feature not implemented");
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 
     private void initialSetup() {
         levelOfInformation = getIntent().getIntExtra("levelOfInformation", 1);
 
-        Log.d("AddRecordAct-init","levelOfInformation : "+levelOfInformation);
+        Log.d("AddRecordAct-init", "levelOfInformation : " + levelOfInformation);
         Fragment fragment = null;
         switch (levelOfInformation) {
             case 0:
@@ -87,16 +79,16 @@ public class AddRecordActivity
         }
 
         if (fragment != null) {
-            Log.d("AddRecordAct-init","record fragment type selected  : "+fragment.toString());
-        }else{
-            Log.e("AddRecordAct-init","record fragment : null");
+            Log.d("AddRecordAct-init", "record fragment type selected  : " + fragment.toString());
+        } else {
+            Log.e("AddRecordAct-init", "record fragment : null");
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.new_record_container, fragment);
         fragmentTransaction.commit();
         if (fragment != null) {
-            showToast(fragment.toString()+ " record selected");
+            showToast(fragment.toString() + " record selected");
         }
 
     }
