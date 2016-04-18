@@ -13,15 +13,18 @@ import shehan.com.migrainetrigger.data.model.BodyArea;
 public class BodyAreaController {
 
     public static void addNewBodyArea(BodyArea bodyArea) {
-
     }
 
     public static BodyArea getBodyAreaById(int id) {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public static ArrayList<BodyArea> getAllBodyAreas() {
-        Log.d("getAll", " getAllBodyAreas ");
+        Log.d("BodyAreaController", " getAllBodyAreas ");
         return DBBodyAreaDAO.getAllBodyAreas();
     }
 
@@ -37,7 +40,14 @@ public class BodyAreaController {
 
     }
 
+    /**
+     *
+     * @param bodyAreaId
+     * @param recordId
+     * @return
+     */
     public static long addBodyAreaRecord(int bodyAreaId, int recordId) {
+        Log.d("BodyAreaController", " addBodyAreaRecord ");
         return DBBodyAreaDAO.addBodyAreaRecord(bodyAreaId, recordId);
     }
 }

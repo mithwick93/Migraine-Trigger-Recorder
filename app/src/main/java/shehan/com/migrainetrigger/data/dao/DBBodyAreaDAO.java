@@ -18,8 +18,13 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
  */
 public class DBBodyAreaDAO {
 
+    /**
+     * Get all body areas
+     *
+     * @return ArrayList<BodyArea> of body areas
+     */
     public static ArrayList<BodyArea> getAllBodyAreas() {
-        Log.d("getAll", " DB - getAllBodyAreas ");
+        Log.d("DBBodyAreaDAO", " DB - getAllBodyAreas ");
         ArrayList<BodyArea> bodyAreaArrayList = new ArrayList<>();
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -27,7 +32,7 @@ public class DBBodyAreaDAO {
             db = DatabaseHandler.getReadableDatabase();
 
             cursor = db.query(DatabaseDefinition.BODY_AREA_TABLE, null, null, null, null, null, null);
-            if (cursor.moveToFirst()) {// If records are found process them
+            if (cursor!=null && cursor.moveToFirst()) {// If records are found process them
                 do {
 
                     BodyArea bodyArea = new BodyAreaBuilder()
@@ -50,8 +55,15 @@ public class DBBodyAreaDAO {
         return bodyAreaArrayList;
     }
 
+    /**
+     * Add body area record
+     *
+     * @param bodyAreaId body area id
+     * @param recordId   record id
+     * @return row id
+     */
     public static long addBodyAreaRecord(int bodyAreaId, int recordId) {
-        Log.d("DAO-add", "DB - addBodyAreaRecord");
+        Log.d("DBBodyAreaDAO", "DB - addBodyAreaRecord");
 
         if (bodyAreaId <= 0 || recordId <= 0) {
             Log.e("DAO-add", "invalid information");
@@ -69,7 +81,7 @@ public class DBBodyAreaDAO {
 
             long row_id = db.insert(DatabaseDefinition.BODY_AREA_RECORD_TABLE, null, values); //Add new account to database
 
-            Log.d("DAO-add-", "result : " + row_id);
+            Log.d("DAO-add", "result : " + row_id);
 
             return row_id;
         } catch (SQLiteException e) {
@@ -81,8 +93,17 @@ public class DBBodyAreaDAO {
         }
     }
 
+    /**
+     * Add body area record in a transaction
+     *
+     * @param db         sql database
+     * @param bodyAreaId body area id
+     * @param recordId   record id
+     * @return row id
+     * @throws SQLiteException
+     */
     public static long addBodyAreaRecord(SQLiteDatabase db, int bodyAreaId, int recordId) throws SQLiteException {
-        Log.d("DAO-add", "DB - addBodyAreaRecord");
+        Log.d("DBBodyAreaDAO", "DB - addBodyAreaRecord");
 
         if (bodyAreaId <= 0 || recordId <= 0) {
             Log.e("DAO-add", "invalid information");
@@ -97,7 +118,7 @@ public class DBBodyAreaDAO {
 
         long row_id = db.insert(DatabaseDefinition.BODY_AREA_RECORD_TABLE, null, values);
 
-        Log.d("DAO-add-", "result : " + row_id);
+        Log.d("DAO-add", "result : " + row_id);
 
         return row_id;
 

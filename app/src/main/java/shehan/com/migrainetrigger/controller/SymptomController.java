@@ -19,8 +19,12 @@ public class SymptomController {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public static ArrayList<Symptom> getAllSymptoms() {
-        Log.d("getAll", " getAllSymptoms ");
+        Log.d("SymptomController", " getAllSymptoms ");
         return DBSymptomDAO.getAllSymptoms();
     }
 
@@ -37,6 +41,8 @@ public class SymptomController {
     }
 
     public static long addSymptomRecord(int symptomId, int recordId) {
+        Log.d("SymptomController", " addSymptomRecord ");
         return DBSymptomDAO.addSymptomRecord(symptomId, recordId);
     }
+
 }

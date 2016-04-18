@@ -20,6 +20,10 @@ public class LifeActivityController {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public static ArrayList<LifeActivity> getAllActivities() {
         Log.d("getAll", "getAllActivities ");
         return DBActivityDAO.getAllActivities();
@@ -37,7 +41,14 @@ public class LifeActivityController {
 
     }
 
+    /**
+     *
+     * @param activityId
+     * @param recordId
+     * @return
+     */
     public static long addActivityRecord(int activityId, int recordId) {
+        Log.d("getAll", "addActivityRecord ");
         return DBActivityDAO.addActivityRecord(activityId, recordId);
     }
 

@@ -15,7 +15,7 @@
         android:layout_marginStart="7dp"
         android:layout_marginTop="10dp"
 
-        android:visibility="gone"
+        android:visibility="visible"
         app:cardCornerRadius="2dp">
 
         <LinearLayout
@@ -28,9 +28,10 @@
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:paddingLeft="5dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:paddingTop="10dp"
-                android:text="Weather"
+                android:text="@string/record_lbl_weather"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <LinearLayout
@@ -48,7 +49,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:text="temperature"
+                        android:text="@string/record_txt_temp"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
                 </RelativeLayout>
 
@@ -68,7 +69,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:text="humidity"
+                            android:text="@string/record_txt_humidity"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
                     </RelativeLayout>
 
@@ -83,7 +84,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:text="pressure"
+                            android:text="@string/record_txt_pressure"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
                     </RelativeLayout>
                 </LinearLayout>

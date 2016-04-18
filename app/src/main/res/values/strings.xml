@@ -302,6 +302,8 @@ Obesity is also thought to be a factor in migraine headaches, and regular exerci
 
 These medications include birth control pills and hormone replacement therapy. Talk with your doctor about the appropriate alternatives or dosages for you."</string>
     <string name="title_activity_add_record">AddRecordActivity</string>
+    <string name="title_view_records">MigraineViewRecordsActivity</string>
+    <string name="title_faq">MigraineFAQActivity</string>
 
     <string name="cancelButtonGeneral">Cancel</string>
     <string name="confirmButtonGeneral">OK</string>
@@ -329,5 +331,32 @@ These medications include birth control pills and hormone replacement therapy. T
         <item>9 - Hurts the most</item>
         <item>10- Worst ever</item>
     </string-array>
+
+    <string name="record_lbl_start">Start</string>
+    <string name="record_lbl_end">End</string>
+    <string name="record_lbl_intensity">Intensity</string>
+    <string name="record_txt_intensity_hint">Click to set</string>
+    <string name="record_txt_start_date_hint">Date</string>
+    <string name="record_txt_start_time_hint">Time</string>
+    <string name="record_txt_end_date_hint">Date</string>
+    <string name="record_txt_end_time_hint">Time</string>
+    <string name="record_lbl_location">Location</string>
+    <string name="record_lbl_pain_in">Pain in</string>
+    <string name="record_lbl_medicine">Medicine</string>
+    <string name="record_lbl_effective_medicine">Effective medicine</string>
+    <string name="record_lbl_relief">Relief</string>
+    <string name="record_lbl_effective_reliefs">Effective reliefs</string>
+    <string name="record_lbl_triggers">Triggers</string>
+    <string name="record_lbl_symptoms">Symptoms</string>
+    <string name="record_lbl_activities">Activities</string>
+    <string name="record_txt_temp">temperature</string>
+    <string name="record_txt_humidity">humidity</string>
+    <string name="record_txt_pressure">pressure</string>
+    <string name="record_lbl_weather">Weather</string>
+    <string name="record_view_txt_date">Date</string>
+    <string name="record_view_txt_duration">Duration</string>
+    <string name="record_view_txt_intensity">Intensity</string>
+
+    <string name="config_date_log_pattern">dd-MM-yyyy</string>
 
 </resources>

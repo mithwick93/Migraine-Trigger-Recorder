@@ -20,8 +20,9 @@ public class TriggerController {
         return null;
     }
 
+
     public static ArrayList<Trigger> getAllTriggers() {
-        Log.d("getAll", " getAllTriggers ");
+        Log.d("addTriggerRecord", " getAllTriggers ");
         return DBTriggerDAO.getAllTriggers();
     }
 
@@ -38,6 +39,8 @@ public class TriggerController {
     }
 
     public static long addTriggerRecord(int triggerId, int recordId) {
+        Log.d("addTriggerRecord", " addTriggerRecord ");
         return DBTriggerDAO.addTriggerRecord(triggerId, recordId);
     }
+
 }

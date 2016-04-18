@@ -17,7 +17,7 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
  */
 public final class DBLocationDAO {
     public static ArrayList<Location> getAllLocations() {
-        Log.d("getAll", " DB - getAllLocations ");
+        Log.d("DBLocationDAO", " DB - getAllLocations ");
         ArrayList<Location> locationArrayList = new ArrayList<>();
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -25,7 +25,7 @@ public final class DBLocationDAO {
             db = DatabaseHandler.getReadableDatabase();
 
             cursor = db.query(DatabaseDefinition.LOCATION_TABLE, null, null, null, null, null, null);
-            if (cursor.moveToFirst()) {// If records are found process them
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
                 do {
 
                     Location location = new LocationBuilder()

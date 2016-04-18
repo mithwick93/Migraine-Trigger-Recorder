@@ -19,7 +19,7 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
 public final class DBMedicineDAO {
 
     public static ArrayList<Medicine> getAllMedicines() {
-        Log.d("getAll", " DB - getAllMedicines ");
+        Log.d("DBMedicineDAO", " DB - getAllMedicines ");
         ArrayList<Medicine> medicineArrayList = new ArrayList<>();
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -27,7 +27,7 @@ public final class DBMedicineDAO {
             db = DatabaseHandler.getReadableDatabase();
 
             cursor = db.query(DatabaseDefinition.MEDICINE_TABLE, null, null, null, null, null, null);
-            if (cursor.moveToFirst()) {// If records are found process them
+            if (cursor!=null && cursor.moveToFirst()) {// If records are found process them
                 do {
 
                     Medicine medicine = new MedicineBuilder()
@@ -52,7 +52,7 @@ public final class DBMedicineDAO {
     }
 
     public static long addMedicineRecord(int medicineId, int recordId, boolean effective) {
-        Log.d("DAO-add", "DB - addMedicineRecord");
+        Log.d("DBMedicineDAO", "DB - addMedicineRecord");
 
         if (medicineId <= 0 || recordId <= 0) {
             Log.e("DAO-add", "invalid information");
@@ -72,7 +72,7 @@ public final class DBMedicineDAO {
 
             long row_id = db.insert(DatabaseDefinition.MEDICINE_RECORD_TABLE, null, values);
 
-            Log.d("DAO-add-", "result : " + row_id);
+            Log.d("DAO-add", "result : " + row_id);
 
             return row_id;
         } catch (SQLiteException e) {
@@ -85,7 +85,7 @@ public final class DBMedicineDAO {
     }
 
     public static long addMedicineRecord(SQLiteDatabase db, int medicineId, int recordId, boolean effective) throws SQLiteException {
-        Log.d("DAO-add", "DB - addMedicineRecord");
+        Log.d("DBMedicineDAO", "DB - addMedicineRecord");
 
         if (medicineId <= 0 || recordId <= 0) {
             Log.e("DAO-add", "invalid information");
@@ -102,7 +102,7 @@ public final class DBMedicineDAO {
 
         long row_id = db.insert(DatabaseDefinition.MEDICINE_RECORD_TABLE, null, values);
 
-        Log.d("DAO-add-", "result : " + row_id);
+        Log.d("DAO-add", "result : " + row_id);
 
         return row_id;
 

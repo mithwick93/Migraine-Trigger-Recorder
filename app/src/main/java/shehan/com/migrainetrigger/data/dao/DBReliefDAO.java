@@ -18,7 +18,7 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
  */
 public final class DBReliefDAO {
     public static ArrayList<Relief> getAllReliefs() {
-        Log.d("getAll", " DB - getAllReliefs ");
+        Log.d("DBReliefDAO", " DB - getAllReliefs ");
         ArrayList<Relief> reliefArrayList = new ArrayList<>();
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -26,7 +26,7 @@ public final class DBReliefDAO {
             db = DatabaseHandler.getReadableDatabase();
 
             cursor = db.query(DatabaseDefinition.RELIEF_TABLE, null, null, null, null, null, null);
-            if (cursor.moveToFirst()) {// If records are found process them
+            if (cursor!=null && cursor.moveToFirst()) {// If records are found process them
                 do {
 
                     Relief relief = new ReliefBuilder()
@@ -51,7 +51,7 @@ public final class DBReliefDAO {
     }
 
     public static long addReliefRecord(int reliefId, int recordId, boolean effective) {
-        Log.d("DAO-add", "DB - addReliefRecord");
+        Log.d("DBReliefDAO", "DB - addReliefRecord");
 
         if (reliefId <= 0 || recordId <= 0) {
             Log.e("DAO-add", "invalid information");
@@ -71,7 +71,7 @@ public final class DBReliefDAO {
 
             long row_id = db.insert(DatabaseDefinition.RELIEF_RECORD_TABLE, null, values);
 
-            Log.d("DAO-add-", "result : " + row_id);
+            Log.d("DAO-add", "result : " + row_id);
 
             return row_id;
         } catch (SQLiteException e) {
@@ -84,7 +84,7 @@ public final class DBReliefDAO {
     }
 
     public static long addReliefRecord(SQLiteDatabase db, int reliefId, int recordId, boolean effective) throws SQLiteException {
-        Log.d("DAO-add", "DB - addReliefRecord");
+        Log.d("DBReliefDAO", "DB - addReliefRecord");
 
         if (reliefId <= 0 || recordId <= 0) {
             Log.e("DAO-add", "invalid information");
@@ -101,7 +101,7 @@ public final class DBReliefDAO {
 
         long row_id = db.insert(DatabaseDefinition.RELIEF_RECORD_TABLE, null, values);
 
-        Log.d("DAO-add-", "result : " + row_id);
+        Log.d("DAO-add", "result : " + row_id);
 
         return row_id;
 

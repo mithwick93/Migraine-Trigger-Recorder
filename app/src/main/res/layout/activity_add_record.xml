@@ -23,6 +23,4 @@
 
     </LinearLayout>
 
-    <include layout="@layout/content_add_record" />
-
 </android.support.design.widget.CoordinatorLayout>

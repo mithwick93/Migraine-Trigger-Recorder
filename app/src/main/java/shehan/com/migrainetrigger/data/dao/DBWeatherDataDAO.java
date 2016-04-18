@@ -14,7 +14,7 @@ import shehan.com.migrainetrigger.utility.database.DatabaseDefinition;
 public final class DBWeatherDataDAO {
 
     public static long addWeatherData(SQLiteDatabase db, int recordId, WeatherData weatherData) throws SQLiteException {
-        Log.d("DAO-add", "DB - addTriggerRecord");
+        Log.d("DBWeatherDataDAO", "DB - addTriggerRecord");
 
         if (weatherData == null) {
             Log.e("DAO-add", "invalid information");
@@ -34,7 +34,7 @@ public final class DBWeatherDataDAO {
 
         long row_id = db.insert(DatabaseDefinition.WEATHER_DATA_TABLE, null, values);
 
-        Log.d("DAO-add-", "result : " + row_id);
+        Log.d("DAO-add", "result : " + row_id);
 
         return row_id;
 

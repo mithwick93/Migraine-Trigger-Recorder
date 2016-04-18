@@ -18,6 +18,7 @@ public class RecordBuilder {
     private int intensity;
     private Timestamp startTime;
     private Timestamp endTime;
+    private int locationId;
     private ArrayList<LifeActivity> activities;
     private ArrayList<BodyArea> bodyAreas;
     private Location location;
@@ -44,6 +45,11 @@ public class RecordBuilder {
 
     public RecordBuilder setEndTime(Timestamp endTime) {
         this.endTime = endTime;
+        return this;
+    }
+
+    public RecordBuilder setLocationId(int locationId) {
+        this.locationId = locationId;
         return this;
     }
 
@@ -88,6 +94,6 @@ public class RecordBuilder {
     }
 
     public Record createRecord() {
-        return new Record(recordId, intensity, startTime, endTime, activities, bodyAreas, location, medicines, reliefs, symptoms, triggers, weatherData);
+        return new Record(recordId, intensity, startTime, endTime, locationId, activities, bodyAreas, location, medicines, reliefs, symptoms, triggers, weatherData);
     }
 }

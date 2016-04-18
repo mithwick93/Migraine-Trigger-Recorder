@@ -175,8 +175,8 @@ public interface DatabaseDefinition {
             "CREATE TABLE migraine_record(\n" +
                     "\n" +
                     "  record_id INT AUTO INCREMENT,\n" +
-                    "  start_time INT DEFAULT NULL,\n" +
-                    "  end_time INT DEFAULT NULL,\n" +
+                    "  start_time TEXT DEFAULT NULL,\n" +
+                    "  end_time TEXT DEFAULT NULL,\n" +
                     "  intensity INT DEFAULT NULL,\n" +
                     "  location_id INT DEFAULT NULL,\n" +
                     "  \n" +

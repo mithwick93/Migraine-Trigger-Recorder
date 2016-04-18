@@ -18,8 +18,9 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
  */
 public final class DBActivityDAO {
 
+
     public static ArrayList<LifeActivity> getAllActivities() {
-        Log.d("getAll", " DB - getAllActivities ");
+        Log.d("DBActivityDAO", " DB - getAllActivities ");
         ArrayList<LifeActivity> lifeActivityArrayList = new ArrayList<>();
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -27,7 +28,7 @@ public final class DBActivityDAO {
             db = DatabaseHandler.getReadableDatabase();
 
             cursor = db.query(DatabaseDefinition.ACTIVITY_TABLE, null, null, null, null, null, null);
-            if (cursor.moveToFirst()) {// If records are found process them
+            if (cursor!=null && cursor.moveToFirst()) {// If records are found process them
                 do {
 
                     LifeActivity lifeActivity = new ActivityBuilder()
@@ -52,7 +53,7 @@ public final class DBActivityDAO {
     }
 
     public static long addActivityRecord(int activityId, int recordId) {
-        Log.d("DAO-add", "DB - addActivityRecord");
+        Log.d("DBActivityDAO", "DB - addActivityRecord");
 
         if (activityId <= 0 || recordId <= 0) {
             Log.e("DAO-add", "invalid information");
@@ -70,7 +71,7 @@ public final class DBActivityDAO {
 
             long row_id = db.insert(DatabaseDefinition.ACTIVITY_RECORD_TABLE, null, values);
 
-            Log.d("DAO-add-", "result : " + row_id);
+            Log.d("DAO-add", "result : " + row_id);
 
             return row_id;
         } catch (SQLiteException e) {
@@ -83,7 +84,7 @@ public final class DBActivityDAO {
     }
 
     public static long addActivityRecord(SQLiteDatabase db, int activityId, int recordId) throws SQLiteException {
-        Log.d("DAO-add", "DB - addActivityRecord");
+        Log.d("DBActivityDAO", "DB - addActivityRecord");
 
         if (activityId <= 0 || recordId <= 0) {
             Log.e("DAO-add", "invalid information");
@@ -98,7 +99,7 @@ public final class DBActivityDAO {
 
         long row_id = db.insert(DatabaseDefinition.ACTIVITY_RECORD_TABLE, null, values);
 
-        Log.d("DAO-add-", "result : " + row_id);
+        Log.d("DAO-add", "result : " + row_id);
 
         return row_id;
 

@@ -42,9 +42,10 @@
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:paddingLeft="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
                         android:paddingTop="10dp"
-                        android:text="Start"
+                        android:text="@string/record_lbl_start"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <LinearLayout
@@ -55,7 +56,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_gravity="right"
+                            android:layout_gravity="end"
                             android:orientation="vertical">
 
                             <EditText
@@ -64,7 +65,7 @@
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:focusable="false"
-                                android:hint="Date"
+                                android:hint="@string/record_txt_start_date_hint"
                                 android:inputType="textMultiLine" />
 
                             <EditText
@@ -73,7 +74,7 @@
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:focusable="false"
-                                android:hint="Time"
+                                android:hint="@string/record_txt_start_time_hint"
                                 android:inputType="textMultiLine" />
                         </LinearLayout>
                     </LinearLayout>
@@ -101,9 +102,10 @@
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:paddingLeft="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
                         android:paddingTop="10dp"
-                        android:text="End"
+                        android:text="@string/record_lbl_end"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <LinearLayout
@@ -114,7 +116,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_gravity="right"
+                            android:layout_gravity="end"
                             android:orientation="vertical">
 
                             <EditText
@@ -123,7 +125,7 @@
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:focusable="false"
-                                android:hint="Date"
+                                android:hint="@string/record_txt_end_date_hint"
                                 android:inputType="textMultiLine" />
 
                             <EditText
@@ -132,7 +134,7 @@
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:focusable="false"
-                                android:hint="Time"
+                                android:hint="@string/record_txt_end_time_hint"
                                 android:inputType="textMultiLine" />
                         </LinearLayout>
                     </LinearLayout>
@@ -159,8 +161,9 @@
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:paddingLeft="5dp"
-                        android:text="Intensity"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="@string/record_lbl_intensity"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <RelativeLayout
@@ -176,10 +179,9 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:autoText="false"
                             android:clickable="true"
                             android:gravity="center_vertical"
-                            android:hint="Click to set" />
+                            android:hint="@string/record_txt_intensity_hint" />
                     </RelativeLayout>
 
                 </LinearLayout>

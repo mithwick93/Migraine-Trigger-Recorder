@@ -7,6 +7,7 @@ import shehan.com.migrainetrigger.data.model.WeatherData;
  */
 public class WeatherDataController {
 
+
     public static void addNewWeatherData(WeatherData weatherData) {
 
     }

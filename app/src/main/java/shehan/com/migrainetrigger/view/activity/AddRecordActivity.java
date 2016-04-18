@@ -14,9 +14,9 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
-import shehan.com.migrainetrigger.view.fragment.record.AddRecordBasicFragment;
-import shehan.com.migrainetrigger.view.fragment.record.AddRecordFullFragment;
-import shehan.com.migrainetrigger.view.fragment.record.AddRecordIntermediateFragment;
+import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordBasicFragment;
+import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordFullFragment;
+import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordIntermediateFragment;
 
 public class AddRecordActivity
         extends AppCompatActivity
@@ -32,9 +32,7 @@ public class AddRecordActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.add_record_toolbar);
         setSupportActionBar(toolbar);
 
-
         if (getSupportActionBar() != null) {
-//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("New Migraine record");
         }
 
@@ -60,11 +58,11 @@ public class AddRecordActivity
 
     }
 
-
     private void initialSetup() {
+        Log.d("AddRecordAct-init", "levelOfInformation : " + levelOfInformation);
         levelOfInformation = getIntent().getIntExtra("levelOfInformation", 1);
 
-        Log.d("AddRecordAct-init", "levelOfInformation : " + levelOfInformation);
+
         Fragment fragment = null;
         switch (levelOfInformation) {
             case 0:
@@ -107,8 +105,11 @@ public class AddRecordActivity
     }
 
     @Override
-    public void onBasicRecordInteraction() {
-
+    public void onBasicRecordInteraction(int request) {
+        Log.d("AddRecordActivity", "onBasicRecordInteraction request : " + request);
+        if (request == 0) {
+            AddRecordActivity.super.onBackPressed();
+        }
     }
 
     @Override

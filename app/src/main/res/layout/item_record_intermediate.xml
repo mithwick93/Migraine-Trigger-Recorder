@@ -44,8 +44,9 @@
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:paddingLeft="5dp"
-                        android:text="Triggers"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="@string/record_lbl_triggers"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <EditText
@@ -79,8 +80,9 @@
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:paddingLeft="5dp"
-                        android:text="Symptoms"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="@string/record_lbl_symptoms"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <EditText
@@ -114,8 +116,9 @@
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:paddingLeft="5dp"
-                        android:text="Activities"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="@string/record_lbl_activities"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <EditText

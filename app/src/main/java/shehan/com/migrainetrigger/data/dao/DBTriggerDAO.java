@@ -19,7 +19,7 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
 public final class DBTriggerDAO {
 
     public static ArrayList<Trigger> getAllTriggers() {
-        Log.d("getAll", " DB - getAllSymptoms ");
+        Log.d("DBTriggerDAO", " DB - getAllSymptoms ");
         ArrayList<Trigger> triggerArrayList = new ArrayList<>();
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -27,7 +27,7 @@ public final class DBTriggerDAO {
             db = DatabaseHandler.getReadableDatabase();
 
             cursor = db.query(DatabaseDefinition.TRIGGER_TABLE, null, null, null, null, null, null);
-            if (cursor.moveToFirst()) {// If records are found process them
+            if (cursor!=null && cursor.moveToFirst()) {// If records are found process them
                 do {
 
                     Trigger relief = new TriggerBuilder()
@@ -52,7 +52,7 @@ public final class DBTriggerDAO {
     }
 
     public static long addTriggerRecord(int triggerId, int recordId) {
-        Log.d("DAO-add", "DB - addTriggerRecord");
+        Log.d("DBTriggerDAO", "DB - addTriggerRecord");
 
         if (triggerId <= 0 || recordId <= 0) {
             Log.e("DAO-add", "invalid information");
@@ -70,7 +70,7 @@ public final class DBTriggerDAO {
 
             long row_id = db.insert(DatabaseDefinition.TRIGGER_RECORD_TABLE, null, values);
 
-            Log.d("DAO-add-", "result : " + row_id);
+            Log.d("DAO-add", "result : " + row_id);
 
             return row_id;
         } catch (SQLiteException e) {
@@ -83,7 +83,7 @@ public final class DBTriggerDAO {
     }
 
     public static long addTriggerRecord(SQLiteDatabase db, int triggerId, int recordId) throws SQLiteException {
-        Log.d("DAO-add", "DB - addTriggerRecord");
+        Log.d("DBTriggerDAO", "DB - addTriggerRecord");
 
         if (triggerId <= 0 || recordId <= 0) {
             Log.e("DAO-add", "invalid information");
@@ -98,7 +98,7 @@ public final class DBTriggerDAO {
 
         long row_id = db.insert(DatabaseDefinition.TRIGGER_RECORD_TABLE, null, values);
 
-        Log.d("DAO-add-", "result : " + row_id);
+        Log.d("DAO-add", "result : " + row_id);
 
         return row_id;
 

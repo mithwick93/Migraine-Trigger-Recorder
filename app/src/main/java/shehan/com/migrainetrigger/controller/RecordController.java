@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import shehan.com.migrainetrigger.data.dao.DBRecordDAO;
+import shehan.com.migrainetrigger.data.dao.DBTransactionHandler;
 import shehan.com.migrainetrigger.data.model.Record;
 
 /**
@@ -12,19 +13,39 @@ import shehan.com.migrainetrigger.data.model.Record;
  */
 public class RecordController {
 
-    public static long addNewRecord(Record record) {
-        Log.d("RecordControl", "Process record save");
-
-        return DBRecordDAO.addRecordToDB(record);
-
+    /**
+     * @param record
+     * @param recordLevel
+     * @return
+     */
+    public static boolean addNewRecord(Record record, int recordLevel) {
+        Log.d("RecordController", "addNewRecord");
+        return DBTransactionHandler.addRecordTransaction(record, recordLevel);
     }
 
+    /**
+     * @return
+     */
+    public static int getLastId() {
+        return DBRecordDAO.getLastRecordId();
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
     public static Record getRecordById(int id) {
-        return null;
+
+        return DBRecordDAO.getRecord(id);
     }
 
+    /**
+     * @return
+     */
     public static ArrayList<Record> getAllRecords() {
-        return null;
+
+        return DBRecordDAO.getAllRecords();
     }
 
     public static void deleteRecord() {

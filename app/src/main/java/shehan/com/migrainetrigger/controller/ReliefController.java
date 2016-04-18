@@ -20,8 +20,12 @@ public class ReliefController {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public static ArrayList<Relief> getAllReliefs() {
-        Log.d("getAll", " getAllReliefs ");
+        Log.d("ReliefController", " getAllReliefs ");
         return DBReliefDAO.getAllReliefs();
     }
 
@@ -37,7 +41,17 @@ public class ReliefController {
 
     }
 
+    /**
+     *
+     * @param reliefId
+     * @param recordId
+     * @param effective
+     * @return
+     */
     public static long addReliefRecord(int reliefId, int recordId, boolean effective) {
+        Log.d("ReliefController", " addReliefRecord ");
         return DBReliefDAO.addReliefRecord(reliefId, recordId, effective);
     }
+
+
 }

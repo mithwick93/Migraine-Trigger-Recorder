@@ -21,24 +21,14 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
-import shehan.com.migrainetrigger.view.fragment.dummy.AboutFragment;
-import shehan.com.migrainetrigger.view.fragment.dummy.AlternativeFragment;
-import shehan.com.migrainetrigger.view.fragment.dummy.CausesFragment;
-import shehan.com.migrainetrigger.view.fragment.dummy.ComplicationsFragment;
-import shehan.com.migrainetrigger.view.fragment.dummy.DefinitionFragment;
-import shehan.com.migrainetrigger.view.fragment.dummy.DiagnosisFragment;
-import shehan.com.migrainetrigger.view.fragment.dummy.PreventionFragment;
-import shehan.com.migrainetrigger.view.fragment.dummy.RemediesFragment;
-import shehan.com.migrainetrigger.view.fragment.dummy.RiskFragment;
-import shehan.com.migrainetrigger.view.fragment.dummy.SymptomsFragment;
-import shehan.com.migrainetrigger.view.fragment.dummy.TreatmentsFragment;
-import shehan.com.migrainetrigger.view.fragment.main.FAQTopicsFragment;
+import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
+import shehan.com.migrainetrigger.view.fragment.faq.AboutFragment;
 import shehan.com.migrainetrigger.view.fragment.main.HomeFragment;
 import shehan.com.migrainetrigger.view.fragment.main.SeverityFragment;
 
 public class MainActivity
         extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FAQTopicsFragment.OnTopicSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private FloatingActionButton fab;
     private int lastFragment;
@@ -72,6 +62,11 @@ public class MainActivity
         }
 
         this.lastFragment = -1;
+
+        //TODO: remove following code
+        //just to initialize database
+        DatabaseHandler.getWritableDatabase();
+
 
         Log.d("Main-onCreate", "onCreate success");
     }
@@ -145,11 +140,15 @@ public class MainActivity
 
         } else if (id == R.id.nav_faq) {
             Log.d("Main-navigation", "F.A.Q selected");
-            setFragment(new FAQTopicsFragment(), R.string.nav_f_a_q, View.INVISIBLE, false);
+            Intent intent = new Intent(MainActivity.this, FAQActivity.class);
+            Log.d("Main-navigation", "Launching F.A.Q activity");
+            startActivity(intent);
 
         } else if (id == R.id.nav_record) {
             Log.d("Main-navigation", "Record selected");
-            showNotImplemented();
+            Intent intent = new Intent(MainActivity.this, ViewRecordsActivity.class);
+            Log.d("Main-navigation", "Launching view record activity");
+            startActivity(intent);
 
         } else if (id == R.id.nav_report) {
             Log.d("Main-navigation", "Report selected");
@@ -172,66 +171,6 @@ public class MainActivity
         return true;
     }
 
-    /**
-     * @param clickPosition clicked position of f.a.q topics
-     */
-    @Override
-    public void onFragmentInteraction(int clickPosition) {
-        Fragment sectionFragment = null;
-        switch (clickPosition) {
-
-            case 0:
-                sectionFragment = new DefinitionFragment();
-                Log.d("Main-FAQSelect", "DefinitionFragment");
-                break;
-            case 1:
-                sectionFragment = new SymptomsFragment();
-                Log.d("Main-FAQSelect", "SymptomsFragment");
-                break;
-            case 2:
-                sectionFragment = new CausesFragment();
-                Log.d("Main-FAQSelect", "CausesFragment");
-                break;
-            case 3:
-                sectionFragment = new RiskFragment();
-                Log.d("Main-FAQSelect", "RiskFragment");
-                break;
-            case 4:
-                sectionFragment = new ComplicationsFragment();
-                Log.d("Main-FAQSelect", "ComplicationsFragment");
-                break;
-            case 5:
-                sectionFragment = new DiagnosisFragment();
-                Log.d("Main-FAQSelect", "DiagnosisFragment");
-                break;
-            case 6:
-                sectionFragment = new TreatmentsFragment();
-                Log.d("Main-FAQSelect", "TreatmentsFragment");
-                break;
-            case 7:
-                sectionFragment = new RemediesFragment();
-                Log.d("Main-FAQSelect", "RemediesFragment");
-                break;
-            case 8:
-                sectionFragment = new AlternativeFragment();
-                Log.d("Main-FAQSelect", "AlternativeFragment");
-                break;
-            case 9:
-                sectionFragment = new PreventionFragment();
-                Log.d("Main-FAQSelect", "PreventionFragment");
-                break;
-        }
-
-        if (sectionFragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-            fragmentTransaction.replace(R.id.container_body, sectionFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-            Log.d("Main-FAQSelect", "Section shown :" + fragmentManager.toString());
-        }
-    }
 
     //endregion
 
@@ -280,8 +219,6 @@ public class MainActivity
                              int toolBarTitle,
                              int fabVisibility,
                              boolean addToBackStack) {
-
-        //TODO : fix fragment overlapping bug -> suggested fix >> move F.A.Q fragment to new activity
 
 
         Log.d("Main-setFragment", fragment.toString() + " , " + Integer.toString(toolBarTitle) + " , " + Integer.toString(fabVisibility));
