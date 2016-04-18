@@ -2,8 +2,11 @@ package shehan.com.migrainetrigger.view.fragment.record.add;
 
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -24,18 +27,26 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.johnhiott.darkskyandroidlib.RequestBuilder;
+import com.johnhiott.darkskyandroidlib.models.Request;
+import com.johnhiott.darkskyandroidlib.models.WeatherResponse;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.data.builders.RecordBuilder;
+import shehan.com.migrainetrigger.data.builders.WeatherDataBuilder;
 import shehan.com.migrainetrigger.data.model.Record;
 import shehan.com.migrainetrigger.data.model.WeatherData;
-import shehan.com.migrainetrigger.view.utility.viewUtilities;
+import shehan.com.migrainetrigger.utility.appUtil;
 
-import static shehan.com.migrainetrigger.view.utility.viewUtilities.getTimeStampDate;
+import static shehan.com.migrainetrigger.utility.appUtil.getStringWeatherDate;
+import static shehan.com.migrainetrigger.utility.appUtil.getTimeStampDate;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -121,6 +132,9 @@ public class AddRecordBasicFragment extends Fragment {
         if (id == R.id.action_confirm) {
             chooseSaveOrSummery();
             return true;
+        } else if (id == R.id.action_refresh) {
+            showWeather();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -165,9 +179,9 @@ public class AddRecordBasicFragment extends Fragment {
         endTime = new int[2];
         endTime[0] = -1;
 
-        final Calendar c = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH)+1;
+        mMonth = c.get(Calendar.MONTH) + 1;
         mDay = c.get(Calendar.DAY_OF_MONTH);
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
@@ -194,13 +208,18 @@ public class AddRecordBasicFragment extends Fragment {
                                 edit_txt_start_date.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                                 showToast("Long press to clear date");
                                 mYear = startDate[0] = year;
-                                mMonth = startDate[1] = monthOfYear+1;
+                                mMonth = startDate[1] = monthOfYear + 1;
                                 mDay = startDate[2] = dayOfMonth;
 
                                 edit_txt_start_time.setEnabled(true);
 
+                                weatherData = null;
+                                weatherDataLoaded = false;
+                                layout_weather.setVisibility(View.GONE);
+
+
                             }
-                        }, mYear, mMonth-1, mDay);
+                        }, mYear, mMonth - 1, mDay);
                 datePickerDialog.show();
             }
 
@@ -218,6 +237,11 @@ public class AddRecordBasicFragment extends Fragment {
                 edit_txt_start_time.setEnabled(false);
                 startTime = new int[2];
                 startTime[0] = -1;
+
+                weatherData = null;
+                weatherDataLoaded = false;
+                layout_weather.setVisibility(View.GONE);
+
                 return true;
             }
         });
@@ -234,10 +258,15 @@ public class AddRecordBasicFragment extends Fragment {
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
 
-                                edit_txt_start_time.setText(viewUtilities.getFormattedTime(hourOfDay, minute));
+                                edit_txt_start_time.setText(appUtil.getFormattedTime(hourOfDay, minute));
                                 showToast("Long press to clear time");
                                 mHour = startTime[0] = hourOfDay;
                                 mMinute = startTime[1] = minute;
+
+                                weatherData = null;
+                                weatherDataLoaded = false;
+                                layout_weather.setVisibility(View.GONE);
+
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog.show();
@@ -251,6 +280,11 @@ public class AddRecordBasicFragment extends Fragment {
                 edit_txt_start_time.setText("");
                 startTime = new int[2];
                 startTime[0] = -1;
+
+                weatherData = null;
+                weatherDataLoaded = false;
+                layout_weather.setVisibility(View.GONE);
+
                 return true;
             }
         });
@@ -270,12 +304,12 @@ public class AddRecordBasicFragment extends Fragment {
                                 edit_txt_end_date.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                                 showToast("Long press to clear date");
                                 mYear = endDate[0] = year;
-                                mMonth = endDate[1] = monthOfYear+1;
+                                mMonth = endDate[1] = monthOfYear + 1;
                                 mDay = endDate[2] = dayOfMonth;
 
                                 edit_txt_end_time.setEnabled(true);
                             }
-                        }, mYear, mMonth-1, mDay);
+                        }, mYear, mMonth - 1, mDay);
                 datePickerDialog.show();
             }
 
@@ -309,7 +343,7 @@ public class AddRecordBasicFragment extends Fragment {
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
 
-                                edit_txt_end_time.setText(viewUtilities.getFormattedTime(hourOfDay, minute));
+                                edit_txt_end_time.setText(appUtil.getFormattedTime(hourOfDay, minute));
                                 showToast("Long press to clear time");
                                 mHour = endTime[0] = hourOfDay;
                                 mMinute = endTime[1] = minute;
@@ -412,7 +446,7 @@ public class AddRecordBasicFragment extends Fragment {
 
     private void chooseSaveOrSummery() {
 
-        if (!weatherDataLoaded) {
+        if (!weatherDataLoaded || weatherData == null) {
             new MaterialDialog.Builder(getContext())
                     .title("Compete record")
                     .content("Do you want to view weather information or save record now?")
@@ -435,7 +469,7 @@ public class AddRecordBasicFragment extends Fragment {
                     })
                     .show();
         } else {
-            //weatherdata shown already ,just save record
+            //weatherData shown already ,just save record
             saveRecord();
         }
 
@@ -481,9 +515,24 @@ public class AddRecordBasicFragment extends Fragment {
      */
     protected void showWeather() {
         Log.d("AddRecordBasic", "showWeather");
-        // layout_weather.setVisibility(View.VISIBLE);
-    }
+        Timestamp startTimestamp;
+        if (startDate[0] != -1) {
+            if (startTime[0] != -1) {
+                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
+                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":0";
+                startTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
+                startTimestamp = getTimeStampDate(tmpStr);
+            }
+        } else {
+            showToast("Showing current weather data");
+            startTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
+        }
 
+        new GetWeatherTask(6.6838462, 6.6838462, startTimestamp).execute();
+
+    }
 
     /**
      * save record,
@@ -506,12 +555,18 @@ public class AddRecordBasicFragment extends Fragment {
                 Log.d("saveRecord", " startTimestamp : " + startTimestamp.getTime());
             } else {
                 Log.d("saveRecord", " sYear: " + startDate[0] + " " + " sMonth: " + startDate[1] + " " + " sDay: " + startDate[2]);
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0])+" 0:0:0";
+                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
                 startTimestamp = getTimeStampDate(tmpStr);
                 Log.d("saveRecord", " startTimestamp : " + startTimestamp.getTime());
             }
         } else {
             showMsg("Record must have start time");
+            return;
+        }
+
+        Calendar c = Calendar.getInstance();
+        if (startTimestamp.after(c.getTime())) {
+            showMsg("Start Date is past current time");
             return;
         }
 
@@ -526,13 +581,24 @@ public class AddRecordBasicFragment extends Fragment {
                 Log.d("saveRecord", " endTimestamp : " + endTimestamp.getTime());
             } else {
                 Log.d("saveRecord", " eYear: " + endDate[0] + " " + " eMonth: " + endDate[1] + " " + " eDay: " + endDate[2]);
-                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0])+" 0:0:0";
+                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " 0:0:0";
                 endTimestamp = getTimeStampDate(tmpStr);
                 Log.d("saveRecord", " endTimestamp : " + endTimestamp.getTime());
             }
+
         }
 
+        if (endTimestamp != null) {
+            if (endTimestamp.after(c.getTime())) {
+                showMsg("End Date is past current time");
+                return;
+            }
+        }
+
+
         if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
+
+
             boolean result = RecordController.addNewRecord(getBasicRecordBuilder().createRecord(), 0);
             if (result) {
                 showToast("Record was saved successfully");
@@ -571,7 +637,7 @@ public class AddRecordBasicFragment extends Fragment {
 
                 startTimestamp = getTimeStampDate(tmpStr);
             } else {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0])+" 0:0:0";
+                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
 
                 startTimestamp = getTimeStampDate(tmpStr);
             }
@@ -585,7 +651,7 @@ public class AddRecordBasicFragment extends Fragment {
                         + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":0";
                 endTimestamp = getTimeStampDate(tmpStr);
             } else {
-                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0])+" 0:0:0";
+                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " 0:0:0";
                 endTimestamp = getTimeStampDate(tmpStr);
             }
             recordBuilder = recordBuilder.setEndTime(endTimestamp);
@@ -601,6 +667,7 @@ public class AddRecordBasicFragment extends Fragment {
                 .show();
     }
 
+
     /**
      * Parent activity must implement this interface to communicate
      */
@@ -611,6 +678,116 @@ public class AddRecordBasicFragment extends Fragment {
          * @param request inform parent about request (0 - dismiss activity)
          */
         void onBasicRecordInteraction(int request);
+    }
+
+    private class GetWeatherTask extends AsyncTask<String, Void, WeatherData> {
+        double latitude;
+        double longitude;
+        Timestamp timestamp;
+
+        WeatherData tmpWeatherData;
+
+        private ProgressDialog nDialog;
+
+
+        GetWeatherTask(double latitude, double longitude, Timestamp timestamp) {
+            super();
+            Log.d("GetWeatherTask", "constructor");
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.timestamp = timestamp;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            nDialog = new ProgressDialog(getActivity()); //Here I get an error: The constructor ProgressDialog(PFragment) is undefined
+            nDialog.setMessage("Loading weather data...");
+            nDialog.setTitle("Processing");
+            nDialog.setIndeterminate(false);
+            nDialog.setCancelable(true);
+            nDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    // actually could set running = false; right here, but I'll
+                    // stick to contract.
+                    cancel(true);
+                }
+            });
+            nDialog.show();
+        }
+
+        @Override
+        protected WeatherData doInBackground(String... params) {
+            RequestBuilder weather = new RequestBuilder();
+            Request request = new Request();
+            request.setLat(String.valueOf(latitude));
+            request.setLng(String.valueOf(longitude));
+            request.setTime(getStringWeatherDate(timestamp));
+            request.setUnits(Request.Units.SI);
+            request.setLanguage(Request.Language.PIG_LATIN);
+            request.addExcludeBlock(Request.Block.CURRENTLY);
+            request.removeExcludeBlock(Request.Block.CURRENTLY);
+
+            weather.getWeather(request, new Callback<WeatherResponse>()
+
+                    {
+                        @Override
+                        public void success(WeatherResponse weatherResponse, Response response) {
+                            try {
+                                tmpWeatherData = new WeatherDataBuilder()
+                                        .setHumidity(Double.valueOf(weatherResponse.getCurrently().getHumidity()) * 100)
+                                        .setPressure(Double.valueOf(weatherResponse.getCurrently().getPressure()) / 10)
+                                        .setTemperature(weatherResponse.getCurrently().getTemperature())
+                                        .createWeatherData();//Pressure given as hecto pascal
+                            } catch (Exception e) {
+                                Log.e("GetWeatherTask", "fatal error");
+                                e.printStackTrace();
+                                cancel(true);
+                            }
+                        }
+
+                        @Override
+                        public void failure(RetrofitError retrofitError) {
+                            Log.d("InternetService", "Error while calling: " + retrofitError.getUrl());
+                            Log.d("InternetService", retrofitError.toString());
+                        }
+                    }
+            );
+
+            //Loop till weather is fetched
+            while (tmpWeatherData == null) {
+                if (isCancelled()) {
+                    Log.d("InternetService","Task canceled");
+                    break;
+                }
+            }
+
+            return tmpWeatherData;
+        }
+
+        @Override
+        protected void onPostExecute(WeatherData wd) {
+            nDialog.dismiss();
+            if (isCancelled()) {
+                weatherData = null;
+                weatherDataLoaded = false;
+                layout_weather.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Task canceled", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (tmpWeatherData != null) {
+                txt_weather_temp.setText(String.format("%.2f °C", tmpWeatherData.getTemperature()));
+                txt_weather_humidity.setText(String.format("%.2f %%", tmpWeatherData.getHumidity()));
+                txt_weather_pressure.setText(String.format("%.2f KPa", tmpWeatherData.getPressure()));
+                weatherData = tmpWeatherData;
+                weatherDataLoaded = true;
+                layout_weather.setVisibility(View.VISIBLE);
+            } else {
+                Log.d("showWeather", "null weather");
+                showMsg("network service disconnected");
+            }
+        }
     }
 
 }

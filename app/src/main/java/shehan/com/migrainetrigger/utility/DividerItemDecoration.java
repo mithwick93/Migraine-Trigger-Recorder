@@ -1,4 +1,4 @@
-package shehan.com.migrainetrigger.view.utility;
+package shehan.com.migrainetrigger.utility;
 
 import android.content.Context;
 import android.content.res.TypedArray;

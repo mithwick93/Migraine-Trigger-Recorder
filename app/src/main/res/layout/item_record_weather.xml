@@ -15,8 +15,8 @@
         android:layout_marginStart="7dp"
         android:layout_marginTop="10dp"
 
-        android:visibility="visible"
-        app:cardCornerRadius="2dp">
+        app:cardCornerRadius="2dp"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,8 +28,8 @@
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:paddingStart="5dp"
                 android:paddingEnd="5dp"
+                android:paddingStart="5dp"
                 android:paddingTop="10dp"
                 android:text="@string/record_lbl_weather"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -46,11 +46,22 @@
                     <TextView
                         android:id="@+id/txt_weather_temp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
+                        android:text="28.68 c"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:layout_below="@+id/imageView2"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true" />
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:text="@string/record_txt_temp"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:src="@drawable/ic_temperature" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -67,10 +78,26 @@
                             android:id="@+id/txt_weather_humidity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:text="@string/record_txt_humidity"
-                            android:textAppearance="?android:attr/textAppearanceSmall" />
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="15sp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_toEndOf="@+id/img_weather_humidity" />
+
+                        <ImageView
+                            android:id="@+id/img_weather_humidity"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/ic_humidity" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -82,10 +109,23 @@
                             android:id="@+id/txt_weather_pressure"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
                             android:text="@string/record_txt_pressure"
-                            android:textAppearance="?android:attr/textAppearanceSmall" />
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="15sp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_toEndOf="@+id/img_weather_pressure" />
+
+                        <ImageView
+                            android:id="@+id/img_weather_pressure"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/ic_pressure" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

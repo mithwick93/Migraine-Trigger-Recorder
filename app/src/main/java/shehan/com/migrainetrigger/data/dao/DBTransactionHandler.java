@@ -96,6 +96,8 @@ public class DBTransactionHandler {
 
             //Weather data
             if (record.getWeatherData() != null) {
+                Log.d("DBTransactionHandler", "saving weather data");
+
                 long result = DBWeatherDataDAO.addWeatherData(db, record.getRecordId(), record.getWeatherData());
                 if (result < 1) {
                     throw new Exception("Weather Data insert failed. code : " + result);

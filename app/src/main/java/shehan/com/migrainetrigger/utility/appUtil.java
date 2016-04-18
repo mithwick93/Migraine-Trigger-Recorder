@@ -1,5 +1,6 @@
-package shehan.com.migrainetrigger.view.utility;
+package shehan.com.migrainetrigger.utility;
 
+import android.net.ConnectivityManager;
 import android.util.Log;
 
 import java.sql.Timestamp;
@@ -11,7 +12,7 @@ import java.util.GregorianCalendar;
 /**
  * Created by Shehan on 4/17/2016.
  */
-public class viewUtilities {
+public class appUtil {
 
     /**
      * Convert ime from daate picker to 12 hour time
@@ -39,8 +40,23 @@ public class viewUtilities {
      * @ string object with time
      */
     public static String getStringDate(Timestamp timestamp) {
-        Log.d("DatabaseHandler", "getStringDate timestamp value : " + timestamp.toString());
+        Log.d("appUtil", "getStringDate timestamp value : " + timestamp.toString());
         return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(timestamp);
+    }
+
+    /**
+     * Convert Timestamp object value to string
+     * string format : yyyy-MM-dd HH:mm:ss  2016-04-18T22:30:45
+     *
+     * @param timestamp timestamp to convert to string
+     * @ string object with time
+     */
+    public static String getStringWeatherDate(Timestamp timestamp) {
+        Log.d("appUtil", "getStringDate timestamp value : " + timestamp.toString());
+//        String result= timestamp.toString().replace(" ","T");
+//        result=result.substring(0,result.indexOf('T')+9);
+//        return result;
+        return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp)).replace(" ","T");
     }
 
     /**
@@ -51,7 +67,7 @@ public class viewUtilities {
      * @return timestamp object with time .nullable
      */
     public static Timestamp getTimeStampDate(String str) {
-        Log.d("DatabaseHandler", "getTimeStampDate str value : " + str);
+        Log.d("appUtil", "getTimeStampDate str value : " + str);
         Timestamp timestamp = null;
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -62,5 +78,7 @@ public class viewUtilities {
         }
         return timestamp;
     }
+
+
 
 }
