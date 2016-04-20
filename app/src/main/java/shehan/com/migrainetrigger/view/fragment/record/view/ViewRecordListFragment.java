@@ -18,7 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.controller.MedicineController;
 import shehan.com.migrainetrigger.controller.RecordController;
+import shehan.com.migrainetrigger.data.model.Medicine;
 import shehan.com.migrainetrigger.data.model.Record;
 
 /**
@@ -40,6 +42,7 @@ public class ViewRecordListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_view_record_list, container, false);
 
         TableLayout logsTableLayout = (TableLayout) view.findViewById(R.id.record_list_view_table);
+        MedicineController.getAllMedicines();
         generateRecordTable(view, logsTableLayout, RecordController.getAllRecords());
         return view;
     }

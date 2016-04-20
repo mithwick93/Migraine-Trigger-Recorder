@@ -13,8 +13,8 @@ import shehan.com.migrainetrigger.data.model.Record;
 import shehan.com.migrainetrigger.utility.database.DatabaseDefinition;
 import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
 
-import static shehan.com.migrainetrigger.utility.appUtil.getStringDate;
-import static shehan.com.migrainetrigger.utility.appUtil.getTimeStampDate;
+import static shehan.com.migrainetrigger.utility.AppUtil.getStringDate;
+import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
 
 /**
  * Created by Shehan on 4/13/2016.

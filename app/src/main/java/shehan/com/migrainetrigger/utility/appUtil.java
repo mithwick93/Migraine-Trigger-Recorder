@@ -1,18 +1,16 @@
 package shehan.com.migrainetrigger.utility;
 
-import android.net.ConnectivityManager;
 import android.util.Log;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * Created by Shehan on 4/17/2016.
  */
-public class appUtil {
+public class AppUtil {
 
     /**
      * Convert ime from daate picker to 12 hour time
@@ -40,8 +38,8 @@ public class appUtil {
      * @ string object with time
      */
     public static String getStringDate(Timestamp timestamp) {
-        Log.d("appUtil", "getStringDate timestamp value : " + timestamp.toString());
-        return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(timestamp);
+        Log.d("AppUtil", "getStringDate timestamp value : " + timestamp.toString());
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(timestamp);
     }
 
     /**
@@ -52,11 +50,11 @@ public class appUtil {
      * @ string object with time
      */
     public static String getStringWeatherDate(Timestamp timestamp) {
-        Log.d("appUtil", "getStringDate timestamp value : " + timestamp.toString());
+        Log.d("AppUtil", "getStringDate timestamp value : " + timestamp.toString());
 //        String result= timestamp.toString().replace(" ","T");
 //        result=result.substring(0,result.indexOf('T')+9);
 //        return result;
-        return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp)).replace(" ","T");
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(timestamp).replace(" ", "T");
     }
 
     /**
@@ -67,10 +65,10 @@ public class appUtil {
      * @return timestamp object with time .nullable
      */
     public static Timestamp getTimeStampDate(String str) {
-        Log.d("appUtil", "getTimeStampDate str value : " + str);
+        Log.d("AppUtil", "getTimeStampDate str value : " + str);
         Timestamp timestamp = null;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
             Date parsedDate = dateFormat.parse(str);
             timestamp = new java.sql.Timestamp(parsedDate.getTime());
         } catch (Exception e) {//this generic but you can control another types of exception
@@ -78,7 +76,6 @@ public class appUtil {
         }
         return timestamp;
     }
-
 
 
 }

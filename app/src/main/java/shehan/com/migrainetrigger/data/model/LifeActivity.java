@@ -3,10 +3,9 @@ package shehan.com.migrainetrigger.data.model;
 /**
  * Created by Shehan on 4/13/2016.
  */
-public class LifeActivity {
+public class LifeActivity extends PriorityEntity {
     private int activityId;
     private String activityName;
-    private int priority;
 
     public LifeActivity(int activityId, String activityName, int priority) {
         this.activityId = activityId;
@@ -37,4 +36,10 @@ public class LifeActivity {
     public void setPriority(int priority) {
         this.priority = priority;
     }
+
+    @Override
+    public String toString() {
+        return activityName != null ? activityName : "Activity : " + activityId;
+    }
+
 }

@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.controller;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import shehan.com.migrainetrigger.data.dao.DBReliefDAO;
 import shehan.com.migrainetrigger.data.model.Relief;
@@ -26,7 +27,9 @@ public class ReliefController {
      */
     public static ArrayList<Relief> getAllReliefs() {
         Log.d("ReliefController", " getAllReliefs ");
-        return DBReliefDAO.getAllReliefs();
+        ArrayList<Relief>reliefArrayList=DBReliefDAO.getAllReliefs();
+        Collections.sort(reliefArrayList);
+        return reliefArrayList;
     }
 
     public static void deleteRelief() {

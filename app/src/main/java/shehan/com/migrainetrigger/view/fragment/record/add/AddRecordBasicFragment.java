@@ -1,15 +1,20 @@
 package shehan.com.migrainetrigger.view.fragment.record.add;
 
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +38,7 @@ import com.johnhiott.darkskyandroidlib.models.WeatherResponse;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Locale;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -43,17 +49,32 @@ import shehan.com.migrainetrigger.data.builders.RecordBuilder;
 import shehan.com.migrainetrigger.data.builders.WeatherDataBuilder;
 import shehan.com.migrainetrigger.data.model.Record;
 import shehan.com.migrainetrigger.data.model.WeatherData;
-import shehan.com.migrainetrigger.utility.appUtil;
+import shehan.com.migrainetrigger.utility.AppUtil;
+import shehan.com.migrainetrigger.utility.GeoLocationService;
+import shehan.com.migrainetrigger.utility.InternetService;
 
-import static shehan.com.migrainetrigger.utility.appUtil.getStringWeatherDate;
-import static shehan.com.migrainetrigger.utility.appUtil.getTimeStampDate;
+import static shehan.com.migrainetrigger.utility.AppUtil.getStringWeatherDate;
+import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddRecordBasicFragment extends Fragment {
-    protected Toast mToast;
+public class AddRecordBasicFragment extends Fragment implements GeoLocationService.GeoLocationListener {
+
+    /**
+     * Parent activity must implement this interface to communicate
+     */
+    public interface AddRecordBasicListener {
+        /**
+         * Parent activity must implement this method to communicate
+         *
+         * @param request inform parent about request (0 - dismiss activity)
+         */
+        void onBasicRecordInteraction(int request);
+    }
+
     private AddRecordBasicListener mCallback;
+    protected Toast mToast;
 
     //basic
     protected EditText edit_txt_start_date;
@@ -67,6 +88,9 @@ public class AddRecordBasicFragment extends Fragment {
     protected TextView txt_weather_temp;
     protected TextView txt_weather_humidity;
     protected TextView txt_weather_pressure;
+
+    //location
+    private GeoLocationService geoLocationService;
 
     //domain objects
     private Record basicRecord;
@@ -141,8 +165,57 @@ public class AddRecordBasicFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (geoLocationService != null) {
+            geoLocationService.connect();
+            Log.d("AddRecordBasicFragment", "geoLocationService.connect");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (geoLocationService != null) {
+            geoLocationService.connect();
+            Log.d("AddRecordBasicFragment", "geoLocationService.connect");
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if (geoLocationService != null) {
+            geoLocationService.disconnect();
+            Log.d("AddRecordBasicFragment", "geoLocationService.disconnect");
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        if (geoLocationService != null) {
+            geoLocationService.disconnect();
+            Log.d("AddRecordBasicFragment", "geoLocationService.disconnect");
+        }
+        super.onStop();
+    }
+
+    @Override
     public String toString() {
         return "Basic";
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case GeoLocationService.PERMISSION_ACCESS_FINE_LOCATION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // All good!
+                } else {
+                    showToast(getContext(), "Need your location");
+                }
+                break;
+        }
     }
 
 
@@ -193,6 +266,8 @@ public class AddRecordBasicFragment extends Fragment {
 
         edit_txt_end_time.setEnabled(false);
 
+        layout_weather.setVisibility(View.GONE);
+
 //--------------------------------------------------
         //start date
         edit_txt_start_date.setCursorVisible(false);
@@ -206,7 +281,7 @@ public class AddRecordBasicFragment extends Fragment {
                                                   int monthOfYear, int dayOfMonth) {
 
                                 edit_txt_start_date.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                                showToast("Long press to clear date");
+                                showToast(getContext(), "Long press to clear date");
                                 mYear = startDate[0] = year;
                                 mMonth = startDate[1] = monthOfYear + 1;
                                 mDay = startDate[2] = dayOfMonth;
@@ -258,8 +333,8 @@ public class AddRecordBasicFragment extends Fragment {
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
 
-                                edit_txt_start_time.setText(appUtil.getFormattedTime(hourOfDay, minute));
-                                showToast("Long press to clear time");
+                                edit_txt_start_time.setText(AppUtil.getFormattedTime(hourOfDay, minute));
+                                showToast(getContext(), "Long press to clear time");
                                 mHour = startTime[0] = hourOfDay;
                                 mMinute = startTime[1] = minute;
 
@@ -302,7 +377,7 @@ public class AddRecordBasicFragment extends Fragment {
                                                   int monthOfYear, int dayOfMonth) {
 
                                 edit_txt_end_date.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                                showToast("Long press to clear date");
+                                showToast(getContext(), "Long press to clear date");
                                 mYear = endDate[0] = year;
                                 mMonth = endDate[1] = monthOfYear + 1;
                                 mDay = endDate[2] = dayOfMonth;
@@ -343,8 +418,8 @@ public class AddRecordBasicFragment extends Fragment {
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
 
-                                edit_txt_end_time.setText(appUtil.getFormattedTime(hourOfDay, minute));
-                                showToast("Long press to clear time");
+                                edit_txt_end_time.setText(AppUtil.getFormattedTime(hourOfDay, minute));
+                                showToast(getContext(), "Long press to clear time");
                                 mHour = endTime[0] = hourOfDay;
                                 mMinute = endTime[1] = minute;
                             }
@@ -388,15 +463,149 @@ public class AddRecordBasicFragment extends Fragment {
         view_layout_intensity.setOnClickListener(intensityListener);
     }
 
-    protected void showToast(String message) {
+    /**
+     * Get basic data of record
+     * Does not check constraints
+     *
+     * @return record builder with basic data saved
+     */
+    protected RecordBuilder getBasicRecordBuilder() {
+        Log.d("AddRecordBasic", "getBasicRecordBuilder");
+        RecordBuilder recordBuilder = new RecordBuilder().setRecordId(RecordController.getLastId() + 1);
+
+        if (weatherData != null) {
+            recordBuilder = recordBuilder.setWeatherData(weatherData);
+        }
+
+        if (intensity > 0) {
+            recordBuilder = recordBuilder.setIntensity(intensity);
+        }
+
+        if (startDate[0] != -1) {
+            Timestamp startTimestamp;
+            if (startTime[0] != -1) {
+                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
+                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":0";
+
+                startTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
+
+                startTimestamp = getTimeStampDate(tmpStr);
+            }
+            recordBuilder = recordBuilder.setStartTime(startTimestamp);
+        }
+
+        if (endDate[0] != -1) {
+            Timestamp endTimestamp;
+            if (endTime[0] != -1) {
+                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " "
+                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":0";
+                endTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " 0:0:0";
+                endTimestamp = getTimeStampDate(tmpStr);
+            }
+            recordBuilder = recordBuilder.setEndTime(endTimestamp);
+        }
+
+        return recordBuilder;
+    }
+
+    /**
+     * Show weather data
+     * use this in subclasses also
+     */
+    protected void showWeather() {
+        Log.d("AddRecordBasic", "showWeather");
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestLocationPermission();
+        }
+        if (geoLocationService != null) {
+            geoLocationService.disconnect();
+        }
+
+        geoLocationService = new GeoLocationService(getActivity(), this);
+        Log.d("GeoLocationService", "GeoLocationService - created googleApiClient");
+
+    }
+
+    public void onLocationReceived(Location location) {
+        Log.d("AddRecordBasic", "onLocationReceived ");
+        Timestamp startTimestamp;
+        if (startDate[0] != -1) {
+            if (startTime[0] != -1) {
+                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
+                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":0";
+                startTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
+                startTimestamp = getTimeStampDate(tmpStr);
+            }
+        } else {
+            //showToast(getContext(), "Showing current weather data");
+            startTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
+        }
+        if (location != null) {
+            new GetWeatherTask(location.getLatitude(), location.getLongitude(), startTimestamp).execute();
+
+        } else {
+            Log.d("AddRecordBasic", "fallback to default coordinates ");
+            showToast(getContext(), "Using default coordinates");
+            new GetWeatherTask(6.6839861, 79.9275146, startTimestamp).execute();
+        }
+    }
+
+    /**
+     * Show a toast
+     *
+     * @param context context to show toast
+     * @param message string msg
+     */
+    protected void showToast(Context context, String message) {
         if (mToast != null) {
             mToast.cancel();
             mToast = null;
         }
-        mToast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+        mToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         mToast.show();
     }
 
+    /**
+     * Show dialog box msg
+     *
+     * @param context context to show text
+     * @param msg     string msg
+     */
+    protected void showMsg(Context context, String msg) {
+        new MaterialDialog.Builder(context)
+                .content(msg)
+                .negativeText(R.string.cancelButtonDialog)
+                .show();
+    }
+
+    /**
+     * @param context context to show text
+     * @param msg     string msg
+     * @param title   title of msg dialog
+     */
+    protected void showMsg(Context context, String msg, String title) {
+        new MaterialDialog.Builder(context)
+                .title(title)
+                .content(msg)
+                .negativeText(R.string.cancelButtonDialog)
+                .show();
+    }
+
+    private void requestLocationPermission() {
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+            showToast(getContext(), "Location data allows to get better weather predictions. Please allow in App Settings for accurate functionality.");
+
+        }
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, GeoLocationService.PERMISSION_ACCESS_FINE_LOCATION);
+    }
 
     /**
      * Change intensity indicator
@@ -510,31 +719,6 @@ public class AddRecordBasicFragment extends Fragment {
     }
 
     /**
-     * Show weather data
-     * use this in subclasses also
-     */
-    protected void showWeather() {
-        Log.d("AddRecordBasic", "showWeather");
-        Timestamp startTimestamp;
-        if (startDate[0] != -1) {
-            if (startTime[0] != -1) {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
-                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":0";
-                startTimestamp = getTimeStampDate(tmpStr);
-            } else {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
-                startTimestamp = getTimeStampDate(tmpStr);
-            }
-        } else {
-            showToast("Showing current weather data");
-            startTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
-        }
-
-        new GetWeatherTask(6.6838462, 6.6838462, startTimestamp).execute();
-
-    }
-
-    /**
      * save record,
      * In subclasses handle this separately
      */
@@ -560,13 +744,13 @@ public class AddRecordBasicFragment extends Fragment {
                 Log.d("saveRecord", " startTimestamp : " + startTimestamp.getTime());
             }
         } else {
-            showMsg("Record must have start time");
+            showMsg(getContext(), "Record must have start time");
             return;
         }
 
         Calendar c = Calendar.getInstance();
         if (startTimestamp.after(c.getTime())) {
-            showMsg("Start Date is past current time");
+            showMsg(getContext(), "Start Date is past current time");
             return;
         }
 
@@ -590,7 +774,7 @@ public class AddRecordBasicFragment extends Fragment {
 
         if (endTimestamp != null) {
             if (endTimestamp.after(c.getTime())) {
-                showMsg("End Date is past current time");
+                showMsg(getContext(), "End Date is past current time");
                 return;
             }
         }
@@ -601,86 +785,17 @@ public class AddRecordBasicFragment extends Fragment {
 
             boolean result = RecordController.addNewRecord(getBasicRecordBuilder().createRecord(), 0);
             if (result) {
-                showToast("Record was saved successfully");
+                showToast(getContext(), "Record was saved successfully");
                 mCallback.onBasicRecordInteraction(0);
             } else {
-                showToast("Record save failed");
+                showToast(getContext(), "Record save failed");
             }
         } else {
-            showMsg("Start time is greater than the end time");
+            showMsg(getContext(), "Start time is greater than the end time");
         }
     }
 
-    /**
-     * Get basic data of record
-     * Does not check constraints
-     *
-     * @return record builder with basic data saved
-     */
-    protected RecordBuilder getBasicRecordBuilder() {
-        Log.d("AddRecordBasic", "getBasicRecordBuilder");
-        RecordBuilder recordBuilder = new RecordBuilder().setRecordId(RecordController.getLastId() + 1);
-
-        if (weatherData != null) {
-            recordBuilder = recordBuilder.setWeatherData(weatherData);
-        }
-
-        if (intensity > 0) {
-            recordBuilder = recordBuilder.setIntensity(intensity);
-        }
-
-        if (startDate[0] != -1) {
-            Timestamp startTimestamp;
-            if (startTime[0] != -1) {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
-                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":0";
-
-                startTimestamp = getTimeStampDate(tmpStr);
-            } else {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
-
-                startTimestamp = getTimeStampDate(tmpStr);
-            }
-            recordBuilder = recordBuilder.setStartTime(startTimestamp);
-        }
-
-        if (endDate[0] != -1) {
-            Timestamp endTimestamp;
-            if (endTime[0] != -1) {
-                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " "
-                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":0";
-                endTimestamp = getTimeStampDate(tmpStr);
-            } else {
-                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " 0:0:0";
-                endTimestamp = getTimeStampDate(tmpStr);
-            }
-            recordBuilder = recordBuilder.setEndTime(endTimestamp);
-        }
-
-        return recordBuilder;
-    }
-
-    protected void showMsg(String msg) {
-        new MaterialDialog.Builder(getContext())
-                .content(msg)
-                .negativeText(R.string.cancelButtonDialog)
-                .show();
-    }
-
-
-    /**
-     * Parent activity must implement this interface to communicate
-     */
-    public interface AddRecordBasicListener {
-        /**
-         * Parent activity must implement this method to communicate
-         *
-         * @param request inform parent about request (0 - dismiss activity)
-         */
-        void onBasicRecordInteraction(int request);
-    }
-
-    private class GetWeatherTask extends AsyncTask<String, Void, WeatherData> {
+    private class GetWeatherTask extends AsyncTask<String, Void, WeatherData> implements InternetService {
         double latitude;
         double longitude;
         Timestamp timestamp;
@@ -689,6 +804,8 @@ public class AddRecordBasicFragment extends Fragment {
 
         private ProgressDialog nDialog;
 
+        private volatile boolean cancelTask;
+        private volatile boolean networkProblem;
 
         GetWeatherTask(double latitude, double longitude, Timestamp timestamp) {
             super();
@@ -696,34 +813,18 @@ public class AddRecordBasicFragment extends Fragment {
             this.latitude = latitude;
             this.longitude = longitude;
             this.timestamp = timestamp;
+            this.cancelTask = false;
+            this.networkProblem = false;
+
         }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            nDialog = new ProgressDialog(getActivity()); //Here I get an error: The constructor ProgressDialog(PFragment) is undefined
-            nDialog.setMessage("Loading weather data...");
-            nDialog.setTitle("Processing");
-            nDialog.setIndeterminate(false);
-            nDialog.setCancelable(true);
-            nDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    // actually could set running = false; right here, but I'll
-                    // stick to contract.
-                    cancel(true);
-                }
-            });
-            nDialog.show();
-        }
-
-        @Override
-        protected WeatherData doInBackground(String... params) {
+        public void getWeatherData(double wLatitude, double wLongitude, Timestamp wTimestamp) {
             RequestBuilder weather = new RequestBuilder();
             Request request = new Request();
-            request.setLat(String.valueOf(latitude));
-            request.setLng(String.valueOf(longitude));
-            request.setTime(getStringWeatherDate(timestamp));
+            request.setLat(String.valueOf(wLatitude));
+            request.setLng(String.valueOf(wLongitude));
+            request.setTime(getStringWeatherDate(wTimestamp));
             request.setUnits(Request.Units.SI);
             request.setLanguage(Request.Language.PIG_LATIN);
             request.addExcludeBlock(Request.Block.CURRENTLY);
@@ -741,24 +842,55 @@ public class AddRecordBasicFragment extends Fragment {
                                         .setTemperature(weatherResponse.getCurrently().getTemperature())
                                         .createWeatherData();//Pressure given as hecto pascal
                             } catch (Exception e) {
-                                Log.e("GetWeatherTask", "fatal error");
+                                Log.e("getWeatherData", "fatal error");
                                 e.printStackTrace();
-                                cancel(true);
+                                //cancel(true);
+                                cancelTask = true;
+                                networkProblem = true;
                             }
                         }
 
                         @Override
                         public void failure(RetrofitError retrofitError) {
-                            Log.d("InternetService", "Error while calling: " + retrofitError.getUrl());
-                            Log.d("InternetService", retrofitError.toString());
+                            Log.d("getWeatherData", "Error while calling: " + retrofitError.getUrl());
+                            Log.d("getWeatherData", retrofitError.toString());
+                            // cancel(true);
+                            cancelTask = true;
+                            networkProblem = true;
                         }
                     }
             );
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            nDialog = new ProgressDialog(getActivity()); //Here I get an error: The constructor ProgressDialog(PFragment) is undefined
+            nDialog.setMessage("Loading weather data...");
+            nDialog.setTitle("Processing");
+            nDialog.setIndeterminate(false);
+            nDialog.setCancelable(true);
+            nDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    // actually could set running = false; right here, but I'll
+                    // stick to contract.
+                    cancelTask = true;
+                }
+            });
+            nDialog.show();
+        }
+
+        @Override
+        protected WeatherData doInBackground(String... params) {
+
+            //get weather from Internet service interface
+            getWeatherData(latitude, longitude, timestamp);
 
             //Loop till weather is fetched
             while (tmpWeatherData == null) {
-                if (isCancelled()) {
-                    Log.d("InternetService","Task canceled");
+                if (cancelTask) {
+                    Log.d("doInBackground", "Task canceled");
                     break;
                 }
             }
@@ -769,23 +901,35 @@ public class AddRecordBasicFragment extends Fragment {
         @Override
         protected void onPostExecute(WeatherData wd) {
             nDialog.dismiss();
-            if (isCancelled()) {
+            if (cancelTask) {
+
                 weatherData = null;
                 weatherDataLoaded = false;
                 layout_weather.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Task canceled", Toast.LENGTH_SHORT).show();
+
+                if (networkProblem) {
+                    showMsg(getContext(), "There was an error connecting to the weather service. Please check network connectivity and try again.", "Could not get weather data");
+                } else {
+                    Toast.makeText(getContext(), "Task canceled", Toast.LENGTH_SHORT).show();
+                }
+
+
                 return;
             }
             if (tmpWeatherData != null) {
-                txt_weather_temp.setText(String.format("%.2f °C", tmpWeatherData.getTemperature()));
-                txt_weather_humidity.setText(String.format("%.2f %%", tmpWeatherData.getHumidity()));
-                txt_weather_pressure.setText(String.format("%.2f KPa", tmpWeatherData.getPressure()));
+
+                txt_weather_temp.setText(String.format(Locale.getDefault(), "%.2f °C", tmpWeatherData.getTemperature()));
+                txt_weather_humidity.setText(String.format(Locale.getDefault(), "%.2f %%", tmpWeatherData.getHumidity()));
+                txt_weather_pressure.setText(String.format(Locale.getDefault(), "%.2f KPa", tmpWeatherData.getPressure()));
+
                 weatherData = tmpWeatherData;
                 weatherDataLoaded = true;
+
                 layout_weather.setVisibility(View.VISIBLE);
+
             } else {
-                Log.d("showWeather", "null weather");
-                showMsg("network service disconnected");
+                Log.d("showWeather", "null weather data");
+                showMsg(getContext(), "network service disconnected");
             }
         }
     }

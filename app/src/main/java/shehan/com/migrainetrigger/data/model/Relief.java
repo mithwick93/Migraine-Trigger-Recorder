@@ -3,11 +3,10 @@ package shehan.com.migrainetrigger.data.model;
 /**
  * Created by Shehan on 4/13/2016.
  */
-public class Relief {
+public class Relief  extends PriorityEntity{
 
     private int reliefId;
     private String reliefName;
-    private int priority;
     private boolean effective;
 
     public Relief(int reliefId, String reliefName, int priority, boolean effective) {
@@ -48,4 +47,10 @@ public class Relief {
     public void setEffective(boolean effective) {
         this.effective = effective;
     }
+
+    @Override
+    public String toString() {
+        return reliefName != null ? reliefName : "Relief : " + reliefId;
+    }
+
 }

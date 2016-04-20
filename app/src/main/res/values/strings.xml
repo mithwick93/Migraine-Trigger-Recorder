@@ -307,6 +307,7 @@ These medications include birth control pills and hormone replacement therapy. T
 
     <string name="cancelButtonGeneral">Cancel</string>
     <string name="confirmButtonGeneral">OK</string>
+    <string name="clear_selection">clear</string>
 
     <string name="cancelButtonDialog">Dismiss</string>
     <string name="confirmButtonDialog">Confirm</string>

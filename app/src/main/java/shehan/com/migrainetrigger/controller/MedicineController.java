@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.controller;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import shehan.com.migrainetrigger.data.dao.DBMedicineDAO;
 import shehan.com.migrainetrigger.data.model.Medicine;
@@ -21,12 +22,13 @@ public class MedicineController {
     }
 
     /**
-     *
      * @return
      */
     public static ArrayList<Medicine> getAllMedicines() {
         Log.d("MedicineController", " getAllMedicines ");
-        return DBMedicineDAO.getAllMedicines();
+        ArrayList<Medicine> medicineArrayList = DBMedicineDAO.getAllMedicines();
+        Collections.sort(medicineArrayList);
+        return medicineArrayList;
     }
 
     public static void deleteMedicine() {
@@ -42,7 +44,6 @@ public class MedicineController {
     }
 
     /**
-     *
      * @param medicineId
      * @param recordId
      * @param effective

@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.controller;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import shehan.com.migrainetrigger.data.dao.DBSymptomDAO;
 import shehan.com.migrainetrigger.data.model.Symptom;
@@ -25,7 +26,9 @@ public class SymptomController {
      */
     public static ArrayList<Symptom> getAllSymptoms() {
         Log.d("SymptomController", " getAllSymptoms ");
-        return DBSymptomDAO.getAllSymptoms();
+        ArrayList<Symptom>symptomArrayList=DBSymptomDAO.getAllSymptoms();
+        Collections.sort(symptomArrayList);
+        return symptomArrayList;
     }
 
     public static void deleteSymptom() {

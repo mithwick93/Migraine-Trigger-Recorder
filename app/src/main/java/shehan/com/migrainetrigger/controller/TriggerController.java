@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.controller;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import shehan.com.migrainetrigger.data.dao.DBTriggerDAO;
 import shehan.com.migrainetrigger.data.model.Trigger;
@@ -23,7 +24,9 @@ public class TriggerController {
 
     public static ArrayList<Trigger> getAllTriggers() {
         Log.d("addTriggerRecord", " getAllTriggers ");
-        return DBTriggerDAO.getAllTriggers();
+        ArrayList<Trigger> triggerArrayList = DBTriggerDAO.getAllTriggers();
+        Collections.sort(triggerArrayList);
+        return triggerArrayList;
     }
 
     public static void deleteTrigger() {

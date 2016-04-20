@@ -27,4 +27,6 @@ public class BodyArea {
     public void setBodyAreaName(String bodyAreaName) {
         this.bodyAreaName = bodyAreaName;
     }
+
+
 }

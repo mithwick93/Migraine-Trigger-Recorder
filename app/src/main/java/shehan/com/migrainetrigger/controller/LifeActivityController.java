@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.controller;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import shehan.com.migrainetrigger.data.dao.DBActivityDAO;
 import shehan.com.migrainetrigger.data.model.LifeActivity;
@@ -21,12 +22,14 @@ public class LifeActivityController {
     }
 
     /**
-     *
      * @return
      */
     public static ArrayList<LifeActivity> getAllActivities() {
         Log.d("getAll", "getAllActivities ");
-        return DBActivityDAO.getAllActivities();
+
+        ArrayList<LifeActivity> lifeActivityArrayList = DBActivityDAO.getAllActivities();
+        Collections.sort(lifeActivityArrayList);
+        return lifeActivityArrayList;
     }
 
     public static void deleteActivity() {
@@ -42,7 +45,6 @@ public class LifeActivityController {
     }
 
     /**
-     *
      * @param activityId
      * @param recordId
      * @return
