@@ -61,21 +61,7 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
  */
 public class AddRecordBasicFragment extends Fragment implements GeoLocationService.GeoLocationListener {
 
-    /**
-     * Parent activity must implement this interface to communicate
-     */
-    public interface AddRecordBasicListener {
-        /**
-         * Parent activity must implement this method to communicate
-         *
-         * @param request inform parent about request (0 - dismiss activity)
-         */
-        void onBasicRecordInteraction(int request);
-    }
-
-    private AddRecordBasicListener mCallback;
     protected Toast mToast;
-
     //basic
     protected EditText edit_txt_start_date;
     protected EditText edit_txt_start_time;
@@ -83,33 +69,25 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     protected EditText edit_txt_end_time;
     protected TextView view_txt_intensity;
     protected RelativeLayout view_layout_intensity;
-
     protected CardView layout_weather;
     protected TextView txt_weather_temp;
     protected TextView txt_weather_humidity;
     protected TextView txt_weather_pressure;
-
-    //location
-    private GeoLocationService geoLocationService;
-
-    //domain objects
-    private Record basicRecord;
-
     protected WeatherData weatherData;
-
     protected Timestamp startTimeStamp;
     protected Timestamp endTimeStamp;
-
     protected int[] startDate;
     protected int[] startTime;
     protected int[] endDate;
     protected int[] endTime;
-
     protected int intensity;//Value 1-10
-
     protected int mYear, mMonth, mDay, mHour, mMinute;
-
-    private boolean weatherDataLoaded;
+    protected boolean weatherDataLoaded;
+    private AddRecordBasicListener mCallback;
+    //location
+    private GeoLocationService geoLocationService;
+    //domain objects
+    private Record basicRecord;
 
     public AddRecordBasicFragment() {
         // Required empty public constructor
@@ -218,7 +196,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         }
     }
 
-
     /**
      * initiate basic controls
      * call this in sub classes onCreate
@@ -228,6 +205,10 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     protected void initBasicControls(View view) {
         Log.d("AddRecordBasic", "initBasicControls ");
 
+        //only call this method once
+        if (edit_txt_start_date != null) {
+            return;
+        }
         edit_txt_start_date = (EditText) view.findViewById(R.id.txt_record_start_date);
         edit_txt_start_time = (EditText) view.findViewById(R.id.txt_record_start_time);
         edit_txt_end_date = (EditText) view.findViewById(R.id.txt_record_end_date);
@@ -280,7 +261,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                edit_txt_start_date.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                edit_txt_start_date.setText(String.format(Locale.getDefault(), "%d-%d-%d", dayOfMonth, monthOfYear + 1, year));
                                 showToast(getContext(), "Long press to clear date");
                                 mYear = startDate[0] = year;
                                 mMonth = startDate[1] = monthOfYear + 1;
@@ -376,7 +357,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                edit_txt_end_date.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                edit_txt_end_date.setText(String.format(Locale.getDefault(), "%d-%d-%d", dayOfMonth, monthOfYear + 1, year));
                                 showToast(getContext(), "Long press to clear date");
                                 mYear = endDate[0] = year;
                                 mMonth = endDate[1] = monthOfYear + 1;
@@ -452,6 +433,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 intensity = which + 1;
                                 setIntensityIcon(intensity);
+                                showToast(getContext(), "Long press to clear");
                                 return true; // allow selection
                             }
                         })
@@ -459,8 +441,20 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                         .show();
             }
         };
+        View.OnLongClickListener intensityLongListener = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                intensity = -1;
+                setIntensityIcon(intensity);
+                return true;
+            }
+        };
+
         view_txt_intensity.setOnClickListener(intensityListener);
         view_layout_intensity.setOnClickListener(intensityListener);
+
+        view_txt_intensity.setOnLongClickListener(intensityLongListener);
+        view_layout_intensity.setOnLongClickListener(intensityLongListener);
     }
 
     /**
@@ -474,14 +468,17 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         RecordBuilder recordBuilder = new RecordBuilder().setRecordId(RecordController.getLastId() + 1);
 
         if (weatherData != null) {
+            Log.d("AddRecordBasic", "getBasicRecordBuilder - weatherData");
             recordBuilder = recordBuilder.setWeatherData(weatherData);
         }
 
         if (intensity > 0) {
+            Log.d("AddRecordBasic", "getBasicRecordBuilder - intensity ");
             recordBuilder = recordBuilder.setIntensity(intensity);
         }
 
         if (startDate[0] != -1) {
+            Log.d("AddRecordBasic", "getBasicRecordBuilder - startDate");
             Timestamp startTimestamp;
             if (startTime[0] != -1) {
                 String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
@@ -497,6 +494,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         }
 
         if (endDate[0] != -1) {
+            Log.d("AddRecordBasic", "getBasicRecordBuilder - endDate");
             Timestamp endTimestamp;
             if (endTime[0] != -1) {
                 String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " "
@@ -521,12 +519,22 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestLocationPermission();
         }
-        if (geoLocationService != null) {
-            geoLocationService.disconnect();
+        try {
+            if (geoLocationService != null) {
+                geoLocationService.disconnect();
+            }
+
+            geoLocationService = new GeoLocationService(getActivity(), this);
+            Log.d("GeoLocationService", "GeoLocationService - created googleApiClient");
+        } catch (Exception e) {
+            if (geoLocationService != null) {
+                geoLocationService.disconnect();
+            }
+            Log.e("AddRecordBasic", "exception :");
+            showToast(getContext(), "Something went wrong");
+            e.printStackTrace();
         }
 
-        geoLocationService = new GeoLocationService(getActivity(), this);
-        Log.d("GeoLocationService", "GeoLocationService - created googleApiClient");
 
     }
 
@@ -648,7 +656,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                 break;
             default:
                 view_txt_intensity.setBackgroundResource(0);
-                view_txt_intensity.setHint("Click to set");
+                view_txt_intensity.setHint(R.string.record_txt_intensity_hint);
                 break;
         }
     }
@@ -666,7 +674,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             //Save without  summery
-                            saveRecord();
+                            saveBasicRecord();
                         }
                     })
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -679,69 +687,32 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                     .show();
         } else {
             //weatherData shown already ,just save record
-            saveRecord();
+            saveBasicRecord();
         }
 
-
-//        Log.d("test-db", "test start");
-//
-//        Log.d("test-db", "before : "+String.valueOf(RecordController.getLastId()));
-//        Record record= new RecordBuilder()
-//                .setRecordId(RecordController.getLastId()+1)
-//                .setStartTime(new Timestamp(2016,4,14,6,0,0,0))
-//                .setEndTime(new Timestamp(2016,4,14,12,0,0,0))
-//                .setIntensity(3)
-//                .createRecord();
-//        RecordController.addNewRecord(record,0);
-
-//        Log.d("test-db", "Middle : "+String.valueOf(RecordController.getLastId()));
-//
-//        record= new RecordBuilder()
-//                .setRecordId(RecordController.getLastId()+1)
-//                .setStartTime(new Timestamp(Calendar.getInstance().getTime().getTime()))
-//                .setEndTime(new Timestamp(Calendar.getInstance().getTime().getTime()))
-//                .setIntensity(3)
-//                .createRecord();
-//        RecordController.addNewRecord(record,0);
-//
-//
-//        Log.d("test-db", "LifeActivity Controller :" + String.valueOf(LifeActivityController.getAllActivities().size()));
-//        Log.d("test-db", "BodyArea Controller :" + String.valueOf(BodyAreaController.getAllBodyAreas().size()));
-//        Log.d("test-db", "Location Controller :" + String.valueOf(LocationController.getAllLocations().size()));
-//        Log.d("test-db", "Medicine Controller :" + String.valueOf(MedicineController.getAllMedicines().size()));
-//        Log.d("test-db", "Relief Controller :" + String.valueOf(ReliefController.getAllReliefs().size()));
-//        Log.d("test-db", "Symptom Controller :" + String.valueOf(SymptomController.getAllSymptoms().size()));
-//        Log.d("test-db", "Trigger Controller :" + String.valueOf(TriggerController.getAllTriggers().size()));
-//
-//
-//        Log.d("test-db", "After : "+String.valueOf(RecordController.getLastId()));
-//        Log.d("test-db", "test finish");
     }
 
     /**
      * save record,
      * In subclasses handle this separately
      */
-    private void saveRecord() {
+    private void saveBasicRecord() {
         Log.d("AddRecordBasic", "saveRecord");
         //validations
         //check start<end
         Timestamp startTimestamp = null;
+
+        //Check for start date
         if (startDate[0] != -1) {
 
             if (startTime[0] != -1) {
-                Log.d("saveRecord", " sYear: " + startDate[0] + " " + " sMonth: " + startDate[1] + " " + " sDay: " + startDate[2] + " " + " sHour: " + startTime[0] + " " + " sMinute: " + startTime[1]);
-                //"dd/MM/yyyy HH:mm:ss"
                 String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
                         + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":0";
 
                 startTimestamp = getTimeStampDate(tmpStr);
-                Log.d("saveRecord", " startTimestamp : " + startTimestamp.getTime());
             } else {
-                Log.d("saveRecord", " sYear: " + startDate[0] + " " + " sMonth: " + startDate[1] + " " + " sDay: " + startDate[2]);
                 String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
                 startTimestamp = getTimeStampDate(tmpStr);
-                Log.d("saveRecord", " startTimestamp : " + startTimestamp.getTime());
             }
         } else {
             showMsg(getContext(), "Record must have start time");
@@ -754,20 +725,17 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
             return;
         }
 
+        //Check for end date
         Timestamp endTimestamp = null;
         if (endDate[0] != -1) {
 
             if (endTime[0] != -1) {
-                Log.d("saveRecord", " eYear: " + endDate[0] + " " + " eMonth: " + endDate[1] + " " + " eDay: " + endDate[2] + " " + " eHour: " + endTime[0] + " " + " eMinute: " + endTime[1]);
                 String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " "
                         + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":0";
                 endTimestamp = getTimeStampDate(tmpStr);
-                Log.d("saveRecord", " endTimestamp : " + endTimestamp.getTime());
             } else {
-                Log.d("saveRecord", " eYear: " + endDate[0] + " " + " eMonth: " + endDate[1] + " " + " eDay: " + endDate[2]);
                 String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " 0:0:0";
                 endTimestamp = getTimeStampDate(tmpStr);
-                Log.d("saveRecord", " endTimestamp : " + endTimestamp.getTime());
             }
 
         }
@@ -779,11 +747,10 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
             }
         }
 
-
+        //validate times
         if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
 
-
-            boolean result = RecordController.addNewRecord(getBasicRecordBuilder().createRecord(), 0);
+            boolean result = RecordController.addNewRecord(getBasicRecordBuilder().createRecord(), 0);//Level 0
             if (result) {
                 showToast(getContext(), "Record was saved successfully");
                 mCallback.onBasicRecordInteraction(0);
@@ -793,6 +760,18 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         } else {
             showMsg(getContext(), "Start time is greater than the end time");
         }
+    }
+
+    /**
+     * Parent activity must implement this interface to communicate
+     */
+    public interface AddRecordBasicListener {
+        /**
+         * Parent activity must implement this method to communicate
+         *
+         * @param request inform parent about request (0 - dismiss activity)
+         */
+        void onBasicRecordInteraction(int request);
     }
 
     private class GetWeatherTask extends AsyncTask<String, Void, WeatherData> implements InternetService {

@@ -19,7 +19,8 @@ public class DBTransactionHandler {
 
     /**
      * Add new record in a transaction
-     * @param record New record
+     *
+     * @param record      New record
      * @param recordLevel record level (basic - 0 ,intermediate -1 , full - 2 )
      * @return
      */
@@ -30,9 +31,10 @@ public class DBTransactionHandler {
         db.beginTransaction();
         try {
 
-            if (recordLevel == 1) {
+            if (recordLevel == 1 || recordLevel == 2) {
                 //Triggers
                 if (record.getTriggers() != null && record.getTriggers().size() > 0) {
+                    Log.d("DBTransactionHandler", "addRecordTransaction - Triggers");
                     for (Trigger trigger : record.getTriggers()) {
                         long result = DBTriggerDAO.addTriggerRecord(db, trigger.getTriggerId(), record.getRecordId());
                         if (result < 1) {
@@ -43,6 +45,7 @@ public class DBTransactionHandler {
 
                 //Symptoms
                 if (record.getSymptoms() != null && record.getSymptoms().size() > 0) {
+                    Log.d("DBTransactionHandler", "addRecordTransaction - Symptoms");
                     for (Symptom symptom : record.getSymptoms()) {
                         long result = DBSymptomDAO.addSymptomRecord(db, symptom.getSymptomId(), record.getRecordId());
                         if (result < 1) {
@@ -53,6 +56,7 @@ public class DBTransactionHandler {
 
                 //Activities
                 if (record.getActivities() != null && record.getActivities().size() > 0) {
+                    Log.d("DBTransactionHandler", "addRecordTransaction - Activities");
                     for (LifeActivity lifeActivity : record.getActivities()) {
                         long result = DBActivityDAO.addActivityRecord(db, lifeActivity.getActivityId(), record.getRecordId());
                         if (result < 1) {
@@ -65,6 +69,7 @@ public class DBTransactionHandler {
             if (recordLevel == 2) {
                 //Body areas
                 if (record.getBodyAreas() != null && record.getBodyAreas().size() > 0) {
+                    Log.d("DBTransactionHandler", "addRecordTransaction - BodyAreas");
                     for (BodyArea bodyArea : record.getBodyAreas()) {
                         long result = DBBodyAreaDAO.addBodyAreaRecord(db, bodyArea.getBodyAreaId(), record.getRecordId());
                         if (result < 1) {
@@ -75,6 +80,7 @@ public class DBTransactionHandler {
 
                 //Medicines
                 if (record.getMedicines() != null && record.getMedicines().size() > 0) {
+                    Log.d("DBTransactionHandler", "addRecordTransaction - Medicines");
                     for (Medicine medicine : record.getMedicines()) {
                         long result = DBMedicineDAO.addMedicineRecord(db, medicine.getMedicineId(), record.getRecordId(), medicine.isEffective());
                         if (result < 1) {
@@ -85,6 +91,7 @@ public class DBTransactionHandler {
 
                 //Reliefs
                 if (record.getReliefs() != null && record.getReliefs().size() > 0) {
+                    Log.d("DBTransactionHandler", "addRecordTransaction - Reliefs");
                     for (Relief relief : record.getReliefs()) {
                         long result = DBReliefDAO.addReliefRecord(db, relief.getReliefId(), record.getRecordId(), relief.isEffective());
                         if (result < 1) {
@@ -96,7 +103,7 @@ public class DBTransactionHandler {
 
             //Weather data
             if (record.getWeatherData() != null) {
-                Log.d("DBTransactionHandler", "saving weather data");
+                Log.d("DBTransactionHandler", "addRecordTransaction WeatherData");
 
                 long result = DBWeatherDataDAO.addWeatherData(db, record.getRecordId(), record.getWeatherData());
                 if (result < 1) {
@@ -110,7 +117,7 @@ public class DBTransactionHandler {
                 throw new Exception("Record insert failed. code : " + result);
             }
             db.setTransactionSuccessful();
-            return result>0;
+            return result > 0;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

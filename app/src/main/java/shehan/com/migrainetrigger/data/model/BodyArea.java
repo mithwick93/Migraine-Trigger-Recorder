@@ -28,5 +28,9 @@ public class BodyArea {
         this.bodyAreaName = bodyAreaName;
     }
 
+    @Override
+    public String toString() {
+        return bodyAreaName != null ? bodyAreaName : "Body area : " + bodyAreaId;
+    }
 
 }

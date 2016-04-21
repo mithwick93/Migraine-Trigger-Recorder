@@ -406,7 +406,7 @@ public interface DatabaseDefinition {
                     "(5,'Caffeine',4),\n" +
                     "(6,'Dark room rest',5),\n" +
                     "(7,'Ice packs',6),\n" +
-                    "(8,'Stray indoor',7),\n" +
+                    "(8,'Stay indoor',7),\n" +
                     "(9,'Meditate',8),\n" +
                     "(10,'Sleep',9)\n" +
                     ";";

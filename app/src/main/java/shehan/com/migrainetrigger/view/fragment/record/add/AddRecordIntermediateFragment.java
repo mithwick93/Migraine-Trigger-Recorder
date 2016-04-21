@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.view.fragment.record.add;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,56 +12,49 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.LifeActivityController;
+import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.controller.SymptomController;
 import shehan.com.migrainetrigger.controller.TriggerController;
+import shehan.com.migrainetrigger.data.builders.RecordBuilder;
 import shehan.com.migrainetrigger.data.model.LifeActivity;
 import shehan.com.migrainetrigger.data.model.Record;
 import shehan.com.migrainetrigger.data.model.Symptom;
 import shehan.com.migrainetrigger.data.model.Trigger;
+
+import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
-    /**
-     * Parent activity must implement this interface to communicate
-     */
-    public interface AddRecordIntermediateListener {
-        /**
-         * Parent activity must implement this method to communicate
-         */
-        void onIntermediateRecordInteraction();
-    }
-
-    private AddRecordIntermediateListener mCallback;
-
     //intermediate
     protected EditText edit_txt_triggers;
     protected EditText edit_txt_symptoms;
     protected EditText edit_txt_activities;
-
-    //domain objects
-    private Record intermediateRecord;
-
     protected ArrayList<LifeActivity> activities;
     protected ArrayList<Trigger> triggers;
     protected ArrayList<Symptom> symptoms;
-
     //
     protected ArrayList<LifeActivity> selectedActivities;
     protected ArrayList<Trigger> selectedTriggers;
     protected ArrayList<Symptom> selectedSymptoms;
-
-    //
+    //Track selected incises
     protected Integer[] selectedActivityIndexes;
     protected Integer[] selectedTriggerIndexes;
     protected Integer[] selectedSymptomsIndexes;
-
+    private AddRecordIntermediateListener mCallback;
+    //domain objects
+    private Record intermediateRecord;
     public AddRecordIntermediateFragment() {
         // Required empty public constructor
     }
@@ -98,7 +92,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_confirm) {
-            //Full record save call
+            chooseSaveOrSummery();
             return true;
         } else if (id == R.id.action_refresh) {
             showWeather();
@@ -113,7 +107,6 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         return "Intermediate";
     }
 
-
     /**
      * initiate intermediate controls
      * call this in sub classes onCreate
@@ -122,6 +115,11 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
      */
     protected void initIntermediateControls(View view) {
         Log.d("AddRecordInter", "initIntermediateControls ");
+
+        if (edit_txt_triggers != null) {
+            return;
+        }
+
         super.initBasicControls(view);
         edit_txt_triggers = (EditText) view.findViewById(R.id.txt_record_triggers);
         edit_txt_symptoms = (EditText) view.findViewById(R.id.txt_record_symptoms);
@@ -135,9 +133,9 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         selectedTriggers = new ArrayList<>();
         selectedSymptoms = new ArrayList<>();
 
-        selectedActivityIndexes=new Integer[activities.size()];
-        selectedActivityIndexes=new Integer[triggers.size()];
-        selectedActivityIndexes=new Integer[symptoms.size()];
+        selectedActivityIndexes = null;
+        selectedTriggerIndexes = null;
+        selectedSymptomsIndexes = null;
 
 //--------------------------------------------------
         //start time
@@ -152,50 +150,45 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                 Show the names in edit text
                  */
 
-//                new MaterialDialog.Builder(getContext())
-//                        .title("Select triggers")
-//                        .items(triggers)
-//                        .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
-//                            @Override
-//                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-//                                StringBuilder str = new StringBuilder();
-//                                selectedTriggers.clear();
-//                                for (int i = 0; i < which.length; i++) {
-//                                    if (i > 0) str.append('\n');
-//                                    str.append(which[i]);
-//                                    str.append(": ");
-//                                    str.append(text[i]);
-//                                    selectedTriggers.add(triggers.get(i));
-//                                }
-//                                showToast(getContext(), str.toString());
-//                                return true; // allow selection
-//                            }
-//                        })
-//                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
-//                            @Override
-//                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                                showToast(getContext(), "selection cleared");
-//                                dialog.clearSelectedIndices();
-//                                selectedTriggers.clear();
-//                            }
-//                        })
-//                        .positiveText(R.string.confirmButtonDialog)
-//                        .neutralText(R.string.clear_selection)
-//                        .show();
-            }
-        });
-        edit_txt_triggers.setOnLongClickListener(new View.OnLongClickListener() {
+                new MaterialDialog.Builder(getContext())
+                        .title("Select triggers")
+                        .items(triggers)
+                        .itemsCallbackMultiChoice(selectedTriggerIndexes, new MaterialDialog.ListCallbackMultiChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                String selectedStr = "";
+                                selectedTriggers.clear();
+                                selectedTriggerIndexes = which;
 
-            @Override
-            public boolean onLongClick(View v) {
-           /*
-           clear selected list
-           clear edit txt
-            */
-                selectedTriggers.clear();
-                return true;
+                                for (Integer integer : which) {
+                                    String name = triggers.get(integer).toString();
+                                    selectedStr = selectedStr + ", " + name;
+                                    selectedTriggers.add(triggers.get(integer));
+                                }
+                                if (selectedStr.contains(",")) {
+                                    selectedStr = selectedStr.replaceFirst(",", "");
+                                }
+
+                                edit_txt_triggers.setText(selectedStr);
+                                return true; // allow selection
+                            }
+                        })
+                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                showToast(getContext(), "Selection cleared");
+                                dialog.clearSelectedIndices();
+                                selectedTriggers.clear();
+                                selectedTriggerIndexes = null;
+                                edit_txt_triggers.setText("");
+                            }
+                        })
+                        .positiveText(R.string.confirmButtonDialog)
+                        .neutralText(R.string.clear_selection)
+                        .show();
             }
         });
+
 //--------------------------------------------------
         //start time
         edit_txt_symptoms.setCursorVisible(false);
@@ -208,21 +201,47 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                 when unchecked remove from list
                 Show the names in edit text
                  */
-            }
-        });
-        edit_txt_symptoms.setOnLongClickListener(new View.OnLongClickListener() {
+                new MaterialDialog.Builder(getContext())
+                        .title("Select Symptoms")
+                        .items(symptoms)
+                        .itemsCallbackMultiChoice(selectedSymptomsIndexes, new MaterialDialog.ListCallbackMultiChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                String selectedStr = "";
+                                selectedSymptoms.clear();
+                                selectedSymptomsIndexes = which;
 
-            @Override
-            public boolean onLongClick(View v) {
-           /*
-           clear selected list
-           clear edit txt
-            */
-                return true;
+                                for (Integer integer : which) {
+                                    String name = symptoms.get(integer).toString();
+                                    selectedStr = selectedStr + ", " + name;
+                                    selectedSymptoms.add(symptoms.get(integer));
+                                }
+                                if (selectedStr.contains(",")) {
+                                    selectedStr = selectedStr.replaceFirst(",", "");
+                                }
+
+                                edit_txt_symptoms.setText(selectedStr);
+                                return true; // allow selection
+                            }
+                        })
+                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                showToast(getContext(), "Selection cleared");
+                                dialog.clearSelectedIndices();
+                                selectedSymptoms.clear();
+                                selectedSymptomsIndexes = null;
+                                edit_txt_symptoms.setText("");
+                            }
+                        })
+                        .positiveText(R.string.confirmButtonDialog)
+                        .neutralText(R.string.clear_selection)
+                        .show();
             }
         });
+
 //--------------------------------------------------
-        //start time
+        //activities
         edit_txt_activities.setCursorVisible(false);
         edit_txt_activities.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,21 +252,181 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                 when unchecked remove from list
                 Show the names in edit text
                  */
+                new MaterialDialog.Builder(getContext())
+                        .title("Select Activities")
+                        .items(activities)
+                        .itemsCallbackMultiChoice(selectedActivityIndexes, new MaterialDialog.ListCallbackMultiChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                String selectedStr = "";
+                                selectedActivities.clear();
+                                selectedActivityIndexes = which;
+
+                                for (Integer integer : which) {
+                                    String name = activities.get(integer).toString();
+                                    selectedStr = selectedStr + ", " + name;
+                                    selectedActivities.add(activities.get(integer));
+                                }
+                                if (selectedStr.contains(",")) {
+                                    selectedStr = selectedStr.replaceFirst(",", "");
+                                }
+
+                                edit_txt_activities.setText(selectedStr);
+                                return true; // allow selection
+                            }
+                        })
+                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                showToast(getContext(), "Selection cleared");
+                                dialog.clearSelectedIndices();
+                                selectedActivities.clear();
+                                selectedActivityIndexes = null;
+                                edit_txt_activities.setText("");
+                            }
+                        })
+                        .positiveText(R.string.confirmButtonDialog)
+                        .neutralText(R.string.clear_selection)
+                        .show();
             }
         });
-        edit_txt_activities.setOnLongClickListener(new View.OnLongClickListener() {
+    }
 
-            @Override
-            public boolean onLongClick(View v) {
-           /*
-           clear selected list
-           clear edit txt
-            */
-                return true;
+    /**
+     * Get basic data of record
+     * Does not check constraints
+     *
+     * @return record builder with intermediate data saved
+     */
+    protected RecordBuilder getIntermediateRecordBuilder() {
+        Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder");
+
+        //Call parent method to get basic info
+        RecordBuilder recordBuilder = getBasicRecordBuilder();
+
+        if (selectedActivities.size() > 0) {
+            Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder - selectedActivities");
+            recordBuilder = recordBuilder.setActivities(selectedActivities);
+        }
+
+        if (selectedTriggers.size() > 0) {
+            Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder - selectedTriggers");
+            recordBuilder = recordBuilder.setTriggers(selectedTriggers);
+        }
+
+        if (selectedSymptoms.size() > 0) {
+            Log.d("AddRecordInterFragment", " - selectedSymptoms");
+            recordBuilder = recordBuilder.setSymptoms(selectedSymptoms);
+        }
+
+        return recordBuilder;
+    }
+
+    private void chooseSaveOrSummery() {
+
+        if (!weatherDataLoaded || weatherData == null) {
+            new MaterialDialog.Builder(getContext())
+                    .title("Compete record")
+                    .content("Do you want to view weather information or save record now?")
+                    .negativeText("Save record")
+                    .positiveText("Show weather")
+                    .neutralText("Cancel")
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            //Save without  summery
+                            saveIntermediateRecord();
+                        }
+                    })
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            //show summery
+                            showWeather();
+                        }
+                    })
+                    .show();
+        } else {
+            //weatherData shown already ,just save record
+            saveIntermediateRecord();
+        }
+
+    }
+
+    private void saveIntermediateRecord() {
+        Log.d("AddRecordInterFragment", "saveIntermediateRecord");
+        //validations
+        //check start<end
+        Timestamp startTimestamp = null;
+
+        //Check for start date
+        if (startDate[0] != -1) {
+
+            if (startTime[0] != -1) {
+                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
+                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":0";
+
+                startTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
+                startTimestamp = getTimeStampDate(tmpStr);
             }
-        });
+        } else {
+            showMsg(getContext(), "Record must have start time");
+            return;
+        }
 
+        Calendar c = Calendar.getInstance();
+        if (startTimestamp.after(c.getTime())) {
+            showMsg(getContext(), "Start Date is past current time");
+            return;
+        }
 
+        //Check for end date
+        Timestamp endTimestamp = null;
+        if (endDate[0] != -1) {
+
+            if (endTime[0] != -1) {
+                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " "
+                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":0";
+                endTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " 0:0:0";
+                endTimestamp = getTimeStampDate(tmpStr);
+            }
+
+        }
+
+        if (endTimestamp != null) {
+            if (endTimestamp.after(c.getTime())) {
+                showMsg(getContext(), "End Date is past current time");
+                return;
+            }
+        }
+
+        //validate times
+        if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
+
+            boolean result = RecordController.addNewRecord(getIntermediateRecordBuilder().createRecord(), 1);//Level 1
+            if (result) {
+                showToast(getContext(), "Record was saved successfully");
+                mCallback.onIntermediateRecordInteraction(0);
+            } else {
+                showToast(getContext(), "Record save failed");
+            }
+        } else {
+            showMsg(getContext(), "Start time is greater than the end time");
+        }
+    }
+
+    /**
+     * Parent activity must implement this interface to communicate
+     */
+    public interface AddRecordIntermediateListener {
+        /**
+         * Parent activity must implement this method to communicate
+         */
+        void onIntermediateRecordInteraction(int request);
     }
 
 }

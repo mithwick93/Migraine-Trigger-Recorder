@@ -44,6 +44,23 @@ public class AppUtil {
 
     /**
      * Convert Timestamp object value to string
+     * string format : dd/MM/yyyy h:mm a
+     *
+     * @param timestamp timestamp to convert to string
+     * @ string object with time
+     */
+    public static String getFriendlyStringDate(Timestamp timestamp) {
+        Log.d("AppUtil", "getFriendlyStringDate timestamp value : " + timestamp.toString());
+        return new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.getDefault()).format(timestamp);
+    }
+
+    public static String getFriendlyDuration(long seconds) {
+        Log.d("AppUtil", "getFriendlyDuration seconds value : " + seconds);
+        return String.format(Locale.getDefault(), "%d hour(s) %02d minute(s) ", seconds / 3600, (seconds % 3600) / 60);
+    }
+
+    /**
+     * Convert Timestamp object value to string
      * string format : yyyy-MM-dd HH:mm:ss  2016-04-18T22:30:45
      *
      * @param timestamp timestamp to convert to string

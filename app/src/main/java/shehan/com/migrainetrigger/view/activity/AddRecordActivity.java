@@ -113,12 +113,18 @@ public class AddRecordActivity
     }
 
     @Override
-    public void onFullRecordInteraction() {
-
+    public void onFullRecordInteraction(int request) {
+        Log.d("AddRecordActivity", "onFullRecordInteraction request : " + request);
+        if (request == 0) {
+            AddRecordActivity.super.onBackPressed();
+        }
     }
 
     @Override
-    public void onIntermediateRecordInteraction() {
-
+    public void onIntermediateRecordInteraction(int request) {
+        Log.d("AddRecordActivity", "onIntermediateRecordInteraction request : " + request);
+        if (request == 0) {
+            AddRecordActivity.super.onBackPressed();
+        }
     }
 }

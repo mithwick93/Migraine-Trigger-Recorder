@@ -1,5 +1,6 @@
 package shehan.com.migrainetrigger.view.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,7 +17,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -32,6 +34,8 @@ public class MainActivity
 
     private FloatingActionButton fab;
     private int lastFragment;
+    private Boolean isFabOpen = false;
+    private Animation rotate_forward, rotate_backward;
 
     //region activity default
 
@@ -182,12 +186,15 @@ public class MainActivity
     private void fabSetup() {
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
 
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.d("MainActivity-fab", "Launching information level dialog");
+                    animateFAB();
                     new MaterialDialog.Builder(MainActivity.this)
                             .title(R.string.levelOfInformationDialog)
                             .items(R.array.levelOfInformationOptions)
@@ -195,10 +202,17 @@ public class MainActivity
                             .itemsCallback(new MaterialDialog.ListCallback() {
                                 @Override
                                 public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                    animateFAB();
                                     Intent intent = new Intent(MainActivity.this, AddRecordActivity.class);
                                     intent.putExtra("levelOfInformation", which);
                                     Log.d("MainActivity-fab-dialog", "Launching new record activity");
                                     startActivity(intent);
+                                }
+                            })
+                            .dismissListener(new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialog) {
+                                    animateFAB();
                                 }
                             })
                             .show();
@@ -254,8 +268,17 @@ public class MainActivity
         if (fab != null) {
             fab.setVisibility(View.INVISIBLE);
         }
-        Toast toast = Toast.makeText(this, "Feature not implemented", Toast.LENGTH_SHORT);
-        toast.show();
+    }
+
+    public void animateFAB() {
+//        if (isFabOpen) {
+//            fab.startAnimation(rotate_backward);
+//            isFabOpen = false;
+//        } else {
+//            fab.startAnimation(rotate_forward);
+//            isFabOpen = true;
+//
+//        }
     }
 
     //endregion

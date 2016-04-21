@@ -4,36 +4,36 @@ package shehan.com.migrainetrigger.view.fragment.record.view;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.ArrayList;
 
 import shehan.com.migrainetrigger.R;
-import shehan.com.migrainetrigger.controller.MedicineController;
 import shehan.com.migrainetrigger.controller.RecordController;
-import shehan.com.migrainetrigger.data.model.Medicine;
 import shehan.com.migrainetrigger.data.model.Record;
+import shehan.com.migrainetrigger.utility.AppUtil;
+import shehan.com.migrainetrigger.view.adapter.RecordViewAdapter;
+import shehan.com.migrainetrigger.view.model.RecordViewData;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ViewRecordListFragment extends Fragment {
+
     private Toast mToast;
     private RecordListListener mCallback;
-
     public ViewRecordListFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,9 +41,20 @@ public class ViewRecordListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_record_list, container, false);
 
-        TableLayout logsTableLayout = (TableLayout) view.findViewById(R.id.record_list_view_table);
-        MedicineController.getAllMedicines();
-        generateRecordTable(view, logsTableLayout, RecordController.getAllRecords());
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.record_list_recycler_view);
+
+        // 2. set layoutManger
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        // 3. create an adapter
+        RecordViewAdapter severityViewAdapter = new RecordViewAdapter(getRecordViewData());
+
+        // 4. set adapter
+        recyclerView.setAdapter(severityViewAdapter);
+
+        // 5. set item animator to DefaultAnimator
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         return view;
     }
 
@@ -55,59 +66,9 @@ public class ViewRecordListFragment extends Fragment {
         // the callback interface. If not, it throws an exception
         try {
             mCallback = (RecordListListener) context;
-            ;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement RecordListListener");
-        }
-    }
-
-    private void generateRecordTable(View rootView,
-                                     TableLayout recordsTableLayout,
-                                     List<Record> recordList) {
-
-        for (Record record : recordList) {
-            TableRow tr = new TableRow(rootView.getContext());
-            TextView lDateVal = new TextView(rootView.getContext());
-
-            SimpleDateFormat sdf = new SimpleDateFormat(getActivity().getString(R.string.config_date_log_pattern));
-
-            String date = " - ";
-            String duration = " - ";
-            String intensity = " - ";
-
-            Timestamp startTime = record.getStartTime();
-            Timestamp endTime = record.getEndTime();
-
-            if (startTime != null) {
-                date = sdf.format(startTime);
-
-                if (endTime != null) {
-                    long difference = endTime.getTime() - startTime.getTime();
-                    long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
-                    duration = DateUtils.formatElapsedTime(differenceInSeconds);
-                }
-            }
-
-
-            if (record.getIntensity() > 0) {
-                intensity = String.valueOf(record.getIntensity());
-            }
-
-            TextView txtDate = new TextView(rootView.getContext());
-            txtDate.setAllCaps(true);
-            txtDate.setText(date + "            ");
-            tr.addView(txtDate);
-
-            TextView txtDuration = new TextView(rootView.getContext());
-            txtDuration.setText("     "+duration);
-            tr.addView(txtDuration);
-
-            TextView txtIntensity = new TextView(rootView.getContext());
-            txtIntensity.setText("                        "+intensity);
-            tr.addView(txtIntensity);
-
-            recordsTableLayout.addView(tr);
         }
     }
 
@@ -120,11 +81,80 @@ public class ViewRecordListFragment extends Fragment {
         mToast.show();
     }
 
+    private RecordViewData[] getRecordViewData() {
+        ArrayList<Record> recordArrayList = RecordController.getAllRecords();
+
+        RecordViewData recordViewData[] = new RecordViewData[recordArrayList.size()];
+
+        for (int i = 0; i < recordArrayList.size(); i++) {
+            Record record = recordArrayList.get(i);
+            String start = "-";
+            String duration = "-";
+            int intensity;
+
+            if (record.getStartTime() != null) {
+                start = AppUtil.getFriendlyStringDate(record.getStartTime());
+
+                if (record.getEndTime() != null) {
+                    Timestamp startTime = record.getStartTime();
+                    Timestamp endTime = record.getEndTime();
+
+                    if (startTime != null) {
+                        if (endTime != null) {
+                            long difference = endTime.getTime() - startTime.getTime();
+                            long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
+                            duration = AppUtil.getFriendlyDuration(differenceInSeconds);
+                        }
+                    }
+                }
+            }
+
+
+            switch (record.getIntensity()) {
+                case 1:
+                    intensity = R.drawable.num_1;
+                    break;
+                case 2:
+                    intensity = R.drawable.num_2;
+                    break;
+                case 3:
+                    intensity = R.drawable.num_3;
+                    break;
+                case 4:
+                    intensity = R.drawable.num_4;
+                    break;
+                case 5:
+                    intensity = R.drawable.num_5;
+                    break;
+                case 6:
+                    intensity = R.drawable.num_6;
+                    break;
+                case 7:
+                    intensity = R.drawable.num_7;
+                    break;
+                case 8:
+                    intensity = R.drawable.num_8;
+                    break;
+                case 9:
+                    intensity = R.drawable.num_9;
+                    break;
+                case 10:
+                    intensity = R.drawable.num_10;
+                    break;
+                default:
+                    intensity = 0;
+                    break;
+            }
+
+            recordViewData[i] = new RecordViewData(start, duration, intensity);
+        }
+
+        return recordViewData;
+    }
 
     //Parent activity must implement this interface to communicate
     public interface RecordListListener {
         void onRecordListCallBack();
     }
-
 
 }

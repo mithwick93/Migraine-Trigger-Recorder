@@ -336,7 +336,7 @@ These medications include birth control pills and hormone replacement therapy. T
     <string name="record_lbl_start">Start</string>
     <string name="record_lbl_end">End</string>
     <string name="record_lbl_intensity">Intensity</string>
-    <string name="record_txt_intensity_hint">Click to set</string>
+    <string name="record_txt_intensity_hint">click to set</string>
     <string name="record_txt_start_date_hint">Date</string>
     <string name="record_txt_start_time_hint">Time</string>
     <string name="record_txt_end_date_hint">Date</string>
@@ -344,9 +344,9 @@ These medications include birth control pills and hormone replacement therapy. T
     <string name="record_lbl_location">Location</string>
     <string name="record_lbl_pain_in">Pain in</string>
     <string name="record_lbl_medicine">Medicine</string>
-    <string name="record_lbl_effective_medicine">Effective medicine</string>
+    <string name="record_lbl_effective_medicine">"   Effective medicine"</string>
     <string name="record_lbl_relief">Relief</string>
-    <string name="record_lbl_effective_reliefs">Effective reliefs</string>
+    <string name="record_lbl_effective_reliefs">"   Effective reliefs"</string>
     <string name="record_lbl_triggers">Triggers</string>
     <string name="record_lbl_symptoms">Symptoms</string>
     <string name="record_lbl_activities">Activities</string>
@@ -359,5 +359,7 @@ These medications include birth control pills and hormone replacement therapy. T
     <string name="record_view_txt_intensity">Intensity</string>
 
     <string name="config_date_log_pattern">dd-MM-yyyy</string>
+    <string name="record_view_date">Start Time</string>
+    <string name="record_view_duration">Duration</string>
 
 </resources>
