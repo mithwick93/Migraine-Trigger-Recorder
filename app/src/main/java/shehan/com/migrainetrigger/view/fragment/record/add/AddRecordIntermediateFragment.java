@@ -28,6 +28,7 @@ import shehan.com.migrainetrigger.data.builders.RecordBuilder;
 import shehan.com.migrainetrigger.data.model.LifeActivity;
 import shehan.com.migrainetrigger.data.model.Symptom;
 import shehan.com.migrainetrigger.data.model.Trigger;
+import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFragment;
 
 import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
 
@@ -36,10 +37,15 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
  * A simple {@link Fragment} subclass.
  */
 public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
+
     //intermediate
+    //Controls
     protected EditText edit_txt_triggers;
     protected EditText edit_txt_symptoms;
     protected EditText edit_txt_activities;
+
+
+    //Data storage
     protected ArrayList<LifeActivity> activities;
     protected ArrayList<Trigger> triggers;
     protected ArrayList<Symptom> symptoms;
@@ -47,13 +53,15 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     protected ArrayList<LifeActivity> selectedActivities;
     protected ArrayList<Trigger> selectedTriggers;
     protected ArrayList<Symptom> selectedSymptoms;
+
     //Track selected incises
     protected Integer[] selectedActivityIndexes;
     protected Integer[] selectedTriggerIndexes;
     protected Integer[] selectedSymptomsIndexes;
 
-    private AddRecordIntermediateListener mCallback;
 
+    //Callback
+    private AddRecordIntermediateListener mCallback;
 
     public AddRecordIntermediateFragment() {
         // Required empty public constructor
@@ -78,6 +86,10 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        if (context instanceof ViewRecordSingleFragment.OnFragmentInteractionListener) {
+            Log.w("AddRecordInter-onAttach", "Context instanceof ViewRecordSingleFragment.OnFragmentInteractionListener");
+            return;
+        }
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
@@ -112,6 +124,10 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     public String toString() {
         return "Intermediate";
     }
+
+    //
+    //
+    //
 
     /**
      * initiate intermediate controls
@@ -328,6 +344,9 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         return recordBuilder;
     }
 
+    //
+    //
+    //
     private void chooseSaveOrSummery() {
 
         if (!weatherDataLoaded || weatherData == null) {
@@ -416,7 +435,9 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
             boolean result = RecordController.addNewRecord(getIntermediateRecordBuilder().createRecord(), 1);//Level 1
             if (result) {
                 showToast(getContext(), "Record was saved successfully");
-                mCallback.onIntermediateRecordInteraction(0);
+                if (mCallback != null) {
+                    mCallback.onIntermediateRecordInteraction(0);
+                }
             } else {
                 showToast(getContext(), "Record save failed");
             }
@@ -424,6 +445,10 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
             showMsg(getContext(), "Start time is greater than the end time");
         }
     }
+
+    //
+    //
+    //
 
     /**
      * Parent activity must implement this interface to communicate

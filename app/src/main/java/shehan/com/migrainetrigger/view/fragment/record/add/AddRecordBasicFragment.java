@@ -51,6 +51,7 @@ import shehan.com.migrainetrigger.data.model.WeatherData;
 import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.utility.GeoLocationService;
 import shehan.com.migrainetrigger.utility.InternetService;
+import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFragment;
 
 import static shehan.com.migrainetrigger.utility.AppUtil.getStringWeatherDate;
 import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
@@ -62,6 +63,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
     protected Toast mToast;
     //basic
+    //Controls
     protected EditText edit_txt_start_date;
     protected EditText edit_txt_start_time;
     protected EditText edit_txt_end_date;
@@ -72,6 +74,8 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     protected TextView txt_weather_temp;
     protected TextView txt_weather_humidity;
     protected TextView txt_weather_pressure;
+
+    //Data storage
     protected WeatherData weatherData;
     protected Timestamp startTimeStamp;
     protected Timestamp endTimeStamp;
@@ -82,8 +86,11 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     protected int intensity;//Value 1-10
     protected int mYear, mMonth, mDay, mHour, mMinute;
     protected boolean weatherDataLoaded;
+
+    //Callback
     private AddRecordBasicListener mCallback;
-    //location
+
+    //Location
     private GeoLocationService geoLocationService;
 
     public AddRecordBasicFragment() {
@@ -111,6 +118,11 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
+
+        if (context instanceof ViewRecordSingleFragment.OnFragmentInteractionListener) {
+            Log.w("AddRecordBasic-onAttach", "Context instanceof ViewRecordSingleFragment.OnFragmentInteractionListener");
+            return;
+        }
         try {
             mCallback = (AddRecordBasicListener) context;
         } catch (ClassCastException e) {
@@ -198,6 +210,9 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                 break;
         }
     }
+    //
+    //
+    //
 
     /**
      * initiate basic controls
@@ -264,7 +279,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                edit_txt_start_date.setText(String.format(Locale.getDefault(), "%d-%d-%d", dayOfMonth, monthOfYear + 1, year));
+                                edit_txt_start_date.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
                                 showToast(getContext(), "Long press to clear date");
                                 mYear = startDate[0] = year;
                                 mMonth = startDate[1] = monthOfYear + 1;
@@ -360,7 +375,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                edit_txt_end_date.setText(String.format(Locale.getDefault(), "%d-%d-%d", dayOfMonth, monthOfYear + 1, year));
+                                edit_txt_end_date.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
                                 showToast(getContext(), "Long press to clear date");
                                 mYear = endDate[0] = year;
                                 mMonth = endDate[1] = monthOfYear + 1;
@@ -608,6 +623,9 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                 .show();
     }
 
+    //
+    //
+    //
     private void requestLocationPermission() {
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -756,7 +774,10 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
             boolean result = RecordController.addNewRecord(getBasicRecordBuilder().createRecord(), 0);//Level 0
             if (result) {
                 showToast(getContext(), "Record was saved successfully");
-                mCallback.onBasicRecordInteraction(0);
+                if (mCallback != null) {
+                    mCallback.onBasicRecordInteraction(0);
+                }
+
             } else {
                 showToast(getContext(), "Record save failed");
             }
@@ -764,6 +785,10 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
             showMsg(getContext(), "Start time is greater than the end time");
         }
     }
+
+    //
+    //
+    //
 
     /**
      * Parent activity must implement this interface to communicate
@@ -777,6 +802,9 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         void onBasicRecordInteraction(int request);
     }
 
+    //
+    //
+    //
     private class GetWeatherTask extends AsyncTask<String, Void, WeatherData> implements InternetService {
         double latitude;
         double longitude;

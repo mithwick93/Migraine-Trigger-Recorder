@@ -26,7 +26,7 @@ public final class DBReliefDAO {
             db = DatabaseHandler.getReadableDatabase();
 
             cursor = db.query(DatabaseDefinition.RELIEF_TABLE, null, null, null, null, null, null);
-            if (cursor!=null && cursor.moveToFirst()) {// If records are found process them
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
                 do {
 
                     Relief relief = new ReliefBuilder()
@@ -114,7 +114,48 @@ public final class DBReliefDAO {
     }
 
     public static Relief getRelief(int id) {
+        Log.d("DBReliefDAO", "getRelief");
 
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            cursor = db.query(DatabaseDefinition.RELIEF_TABLE, null, DatabaseDefinition.RELIEF_ID_KEY + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+
+
+                int reliefId = cursor.getInt(0);
+
+                ReliefBuilder reliefBuilder = new ReliefBuilder().setReliefId(reliefId);
+
+                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RELIEF_NAME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String name = cursor.getString(index);
+                    reliefBuilder = reliefBuilder.setReliefName(name);
+                }
+
+                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RELIEF_PRIORITY_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String priority = cursor.getString(index);
+                    reliefBuilder = reliefBuilder.setPriority(Integer.parseInt(priority));
+                }
+
+                return reliefBuilder.createRelief();
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
         return null;
     }
 }

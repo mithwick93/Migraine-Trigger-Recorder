@@ -32,7 +32,7 @@ public class DBBodyAreaDAO {
             db = DatabaseHandler.getReadableDatabase();
 
             cursor = db.query(DatabaseDefinition.BODY_AREA_TABLE, null, null, null, null, null, null);
-            if (cursor!=null && cursor.moveToFirst()) {// If records are found process them
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
                 do {
 
                     BodyArea bodyArea = new BodyAreaBuilder()
@@ -131,7 +131,42 @@ public class DBBodyAreaDAO {
     }
 
     public static BodyArea getBodyArea(int id) {
+        Log.d("DBBodyAreaDAO", "getBodyArea");
 
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            cursor = db.query(DatabaseDefinition.BODY_AREA_TABLE, null, DatabaseDefinition.BODY_AREA_ID_KEY + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+
+
+                int bodyAreaId = cursor.getInt(0);
+
+                BodyAreaBuilder bodyAreaBuilder = new BodyAreaBuilder().setBodyAreaId(bodyAreaId);
+
+                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.BODY_AREA_NAME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String name = cursor.getString(index);
+                    bodyAreaBuilder = bodyAreaBuilder.setBodyAreaName(name);
+                }
+
+
+                return bodyAreaBuilder.createBodyArea();
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
         return null;
     }
 }

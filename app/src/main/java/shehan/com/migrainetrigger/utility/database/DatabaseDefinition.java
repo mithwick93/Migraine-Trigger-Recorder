@@ -341,8 +341,7 @@ public interface DatabaseDefinition {
                     "(2,'Woke during sleep',1),\n" +
                     "(3,'Could not fall asleep',2),\n" +
                     "(4,'Missed social activity',3),\n" +
-                    "(5,'Slow to work',4),\n" +
-                    "(6,'Not affected',5)\n" +
+                    "(5,'Slow to work',4)\n" +
                     ";";
 
     //Insert BODY_AREA_TABLE
@@ -425,8 +424,7 @@ public interface DatabaseDefinition {
                     "(9,'Nasal congestion',8),\n" +
                     "(10,'Neck pain',9),\n" +
                     "(11,'Vomiting',10),\n" +
-                    "(12,'Nausea',11),\n" +
-                    "(13,'No Symptoms',12)\n" +
+                    "(12,'Nausea',11)\n" +
                     ";";
 
     //Insert TRIGGER_TABLE

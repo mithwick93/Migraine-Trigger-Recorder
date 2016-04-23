@@ -9,12 +9,14 @@ public class WeatherData {
     private double humidity;
     private double pressure;
     private double temperature;
+    private int recordId;
 
-    public WeatherData(int weatherDataId, double humidity, double pressure, double temperature) {
+    public WeatherData(int weatherDataId, double humidity, double pressure, double temperature, int recordId) {
         this.weatherDataId = weatherDataId;
         this.humidity = humidity;
         this.pressure = pressure;
         this.temperature = temperature;
+        this.recordId = recordId;
     }
 
     public int getWeatherDataId() {
@@ -47,5 +49,13 @@ public class WeatherData {
 
     public void setTemperature(double temperature) {
         this.temperature = temperature;
+    }
+
+    public int getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(int recordId) {
+        this.recordId = recordId;
     }
 }

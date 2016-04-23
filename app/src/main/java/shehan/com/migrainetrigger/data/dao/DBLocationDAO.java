@@ -49,7 +49,42 @@ public final class DBLocationDAO {
     }
 
     public static Location getLocation(int id) {
+        Log.d("DBLocationDAO", "getLocation");
 
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            cursor = db.query(DatabaseDefinition.LOCATION_TABLE, null, DatabaseDefinition.LOCATION_ID_KEY + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+
+
+                int locationId = cursor.getInt(0);
+
+                LocationBuilder locationBuilder = new LocationBuilder().setLocationId(locationId);
+
+                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.LOCATION_NAME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String name = cursor.getString(index);
+                    locationBuilder = locationBuilder.setLocationName(name);
+                }
+
+
+                return locationBuilder.createLocation();
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
         return null;
     }
 }

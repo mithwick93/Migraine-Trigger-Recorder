@@ -27,7 +27,7 @@ public final class DBMedicineDAO {
             db = DatabaseHandler.getReadableDatabase();
 
             cursor = db.query(DatabaseDefinition.MEDICINE_TABLE, null, null, null, null, null, null);
-            if (cursor!=null && cursor.moveToFirst()) {// If records are found process them
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
                 do {
 
                     Medicine medicine = new MedicineBuilder()
@@ -115,7 +115,48 @@ public final class DBMedicineDAO {
     }
 
     public static Medicine getMedicine(int id) {
+        Log.d("DBMedicineDAO", "getMedicine");
 
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            cursor = db.query(DatabaseDefinition.MEDICINE_TABLE, null, DatabaseDefinition.MEDICINE_ID_KEY + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+
+
+                int medicineId = cursor.getInt(0);
+
+                MedicineBuilder medicineBuilder = new MedicineBuilder().setMedicineId(medicineId);
+
+                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.MEDICINE_NAME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String name = cursor.getString(index);
+                    medicineBuilder = medicineBuilder.setMedicineName(name);
+                }
+
+                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.MEDICINE_PRIORITY_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String priority = cursor.getString(index);
+                    medicineBuilder = medicineBuilder.setPriority(Integer.parseInt(priority));
+                }
+
+                return medicineBuilder.createMedicine();
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
         return null;
     }
 }

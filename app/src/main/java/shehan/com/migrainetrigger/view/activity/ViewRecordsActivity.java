@@ -18,7 +18,7 @@ import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordListFragme
 
 public class ViewRecordsActivity
         extends AppCompatActivity
-        implements ViewRecordListFragment.RecordListListener {
+        implements ViewRecordListFragment.RecordListListener, ViewRecordCalenderFragment.RecordCalenderListener {
 
     private Toast mToast;
 
@@ -68,13 +68,6 @@ public class ViewRecordsActivity
         }
     }
 
-    @Override
-    public void onRecordListCallBack(int recordId) {
-        Intent intent = new Intent(ViewRecordsActivity.this, ViewSingleRecordActivity.class);
-        intent.putExtra("recordId", recordId);
-        Log.d("ViewRecordsActivity ", "Launching view single record activity");
-        startActivity(intent);
-    }
 
     @Override
     public String toString() {
@@ -88,6 +81,24 @@ public class ViewRecordsActivity
         }
         mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         mToast.show();
+    }
+
+    @Override
+    public void onRecordListCallBack(int recordId) {
+        showSingleRecordActivity(recordId);
+    }
+
+
+    @Override
+    public void onRecordCalenderCallBack(int recordId) {
+        showSingleRecordActivity(recordId);
+    }
+
+    private void showSingleRecordActivity(int recordId) {
+        Intent intent = new Intent(ViewRecordsActivity.this, ViewSingleRecordActivity.class);
+        intent.putExtra("recordId", recordId);
+        Log.d("ViewRecordsActivity ", "Launching view single record activity");
+        startActivity(intent);
     }
 
     public static class PagerAdapter extends FragmentStatePagerAdapter {

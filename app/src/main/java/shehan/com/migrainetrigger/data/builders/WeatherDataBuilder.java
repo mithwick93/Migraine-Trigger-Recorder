@@ -7,6 +7,7 @@ public class WeatherDataBuilder {
     private double humidity;
     private double pressure;
     private double temperature;
+    private int recordId;
 
     public WeatherDataBuilder setWeatherDataId(int weatherDataId) {
         this.weatherDataId = weatherDataId;
@@ -28,7 +29,12 @@ public class WeatherDataBuilder {
         return this;
     }
 
+    public WeatherDataBuilder setRecordId(int recordId) {
+        this.recordId = recordId;
+        return this;
+    }
+
     public WeatherData createWeatherData() {
-        return new WeatherData(weatherDataId, humidity, pressure, temperature);
+        return new WeatherData(weatherDataId, humidity, pressure, temperature, recordId);
     }
 }

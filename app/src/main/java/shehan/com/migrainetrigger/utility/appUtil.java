@@ -27,7 +27,7 @@ public class AppUtil {
             hourOfDay -= 12;
             suffix = "pm";
         }
-        return String.valueOf(hourOfDay) + ":" + String.valueOf(minute) + " " + suffix;
+        return String.format(Locale.getDefault(), "%02d:%02d %s", hourOfDay, minute, suffix);
     }
 
     /**

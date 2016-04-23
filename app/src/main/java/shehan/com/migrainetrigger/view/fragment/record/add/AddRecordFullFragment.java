@@ -33,6 +33,7 @@ import shehan.com.migrainetrigger.data.model.BodyArea;
 import shehan.com.migrainetrigger.data.model.Location;
 import shehan.com.migrainetrigger.data.model.Medicine;
 import shehan.com.migrainetrigger.data.model.Relief;
+import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFragment;
 
 import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
 
@@ -42,6 +43,7 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
  */
 public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     //full
+    //Controls
     protected EditText edit_txt_location;
     protected EditText edit_txt_body_areas;
     protected EditText edit_txt_medicine;
@@ -50,6 +52,8 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     protected EditText edit_txt_relief_effective;
     protected RelativeLayout record_full_layout_effective_medicine;
     protected RelativeLayout record_full_layout_effective_relief;
+
+    //Data storage
     protected ArrayList<Location> locations;
     protected ArrayList<BodyArea> bodyAreas;
     protected ArrayList<Medicine> medicines;
@@ -67,6 +71,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     protected Integer[] selectedEffectiveMedicineIndexes;
     protected Integer[] selectedEffectiveReliefIndexes;
 
+    //Callback
     private AddRecordFullListener mCallback;
 
     public AddRecordFullFragment() {
@@ -92,6 +97,10 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        if (context instanceof ViewRecordSingleFragment.OnFragmentInteractionListener) {
+            Log.w("AddRecordFull-onAttach", "Context instanceof ViewRecordSingleFragment.OnFragmentInteractionListener");
+            return;
+        }
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
@@ -128,7 +137,50 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
         return "Full";
     }
 
-    private void initFullControls(View view) {
+    //
+    //
+    //
+
+    /**
+     * Get basic data of record
+     * Does not check constraints
+     *
+     * @return record builder with full data saved
+     */
+    protected RecordBuilder getFullRecordBuilder() {
+        Log.d("AddFullFragment", "getFullRecordBuilder");
+
+        //Call parent method to get intermediate info
+        RecordBuilder recordBuilder = getIntermediateRecordBuilder();
+
+        if (location != null) {
+            Log.d("AddFullFragment", "getFullRecordBuilder - location");
+            recordBuilder = recordBuilder.setLocation(location);
+            recordBuilder = recordBuilder.setLocationId(location.getLocationId());
+        }
+
+        if (selectedBodyAreas.size() > 0) {
+            Log.d("AddFullFragment", "getFullRecordBuilder - selectedBodyAreas");
+            recordBuilder = recordBuilder.setBodyAreas(selectedBodyAreas);
+        }
+
+        if (selectedMedicines.size() > 0) {
+            Log.d("AddFullFragment", " - selectedMedicines");
+            recordBuilder = recordBuilder.setMedicines(selectedMedicines);
+        }
+
+        if (selectedReliefs.size() > 0) {
+            Log.d("AddFullFragment", " - selectedReliefs");
+            recordBuilder = recordBuilder.setReliefs(selectedReliefs);
+        }
+
+        return recordBuilder;
+    }
+
+    //
+    //
+    //
+    protected void initFullControls(View view) {
         Log.d("AddRecordFullFragment", "initFullControls ");
 
         if (edit_txt_location != null) {
@@ -611,10 +663,13 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
         //validate times
         if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
 
-            boolean result = RecordController.addNewRecord(geFullRecordBuilder().createRecord(), 2);//Level 2
+            boolean result = RecordController.addNewRecord(getFullRecordBuilder().createRecord(), 2);//Level 2
             if (result) {
                 showToast(getContext(), "Record was saved successfully");
-                mCallback.onFullRecordInteraction(0);
+                if (mCallback != null) {
+                    mCallback.onFullRecordInteraction(0);
+                }
+
             } else {
                 showToast(getContext(), "Record save failed");
             }
@@ -622,43 +677,9 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
             showMsg(getContext(), "Start time is greater than the end time");
         }
     }
-
-    /**
-     * Get basic data of record
-     * Does not check constraints
-     *
-     * @return record builder with full data saved
-     */
-    protected RecordBuilder geFullRecordBuilder() {
-        Log.d("AddFullFragment", "geFullRecordBuilder");
-
-        //Call parent method to get intermediate info
-        RecordBuilder recordBuilder = getIntermediateRecordBuilder();
-
-        if (location != null) {
-            Log.d("AddFullFragment", "geFullRecordBuilder - location");
-            recordBuilder = recordBuilder.setLocation(location);
-            recordBuilder = recordBuilder.setLocationId(location.getLocationId());
-        }
-
-        if (selectedBodyAreas.size() > 0) {
-            Log.d("AddFullFragment", "geFullRecordBuilder - selectedBodyAreas");
-            recordBuilder = recordBuilder.setBodyAreas(selectedBodyAreas);
-        }
-
-        if (selectedMedicines.size() > 0) {
-            Log.d("AddFullFragment", " - selectedMedicines");
-            recordBuilder = recordBuilder.setMedicines(selectedMedicines);
-        }
-
-        if (selectedReliefs.size() > 0) {
-            Log.d("AddFullFragment", " - selectedReliefs");
-            recordBuilder = recordBuilder.setReliefs(selectedReliefs);
-        }
-
-        return recordBuilder;
-    }
-
+    //
+    //
+    //
 
     /**
      * Parent activity must implement this interface to communicate

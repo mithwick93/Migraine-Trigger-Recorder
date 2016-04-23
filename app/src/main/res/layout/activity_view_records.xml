@@ -25,7 +25,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:tabGravity="fill" />
 
-        <android.support.v4.view.ViewPager
+        <shehan.com.migrainetrigger.utility.customView.NonSwipeableViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

@@ -27,7 +27,7 @@ public final class DBTriggerDAO {
             db = DatabaseHandler.getReadableDatabase();
 
             cursor = db.query(DatabaseDefinition.TRIGGER_TABLE, null, null, null, null, null, null);
-            if (cursor!=null && cursor.moveToFirst()) {// If records are found process them
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
                 do {
 
                     Trigger relief = new TriggerBuilder()
@@ -111,7 +111,48 @@ public final class DBTriggerDAO {
     }
 
     public static Trigger getTrigger(int id) {
+        Log.d("DBTriggerDAO", "getTrigger");
 
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            cursor = db.query(DatabaseDefinition.TRIGGER_TABLE, null, DatabaseDefinition.TRIGGER_ID_KEY + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+
+
+                int triggerId = cursor.getInt(0);
+
+                TriggerBuilder triggerBuilder = new TriggerBuilder().setTriggerId(triggerId);
+
+                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.TRIGGER_NAME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String name = cursor.getString(index);
+                    triggerBuilder = triggerBuilder.setTriggerName(name);
+                }
+
+                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.TRIGGER_PRIORITY_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String priority = cursor.getString(index);
+                    triggerBuilder = triggerBuilder.setPriority(Integer.parseInt(priority));
+                }
+
+                return triggerBuilder.createTrigger();
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
         return null;
     }
 }
