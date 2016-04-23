@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -14,7 +13,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".view.activity.MainActivity"
             android:screenOrientation="portrait"
@@ -25,24 +23,43 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.activity.AddRecordActivity"
             android:label="@string/title_activity_add_record"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="shehan.com.migrainetrigger.view.activity.MainActivity" />
+        </activity>
         <activity
             android:name=".view.activity.ViewRecordsActivity"
             android:label="@string/title_view_records"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="shehan.com.migrainetrigger.view.activity.MainActivity" />
+        </activity>
         <activity
             android:name=".view.activity.FAQActivity"
             android:label="@string/title_faq"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="shehan.com.migrainetrigger.view.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".view.activity.ViewSingleRecordActivity"
+            android:label="@string/title_view_record"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="shehan.com.migrainetrigger.view.activity.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

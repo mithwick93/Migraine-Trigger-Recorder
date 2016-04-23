@@ -1,5 +1,6 @@
 package shehan.com.migrainetrigger.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Toast;
 
 import shehan.com.migrainetrigger.R;
@@ -22,17 +24,6 @@ public class ViewRecordsActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_view_records);
-//
-//        setContentView(R.layout.activity_add_record);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.view_record_toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        if (getSupportActionBar() != null) {
-//            getSupportActionBar().setTitle(R.string.nav_records);
-//        }
-//
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_records);
@@ -40,41 +31,49 @@ public class ViewRecordsActivity
         setSupportActionBar(toolbar);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        if (tabLayout != null) {
-            tabLayout.addTab(tabLayout.newTab().setText("List"));
-            tabLayout.addTab(tabLayout.newTab().setText("Calender"));
-            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-            final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-            final PagerAdapter adapter;
+        tabLayout.addTab(tabLayout.newTab().setText("List"));
+        tabLayout.addTab(tabLayout.newTab().setText("Calender"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-            adapter = new PagerAdapter
-                    (getSupportFragmentManager(), tabLayout.getTabCount());
-            if (viewPager != null) {
-                viewPager.setAdapter(adapter);
-                viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-                tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        viewPager.setCurrentItem(tab.getPosition());
-                    }
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter;
 
-                    @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
+        adapter = new PagerAdapter
+                (getSupportFragmentManager(), tabLayout.getTabCount());
+        if (viewPager != null) {
+            viewPager.setAdapter(adapter);
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    viewPager.setCurrentItem(tab.getPosition());
+                }
 
-                    }
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
 
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
+                }
 
-                    }
-                });
-            }
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
         }
+
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.nav_records);
         }
+    }
+
+    @Override
+    public void onRecordListCallBack(int recordId) {
+        Intent intent = new Intent(ViewRecordsActivity.this, ViewSingleRecordActivity.class);
+        intent.putExtra("recordId", recordId);
+        Log.d("ViewRecordsActivity ", "Launching view single record activity");
+        startActivity(intent);
     }
 
     @Override
@@ -91,13 +90,7 @@ public class ViewRecordsActivity
         mToast.show();
     }
 
-    @Override
-    public void onRecordListCallBack() {
-
-    }
-
-
-    public class PagerAdapter extends FragmentStatePagerAdapter {
+    public static class PagerAdapter extends FragmentStatePagerAdapter {
         int mNumOfTabs;
         ViewRecordListFragment viewRecordListFragment;
         ViewRecordCalenderFragment viewRecordCalenderFragment;
@@ -125,5 +118,7 @@ public class ViewRecordsActivity
         public int getCount() {
             return mNumOfTabs;
         }
+
+
     }
 }

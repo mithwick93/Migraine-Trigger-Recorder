@@ -66,7 +66,9 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     protected Integer[] selectedReliefIndexes;
     protected Integer[] selectedEffectiveMedicineIndexes;
     protected Integer[] selectedEffectiveReliefIndexes;
+
     private AddRecordFullListener mCallback;
+
     public AddRecordFullFragment() {
         // Required empty public constructor
     }
@@ -98,6 +100,12 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
             throw new ClassCastException(context.toString()
                     + " must implement AddRecordFullListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
     }
 
     @Override

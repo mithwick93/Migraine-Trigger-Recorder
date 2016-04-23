@@ -47,7 +47,6 @@ import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.data.builders.RecordBuilder;
 import shehan.com.migrainetrigger.data.builders.WeatherDataBuilder;
-import shehan.com.migrainetrigger.data.model.Record;
 import shehan.com.migrainetrigger.data.model.WeatherData;
 import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.utility.GeoLocationService;
@@ -86,8 +85,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     private AddRecordBasicListener mCallback;
     //location
     private GeoLocationService geoLocationService;
-    //domain objects
-    private Record basicRecord;
 
     public AddRecordBasicFragment() {
         // Required empty public constructor
@@ -120,6 +117,12 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
             throw new ClassCastException(context.toString()
                     + " must implement AddRecordBasicListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
     }
 
     @Override

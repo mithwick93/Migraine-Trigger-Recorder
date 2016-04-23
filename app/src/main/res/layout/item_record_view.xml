@@ -13,7 +13,7 @@
         android:layout_marginEnd="7dp"
         android:layout_marginStart="7dp"
         android:layout_marginTop="10dp"
-
+        android:background="?android:attr/selectableItemBackground"
         app:cardCornerRadius="2dp">
 
         <LinearLayout
@@ -26,7 +26,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground">
 
                 <TextView
                     android:id="@+id/txt_record_view_date"

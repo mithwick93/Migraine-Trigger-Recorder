@@ -4,14 +4,24 @@ package shehan.com.migrainetrigger.view.model;
  * Created by Shehan on 4/20/2016.
  */
 public class RecordViewData {
+    private int recordId;
     private String startTime;
     private String duration;
     private int imgUrl;
 
-    public RecordViewData(String startTime, String duration, int imgUrl) {
+    public RecordViewData(int recordId, String startTime, String duration, int imgUrl) {
+        this.recordId = recordId;
         this.startTime = startTime;
         this.duration = duration;
         this.imgUrl = imgUrl;
+    }
+
+    public int getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(int recordId) {
+        this.recordId = recordId;
     }
 
     public String getStartTime() {

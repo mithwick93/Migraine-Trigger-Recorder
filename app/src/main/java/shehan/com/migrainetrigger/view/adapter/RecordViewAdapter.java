@@ -2,6 +2,7 @@ package shehan.com.migrainetrigger.view.adapter;
 
 import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,12 @@ import shehan.com.migrainetrigger.view.model.RecordViewData;
  */
 public class RecordViewAdapter extends RecyclerView.Adapter<RecordViewAdapter.ViewHolder> {
 
-    private RecordViewData[] recordViewData;
+    private static RecordViewData[] recordViewData;
+    private static RecordListViewClickListener itemListener;
 
-    public RecordViewAdapter(RecordViewData[] recordViewData) {
-        this.recordViewData = recordViewData;
+    public RecordViewAdapter(RecordListViewClickListener itemListener, RecordViewData[] recordViewData) {
+        RecordViewAdapter.recordViewData = recordViewData;
+        RecordViewAdapter.itemListener = itemListener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -60,8 +63,13 @@ public class RecordViewAdapter extends RecyclerView.Adapter<RecordViewAdapter.Vi
     }
 
 
+    //Listener interface to sent recycler click to containing fragment or activity
+    public interface RecordListViewClickListener {
+        void recordListItemClicked(int recordId);
+    }
+
     // inner class to hold a reference to each item of RecyclerView
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView txtViewStartDate;
         public TextView txtViewDuration;
@@ -69,9 +77,24 @@ public class RecordViewAdapter extends RecyclerView.Adapter<RecordViewAdapter.Vi
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
+            itemLayoutView.setOnClickListener(this);
             txtViewStartDate = (TextView) itemLayoutView.findViewById(R.id.txt_record_view_date);
             txtViewDuration = (TextView) itemLayoutView.findViewById(R.id.txt_record_view_duration);
             imgIntensity = (TextView) itemLayoutView.findViewById(R.id.txt_record_view_intensity);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int clickPosition = this.getLayoutPosition();
+            int recordId = -1;
+            if (clickPosition > -1 && clickPosition < recordViewData.length) {
+                Log.i("RecordViewAdapter", "Clicked record : " + recordViewData[clickPosition].getRecordId());
+                recordId = recordViewData[clickPosition].getRecordId();
+            } else {
+                Log.i("RecordViewAdapter", "Click position error");
+            }
+            itemListener.recordListItemClicked(recordId);
+
         }
     }
 }

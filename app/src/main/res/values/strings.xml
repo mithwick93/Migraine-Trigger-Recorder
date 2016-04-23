@@ -361,5 +361,7 @@ These medications include birth control pills and hormone replacement therapy. T
     <string name="config_date_log_pattern">dd-MM-yyyy</string>
     <string name="record_view_date">Start Time</string>
     <string name="record_view_duration">Duration</string>
+    <string name="title_view_record">View record</string>
+    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>

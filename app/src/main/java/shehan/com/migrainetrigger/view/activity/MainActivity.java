@@ -23,7 +23,6 @@ import android.view.animation.AnimationUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
-import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
 import shehan.com.migrainetrigger.view.fragment.faq.AboutFragment;
 import shehan.com.migrainetrigger.view.fragment.main.HomeFragment;
 import shehan.com.migrainetrigger.view.fragment.main.SeverityFragment;
@@ -69,7 +68,12 @@ public class MainActivity
 
         //TODO: remove following code
         //just to initialize database
-        DatabaseHandler.getWritableDatabase();
+//        new Runnable() {
+//            @Override
+//            public void run() {
+//                DatabaseHandler.getWritableDatabase();
+//            }
+//        }.run();
 
 
         Log.d("Main-onCreate", "onCreate success");

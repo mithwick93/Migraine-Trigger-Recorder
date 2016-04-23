@@ -27,10 +27,12 @@ import shehan.com.migrainetrigger.view.model.RecordViewData;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewRecordListFragment extends Fragment {
+public class ViewRecordListFragment extends Fragment
+        implements RecordViewAdapter.RecordListViewClickListener {
 
     private Toast mToast;
     private RecordListListener mCallback;
+
     public ViewRecordListFragment() {
         // Required empty public constructor
     }
@@ -47,10 +49,10 @@ public class ViewRecordListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // 3. create an adapter
-        RecordViewAdapter severityViewAdapter = new RecordViewAdapter(getRecordViewData());
+        RecordViewAdapter recordViewAdapter = new RecordViewAdapter(this, getRecordViewData());
 
         // 4. set adapter
-        recyclerView.setAdapter(severityViewAdapter);
+        recyclerView.setAdapter(recordViewAdapter);
 
         // 5. set item animator to DefaultAnimator
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -72,6 +74,12 @@ public class ViewRecordListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
+    }
+
     private void showToast(String message) {
         if (mToast != null) {
             mToast.cancel();
@@ -88,6 +96,7 @@ public class ViewRecordListFragment extends Fragment {
 
         for (int i = 0; i < recordArrayList.size(); i++) {
             Record record = recordArrayList.get(i);
+            int recordId = record.getRecordId();
             String start = "-";
             String duration = "-";
             int intensity;
@@ -146,15 +155,20 @@ public class ViewRecordListFragment extends Fragment {
                     break;
             }
 
-            recordViewData[i] = new RecordViewData(start, duration, intensity);
+            recordViewData[i] = new RecordViewData(recordId, start, duration, intensity);
         }
 
         return recordViewData;
     }
 
+    @Override
+    public void recordListItemClicked(int recordId) {
+        mCallback.onRecordListCallBack(recordId);
+    }
+
     //Parent activity must implement this interface to communicate
     public interface RecordListListener {
-        void onRecordListCallBack();
+        void onRecordListCallBack(int recordId);
     }
 
 }

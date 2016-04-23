@@ -26,7 +26,6 @@ import shehan.com.migrainetrigger.controller.SymptomController;
 import shehan.com.migrainetrigger.controller.TriggerController;
 import shehan.com.migrainetrigger.data.builders.RecordBuilder;
 import shehan.com.migrainetrigger.data.model.LifeActivity;
-import shehan.com.migrainetrigger.data.model.Record;
 import shehan.com.migrainetrigger.data.model.Symptom;
 import shehan.com.migrainetrigger.data.model.Trigger;
 
@@ -52,9 +51,10 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     protected Integer[] selectedActivityIndexes;
     protected Integer[] selectedTriggerIndexes;
     protected Integer[] selectedSymptomsIndexes;
+
     private AddRecordIntermediateListener mCallback;
-    //domain objects
-    private Record intermediateRecord;
+
+
     public AddRecordIntermediateFragment() {
         // Required empty public constructor
     }
@@ -86,6 +86,12 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
             throw new ClassCastException(context.toString()
                     + " must implement AddRecordIntermediateListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
     }
 
     @Override

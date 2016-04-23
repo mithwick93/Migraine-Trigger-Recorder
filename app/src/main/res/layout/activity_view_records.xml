@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
-    tools:context="shehan.com.migrainetrigger.view.activity.AddRecordActivity">
+    tools:context="shehan.com.migrainetrigger.view.activity.ViewRecordsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,11 +14,7 @@
 
         <include
             android:id="@+id/view_record_toolbar"
-            layout="@layout/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize" />
+            layout="@layout/toolbar" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout"
@@ -26,14 +22,13 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            app:tabGravity="fill"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:tabGravity="fill" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tab_layout" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

@@ -31,7 +31,6 @@ public class RecordController {
     }
 
     /**
-     *
      * @param id
      * @return
      */
@@ -39,6 +38,16 @@ public class RecordController {
 
         return DBRecordDAO.getRecord(id);
     }
+
+    /**
+     * @param id
+     * @return
+     */
+    public static Record getRecordAll(int id) {
+
+        return null;
+    }
+
 
     /**
      * @return

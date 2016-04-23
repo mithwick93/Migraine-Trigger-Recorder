@@ -27,7 +27,7 @@ public class FAQTopicsViewAdapter
             FAQTopic[] faqTopics) {
 
         this.context = context;
-        this.itemListener = itemListener;
+        FAQTopicsViewAdapter.itemListener = itemListener;
         this.faqTopics = faqTopics;
     }
 

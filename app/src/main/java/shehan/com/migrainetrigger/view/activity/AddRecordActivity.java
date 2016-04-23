@@ -37,7 +37,6 @@ public class AddRecordActivity
         }
 
         initialSetup();
-        loadRecordContent();
     }
 
     @Override
@@ -59,9 +58,8 @@ public class AddRecordActivity
     }
 
     private void initialSetup() {
-        Log.d("AddRecordAct-init", "levelOfInformation : " + levelOfInformation);
         levelOfInformation = getIntent().getIntExtra("levelOfInformation", 1);
-
+        Log.d("AddRecordAct-init", "levelOfInformation : " + levelOfInformation);
 
         Fragment fragment = null;
         switch (levelOfInformation) {
@@ -90,10 +88,6 @@ public class AddRecordActivity
         }
 
     }
-
-    private void loadRecordContent() {
-    }
-
 
     private void showToast(String message) {
         if (mToast != null) {
