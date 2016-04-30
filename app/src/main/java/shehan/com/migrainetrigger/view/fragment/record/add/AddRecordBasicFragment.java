@@ -64,16 +64,16 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     protected Toast mToast;
     //basic
     //Controls
-    protected EditText edit_txt_start_date;
-    protected EditText edit_txt_start_time;
-    protected EditText edit_txt_end_date;
-    protected EditText edit_txt_end_time;
-    protected TextView view_txt_intensity;
-    protected RelativeLayout view_layout_intensity;
-    protected CardView layout_weather;
-    protected TextView txt_weather_temp;
-    protected TextView txt_weather_humidity;
-    protected TextView txt_weather_pressure;
+    protected EditText editTxtStartDate;
+    protected EditText editTxtStartTime;
+    protected EditText editTxtEndDate;
+    protected EditText editTxtEndTime;
+    protected TextView viewTxtIntensity;
+    protected RelativeLayout viewLayoutIntensity;
+    protected CardView layoutWeather;
+    protected TextView txtViewWeatherTemp;
+    protected TextView txtViewWeatherHumidity;
+    protected TextView txtViewWeatherPressure;
 
     //Data storage
     protected WeatherData weatherData;
@@ -224,20 +224,20 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         Log.d("AddRecordBasic", "initBasicControls ");
 
         //only call this method once
-        if (edit_txt_start_date != null) {
+        if (editTxtStartDate != null) {
             return;
         }
-        edit_txt_start_date = (EditText) view.findViewById(R.id.txt_record_start_date);
-        edit_txt_start_time = (EditText) view.findViewById(R.id.txt_record_start_time);
-        edit_txt_end_date = (EditText) view.findViewById(R.id.txt_record_end_date);
-        edit_txt_end_time = (EditText) view.findViewById(R.id.txt_record_end_time);
-        view_txt_intensity = (TextView) view.findViewById(R.id.txt_record_intensity);
-        view_layout_intensity = (RelativeLayout) view.findViewById(R.id.layout_intensity);
+        editTxtStartDate = (EditText) view.findViewById(R.id.txt_record_start_date);
+        editTxtStartTime = (EditText) view.findViewById(R.id.txt_record_start_time);
+        editTxtEndDate = (EditText) view.findViewById(R.id.txt_record_end_date);
+        editTxtEndTime = (EditText) view.findViewById(R.id.txt_record_end_time);
+        viewTxtIntensity = (TextView) view.findViewById(R.id.txt_record_intensity);
+        viewLayoutIntensity = (RelativeLayout) view.findViewById(R.id.layout_intensity);
 
-        layout_weather = (CardView) view.findViewById(R.id.linear_weather_layout);
-        txt_weather_temp = (TextView) view.findViewById(R.id.txt_weather_temp);
-        txt_weather_humidity = (TextView) view.findViewById(R.id.txt_weather_humidity);
-        txt_weather_pressure = (TextView) view.findViewById(R.id.txt_weather_pressure);
+        layoutWeather = (CardView) view.findViewById(R.id.linear_weather_layout);
+        txtViewWeatherTemp = (TextView) view.findViewById(R.id.txt_weather_temp);
+        txtViewWeatherHumidity = (TextView) view.findViewById(R.id.txt_weather_humidity);
+        txtViewWeatherPressure = (TextView) view.findViewById(R.id.txt_weather_pressure);
 
         startDate = new int[3];
         startDate[0] = -1;
@@ -261,16 +261,16 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         intensity = -1;
         weatherDataLoaded = false;
 
-        edit_txt_start_time.setEnabled(false);
+        editTxtStartTime.setEnabled(false);
 
-        edit_txt_end_time.setEnabled(false);
+        editTxtEndTime.setEnabled(false);
 
-        layout_weather.setVisibility(View.GONE);
+        layoutWeather.setVisibility(View.GONE);
 
 //--------------------------------------------------
         //start date
-        edit_txt_start_date.setCursorVisible(false);
-        edit_txt_start_date.setOnClickListener(new View.OnClickListener() {
+        editTxtStartDate.setCursorVisible(false);
+        editTxtStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
@@ -279,17 +279,17 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                edit_txt_start_date.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
+                                editTxtStartDate.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
                                 showToast(getContext(), "Long press to clear date");
                                 mYear = startDate[0] = year;
                                 mMonth = startDate[1] = monthOfYear + 1;
                                 mDay = startDate[2] = dayOfMonth;
 
-                                edit_txt_start_time.setEnabled(true);
+                                editTxtStartTime.setEnabled(true);
 
                                 weatherData = null;
                                 weatherDataLoaded = false;
-                                layout_weather.setVisibility(View.GONE);
+                                layoutWeather.setVisibility(View.GONE);
 
 
                             }
@@ -299,30 +299,30 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
 
         });
-        edit_txt_start_date.setOnLongClickListener(new View.OnLongClickListener() {
+        editTxtStartDate.setOnLongClickListener(new View.OnLongClickListener() {
 
             @Override
             public boolean onLongClick(View v) {
-                edit_txt_start_date.setText("");
+                editTxtStartDate.setText("");
                 startDate = new int[3];
                 startDate[0] = -1;
 
-                edit_txt_start_time.setText("");
-                edit_txt_start_time.setEnabled(false);
+                editTxtStartTime.setText("");
+                editTxtStartTime.setEnabled(false);
                 startTime = new int[2];
                 startTime[0] = -1;
 
                 weatherData = null;
                 weatherDataLoaded = false;
-                layout_weather.setVisibility(View.GONE);
+                layoutWeather.setVisibility(View.GONE);
 
                 return true;
             }
         });
 //--------------------------------------------------
         //start time
-        edit_txt_start_time.setCursorVisible(false);
-        edit_txt_start_time.setOnClickListener(new View.OnClickListener() {
+        editTxtStartTime.setCursorVisible(false);
+        editTxtStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
@@ -332,14 +332,14 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
 
-                                edit_txt_start_time.setText(AppUtil.getFormattedTime(hourOfDay, minute));
+                                editTxtStartTime.setText(AppUtil.getFormattedTime(hourOfDay, minute));
                                 showToast(getContext(), "Long press to clear time");
                                 mHour = startTime[0] = hourOfDay;
                                 mMinute = startTime[1] = minute;
 
                                 weatherData = null;
                                 weatherDataLoaded = false;
-                                layout_weather.setVisibility(View.GONE);
+                                layoutWeather.setVisibility(View.GONE);
 
                             }
                         }, mHour, mMinute, false);
@@ -347,17 +347,17 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
             }
 
         });
-        edit_txt_start_time.setOnLongClickListener(new View.OnLongClickListener() {
+        editTxtStartTime.setOnLongClickListener(new View.OnLongClickListener() {
 
             @Override
             public boolean onLongClick(View v) {
-                edit_txt_start_time.setText("");
+                editTxtStartTime.setText("");
                 startTime = new int[2];
                 startTime[0] = -1;
 
                 weatherData = null;
                 weatherDataLoaded = false;
-                layout_weather.setVisibility(View.GONE);
+                layoutWeather.setVisibility(View.GONE);
 
                 return true;
             }
@@ -365,8 +365,8 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
 //--------------------------------------------------
         //End date
-        edit_txt_end_date.setCursorVisible(false);
-        edit_txt_end_date.setOnClickListener(new View.OnClickListener() {
+        editTxtEndDate.setCursorVisible(false);
+        editTxtEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
@@ -375,29 +375,29 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                edit_txt_end_date.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
+                                editTxtEndDate.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
                                 showToast(getContext(), "Long press to clear date");
                                 mYear = endDate[0] = year;
                                 mMonth = endDate[1] = monthOfYear + 1;
                                 mDay = endDate[2] = dayOfMonth;
 
-                                edit_txt_end_time.setEnabled(true);
+                                editTxtEndTime.setEnabled(true);
                             }
                         }, mYear, mMonth - 1, mDay);
                 datePickerDialog.show();
             }
 
         });
-        edit_txt_end_date.setOnLongClickListener(new View.OnLongClickListener() {
+        editTxtEndDate.setOnLongClickListener(new View.OnLongClickListener() {
 
             @Override
             public boolean onLongClick(View v) {
-                edit_txt_end_date.setText("");
+                editTxtEndDate.setText("");
                 endDate = new int[3];
                 endDate[0] = -1;
 
-                edit_txt_end_time.setText("");
-                edit_txt_end_time.setEnabled(false);
+                editTxtEndTime.setText("");
+                editTxtEndTime.setEnabled(false);
                 endTime = new int[2];
                 endTime[0] = -1;
 
@@ -406,8 +406,8 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         });
 //--------------------------------------------------
         //End time
-        edit_txt_end_time.setCursorVisible(false);
-        edit_txt_end_time.setOnClickListener(new View.OnClickListener() {
+        editTxtEndTime.setCursorVisible(false);
+        editTxtEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
@@ -417,7 +417,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
 
-                                edit_txt_end_time.setText(AppUtil.getFormattedTime(hourOfDay, minute));
+                                editTxtEndTime.setText(AppUtil.getFormattedTime(hourOfDay, minute));
                                 showToast(getContext(), "Long press to clear time");
                                 mHour = endTime[0] = hourOfDay;
                                 mMinute = endTime[1] = minute;
@@ -427,11 +427,11 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
             }
 
         });
-        edit_txt_end_time.setOnLongClickListener(new View.OnLongClickListener() {
+        editTxtEndTime.setOnLongClickListener(new View.OnLongClickListener() {
 
             @Override
             public boolean onLongClick(View v) {
-                edit_txt_end_time.setText("");
+                editTxtEndTime.setText("");
                 endTime = new int[2];
                 endTime[0] = -1;
                 return true;
@@ -439,7 +439,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         });
 //--------------------------------------------------
         //intensity
-        view_txt_intensity.setCursorVisible(false);
+        viewTxtIntensity.setCursorVisible(false);
         View.OnClickListener intensityListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -468,11 +468,11 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
             }
         };
 
-        view_txt_intensity.setOnClickListener(intensityListener);
-        view_layout_intensity.setOnClickListener(intensityListener);
+        viewTxtIntensity.setOnClickListener(intensityListener);
+        viewLayoutIntensity.setOnClickListener(intensityListener);
 
-        view_txt_intensity.setOnLongClickListener(intensityLongListener);
-        view_layout_intensity.setOnLongClickListener(intensityLongListener);
+        viewTxtIntensity.setOnLongClickListener(intensityLongListener);
+        viewLayoutIntensity.setOnLongClickListener(intensityLongListener);
     }
 
     /**
@@ -643,41 +643,41 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
      */
     private void setIntensityIcon(int intensity) {
 
-        view_txt_intensity.setHint("");
+        viewTxtIntensity.setHint("");
         switch (intensity) {
             case 1:
-                view_txt_intensity.setBackgroundResource(R.drawable.num_1);
+                viewTxtIntensity.setBackgroundResource(R.drawable.num_1);
                 break;
             case 2:
-                view_txt_intensity.setBackgroundResource(R.drawable.num_2);
+                viewTxtIntensity.setBackgroundResource(R.drawable.num_2);
                 break;
             case 3:
-                view_txt_intensity.setBackgroundResource(R.drawable.num_3);
+                viewTxtIntensity.setBackgroundResource(R.drawable.num_3);
                 break;
             case 4:
-                view_txt_intensity.setBackgroundResource(R.drawable.num_4);
+                viewTxtIntensity.setBackgroundResource(R.drawable.num_4);
                 break;
             case 5:
-                view_txt_intensity.setBackgroundResource(R.drawable.num_5);
+                viewTxtIntensity.setBackgroundResource(R.drawable.num_5);
                 break;
             case 6:
-                view_txt_intensity.setBackgroundResource(R.drawable.num_6);
+                viewTxtIntensity.setBackgroundResource(R.drawable.num_6);
                 break;
             case 7:
-                view_txt_intensity.setBackgroundResource(R.drawable.num_7);
+                viewTxtIntensity.setBackgroundResource(R.drawable.num_7);
                 break;
             case 8:
-                view_txt_intensity.setBackgroundResource(R.drawable.num_8);
+                viewTxtIntensity.setBackgroundResource(R.drawable.num_8);
                 break;
             case 9:
-                view_txt_intensity.setBackgroundResource(R.drawable.num_9);
+                viewTxtIntensity.setBackgroundResource(R.drawable.num_9);
                 break;
             case 10:
-                view_txt_intensity.setBackgroundResource(R.drawable.num_10);
+                viewTxtIntensity.setBackgroundResource(R.drawable.num_10);
                 break;
             default:
-                view_txt_intensity.setBackgroundResource(0);
-                view_txt_intensity.setHint(R.string.record_txt_intensity_hint);
+                viewTxtIntensity.setBackgroundResource(0);
+                viewTxtIntensity.setHint(R.string.record_txt_intensity_hint);
                 break;
         }
     }
@@ -915,7 +915,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
                 weatherData = null;
                 weatherDataLoaded = false;
-                layout_weather.setVisibility(View.GONE);
+                layoutWeather.setVisibility(View.GONE);
 
                 if (networkProblem) {
                     showMsg(getContext(), "There was an error connecting to the weather service. Please check network connectivity and try again.", "Could not get weather data");
@@ -928,14 +928,14 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
             }
             if (tmpWeatherData != null) {
 
-                txt_weather_temp.setText(String.format(Locale.getDefault(), "%.2f °C", tmpWeatherData.getTemperature()));
-                txt_weather_humidity.setText(String.format(Locale.getDefault(), "%.2f %%", tmpWeatherData.getHumidity()));
-                txt_weather_pressure.setText(String.format(Locale.getDefault(), "%.2f KPa", tmpWeatherData.getPressure()));
+                txtViewWeatherTemp.setText(String.format(Locale.getDefault(), "%.2f °C", tmpWeatherData.getTemperature()));
+                txtViewWeatherHumidity.setText(String.format(Locale.getDefault(), "%.2f %%", tmpWeatherData.getHumidity()));
+                txtViewWeatherPressure.setText(String.format(Locale.getDefault(), "%.2f KPa", tmpWeatherData.getPressure()));
 
                 weatherData = tmpWeatherData;
                 weatherDataLoaded = true;
 
-                layout_weather.setVisibility(View.VISIBLE);
+                layoutWeather.setVisibility(View.VISIBLE);
 
             } else {
                 Log.d("showWeather", "null weather data");

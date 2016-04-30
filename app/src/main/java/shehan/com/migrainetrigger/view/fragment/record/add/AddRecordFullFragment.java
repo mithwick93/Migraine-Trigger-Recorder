@@ -44,14 +44,14 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
 public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     //full
     //Controls
-    protected EditText edit_txt_location;
-    protected EditText edit_txt_body_areas;
-    protected EditText edit_txt_medicine;
-    protected EditText edit_txt_medicine_effective;
-    protected EditText edit_txt_relief;
-    protected EditText edit_txt_relief_effective;
-    protected RelativeLayout record_full_layout_effective_medicine;
-    protected RelativeLayout record_full_layout_effective_relief;
+    protected EditText editTxtLocation;
+    protected EditText editTxtBodyAreas;
+    protected EditText editTxtMedicine;
+    protected EditText editTxtMedicineEffective;
+    protected EditText editTxtRelief;
+    protected EditText editTxtReliefEffective;
+    protected RelativeLayout viewLayoutRecordEffectiveMedicine;
+    protected RelativeLayout viewLayoutRecordEffectiveRelief;
 
     //Data storage
     protected ArrayList<Location> locations;
@@ -183,21 +183,21 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     protected void initFullControls(View view) {
         Log.d("AddRecordFullFragment", "initFullControls ");
 
-        if (edit_txt_location != null) {
+        if (editTxtLocation != null) {
             return;
         }
 
         super.initIntermediateControls(view);
 
-        edit_txt_location = (EditText) view.findViewById(R.id.txt_record_location);
-        edit_txt_body_areas = (EditText) view.findViewById(R.id.txt_record_affected_areas);
-        edit_txt_medicine = (EditText) view.findViewById(R.id.txt_record_medicine);
-        edit_txt_medicine_effective = (EditText) view.findViewById(R.id.txt_record_effective_medicine);
-        edit_txt_relief = (EditText) view.findViewById(R.id.txt_record_relief);
-        edit_txt_relief_effective = (EditText) view.findViewById(R.id.txt_record_effective_reliefs);
+        editTxtLocation = (EditText) view.findViewById(R.id.txt_record_location);
+        editTxtBodyAreas = (EditText) view.findViewById(R.id.txt_record_affected_areas);
+        editTxtMedicine = (EditText) view.findViewById(R.id.txt_record_medicine);
+        editTxtMedicineEffective = (EditText) view.findViewById(R.id.txt_record_effective_medicine);
+        editTxtRelief = (EditText) view.findViewById(R.id.txt_record_relief);
+        editTxtReliefEffective = (EditText) view.findViewById(R.id.txt_record_effective_reliefs);
 
-        record_full_layout_effective_medicine = (RelativeLayout) view.findViewById(R.id.record_full_layout_effective_medicine);
-        record_full_layout_effective_relief = (RelativeLayout) view.findViewById(R.id.record_full_layout_effective_relief);
+        viewLayoutRecordEffectiveMedicine = (RelativeLayout) view.findViewById(R.id.record_full_layout_effective_medicine);
+        viewLayoutRecordEffectiveRelief = (RelativeLayout) view.findViewById(R.id.record_full_layout_effective_relief);
 
         locations = LocationController.getAllLocations();
         bodyAreas = BodyAreaController.getAllBodyAreas();
@@ -216,13 +216,13 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
         selectedEffectiveMedicineIndexes = null;
         selectedEffectiveReliefIndexes = null;
 
-        record_full_layout_effective_medicine.setVisibility(View.GONE);
-        record_full_layout_effective_relief.setVisibility(View.GONE);
+        viewLayoutRecordEffectiveMedicine.setVisibility(View.GONE);
+        viewLayoutRecordEffectiveRelief.setVisibility(View.GONE);
 
 //--------------------------------------------------
 
-        edit_txt_location.setCursorVisible(false);
-        edit_txt_location.setOnClickListener(new View.OnClickListener() {
+        editTxtLocation.setCursorVisible(false);
+        editTxtLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*
@@ -240,7 +240,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
                                 location = locations.get(which);
                                 selectedLocation = which;
-                                edit_txt_location.setText(location.toString());
+                                editTxtLocation.setText(location.toString());
                                 return true; // allow selection
                             }
                         })
@@ -250,7 +250,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                 showToast(getContext(), "Selection cleared");
                                 location = null;
                                 selectedLocation = -1;
-                                edit_txt_location.setText("");
+                                editTxtLocation.setText("");
                                 dialog.dismiss();
                             }
                         })
@@ -263,8 +263,8 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
 //--------------------------------------------------
 
-        edit_txt_body_areas.setCursorVisible(false);
-        edit_txt_body_areas.setOnClickListener(new View.OnClickListener() {
+        editTxtBodyAreas.setCursorVisible(false);
+        editTxtBodyAreas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*
@@ -294,7 +294,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                     selectedStr = selectedStr.replaceFirst(",", "");
                                 }
 
-                                edit_txt_body_areas.setText(selectedStr);
+                                editTxtBodyAreas.setText(selectedStr);
                                 return true; // allow selection
                             }
                         })
@@ -305,7 +305,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                 dialog.clearSelectedIndices();
                                 selectedBodyAreas.clear();
                                 selectedBodyIndexes = null;
-                                edit_txt_body_areas.setText("");
+                                editTxtBodyAreas.setText("");
                             }
                         })
                         .positiveText(R.string.confirmButtonDialog)
@@ -316,8 +316,8 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
 //--------------------------------------------------
 
-        edit_txt_medicine.setCursorVisible(false);
-        edit_txt_medicine.setOnClickListener(new View.OnClickListener() {
+        editTxtMedicine.setCursorVisible(false);
+        editTxtMedicine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*
@@ -337,8 +337,8 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                 selectedMedicines.clear();
                                 selectedMedicineIndexes = which;
 
-                                record_full_layout_effective_medicine.setVisibility(View.GONE);
-                                edit_txt_medicine_effective.setText("");
+                                viewLayoutRecordEffectiveMedicine.setVisibility(View.GONE);
+                                editTxtMedicineEffective.setText("");
                                 selectedEffectiveMedicineIndexes = null;
 
                                 for (Integer integer : which) {
@@ -350,9 +350,9 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                     selectedStr = selectedStr.replaceFirst(",", "");
                                 }
 
-                                edit_txt_medicine.setText(selectedStr);
+                                editTxtMedicine.setText(selectedStr);
                                 if (selectedMedicines.size() > 0) {
-                                    record_full_layout_effective_medicine.setVisibility(View.VISIBLE);
+                                    viewLayoutRecordEffectiveMedicine.setVisibility(View.VISIBLE);
                                 }
                                 return true; // allow selection
                             }
@@ -365,9 +365,9 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                 selectedMedicines.clear();
                                 selectedMedicineIndexes = null;
                                 selectedEffectiveMedicineIndexes = null;
-                                record_full_layout_effective_medicine.setVisibility(View.GONE);
-                                edit_txt_medicine.setText("");
-                                edit_txt_medicine_effective.setText("");
+                                viewLayoutRecordEffectiveMedicine.setVisibility(View.GONE);
+                                editTxtMedicine.setText("");
+                                editTxtMedicineEffective.setText("");
 
                             }
                         })
@@ -379,8 +379,8 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
 //--------------------------------------------------
 
-        edit_txt_relief.setCursorVisible(false);
-        edit_txt_relief.setOnClickListener(new View.OnClickListener() {
+        editTxtRelief.setCursorVisible(false);
+        editTxtRelief.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*
@@ -400,8 +400,8 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                 selectedReliefs.clear();
                                 selectedReliefIndexes = which;
 
-                                record_full_layout_effective_relief.setVisibility(View.GONE);
-                                edit_txt_relief_effective.setText("");
+                                viewLayoutRecordEffectiveRelief.setVisibility(View.GONE);
+                                editTxtReliefEffective.setText("");
                                 selectedEffectiveReliefIndexes = null;
 
                                 for (Integer integer : which) {
@@ -413,9 +413,9 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                     selectedStr = selectedStr.replaceFirst(",", "");
                                 }
 
-                                edit_txt_relief.setText(selectedStr);
+                                editTxtRelief.setText(selectedStr);
                                 if (selectedReliefs.size() > 0) {
-                                    record_full_layout_effective_relief.setVisibility(View.VISIBLE);
+                                    viewLayoutRecordEffectiveRelief.setVisibility(View.VISIBLE);
                                 }
                                 return true; // allow selection
                             }
@@ -428,9 +428,9 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                 selectedReliefs.clear();
                                 selectedReliefIndexes = null;
                                 selectedEffectiveReliefIndexes = null;
-                                record_full_layout_effective_relief.setVisibility(View.GONE);
-                                edit_txt_relief.setText("");
-                                edit_txt_relief_effective.setText("");
+                                viewLayoutRecordEffectiveRelief.setVisibility(View.GONE);
+                                editTxtRelief.setText("");
+                                editTxtReliefEffective.setText("");
 
                             }
                         })
@@ -443,8 +443,8 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
 //--------------------------------------------------
 
-        edit_txt_medicine_effective.setCursorVisible(false);
-        edit_txt_medicine_effective.setOnClickListener(new View.OnClickListener() {
+        editTxtMedicineEffective.setCursorVisible(false);
+        editTxtMedicineEffective.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*
@@ -479,7 +479,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                         selectedStr = selectedStr.replaceFirst(",", "");
                                     }
 
-                                    edit_txt_medicine_effective.setText(selectedStr);
+                                    editTxtMedicineEffective.setText(selectedStr);
                                     return true; // allow selection
                                 }
                             })
@@ -495,7 +495,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                         selectedMedicines.add(new MedicineBuilder().setMedicineId(m.getMedicineId()).setMedicineName(m.getMedicineName()).setPriority(m.getPriority()).createMedicine());
                                     }
                                     selectedEffectiveMedicineIndexes = null;
-                                    edit_txt_medicine_effective.setText("");
+                                    editTxtMedicineEffective.setText("");
 
                                 }
                             })
@@ -509,8 +509,8 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
 //--------------------------------------------------
 
-        edit_txt_relief_effective.setCursorVisible(false);
-        edit_txt_relief_effective.setOnClickListener(new View.OnClickListener() {
+        editTxtReliefEffective.setCursorVisible(false);
+        editTxtReliefEffective.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*
@@ -545,7 +545,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                         selectedStr = selectedStr.replaceFirst(",", "");
                                     }
 
-                                    edit_txt_relief_effective.setText(selectedStr);
+                                    editTxtReliefEffective.setText(selectedStr);
                                     return true; // allow selection
                                 }
                             })
@@ -562,7 +562,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                     }
 
                                     selectedEffectiveReliefIndexes = null;
-                                    edit_txt_relief_effective.setText("");
+                                    editTxtReliefEffective.setText("");
 
                                 }
                             })

@@ -40,8 +40,8 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
 
     //intermediate
     //Controls
-    protected EditText edit_txt_triggers;
-    protected EditText edit_txt_symptoms;
+    protected EditText editTxtTriggers;
+    protected EditText editTxtSymptoms;
     protected EditText edit_txt_activities;
 
 
@@ -138,13 +138,13 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     protected void initIntermediateControls(View view) {
         Log.d("AddRecordInter", "initIntermediateControls ");
 
-        if (edit_txt_triggers != null) {
+        if (editTxtTriggers != null) {
             return;
         }
 
         super.initBasicControls(view);
-        edit_txt_triggers = (EditText) view.findViewById(R.id.txt_record_triggers);
-        edit_txt_symptoms = (EditText) view.findViewById(R.id.txt_record_symptoms);
+        editTxtTriggers = (EditText) view.findViewById(R.id.txt_record_triggers);
+        editTxtSymptoms = (EditText) view.findViewById(R.id.txt_record_symptoms);
         edit_txt_activities = (EditText) view.findViewById(R.id.txt_record_activities);
 
         activities = LifeActivityController.getAllActivities();
@@ -161,8 +161,8 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
 
 //--------------------------------------------------
         //start time
-        edit_txt_triggers.setCursorVisible(false);
-        edit_txt_triggers.setOnClickListener(new View.OnClickListener() {
+        editTxtTriggers.setCursorVisible(false);
+        editTxtTriggers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*
@@ -191,7 +191,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                                     selectedStr = selectedStr.replaceFirst(",", "");
                                 }
 
-                                edit_txt_triggers.setText(selectedStr);
+                                editTxtTriggers.setText(selectedStr);
                                 return true; // allow selection
                             }
                         })
@@ -202,7 +202,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                                 dialog.clearSelectedIndices();
                                 selectedTriggers.clear();
                                 selectedTriggerIndexes = null;
-                                edit_txt_triggers.setText("");
+                                editTxtTriggers.setText("");
                             }
                         })
                         .positiveText(R.string.confirmButtonDialog)
@@ -213,8 +213,8 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
 
 //--------------------------------------------------
         //start time
-        edit_txt_symptoms.setCursorVisible(false);
-        edit_txt_symptoms.setOnClickListener(new View.OnClickListener() {
+        editTxtSymptoms.setCursorVisible(false);
+        editTxtSymptoms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*
@@ -242,7 +242,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                                     selectedStr = selectedStr.replaceFirst(",", "");
                                 }
 
-                                edit_txt_symptoms.setText(selectedStr);
+                                editTxtSymptoms.setText(selectedStr);
                                 return true; // allow selection
                             }
                         })
@@ -253,7 +253,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                                 dialog.clearSelectedIndices();
                                 selectedSymptoms.clear();
                                 selectedSymptomsIndexes = null;
-                                edit_txt_symptoms.setText("");
+                                editTxtSymptoms.setText("");
                             }
                         })
                         .positiveText(R.string.confirmButtonDialog)

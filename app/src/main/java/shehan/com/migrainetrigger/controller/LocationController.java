@@ -17,11 +17,10 @@ public class LocationController {
     }
 
     public static Location getLocationById(int id) {
-        return null;
+        return DBLocationDAO.getLocation(id);
     }
 
     /**
-     *
      * @return
      */
     public static ArrayList<Location> getAllLocations() {

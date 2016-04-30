@@ -15,4 +15,15 @@
         android:text="@string/home_welcome"
         android:textSize="45sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_home_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/label"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical|center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorAccent" />
 </RelativeLayout>

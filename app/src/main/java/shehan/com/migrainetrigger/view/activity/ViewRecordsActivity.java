@@ -2,6 +2,7 @@ package shehan.com.migrainetrigger.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,11 +21,27 @@ public class ViewRecordsActivity
         extends AppCompatActivity
         implements ViewRecordListFragment.RecordListListener, ViewRecordCalenderFragment.RecordCalenderListener {
 
+    private static final boolean DEVELOPER_MODE = true;
+
     private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        if (DEVELOPER_MODE) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_records);
         Toolbar toolbar = (Toolbar) findViewById(R.id.view_record_toolbar);

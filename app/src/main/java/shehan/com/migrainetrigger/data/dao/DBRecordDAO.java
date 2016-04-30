@@ -70,7 +70,7 @@ public final class DBRecordDAO {
     }
 
     public static long addRecordToDB(SQLiteDatabase db, Record record) throws SQLiteException {
-        Log.d("DBMedicineDAO", "Add record");
+        Log.d("DBMedicineDAO", "addRecordToDB");
 
         if (record == null) {
             Log.e("DAO-add", "null record");
@@ -108,12 +108,14 @@ public final class DBRecordDAO {
     }
 
     public static int getLastRecordId() {
-        Log.d("DBRecordDAO", "Last record");
-        SQLiteDatabase db = DatabaseHandler.getReadableDatabase();
+        Log.d("DBRecordDAO", "getLastRecordId");
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
         int recordId = -1;
         try {
             String[] projection = {DatabaseDefinition.RECORD_ID_KEY};
-            Cursor cursor = db.query(
+            db = DatabaseHandler.getReadableDatabase();
+            cursor = db.query(
                     DatabaseDefinition.RECORD_TABLE,
                     projection,
                     null,
@@ -133,9 +135,80 @@ public final class DBRecordDAO {
         } catch (SQLiteException e) {
             e.printStackTrace();
         } finally {
-            db.close();
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+
         }
         return recordId;
+    }
+
+
+    public static Record getLastRecord() {
+        Log.d("DBRecordDAO", "getLastRecord");
+        Record record = null;
+
+        //Get last record from db after sorting in decending order of start date
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            String MY_QUERY = "SELECT * FROM table_a a INNER JOIN table_b b ON a.id=b.other_id WHERE b.property_id=?";
+
+            String[] columns = {DatabaseDefinition.RECORD_ID_KEY, DatabaseDefinition.RECORD_START_TIME_KEY, DatabaseDefinition.RECORD_END_TIME_KEY};
+
+            cursor = db.query(
+                    DatabaseDefinition.RECORD_TABLE,//Table
+                    columns,//Columns
+                    null,//Selection
+                    null,//Selection conditions
+                    null,//Group by
+                    null,//Having
+                    DatabaseDefinition.RECORD_START_TIME_KEY + " DESC",//Order by
+                    "1" //limit
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                int recordId = cursor.getInt(0);
+
+                RecordBuilder recordBuilder = new RecordBuilder().setRecordId(recordId);
+
+                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_START_TIME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String start = cursor.getString(index);
+                    Log.d("DBMedicineDAO", "getAllRecords sTime : " + start);
+                    recordBuilder = recordBuilder.setStartTime(getTimeStampDate(start));
+                }
+
+                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_END_TIME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String end = cursor.getString(index);
+                    Log.d("DBMedicineDAO", "getAllRecords eTime : " + end);
+                    recordBuilder = recordBuilder.setEndTime(getTimeStampDate(end));
+                }
+
+                record = recordBuilder.createRecord();
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return record;
     }
 
     /**

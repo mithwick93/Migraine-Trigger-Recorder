@@ -157,5 +157,59 @@ public final class DBActivityDAO {
         return null;
     }
 
+    public static ArrayList<LifeActivity> getActivities(int recordId) {
+        Log.d("DBActivityDAO", "getActivities");
+
+        ArrayList<LifeActivity> lifeActivities = new ArrayList<>();
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            String joinQuery =
+                    "SELECT * FROM " + DatabaseDefinition.ACTIVITY_TABLE + " a INNER JOIN " + DatabaseDefinition.ACTIVITY_RECORD_TABLE +
+                            " r ON a." + DatabaseDefinition.ACTIVITY_ID_KEY + " = r." + DatabaseDefinition.ACTIVITY_RECORD_ACTIVITY_ID_KEY + " WHERE r.record_id=?";
+
+//            cursor = db.query(DatabaseDefinition.ACTIVITY_TABLE, null, DatabaseDefinition.ACTIVITY_ID_KEY + " = ?", new String[]{String.valueOf(recordId)}, null, null, null);
+            cursor = db.rawQuery(joinQuery, new String[]{String.valueOf(recordId)});
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+
+
+                int activityId = cursor.getInt(0);
+
+                ActivityBuilder activityBuilder = new ActivityBuilder().setActivityId(activityId);
+
+                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.ACTIVITY_NAME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String name = cursor.getString(index);
+                    activityBuilder = activityBuilder.setActivityName(name);
+                }
+
+                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.ACTIVITY_PRIORITY_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String priority = cursor.getString(index);
+                    activityBuilder = activityBuilder.setPriority(Integer.parseInt(priority));
+                }
+
+                lifeActivities.add(activityBuilder.createActivity());
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return lifeActivities;
+    }
 
 }

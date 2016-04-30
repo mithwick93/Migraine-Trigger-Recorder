@@ -34,8 +34,8 @@ public class ViewRecordCalenderFragment extends Fragment {
 
     private RecordCalenderListener mCallback;
 
-    private CompactCalendarView calender_view;
-    private TextView txt_calender_header;
+    private CompactCalendarView calenderView;
+    private TextView txtViewCalenderHeader;
 
     private SimpleDateFormat dateFormatForMonth;
     private Calendar currentCalender;
@@ -80,35 +80,35 @@ public class ViewRecordCalenderFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (calender_view != null) {
-            calender_view.showCalendarWithAnimation();
+        if (calenderView != null) {
+            calenderView.showCalendarWithAnimation();
         }
     }
 
     @Override
     public void onPause() {
-        if (calender_view != null) {
-            calender_view.hideCalendar();
+        if (calenderView != null) {
+            calenderView.hideCalendar();
         }
         super.onPause();
     }
 
 
     private void initCalenderView(View view) {
-        calender_view = (CompactCalendarView) view.findViewById(R.id.calender_view);
-        txt_calender_header = (TextView) view.findViewById(R.id.calender_header);
-        calender_view.hideCalendar();
+        calenderView = (CompactCalendarView) view.findViewById(R.id.calender_view);
+        txtViewCalenderHeader = (TextView) view.findViewById(R.id.calender_header);
+        calenderView.hideCalendar();
 
         recordsMap = new HashMap<>();
         dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
         currentCalender = Calendar.getInstance(Locale.getDefault());
 
-//        calender_view.drawSmallIndicatorForEvents(true);
-        calender_view.setDayColumnNames(new String[]{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"});
-        calender_view.setUseThreeLetterAbbreviation(true);
+//        calenderView.drawSmallIndicatorForEvents(true);
+        calenderView.setDayColumnNames(new String[]{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"});
+        calenderView.setUseThreeLetterAbbreviation(true);
 
         //set title on calendar scroll
-        calender_view.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+        calenderView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
                 Log.d("ViewRecordCalender", "inside onclick " + dateClicked);
@@ -129,11 +129,11 @@ public class ViewRecordCalenderFragment extends Fragment {
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                txt_calender_header.setText(dateFormatForMonth.format(firstDayOfNewMonth));
+                txtViewCalenderHeader.setText(dateFormatForMonth.format(firstDayOfNewMonth));
             }
         });
 
-        txt_calender_header.setText(dateFormatForMonth.format(calender_view.getFirstDayOfCurrentMonth()));
+        txtViewCalenderHeader.setText(dateFormatForMonth.format(calenderView.getFirstDayOfCurrentMonth()));
 
     }
 
@@ -210,7 +210,7 @@ public class ViewRecordCalenderFragment extends Fragment {
             calendarDayEvents.add(calendarDayEvent);
         }
 
-        calender_view.addEvents(calendarDayEvents);
+        calenderView.addEvents(calendarDayEvents);
 
     }
 

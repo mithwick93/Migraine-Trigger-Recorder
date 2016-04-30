@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.view.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -31,15 +32,32 @@ public class MainActivity
         extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final boolean DEVELOPER_MODE = true;
+
     private FloatingActionButton fab;
     private int lastFragment;
     private Boolean isFabOpen = false;
-    private Animation rotate_forward, rotate_backward;
+    private Animation rotateForward, rotateBackward;
 
     //region activity default
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if (DEVELOPER_MODE) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -140,7 +158,7 @@ public class MainActivity
 
         } else if (id == R.id.nav_severity) {
             Log.d("Main-navigation", "Severity selected");
-            setFragment(new SeverityFragment(), R.string.nav_severity, View.INVISIBLE, false);
+            setFragment(new SeverityFragment(), R.string.nav_severity, View.INVISIBLE, true);
 
         } else if (id == R.id.nav_answers) {
             Log.d("Main-navigation", "Answers selected");
@@ -168,7 +186,7 @@ public class MainActivity
 
         } else if (id == R.id.nav_about) {
             Log.d("Main-navigation", "About selected");
-            setFragment(new AboutFragment(), R.string.nav_about, View.INVISIBLE, false);
+            setFragment(new AboutFragment(), R.string.nav_about, View.INVISIBLE, true);
         }
 
 
@@ -190,8 +208,8 @@ public class MainActivity
     private void fabSetup() {
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
+        rotateForward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
+        rotateBackward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
 
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -276,14 +294,15 @@ public class MainActivity
 
     public void animateFAB() {
 //        if (isFabOpen) {
-//            fab.startAnimation(rotate_backward);
+//            fab.startAnimation(rotateBackward);
 //            isFabOpen = false;
 //        } else {
-//            fab.startAnimation(rotate_forward);
+//            fab.startAnimation(rotateForward);
 //            isFabOpen = true;
 //
 //        }
     }
+
 
     //endregion
 }
