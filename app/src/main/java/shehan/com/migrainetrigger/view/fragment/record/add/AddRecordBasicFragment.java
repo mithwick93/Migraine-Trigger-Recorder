@@ -641,7 +641,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
      *
      * @param intensity value of intensity Range 1:10, on clear -1
      */
-    private void setIntensityIcon(int intensity) {
+    protected void setIntensityIcon(int intensity) {
 
         viewTxtIntensity.setHint("");
         switch (intensity) {
@@ -771,16 +771,25 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         //validate times
         if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
 
-            boolean result = RecordController.addNewRecord(getBasicRecordBuilder().createRecord(), 0);//Level 0
-            if (result) {
-                showToast(getContext(), "Record was saved successfully");
-                if (mCallback != null) {
-                    mCallback.onBasicRecordInteraction(0);
+            new AsyncTask<String, Void, Boolean>() {
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    return RecordController.addNewRecord(getBasicRecordBuilder().createRecord(), 0);//Level 0
                 }
 
-            } else {
-                showToast(getContext(), "Record save failed");
-            }
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if (result) {
+                        showToast(getContext(), "Record was saved successfully");
+                        if (mCallback != null) {
+                            mCallback.onBasicRecordInteraction(0);
+                        }
+
+                    } else {
+                        showToast(getContext(), "Record save failed");
+                    }
+                }
+            }.execute();
         } else {
             showMsg(getContext(), "Start time is greater than the end time");
         }

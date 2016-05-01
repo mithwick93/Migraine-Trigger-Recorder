@@ -22,12 +22,11 @@ public class ReliefController {
     }
 
     /**
-     *
      * @return
      */
     public static ArrayList<Relief> getAllReliefs() {
         Log.d("ReliefController", " getAllReliefs ");
-        ArrayList<Relief>reliefArrayList=DBReliefDAO.getAllReliefs();
+        ArrayList<Relief> reliefArrayList = DBReliefDAO.getAllReliefs();
         Collections.sort(reliefArrayList);
         return reliefArrayList;
     }
@@ -45,7 +44,6 @@ public class ReliefController {
     }
 
     /**
-     *
      * @param reliefId
      * @param recordId
      * @param effective
@@ -56,5 +54,7 @@ public class ReliefController {
         return DBReliefDAO.addReliefRecord(reliefId, recordId, effective);
     }
 
-
+    public static ArrayList<Relief> getReliefsForRecord(int recordId) {
+        return DBReliefDAO.getReliefsForRecord(recordId);
+    }
 }

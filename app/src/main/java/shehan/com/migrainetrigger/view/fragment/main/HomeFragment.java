@@ -3,8 +3,10 @@ package shehan.com.migrainetrigger.view.fragment.main;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +53,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateStatus();
+        new GetStatusTask(txtStatus).execute();
     }
 
     @Override
@@ -60,15 +62,35 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void updateStatus() {
-        String status = RecordController.getStatus();
-        txtStatus.setText(status);
-        if (status.startsWith("N")) {
-            txtStatus.setTextColor(Color.parseColor("#9E9E9E"));
-        } else if (status.startsWith("M")) {
-            txtStatus.setTextColor(getResources().getColor(R.color.colorAccent));
-        } else if (status.startsWith("G")) {
-            txtStatus.setTextColor(Color.parseColor("#009688"));
+    /**
+     * Async task to initialize db and get last record
+     */
+    private class GetStatusTask extends AsyncTask<String, Void, String> {
+
+        private TextView mTxtStatus;
+
+        GetStatusTask(TextView mTxtStatus) {
+            Log.d("GetStatusTask", " constructor");
+            this.mTxtStatus = mTxtStatus;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.d("GetStatusTask", " doInBackground - query status");
+            return RecordController.getStatus();
+        }
+
+        @Override
+        protected void onPostExecute(String status) {
+            Log.d("GetStatusTask", " onPostExecute - update ui");
+            mTxtStatus.setText(status);
+            if (status.startsWith("N")) {
+                mTxtStatus.setTextColor(Color.parseColor("#9E9E9E"));
+            } else if (status.startsWith("M")) {
+                mTxtStatus.setTextColor(getResources().getColor(R.color.colorAccent));
+            } else if (status.startsWith("G")) {
+                mTxtStatus.setTextColor(Color.parseColor("#009688"));
+            }
         }
     }
 }

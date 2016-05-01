@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -54,10 +55,10 @@ public final class DBMedicineDAO {
     public static long addMedicineRecord(int medicineId, int recordId, boolean effective) {
         Log.d("DBMedicineDAO", "DB - addMedicineRecord");
 
-        if (medicineId <= 0 || recordId <= 0) {
-            Log.e("DAO-add", "invalid information");
-            return -1;
-        }
+//        if (medicineId <= 0 || recordId <= 0) {
+//            Log.e("DAO-add", "invalid information");
+//            return -1;
+//        }
 
         SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
         try {
@@ -87,10 +88,10 @@ public final class DBMedicineDAO {
     public static long addMedicineRecord(SQLiteDatabase db, int medicineId, int recordId, boolean effective) throws SQLiteException {
         Log.d("DBMedicineDAO", "DB - addMedicineRecord");
 
-        if (medicineId <= 0 || recordId <= 0) {
-            Log.e("DAO-add", "invalid information");
-            return -1;
-        }
+//        if (medicineId <= 0 || recordId <= 0) {
+//            Log.e("DAO-add", "invalid information");
+//            return -1;
+//        }
 
         ContentValues values = new ContentValues();
 
@@ -108,12 +109,7 @@ public final class DBMedicineDAO {
 
     }
 
-    public static int[] getMedicinesForRecord(int recordId) {
-
-
-        return null;
-    }
-
+    @Nullable
     public static Medicine getMedicine(int id) {
         Log.d("DBMedicineDAO", "getMedicine");
 
@@ -158,5 +154,67 @@ public final class DBMedicineDAO {
             }
         }
         return null;
+    }
+
+    public static ArrayList<Medicine> getMedicinesForRecord(int recordId) {
+        Log.d("DBMedicineDAO", "getMedicinesForRecord");
+
+        ArrayList<Medicine> medicines = new ArrayList<>();
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            String joinQuery =
+                    "SELECT * FROM " + DatabaseDefinition.MEDICINE_TABLE + " a INNER JOIN " + DatabaseDefinition.MEDICINE_RECORD_TABLE +
+                            " r USING(" + DatabaseDefinition.MEDICINE_ID_KEY + ") WHERE r.record_id=?";
+
+            cursor = db.rawQuery(joinQuery, new String[]{String.valueOf(recordId)});
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
+
+                    int medicineId = cursor.getInt(0);
+
+                    MedicineBuilder medicineBuilder = new MedicineBuilder().setMedicineId(medicineId);
+
+                    int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.MEDICINE_NAME_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        String name = cursor.getString(index);
+                        medicineBuilder = medicineBuilder.setMedicineName(name);
+                    }
+
+                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.MEDICINE_PRIORITY_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        String priority = cursor.getString(index);
+                        medicineBuilder = medicineBuilder.setPriority(Integer.parseInt(priority));
+                    }
+
+                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.MEDICINE_RECORD_EFFECTIVE_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        String effective = cursor.getString(index);
+                        medicineBuilder = medicineBuilder.setEffective(effective.equals("t"));
+                    }
+
+                    medicines.add(medicineBuilder.createMedicine());
+                } while (cursor.moveToNext());
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return medicines;
     }
 }

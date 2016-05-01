@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.view.fragment.record.view;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -53,7 +54,9 @@ public class ViewRecordCalenderFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_record_calender, container, false);
         initCalenderView(view);
-        loadEvents();
+
+        //loadEvents();
+        new GetRecordCalenderListTask().execute();
         return view;
     }
 
@@ -92,7 +95,6 @@ public class ViewRecordCalenderFragment extends Fragment {
         }
         super.onPause();
     }
-
 
     private void initCalenderView(View view) {
         calenderView = (CompactCalendarView) view.findViewById(R.id.calender_view);
@@ -137,98 +139,107 @@ public class ViewRecordCalenderFragment extends Fragment {
 
     }
 
+    //Parent activity must implement this interface to communicate
+    public interface RecordCalenderListener {
+        void onRecordCalenderCallBack(int recordId);
+    }
 
-    private void loadEvents() {
-            /*
+    /**
+     * Async task to initialize query db to get records
+     */
+    private class GetRecordCalenderListTask extends AsyncTask<String, Void, ArrayList<Record>> {
+
+        /**
+         * @param calendar calender to change
+         */
+        private void setToMidnight(Calendar calendar) {
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+        }
+
+        @Override
+        protected ArrayList<Record> doInBackground(String... params) {
+            Log.d("GetRecordCalenderList", " doInBackground - query records");
+
+            return RecordController.getAllRecords();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Record> recordArrayList) {
+            Log.d("GetRecordCalenderList", " onPostExecute - update ui");
+
+             /*
             1.Get record list
             2.Get record id and time stamp
             3. Add to hashMap,
             4.Add to calender event list
             5.Add to calender
              */
+            List<CalendarDayEvent> calendarDayEvents = new ArrayList<>();
+            for (int i = 0; i < recordArrayList.size(); i++) {
+                Record record = recordArrayList.get(i);
 
-        ArrayList<Record> recordArrayList = RecordController.getAllRecords();
-        List<CalendarDayEvent> calendarDayEvents = new ArrayList<>();
-        for (int i = 0; i < recordArrayList.size(); i++) {
-            Record record = recordArrayList.get(i);
+                int recordId = record.getRecordId();
+                long milliseconds = record.getStartTime().getTime();
+                int intensityColor;
+                switch (record.getIntensity()) {
+                    case 1:
+                        intensityColor = Color.parseColor("#45d3d3");
+                        break;
+                    case 2:
+                        intensityColor = Color.parseColor("#46cf9a");
+                        break;
+                    case 3:
+                        intensityColor = Color.parseColor("#48cb66");
+                        break;
+                    case 4:
+                        intensityColor = Color.parseColor("#8bc34a");
+                        break;
+                    case 5:
+                        intensityColor = Color.parseColor("#adcb48");
+                        break;
+                    case 6:
+                        intensityColor = Color.parseColor("#d3d345");
+                        break;
+                    case 7:
+                        intensityColor = Color.parseColor("#dbb842");
+                        break;
+                    case 8:
+                        intensityColor = Color.parseColor("#e4973e");
+                        break;
+                    case 9:
+                        intensityColor = Color.parseColor("#ec703a");
+                        break;
+                    case 10:
+                        intensityColor = Color.parseColor("#f44336");
+                        break;
+                    default:
+                        Log.d("ViewRecordCalender", "intensityColor : " + record.getIntensity());
+                        intensityColor = Color.parseColor("#607D8B");
+                        break;
+                }
 
-            int recordId = record.getRecordId();
-            long milliseconds = record.getStartTime().getTime();
-            int intensityColor;
-            switch (record.getIntensity()) {
-                case 1:
-                    intensityColor = Color.parseColor("#45d3d3");
-                    break;
-                case 2:
-                    intensityColor = Color.parseColor("#46cf9a");
-                    break;
-                case 3:
-                    intensityColor = Color.parseColor("#48cb66");
-                    break;
-                case 4:
-                    intensityColor = Color.parseColor("#8bc34a");
-                    break;
-                case 5:
-                    intensityColor = Color.parseColor("#adcb48");
-                    break;
-                case 6:
-                    intensityColor = Color.parseColor("#d3d345");
-                    break;
-                case 7:
-                    intensityColor = Color.parseColor("#dbb842");
-                    break;
-                case 8:
-                    intensityColor = Color.parseColor("#e4973e");
-                    break;
-                case 9:
-                    intensityColor = Color.parseColor("#ec703a");
-                    break;
-                case 10:
-                    intensityColor = Color.parseColor("#f44336");
-                    break;
-                default:
-                    Log.d("ViewRecordCalender", "intensityColor : " + record.getIntensity());
-                    intensityColor = Color.parseColor("#607D8B");
-                    break;
+                currentCalender.setTimeInMillis(milliseconds);
+                setToMidnight(currentCalender);
+
+                if (recordsMap.get(currentCalender.getTime()) != null) {//Already in list
+                    Log.d("ViewRecordCalender", "record list found");
+                    ArrayList<Integer> recordIdList = (ArrayList<Integer>) recordsMap.get(currentCalender.getTime());
+                    recordIdList.add(recordId);
+                } else {//Not added
+                    Log.d("ViewRecordCalender", "record list not found,adding new list");
+                    ArrayList<Integer> recordIdList = new ArrayList<>();
+                    recordIdList.add(recordId);
+                    recordsMap.put(currentCalender.getTime(), recordIdList);
+                }
+
+                CalendarDayEvent calendarDayEvent = new CalendarDayEvent(milliseconds, intensityColor);
+                calendarDayEvents.add(calendarDayEvent);
             }
 
-            currentCalender.setTimeInMillis(milliseconds);
-            setToMidnight(currentCalender);
-
-            if (recordsMap.get(currentCalender.getTime()) != null) {//Already in list
-                Log.d("ViewRecordCalender", "record list found");
-                ArrayList<Integer> recordIdList = (ArrayList<Integer>) recordsMap.get(currentCalender.getTime());
-                recordIdList.add(recordId);
-            } else {//Not added
-                Log.d("ViewRecordCalender", "record list not found,adding new list");
-                ArrayList<Integer> recordIdList = new ArrayList<>();
-                recordIdList.add(recordId);
-                recordsMap.put(currentCalender.getTime(), recordIdList);
-            }
-
-            CalendarDayEvent calendarDayEvent = new CalendarDayEvent(milliseconds, intensityColor);
-            calendarDayEvents.add(calendarDayEvent);
+            calenderView.addEvents(calendarDayEvents);
         }
-
-        calenderView.addEvents(calendarDayEvents);
-
     }
-
-    /**
-     * @param calendar calender to change
-     */
-    private void setToMidnight(Calendar calendar) {
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-    }
-
-
-    //Parent activity must implement this interface to communicate
-    public interface RecordCalenderListener {
-        void onRecordCalenderCallBack(int recordId);
-    }
-
-
 }

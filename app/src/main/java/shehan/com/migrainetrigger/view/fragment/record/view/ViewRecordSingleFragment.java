@@ -1,6 +1,7 @@
 package shehan.com.migrainetrigger.view.fragment.record.view;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,7 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Calendar;
+import java.util.Locale;
+
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.controller.RecordController;
+import shehan.com.migrainetrigger.data.model.Record;
+import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordFullFragment;
 
 
@@ -33,6 +40,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     }
 
     public static ViewRecordSingleFragment newInstance(int recordId) {
+
         ViewRecordSingleFragment fragment = new ViewRecordSingleFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_RECORD_ID, recordId);
@@ -42,9 +50,12 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             recordId = getArguments().getInt(ARG_RECORD_ID);
+        } else {
+            Log.e("ViewRecordSingleFrag", "Invalid record Id");
         }
     }
 
@@ -55,7 +66,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         View view = inflater.inflate(R.layout.fragment_view_record_single, container, false);
         setHasOptionsMenu(true);
 
-        initFullControls(view);
+        initSingleRecordView(view);
         Log.d("ViewRecord-onCreate", "variables initialized, onCreate complete");
         return view;
 
@@ -103,6 +114,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         Log.d("ViewRecordSingle", "initSingleRecordView ");
         super.initFullControls(view);
 
+        new LoadRecordTask().execute();
     }
 
 
@@ -119,5 +131,120 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(int request);
+    }
+
+    //
+    //
+    //
+    private class LoadRecordTask extends AsyncTask<String, Void, Record> {
+
+        @Override
+        protected Record doInBackground(String... params) {
+            Log.d("LoadRecordTask", "doInBackground ");
+            return RecordController.getRecordAll(recordId);
+        }
+
+        @Override
+        protected void onPostExecute(Record record) {
+            Log.d("LoadRecordTask", "onPostExecute ");
+
+
+            //Get to start time
+            if (record.getStartTime() != null) {
+
+                long timestamp = record.getStartTime().getTime();
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(timestamp);
+                mYear = startDate[0] = cal.get(Calendar.YEAR);
+                mMonth = startDate[1] = cal.get(Calendar.MONTH) + 1;
+                mDay = startDate[2] = cal.get(Calendar.DAY_OF_MONTH);
+
+                editTxtStartDate.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", mDay, mMonth, mYear));
+
+                editTxtStartTime.setEnabled(true);
+
+                mHour = startTime[0] = cal.get(Calendar.HOUR);
+                mMinute = startTime[1] = cal.get(Calendar.MINUTE);
+
+                editTxtStartTime.setText(AppUtil.getFormattedTime(mHour, mMinute));
+            }
+
+            //Get to end time
+            if (record.getEndTime() != null) {
+
+                long timestamp = record.getEndTime().getTime();
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(timestamp);
+
+                mYear = endDate[0] = cal.get(Calendar.YEAR);
+                mMonth = endDate[1] = cal.get(Calendar.MONTH) + 1;
+                mDay = endDate[2] = cal.get(Calendar.DAY_OF_MONTH);
+
+                editTxtEndDate.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", mDay, mMonth, mYear));
+
+                editTxtEndTime.setEnabled(true);
+
+                mHour = endTime[0] = cal.get(Calendar.HOUR);
+                mMinute = endTime[1] = cal.get(Calendar.MINUTE);
+
+                editTxtEndTime.setText(AppUtil.getFormattedTime(mHour, mMinute));
+            }
+
+            //Get intensity
+            setIntensityIcon(record.getIntensity());
+
+            //Get weather data
+            if (record.getWeatherData() != null) {
+                weatherData = record.getWeatherData();
+
+                txtViewWeatherTemp.setText(String.format(Locale.getDefault(), "%.2f °C", weatherData.getTemperature()));
+                txtViewWeatherHumidity.setText(String.format(Locale.getDefault(), "%.2f %%", weatherData.getHumidity()));
+                txtViewWeatherPressure.setText(String.format(Locale.getDefault(), "%.2f KPa", weatherData.getPressure()));
+                weatherDataLoaded = true;
+
+                layoutWeather.setVisibility(View.VISIBLE);
+            }
+
+            //Get triggers
+            if (record.getTriggers() != null) {
+                selectedTriggers = record.getTriggers();
+            }
+
+            //Get symptoms
+            if (record.getSymptoms() != null) {
+                selectedSymptoms = record.getSymptoms();
+            }
+
+            //Get activities
+            if (record.getActivities() != null) {
+                selectedActivities = record.getActivities();
+            }
+
+            //Get location
+            if (record.getLocation() != null) {
+                location = record.getLocation();
+            }
+
+            //Get pain in
+            if (record.getBodyAreas() != null) {
+                selectedBodyAreas = record.getBodyAreas();
+            }
+
+            //Get medicine
+            if (record.getMedicines() != null) {
+                selectedMedicines = record.getMedicines();
+
+                //Get effective medicine
+            }
+
+
+            //Get reliefs
+            if (record.getReliefs() != null) {
+                selectedReliefs = record.getReliefs();
+                //Get effective reliefs
+            }
+
+
+        }
     }
 }

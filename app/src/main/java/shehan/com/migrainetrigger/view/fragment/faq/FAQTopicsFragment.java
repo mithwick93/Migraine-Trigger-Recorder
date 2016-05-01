@@ -60,7 +60,6 @@ public class FAQTopicsFragment extends Fragment implements FAQTopicsViewAdapter.
         FAQTopicsViewAdapter faqTopicsViewAdapter = new FAQTopicsViewAdapter(getContext(), this, faqTopicsData);
 
         // 4. set adapter
-//        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(faqTopicsViewAdapter);
 
         // 5. set item animator to DefaultAnimator

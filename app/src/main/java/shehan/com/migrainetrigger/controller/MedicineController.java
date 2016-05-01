@@ -54,4 +54,8 @@ public class MedicineController {
         return DBMedicineDAO.addMedicineRecord(medicineId, recordId, effective);
     }
 
+    public static ArrayList<Medicine> getMedicinesForRecord(int recordId) {
+        return DBMedicineDAO.getMedicinesForRecord(recordId);
+    }
+
 }

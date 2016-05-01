@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -282,6 +283,7 @@ public final class DBRecordDAO {
      * @param id
      * @return
      */
+    @Nullable
     public static Record getRecord(int id) {
         Log.d("DBRecordDAO", "getRecord");
 

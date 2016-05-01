@@ -54,4 +54,8 @@ public class LifeActivityController {
         return DBActivityDAO.addActivityRecord(activityId, recordId);
     }
 
+    public static ArrayList<LifeActivity> getActivitiesForRecord(int recordId) {
+        return DBActivityDAO.getActivitiesForRecord(recordId);
+    }
+
 }

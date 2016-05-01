@@ -2,6 +2,7 @@ package shehan.com.migrainetrigger.view.fragment.record.add;
 
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -147,9 +148,15 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         editTxtSymptoms = (EditText) view.findViewById(R.id.txt_record_symptoms);
         edit_txt_activities = (EditText) view.findViewById(R.id.txt_record_activities);
 
-        activities = LifeActivityController.getAllActivities();
-        triggers = TriggerController.getAllTriggers();
-        symptoms = SymptomController.getAllSymptoms();
+        new AsyncTask<String, Void, String>() {
+            @Override
+            protected String doInBackground(String... params) {
+                activities = LifeActivityController.getAllActivities();
+                triggers = TriggerController.getAllTriggers();
+                symptoms = SymptomController.getAllSymptoms();
+                return "";
+            }
+        }.execute();
 
         selectedActivities = new ArrayList<>();
         selectedTriggers = new ArrayList<>();
@@ -432,15 +439,24 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         //validate times
         if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
 
-            boolean result = RecordController.addNewRecord(getIntermediateRecordBuilder().createRecord(), 1);//Level 1
-            if (result) {
-                showToast(getContext(), "Record was saved successfully");
-                if (mCallback != null) {
-                    mCallback.onIntermediateRecordInteraction(0);
+            new AsyncTask<String, Void, Boolean>() {
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    return RecordController.addNewRecord(getIntermediateRecordBuilder().createRecord(), 1);//Level 1
                 }
-            } else {
-                showToast(getContext(), "Record save failed");
-            }
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if (result) {
+                        showToast(getContext(), "Record was saved successfully");
+                        if (mCallback != null) {
+                            mCallback.onIntermediateRecordInteraction(0);
+                        }
+                    } else {
+                        showToast(getContext(), "Record save failed");
+                    }
+                }
+            }.execute();
         } else {
             showMsg(getContext(), "Start time is greater than the end time");
         }

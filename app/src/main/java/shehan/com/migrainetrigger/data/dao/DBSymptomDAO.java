@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -54,10 +55,10 @@ public final class DBSymptomDAO {
     public static long addSymptomRecord(int symptomId, int recordId) {
         Log.d("DBSymptomDAO", "DB - addSymptomRecord");
 
-        if (symptomId <= 0 || recordId <= 0) {
-            Log.e("DAO-add", "invalid information");
-            return -1;
-        }
+//        if (symptomId <= 0 || recordId <= 0) {
+//            Log.e("DAO-add", "invalid information");
+//            return -1;
+//        }
 
         SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
         try {
@@ -84,11 +85,11 @@ public final class DBSymptomDAO {
 
     public static long addSymptomRecord(SQLiteDatabase db, int symptomId, int recordId) throws SQLiteException {
         Log.d("DBSymptomDAO", "DB - addSymptomRecord");
-
-        if (symptomId <= 0 || recordId <= 0) {
-            Log.e("DAO-add", "invalid information");
-            return -1;
-        }
+//
+//        if (symptomId <= 0 || recordId <= 0) {
+//            Log.e("DAO-add", "invalid information");
+//            return -1;
+//        }
 
         ContentValues values = new ContentValues();
 
@@ -104,12 +105,7 @@ public final class DBSymptomDAO {
 
     }
 
-    public static int[] getSymptomsForRecord(int recordId) {
-
-
-        return null;
-    }
-
+    @Nullable
     public static Symptom getSymptom(int id) {
         Log.d("DBSymptomDAO", "getSymptom");
 
@@ -154,5 +150,60 @@ public final class DBSymptomDAO {
             }
         }
         return null;
+    }
+
+    public static ArrayList<Symptom> getSymptomsForRecord(int recordId) {
+        Log.d("DBSymptomDAO", "getSymptomsForRecord");
+
+        ArrayList<Symptom> symptoms = new ArrayList<>();
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            String joinQuery =
+                    "SELECT * FROM " + DatabaseDefinition.SYMPTOM_TABLE + " a INNER JOIN " + DatabaseDefinition.SYMPTOM_RECORD_TABLE +
+                            " r USING(" + DatabaseDefinition.SYMPTOM_ID_KEY + ") WHERE r.record_id=?";
+
+            cursor = db.rawQuery(joinQuery, new String[]{String.valueOf(recordId)});
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
+
+                    int symptomId = cursor.getInt(0);
+
+                    SymptomBuilder symptomBuilder = new SymptomBuilder().setSymptomId(symptomId);
+
+                    int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.SYMPTOM_NAME_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        String name = cursor.getString(index);
+                        symptomBuilder = symptomBuilder.setSymptomName(name);
+                    }
+
+                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.SYMPTOM_PRIORITY_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        String priority = cursor.getString(index);
+                        symptomBuilder = symptomBuilder.setPriority(Integer.parseInt(priority));
+                    }
+
+                    symptoms.add(symptomBuilder.createSymptom());
+                } while (cursor.moveToNext());
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return symptoms;
     }
 }

@@ -46,4 +46,8 @@ public class TriggerController {
         return DBTriggerDAO.addTriggerRecord(triggerId, recordId);
     }
 
+    public static ArrayList<Trigger> getTriggersForRecord(int recordId) {
+        return DBTriggerDAO.getTriggersForRecord(recordId);
+    }
+
 }

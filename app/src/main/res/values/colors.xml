@@ -6,4 +6,5 @@
     <color name="colorSelectedCalender">#9E9E9E</color>
     <color name="colorWindowBackground">#000000</color>
     <color name="colorTextColorPrimary">#ffffff</color>
+    <color name="colorControlBackground">#fafafa</color>
 </resources>

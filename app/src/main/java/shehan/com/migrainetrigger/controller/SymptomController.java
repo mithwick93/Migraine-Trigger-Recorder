@@ -48,4 +48,7 @@ public class SymptomController {
         return DBSymptomDAO.addSymptomRecord(symptomId, recordId);
     }
 
+    public static ArrayList<Symptom> getSymptomsForRecord(int recordId) {
+        return DBSymptomDAO.getSymptomsForRecord(recordId);
+    }
 }

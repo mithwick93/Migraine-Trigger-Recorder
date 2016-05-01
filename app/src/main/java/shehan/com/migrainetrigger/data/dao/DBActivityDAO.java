@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -55,10 +56,10 @@ public final class DBActivityDAO {
     public static long addActivityRecord(int activityId, int recordId) {
         Log.d("DBActivityDAO", "DB - addActivityRecord");
 
-        if (activityId <= 0 || recordId <= 0) {
-            Log.e("DAO-add", "invalid information");
-            return -1;
-        }
+//        if (activityId <= 0 || recordId <= 0) {
+//            Log.e("DAO-add", "invalid information");
+//            return -1;
+//        }
 
         SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
         try {
@@ -86,10 +87,10 @@ public final class DBActivityDAO {
     public static long addActivityRecord(SQLiteDatabase db, int activityId, int recordId) throws SQLiteException {
         Log.d("DBActivityDAO", "DB - addActivityRecord");
 
-        if (activityId <= 0 || recordId <= 0) {
-            Log.e("DAO-add", "invalid information");
-            return -1;
-        }
+//        if (activityId <= 0 || recordId < 0) {
+//            Log.e("DAO-add", "invalid information");
+//            return -1;
+//        }
 
         ContentValues values = new ContentValues();
 
@@ -105,12 +106,7 @@ public final class DBActivityDAO {
 
     }
 
-    public static int[] getActivitiesForRecord(int id) {
-
-
-        return null;
-    }
-
+    @Nullable
     public static LifeActivity getActivity(int id) {
         Log.d("DBActivityDAO", "getActivity");
 
@@ -157,7 +153,7 @@ public final class DBActivityDAO {
         return null;
     }
 
-    public static ArrayList<LifeActivity> getActivities(int recordId) {
+    public static ArrayList<LifeActivity> getActivitiesForRecord(int recordId) {
         Log.d("DBActivityDAO", "getActivities");
 
         ArrayList<LifeActivity> lifeActivities = new ArrayList<>();
@@ -169,33 +165,33 @@ public final class DBActivityDAO {
 
             String joinQuery =
                     "SELECT * FROM " + DatabaseDefinition.ACTIVITY_TABLE + " a INNER JOIN " + DatabaseDefinition.ACTIVITY_RECORD_TABLE +
-                            " r ON a." + DatabaseDefinition.ACTIVITY_ID_KEY + " = r." + DatabaseDefinition.ACTIVITY_RECORD_ACTIVITY_ID_KEY + " WHERE r.record_id=?";
+                            " r USING(" + DatabaseDefinition.ACTIVITY_ID_KEY + ") WHERE r.record_id=?";
 
-//            cursor = db.query(DatabaseDefinition.ACTIVITY_TABLE, null, DatabaseDefinition.ACTIVITY_ID_KEY + " = ?", new String[]{String.valueOf(recordId)}, null, null, null);
             cursor = db.rawQuery(joinQuery, new String[]{String.valueOf(recordId)});
 
             if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
 
+                    int activityId = cursor.getInt(0);
 
-                int activityId = cursor.getInt(0);
+                    ActivityBuilder activityBuilder = new ActivityBuilder().setActivityId(activityId);
 
-                ActivityBuilder activityBuilder = new ActivityBuilder().setActivityId(activityId);
+                    int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.ACTIVITY_NAME_KEY);
 
-                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.ACTIVITY_NAME_KEY);
+                    if (!cursor.isNull(index)) {
+                        String name = cursor.getString(index);
+                        activityBuilder = activityBuilder.setActivityName(name);
+                    }
 
-                if (!cursor.isNull(index)) {
-                    String name = cursor.getString(index);
-                    activityBuilder = activityBuilder.setActivityName(name);
-                }
+                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.ACTIVITY_PRIORITY_KEY);
 
-                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.ACTIVITY_PRIORITY_KEY);
+                    if (!cursor.isNull(index)) {
+                        String priority = cursor.getString(index);
+                        activityBuilder = activityBuilder.setPriority(Integer.parseInt(priority));
+                    }
 
-                if (!cursor.isNull(index)) {
-                    String priority = cursor.getString(index);
-                    activityBuilder = activityBuilder.setPriority(Integer.parseInt(priority));
-                }
-
-                lifeActivities.add(activityBuilder.createActivity());
+                    lifeActivities.add(activityBuilder.createActivity());
+                } while (cursor.moveToNext());
             }
 
         } catch (SQLiteException e) {

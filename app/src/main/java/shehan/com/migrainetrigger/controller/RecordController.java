@@ -1,5 +1,6 @@
 package shehan.com.migrainetrigger.controller;
 
+import android.support.annotation.Nullable;
 import android.text.format.DateUtils;
 import android.util.Log;
 
@@ -46,7 +47,31 @@ public class RecordController {
      * @param id
      * @return
      */
+    @Nullable
     public static Record getRecordAll(int id) {
+        Log.d("RecordController", "getRecordAll");
+        Record record = DBRecordDAO.getRecord(id);
+        if (record != null) {
+
+            if (record.getLocationId() > -1) {//set location
+                record.setLocation(LocationController.getLocationById(record.getLocationId()));
+            }
+
+            record.setWeatherData(WeatherDataController.getWeatherDataByRecordId(id));//set weather data
+
+            record.setActivities(LifeActivityController.getActivitiesForRecord(id));//set activities
+
+            record.setMedicines(MedicineController.getMedicinesForRecord(id));//Set medicine
+
+            record.setReliefs(ReliefController.getReliefsForRecord(id));//Set reliefs
+
+            record.setSymptoms(SymptomController.getSymptomsForRecord(id));//Set symptoms
+
+            record.setTriggers(TriggerController.getTriggersForRecord(id));//Set triggers
+
+            return record;
+        }
+        Log.e("RecordController", "getRecordAll -No such record");
 
         return null;
     }
@@ -62,7 +87,8 @@ public class RecordController {
 
 
     public static String getStatus() {
-        String status = "No migraine records yet.";
+        Log.d("RecordController", "getStatus");
+        String status;
 
         Record lastRecord = DBRecordDAO.getLastRecord();
         if (lastRecord != null) {
@@ -78,6 +104,8 @@ public class RecordController {
             } else {
                 status = "Get well soon ";
             }
+        } else {
+            status = "No migraine records yet.";
         }
 
         return status;

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -52,11 +53,11 @@ public final class DBReliefDAO {
 
     public static long addReliefRecord(int reliefId, int recordId, boolean effective) {
         Log.d("DBReliefDAO", "DB - addReliefRecord");
-
-        if (reliefId <= 0 || recordId <= 0) {
-            Log.e("DAO-add", "invalid information");
-            return -1;
-        }
+//
+//        if (reliefId <= 0 || recordId <= 0) {
+//            Log.e("DAO-add", "invalid information");
+//            return -1;
+//        }
 
         SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
         try {
@@ -86,10 +87,10 @@ public final class DBReliefDAO {
     public static long addReliefRecord(SQLiteDatabase db, int reliefId, int recordId, boolean effective) throws SQLiteException {
         Log.d("DBReliefDAO", "DB - addReliefRecord");
 
-        if (reliefId <= 0 || recordId <= 0) {
-            Log.e("DAO-add", "invalid information");
-            return -1;
-        }
+//        if (reliefId <= 0 || recordId <= 0) {
+//            Log.e("DAO-add", "invalid information");
+//            return -1;
+//        }
 
         ContentValues values = new ContentValues();
 
@@ -107,12 +108,7 @@ public final class DBReliefDAO {
 
     }
 
-    public static int[] getReliefsForRecord(int recordId) {
-
-
-        return null;
-    }
-
+    @Nullable
     public static Relief getRelief(int id) {
         Log.d("DBReliefDAO", "getRelief");
 
@@ -158,4 +154,67 @@ public final class DBReliefDAO {
         }
         return null;
     }
+
+    public static ArrayList<Relief> getReliefsForRecord(int recordId) {
+        Log.d("DBReliefDAO", "getReliefsForRecord");
+
+        ArrayList<Relief> reliefs = new ArrayList<>();
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            String joinQuery =
+                    "SELECT * FROM " + DatabaseDefinition.RELIEF_TABLE + " a INNER JOIN " + DatabaseDefinition.RELIEF_RECORD_TABLE +
+                            " r USING(" + DatabaseDefinition.RELIEF_ID_KEY + ") WHERE r.record_id=?";
+
+            cursor = db.rawQuery(joinQuery, new String[]{String.valueOf(recordId)});
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
+
+                    int reliefId = cursor.getInt(0);
+
+                    ReliefBuilder reliefBuilder = new ReliefBuilder().setReliefId(reliefId);
+
+                    int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RELIEF_NAME_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        String name = cursor.getString(index);
+                        reliefBuilder = reliefBuilder.setReliefName(name);
+                    }
+
+                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RELIEF_PRIORITY_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        String priority = cursor.getString(index);
+                        reliefBuilder = reliefBuilder.setPriority(Integer.parseInt(priority));
+                    }
+
+                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RELIEF_RECORD_EFFECTIVE_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        String effective = cursor.getString(index);
+                        reliefBuilder = reliefBuilder.setEffective(effective.equals("t"));
+                    }
+
+                    reliefs.add(reliefBuilder.createRelief());
+                } while (cursor.moveToNext());
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return reliefs;
+    }
+
 }
