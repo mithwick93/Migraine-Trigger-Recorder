@@ -1,4 +1,4 @@
-package shehan.com.migrainetrigger.view.fragment.faq;
+package shehan.com.migrainetrigger.view.fragment.main;
 
 
 import android.os.Bundle;

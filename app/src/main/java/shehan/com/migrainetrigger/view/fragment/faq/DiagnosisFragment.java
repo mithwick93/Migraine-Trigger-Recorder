@@ -25,7 +25,7 @@ public class DiagnosisFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_diagnosis, container, false);
+        return inflater.inflate(R.layout.fragment_faq_diagnosis, container, false);
     }
 
 }

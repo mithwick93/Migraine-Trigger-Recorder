@@ -24,7 +24,7 @@ public class DefinitionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_definition, container, false);
+        return inflater.inflate(R.layout.fragment_faq_definition, container, false);
     }
 
 }

@@ -30,7 +30,7 @@ public class RecordViewAdapter extends RecyclerView.Adapter<RecordViewAdapter.Vi
                                                            int viewType) {
         // create a new view
         @SuppressLint("InflateParams") View itemLayoutView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_record_view, null);
+                .inflate(R.layout.item_record_list, null);
 
         // create ViewHolder
 
