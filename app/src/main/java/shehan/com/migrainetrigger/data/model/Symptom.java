@@ -41,4 +41,20 @@ public class Symptom extends PriorityEntity {
     public String toString() {
         return symptomName != null ? symptomName : "Symptom : " + symptomId;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean isEqual = false;
+
+        if (object != null && object instanceof Symptom) {
+            isEqual = (this.symptomId == ((Symptom) object).symptomId);
+        }
+
+        return isEqual;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.symptomId;
+    }
 }

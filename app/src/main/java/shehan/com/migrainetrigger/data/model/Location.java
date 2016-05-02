@@ -32,4 +32,20 @@ public class Location {
     public String toString() {
         return locationName != null ? locationName : "Location : " + locationId;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean isEqual = false;
+
+        if (object != null && object instanceof Location) {
+            isEqual = (this.locationId == ((Location) object).locationId);
+        }
+
+        return isEqual;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.locationId;
+    }
 }

@@ -477,7 +477,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                         selectedMedicines.add(new MedicineBuilder().setMedicineId(m.getMedicineId()).setMedicineName(m.getMedicineName()).setPriority(m.getPriority()).createMedicine());
                                     }
 
-                                    for (Integer integer : which) {
+                                    for (Integer integer : selectedEffectiveMedicineIndexes) {
                                         String name = selectedMedicines.get(integer).toString();
                                         selectedStr = selectedStr + ", " + name;
                                         selectedMedicines.get(integer).setEffective(true);

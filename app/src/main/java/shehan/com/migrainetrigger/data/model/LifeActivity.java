@@ -42,4 +42,19 @@ public class LifeActivity extends PriorityEntity {
         return activityName != null ? activityName : "Activity : " + activityId;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        boolean isEqual = false;
+
+        if (object != null && object instanceof LifeActivity) {
+            isEqual = (this.activityId == ((LifeActivity) object).activityId);
+        }
+
+        return isEqual;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.activityId;
+    }
 }

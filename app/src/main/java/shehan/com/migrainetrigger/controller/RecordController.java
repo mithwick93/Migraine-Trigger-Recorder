@@ -52,6 +52,8 @@ public class RecordController {
 
             record.setActivities(LifeActivityController.getActivitiesForRecord(recordId));//set activities
 
+            record.setBodyAreas(BodyAreaController.getBodyAreasForRecord(recordId));//set body areas
+
             record.setMedicines(MedicineController.getMedicinesForRecord(recordId));//Set medicine
 
             record.setReliefs(ReliefController.getReliefsForRecord(recordId));//Set reliefs
@@ -91,7 +93,7 @@ public class RecordController {
                 long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
                 String duration = AppUtil.getFriendlyDuration(differenceInSeconds);
 
-                status = "Migraine free for " + duration;
+                status = "Migraine free for\n " + duration;
             } else {
                 status = "Get well soon ";
             }

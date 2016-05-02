@@ -43,7 +43,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     //Controls
     protected EditText editTxtTriggers;
     protected EditText editTxtSymptoms;
-    protected EditText edit_txt_activities;
+    protected EditText editTxtActivities;
 
 
     //Data storage
@@ -146,7 +146,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         super.initBasicControls(view);
         editTxtTriggers = (EditText) view.findViewById(R.id.txt_record_triggers);
         editTxtSymptoms = (EditText) view.findViewById(R.id.txt_record_symptoms);
-        edit_txt_activities = (EditText) view.findViewById(R.id.txt_record_activities);
+        editTxtActivities = (EditText) view.findViewById(R.id.txt_record_activities);
 
         new AsyncTask<String, Void, String>() {
             @Override
@@ -271,8 +271,8 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
 
 //--------------------------------------------------
         //activities
-        edit_txt_activities.setCursorVisible(false);
-        edit_txt_activities.setOnClickListener(new View.OnClickListener() {
+        editTxtActivities.setCursorVisible(false);
+        editTxtActivities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*
@@ -300,7 +300,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                                     selectedStr = selectedStr.replaceFirst(",", "");
                                 }
 
-                                edit_txt_activities.setText(selectedStr);
+                                editTxtActivities.setText(selectedStr);
                                 return true; // allow selection
                             }
                         })
@@ -311,7 +311,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                                 dialog.clearSelectedIndices();
                                 selectedActivities.clear();
                                 selectedActivityIndexes = null;
-                                edit_txt_activities.setText("");
+                                editTxtActivities.setText("");
                             }
                         })
                         .positiveText(R.string.confirmButtonDialog)

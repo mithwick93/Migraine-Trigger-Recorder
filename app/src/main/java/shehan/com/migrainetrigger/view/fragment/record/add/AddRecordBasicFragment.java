@@ -77,8 +77,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
     //Data storage
     protected WeatherData weatherData;
-    protected Timestamp startTimeStamp;
-    protected Timestamp endTimeStamp;
     protected int[] startDate;
     protected int[] startTime;
     protected int[] endDate;

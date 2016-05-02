@@ -53,4 +53,19 @@ public class Relief extends PriorityEntity {
         return reliefName != null ? reliefName : "Relief : " + reliefId;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        boolean isEqual = false;
+
+        if (object != null && object instanceof Relief) {
+            isEqual = (this.reliefId == ((Relief) object).reliefId);
+        }
+
+        return isEqual;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.reliefId;
+    }
 }

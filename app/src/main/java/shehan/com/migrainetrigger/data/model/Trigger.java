@@ -42,4 +42,20 @@ public class Trigger extends PriorityEntity {
     public String toString() {
         return triggerName != null ? triggerName : "Trigger : " + triggerId;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean isEqual = false;
+
+        if (object != null && object instanceof Trigger) {
+            isEqual = (this.triggerId == ((Trigger) object).triggerId);
+        }
+
+        return isEqual;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.triggerId;
+    }
 }

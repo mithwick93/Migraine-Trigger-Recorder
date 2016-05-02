@@ -33,4 +33,20 @@ public class BodyArea {
         return bodyAreaName != null ? bodyAreaName : "Body area : " + bodyAreaId;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        boolean isEqual = false;
+
+        if (object != null && object instanceof BodyArea) {
+            isEqual = (this.bodyAreaId == ((BodyArea) object).bodyAreaId);
+        }
+
+        return isEqual;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.bodyAreaId;
+    }
+
 }

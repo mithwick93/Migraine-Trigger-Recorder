@@ -15,7 +15,13 @@ import java.util.Locale;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
+import shehan.com.migrainetrigger.data.model.BodyArea;
+import shehan.com.migrainetrigger.data.model.LifeActivity;
+import shehan.com.migrainetrigger.data.model.Medicine;
 import shehan.com.migrainetrigger.data.model.Record;
+import shehan.com.migrainetrigger.data.model.Relief;
+import shehan.com.migrainetrigger.data.model.Symptom;
+import shehan.com.migrainetrigger.data.model.Trigger;
 import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordFullFragment;
 
@@ -87,7 +93,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
             //TODO: Update record call
             return true;
         } else if (id == R.id.action_refresh) {
-            //TODO: Update weather
+            showWeather();
             return true;
         }
 
@@ -129,7 +135,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -148,17 +154,8 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
      */
     private class LoadRecordTask extends AsyncTask<String, Void, Record> {
 
-        @Override
-        protected Record doInBackground(String... params) {
-            Log.d("LoadRecordTask", "doInBackground ");
-            return RecordController.getRecordAll(recordId);
-        }
 
-        @Override
-        protected void onPostExecute(Record record) {
-            Log.d("LoadRecordTask", "onPostExecute ");
-
-
+        private void setStartTime(Record record) {
             //Get start time
             if (record.getStartTime() != null) {
 
@@ -178,7 +175,9 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
 
                 editTxtStartTime.setText(AppUtil.getFormattedTime(mHour, mMinute));
             }
+        }
 
+        private void setEndTime(Record record) {
             //Get end time
             if (record.getEndTime() != null) {
 
@@ -199,13 +198,17 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
 
                 editTxtEndTime.setText(AppUtil.getFormattedTime(mHour, mMinute));
             }
+        }
 
+        private void setIntensity(Record record) {
             //Get intensity
             setIntensityIcon(record.getIntensity());
+        }
 
+        private void setWeatherData(Record record) {
             //Get weather data
             if (record.getWeatherData() != null) {
-                weatherData = record.getWeatherData();
+                weatherData = record.getWeatherData();//load weather to variable
 
                 txtViewWeatherTemp.setText(String.format(Locale.getDefault(), "%.2f °C", weatherData.getTemperature()));
                 txtViewWeatherHumidity.setText(String.format(Locale.getDefault(), "%.2f %%", weatherData.getHumidity()));
@@ -214,47 +217,269 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
 
                 layoutWeather.setVisibility(View.VISIBLE);
             }
+        }
 
+
+        private void setTriggers(Record record) {
             //Get triggers
             if (record.getTriggers() != null) {
                 selectedTriggers = record.getTriggers();
-            }
 
+                Integer[] selectedIndexes = new Integer[selectedTriggers.size()];
+                String selectedStr = "";
+
+                for (int i = 0; i < selectedTriggers.size(); i++) {//Adding indexes
+                    Trigger tmp = selectedTriggers.get(i);
+                    int index = triggers.indexOf(tmp);
+                    if (index > -1) {//if contain tmp
+                        selectedIndexes[i] = index;
+
+                        String name = tmp.toString();
+                        selectedStr = selectedStr + ", " + name;
+                    }
+                }
+
+                selectedTriggerIndexes = selectedIndexes;
+                if (selectedStr.contains(",")) {
+                    selectedStr = selectedStr.replaceFirst(",", "");
+                }
+                editTxtTriggers.setText(selectedStr);
+
+            }
+        }
+
+        private void setSymptoms(Record record) {
             //Get symptoms
             if (record.getSymptoms() != null) {
                 selectedSymptoms = record.getSymptoms();
-            }
 
+                Integer[] selectedIndexes = new Integer[selectedSymptoms.size()];
+                String selectedStr = "";
+
+                for (int i = 0; i < selectedSymptoms.size(); i++) {//Adding indexes
+                    Symptom tmp = selectedSymptoms.get(i);
+                    int index = symptoms.indexOf(tmp);
+                    if (index > -1) {//if contain tmp
+                        selectedIndexes[i] = index;
+
+                        String name = tmp.toString();
+                        selectedStr = selectedStr + ", " + name;
+                    }
+                }
+
+                selectedSymptomsIndexes = selectedIndexes;
+                if (selectedStr.contains(",")) {
+                    selectedStr = selectedStr.replaceFirst(",", "");
+                }
+                editTxtSymptoms.setText(selectedStr);
+            }
+        }
+
+        private void setActivities(Record record) {
             //Get activities
             if (record.getActivities() != null) {
                 selectedActivities = record.getActivities();
-            }
+                Integer[] selectedIndexes = new Integer[selectedActivities.size()];
+                String selectedStr = "";
 
+                for (int i = 0; i < selectedActivities.size(); i++) {//Adding indexes
+                    LifeActivity tmp = selectedActivities.get(i);
+                    int index = activities.indexOf(tmp);
+                    if (index > -1) {//if contain tmp
+                        selectedIndexes[i] = index;
+
+                        String name = tmp.toString();
+                        selectedStr = selectedStr + ", " + name;
+                    }
+                }
+
+                selectedActivityIndexes = selectedIndexes;
+                if (selectedStr.contains(",")) {
+                    selectedStr = selectedStr.replaceFirst(",", "");
+                }
+                editTxtActivities.setText(selectedStr);
+
+            }
+        }
+
+
+        private void setLocation(Record record) {
             //Get location
             if (record.getLocation() != null) {
                 location = record.getLocation();
+                int index = locations.indexOf(location);
+                if (index > -1) {
+                    selectedLocation = index;
+                }
+                editTxtLocation.setText(location.toString());
             }
+        }
 
+        private void setBodyAreas(Record record) {
             //Get pain in
             if (record.getBodyAreas() != null) {
                 selectedBodyAreas = record.getBodyAreas();
-            }
 
+                Integer[] selectedIndexes = new Integer[selectedBodyAreas.size()];
+                String selectedStr = "";
+
+                for (int i = 0; i < selectedBodyAreas.size(); i++) {//Adding indexes
+                    BodyArea tmp = selectedBodyAreas.get(i);
+                    int index = bodyAreas.indexOf(tmp);
+                    if (index > -1) {//if contain tmp
+                        selectedIndexes[i] = index;
+
+                        String name = tmp.toString();
+                        selectedStr = selectedStr + ", " + name;
+                    }
+                }
+
+                selectedBodyIndexes = selectedIndexes;
+                if (selectedStr.contains(",")) {
+                    selectedStr = selectedStr.replaceFirst(",", "");
+                }
+                editTxtBodyAreas.setText(selectedStr);
+            }
+        }
+
+        private void setMedicine(Record record) {
             //Get medicine
             if (record.getMedicines() != null) {
                 selectedMedicines = record.getMedicines();
 
+                Integer[] selectedIndexes = new Integer[selectedMedicines.size()];
+                Integer[] selectedIndexesEffective;
+                int effectiveCounter = 0;
+
+                int effectiveMedCount = 0;
+                for (Medicine medicine : selectedMedicines) {
+                    if (medicine.isEffective()) {
+                        effectiveMedCount++;
+                    }
+                }
+
+                selectedIndexesEffective = new Integer[effectiveMedCount];
+
+                String selectedStr = "";
+                String selectedStrEffective = "";
+
+                for (int i = 0; i < selectedMedicines.size(); i++) {//Adding indexes
+                    Medicine tmp = selectedMedicines.get(i);
+                    int index = medicines.indexOf(tmp);
+                    if (index > -1) {//if contain tmp
+                        selectedIndexes[i] = index;
+
+                        String name = tmp.toString();
+                        selectedStr = selectedStr + ", " + name;
+                    }
+                    if (tmp.isEffective() && effectiveMedCount > 0) {
+                        selectedIndexesEffective[effectiveCounter] = i;
+                        effectiveCounter++;
+                        String name = tmp.toString();
+                        selectedStrEffective = selectedStrEffective + ", " + name;
+                    }
+                }
+
+                selectedMedicineIndexes = selectedIndexes;
+                if (selectedStr.contains(",")) {
+                    selectedStr = selectedStr.replaceFirst(",", "");
+                }
+                editTxtMedicine.setText(selectedStr);
+
                 //Get effective medicine
+                viewLayoutRecordEffectiveMedicine.setVisibility(View.VISIBLE);
+
+                if (selectedIndexesEffective.length > 0) {
+                    selectedEffectiveMedicineIndexes = selectedIndexesEffective;
+
+                    if (selectedStrEffective.contains(",")) {
+                        selectedStrEffective = selectedStrEffective.replaceFirst(",", "");
+                    }
+                    editTxtMedicineEffective.setText(selectedStrEffective);
+                }
             }
+        }
 
-
+        private void setReliefs(Record record) {
             //Get reliefs
             if (record.getReliefs() != null) {
                 selectedReliefs = record.getReliefs();
+
+                Integer[] selectedIndexes = new Integer[selectedReliefs.size()];
+                Integer[] selectedIndexesEffective;
+                int effectiveCounter = 0;
+
+                int effectiveReliefCount = 0;
+                for (Relief relief : selectedReliefs) {
+                    if (relief.isEffective()) {
+                        effectiveReliefCount++;
+                    }
+                }
+
+                selectedIndexesEffective = new Integer[effectiveReliefCount];
+
+                String selectedStr = "";
+                String selectedStrEffective = "";
+
+                for (int i = 0; i < selectedReliefs.size(); i++) {//Adding indexes
+                    Relief tmp = selectedReliefs.get(i);
+                    int index = reliefs.indexOf(tmp);
+                    if (index > -1) {//if contain tmp
+                        selectedIndexes[i] = index;
+
+                        String name = tmp.toString();
+                        selectedStr = selectedStr + ", " + name;
+                    }
+                    if (tmp.isEffective() && effectiveReliefCount > 0) {
+                        selectedIndexesEffective[effectiveCounter] = i;
+                        effectiveCounter++;
+                        String name = tmp.toString();
+                        selectedStrEffective = selectedStrEffective + ", " + name;
+                    }
+                }
+
+                selectedReliefIndexes = selectedIndexes;
+                if (selectedStr.contains(",")) {
+                    selectedStr = selectedStr.replaceFirst(",", "");
+                }
+                editTxtRelief.setText(selectedStr);
+
                 //Get effective reliefs
+                viewLayoutRecordEffectiveRelief.setVisibility(View.VISIBLE);
+                if (selectedIndexesEffective.length > 0) {
+                    selectedEffectiveReliefIndexes = selectedIndexesEffective;
+
+                    if (selectedStrEffective.contains(",")) {
+                        selectedStrEffective = selectedStrEffective.replaceFirst(",", "");
+                    }
+                    editTxtReliefEffective.setText(selectedStrEffective);
+                }
             }
+        }
 
+        @Override
+        protected Record doInBackground(String... params) {
+            Log.d("LoadRecordTask", "doInBackground ");
+            return RecordController.getRecordAll(recordId);
+        }
 
+        @Override
+        protected void onPostExecute(Record record) {
+            Log.d("LoadRecordTask", "onPostExecute ");
+
+            setStartTime(record);
+            setEndTime(record);
+            setIntensity(record);
+            setWeatherData(record);
+
+            setTriggers(record);
+            setSymptoms(record);
+            setActivities(record);
+
+            setLocation(record);
+            setBodyAreas(record);
+            setMedicine(record);
+            setReliefs(record);
         }
     }
 }
