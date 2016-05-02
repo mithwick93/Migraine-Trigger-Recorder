@@ -110,7 +110,6 @@ public class MainActivity
      * @param item clicked item
      * @return clicked value
      */
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         //Navigation drawer logic
