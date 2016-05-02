@@ -21,9 +21,6 @@ public class MedicineController {
         return null;
     }
 
-    /**
-     * @return
-     */
     public static ArrayList<Medicine> getAllMedicines() {
         Log.d("MedicineController", " getAllMedicines ");
         ArrayList<Medicine> medicineArrayList = DBMedicineDAO.getAllMedicines();
@@ -43,12 +40,6 @@ public class MedicineController {
 
     }
 
-    /**
-     * @param medicineId
-     * @param recordId
-     * @param effective
-     * @return
-     */
     public static long addMedicineRecord(int medicineId, int recordId, boolean effective) {
         Log.d("MedicineController", " addMedicineRecord ");
         return DBMedicineDAO.addMedicineRecord(medicineId, recordId, effective);

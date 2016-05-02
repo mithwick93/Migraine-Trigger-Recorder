@@ -74,6 +74,9 @@ public class AddRecordActivity
 
     }
 
+    /**
+     * Setup record add activity
+     */
     private void initialSetup() {
         levelOfInformation = getIntent().getIntExtra("levelOfInformation", 1);
         Log.d("AddRecordAct-init", "levelOfInformation : " + levelOfInformation);

@@ -19,6 +19,11 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
  */
 public final class DBSymptomDAO {
 
+    /**
+     * get All Symptoms
+     *
+     * @return ArrayList<Symptom>
+     */
     public static ArrayList<Symptom> getAllSymptoms() {
         Log.d("DBSymptomDAO", " DB - getAllSymptoms ");
         ArrayList<Symptom> symptomArrayList = new ArrayList<>();
@@ -52,6 +57,12 @@ public final class DBSymptomDAO {
         return symptomArrayList;
     }
 
+    /**
+     * add Symptom Record
+     *
+     * @param symptomId symptomId
+     * @return raw id
+     */
     public static long addSymptomRecord(int symptomId, int recordId) {
         Log.d("DBSymptomDAO", "DB - addSymptomRecord");
 
@@ -60,8 +71,7 @@ public final class DBSymptomDAO {
 //            return -1;
 //        }
 
-        SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
-        try {
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
 
@@ -78,11 +88,18 @@ public final class DBSymptomDAO {
 
             e.printStackTrace();
             return -1;
-        } finally {
-            db.close();
         }
     }
 
+    /**
+     * add Symptom Record
+     *
+     * @param db        SQLiteDatabase
+     * @param symptomId symptomId
+     * @param recordId  recordId
+     * @return raw id
+     * @throws SQLiteException
+     */
     public static long addSymptomRecord(SQLiteDatabase db, int symptomId, int recordId) throws SQLiteException {
         Log.d("DBSymptomDAO", "DB - addSymptomRecord");
 //
@@ -105,6 +122,12 @@ public final class DBSymptomDAO {
 
     }
 
+    /**
+     * get Symptom
+     *
+     * @param id id
+     * @return Symptom
+     */
     @Nullable
     public static Symptom getSymptom(int id) {
         Log.d("DBSymptomDAO", "getSymptom");
@@ -152,6 +175,12 @@ public final class DBSymptomDAO {
         return null;
     }
 
+    /**
+     * get Symptoms For Record
+     *
+     * @param recordId recordId
+     * @return ArrayList<Symptom>
+     */
     public static ArrayList<Symptom> getSymptomsForRecord(int recordId) {
         Log.d("DBSymptomDAO", "getSymptomsForRecord");
 

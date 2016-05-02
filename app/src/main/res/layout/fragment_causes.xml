@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="10dp"
-                android:background="#C5CAE9"
+
                 card_view:cardCornerRadius="4dp">
 
                 <RelativeLayout
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="10dp"
-                android:background="#C5CAE9"
+
                 card_view:cardCornerRadius="4dp">
 
                 <RelativeLayout
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="10dp"
-                android:background="#C5CAE9"
+
                 card_view:cardCornerRadius="4dp">
 
                 <RelativeLayout
@@ -134,7 +134,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="10dp"
-                android:background="#C5CAE9"
+
                 card_view:cardCornerRadius="4dp">
 
                 <RelativeLayout
@@ -178,7 +178,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="10dp"
-                android:background="#C5CAE9"
+
                 card_view:cardCornerRadius="4dp">
 
                 <RelativeLayout
@@ -222,7 +222,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="10dp"
-                android:background="#C5CAE9"
+
                 card_view:cardCornerRadius="4dp">
 
                 <RelativeLayout
@@ -266,7 +266,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="10dp"
-                android:background="#C5CAE9"
+
                 card_view:cardCornerRadius="4dp">
 
                 <RelativeLayout
@@ -310,7 +310,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="10dp"
-                android:background="#C5CAE9"
+
                 card_view:cardCornerRadius="4dp">
 
                 <RelativeLayout
@@ -354,7 +354,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="10dp"
-                android:background="#C5CAE9"
+
                 card_view:cardCornerRadius="4dp">
 
                 <RelativeLayout
@@ -398,7 +398,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="10dp"
-                android:background="#C5CAE9"
+
                 card_view:cardCornerRadius="4dp">
 
                 <RelativeLayout
@@ -442,7 +442,6 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="10dp"
-                android:background="#C5CAE9"
                 card_view:cardCornerRadius="4dp">
 
                 <RelativeLayout

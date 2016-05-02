@@ -22,7 +22,7 @@ public class DBTransactionHandler {
      *
      * @param record      New record
      * @param recordLevel record level (basic - 0 ,intermediate -1 , full - 2 )
-     * @return
+     * @return weather transaction is successful
      */
     public static boolean addRecordTransaction(Record record, int recordLevel) {
         Log.d("DBTransactionHandler", "addRecordTransaction - start transaction");
@@ -112,6 +112,7 @@ public class DBTransactionHandler {
 
             }
 
+            //Add record itself
             long result = DBRecordDAO.addRecordToDB(db, record);
             if (result < 1) {
                 throw new Exception("Record insert failed. code : " + result);

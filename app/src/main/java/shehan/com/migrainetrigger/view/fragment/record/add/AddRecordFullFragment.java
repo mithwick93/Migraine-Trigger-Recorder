@@ -586,6 +586,9 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
     }
 
+    /**
+     * Choose to save record or get weather
+     */
     private void chooseSaveOrSummery() {
 
         if (!weatherDataLoaded || weatherData == null) {
@@ -617,11 +620,15 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
     }
 
+    /**
+     * Save record,
+     * In subclasses handle this separately
+     */
     private void saveFullRecord() {
         Log.d("AddRecordFullFragment", "saveFullRecord");
         //validations
         //check start<end
-        Timestamp startTimestamp = null;
+        Timestamp startTimestamp;
 
         //Check for start date
         if (startDate[0] != -1) {

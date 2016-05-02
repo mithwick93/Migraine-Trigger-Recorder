@@ -19,6 +19,11 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
  */
 public final class DBMedicineDAO {
 
+    /**
+     * get All Medicines
+     *
+     * @return ArrayList<Medicine>
+     */
     public static ArrayList<Medicine> getAllMedicines() {
         Log.d("DBMedicineDAO", " DB - getAllMedicines ");
         ArrayList<Medicine> medicineArrayList = new ArrayList<>();
@@ -52,6 +57,14 @@ public final class DBMedicineDAO {
         return medicineArrayList;
     }
 
+    /**
+     * add Medicine Record
+     *
+     * @param medicineId medicineId
+     * @param recordId   recordId
+     * @param effective  effective
+     * @return row id
+     */
     public static long addMedicineRecord(int medicineId, int recordId, boolean effective) {
         Log.d("DBMedicineDAO", "DB - addMedicineRecord");
 
@@ -60,8 +73,7 @@ public final class DBMedicineDAO {
 //            return -1;
 //        }
 
-        SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
-        try {
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
 
@@ -80,11 +92,19 @@ public final class DBMedicineDAO {
 
             e.printStackTrace();
             return -1;
-        } finally {
-            db.close();
         }
     }
 
+    /**
+     * add Medicine Record
+     *
+     * @param db         SQLiteDatabase
+     * @param medicineId medicineId
+     * @param recordId   recordId
+     * @param effective  effective
+     * @return raw id
+     * @throws SQLiteException
+     */
     public static long addMedicineRecord(SQLiteDatabase db, int medicineId, int recordId, boolean effective) throws SQLiteException {
         Log.d("DBMedicineDAO", "DB - addMedicineRecord");
 
@@ -109,6 +129,12 @@ public final class DBMedicineDAO {
 
     }
 
+    /**
+     * get Medicine
+     *
+     * @param id id
+     * @return Medicine
+     */
     @Nullable
     public static Medicine getMedicine(int id) {
         Log.d("DBMedicineDAO", "getMedicine");
@@ -156,6 +182,12 @@ public final class DBMedicineDAO {
         return null;
     }
 
+    /**
+     * get Medicines For Record
+     *
+     * @param recordId recordId
+     * @return ArrayList<Medicine>
+     */
     public static ArrayList<Medicine> getMedicinesForRecord(int recordId) {
         Log.d("DBMedicineDAO", "getMedicinesForRecord");
 

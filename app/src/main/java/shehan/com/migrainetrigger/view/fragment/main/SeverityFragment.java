@@ -1,6 +1,5 @@
 package shehan.com.migrainetrigger.view.fragment.main;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -68,15 +67,5 @@ public class SeverityFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return rootView;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }

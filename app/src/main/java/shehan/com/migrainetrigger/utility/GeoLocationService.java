@@ -19,12 +19,7 @@ import com.google.android.gms.location.LocationServices;
  */
 public class GeoLocationService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    public interface GeoLocationListener {
-        void onLocationReceived(Location location);
-    }
-
     public static final int PERMISSION_ACCESS_FINE_LOCATION = 1;
-
     private FragmentActivity activity;
     private GeoLocationListener geoLocationListener;
     private GoogleApiClient googleApiClient;
@@ -66,7 +61,6 @@ public class GeoLocationService implements GoogleApiClient.ConnectionCallbacks, 
         Log.e("GeoLocationService", "Can't connect to Google Play Services!");
     }
 
-
     public void connect() {
         if (googleApiClient != null) {
             googleApiClient.connect();
@@ -80,5 +74,9 @@ public class GeoLocationService implements GoogleApiClient.ConnectionCallbacks, 
             googleApiClient.disconnect();
             Log.d("GeoLocationService", "googleApiClient.disconnect");
         }
+    }
+
+    public interface GeoLocationListener {
+        void onLocationReceived(Location location);
     }
 }

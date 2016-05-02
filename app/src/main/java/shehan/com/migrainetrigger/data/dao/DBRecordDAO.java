@@ -22,6 +22,12 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
  */
 public final class DBRecordDAO {
 
+    /**
+     * add Record To DB
+     *
+     * @param record record
+     * @return raw id
+     */
     public static long addRecordToDB(Record record) {
         Log.d("DBRecordDAO", "addRecordToDB");
 
@@ -30,8 +36,7 @@ public final class DBRecordDAO {
             return -1;
         }
 
-        SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
-        try {
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
 
@@ -65,11 +70,17 @@ public final class DBRecordDAO {
 
             e.printStackTrace();
             return -1;
-        } finally {
-            db.close();
         }
     }
 
+    /**
+     * add Record To DB
+     *
+     * @param db     SQLiteDatabase
+     * @param record record
+     * @return raw id
+     * @throws SQLiteException
+     */
     public static long addRecordToDB(SQLiteDatabase db, Record record) throws SQLiteException {
         Log.d("DBMedicineDAO", "addRecordToDB");
 
@@ -108,6 +119,11 @@ public final class DBRecordDAO {
         return row_id;
     }
 
+    /**
+     * get Last Record Id
+     *
+     * @return last record id
+     */
     public static int getLastRecordId() {
         Log.d("DBRecordDAO", "getLastRecordId");
         SQLiteDatabase db = null;
@@ -147,7 +163,11 @@ public final class DBRecordDAO {
         return recordId;
     }
 
-
+    /**
+     * get Last Record
+     *
+     * @return Record
+     */
     public static Record getLastRecord() {
         Log.d("DBRecordDAO", "getLastRecord");
         Record record = null;
@@ -213,7 +233,9 @@ public final class DBRecordDAO {
     }
 
     /**
-     * @return
+     * get All Records
+     *
+     * @return ArrayList<Record>
      */
     public static ArrayList<Record> getAllRecords() {
         Log.d("DBRecordDAO", "getAllRecords");
@@ -280,8 +302,10 @@ public final class DBRecordDAO {
     }
 
     /**
-     * @param id
-     * @return
+     * get Record
+     *
+     * @param id id
+     * @return Record
      */
     @Nullable
     public static Record getRecord(int id) {

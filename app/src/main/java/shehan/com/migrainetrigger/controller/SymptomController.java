@@ -20,13 +20,9 @@ public class SymptomController {
         return null;
     }
 
-    /**
-     *
-     * @return
-     */
     public static ArrayList<Symptom> getAllSymptoms() {
         Log.d("SymptomController", " getAllSymptoms ");
-        ArrayList<Symptom>symptomArrayList=DBSymptomDAO.getAllSymptoms();
+        ArrayList<Symptom> symptomArrayList = DBSymptomDAO.getAllSymptoms();
         Collections.sort(symptomArrayList);
         return symptomArrayList;
     }

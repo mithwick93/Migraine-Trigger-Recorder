@@ -49,10 +49,13 @@ public class ViewRecordsActivity
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 
+
+        assert tabLayout != null;
         tabLayout.addTab(tabLayout.newTab().setText("List"));
         tabLayout.addTab(tabLayout.newTab().setText("Calender"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+        //initialize tab layout
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         final PagerAdapter adapter;
 
@@ -118,6 +121,9 @@ public class ViewRecordsActivity
         startActivity(intent);
     }
 
+    /**
+     * private static adapter class to host tabs
+     */
     public static class PagerAdapter extends FragmentStatePagerAdapter {
         int mNumOfTabs;
         ViewRecordListFragment viewRecordListFragment;

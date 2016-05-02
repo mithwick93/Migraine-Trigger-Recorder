@@ -56,7 +56,7 @@ public class ViewRecordCalenderFragment extends Fragment {
         initCalenderView(view);
 
         //loadEvents();
-        new GetRecordCalenderListTask().execute();
+        new GetRecordCalenderListTask().execute();//load calender events
         return view;
     }
 
@@ -84,6 +84,7 @@ public class ViewRecordCalenderFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (calenderView != null) {
+//            new GetRecordCalenderListTask().execute();//load calender events
             calenderView.showCalendarWithAnimation();
         }
     }
@@ -101,11 +102,12 @@ public class ViewRecordCalenderFragment extends Fragment {
         txtViewCalenderHeader = (TextView) view.findViewById(R.id.calender_header);
         calenderView.hideCalendar();
 
+        //Map to keep records
         recordsMap = new HashMap<>();
         dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
         currentCalender = Calendar.getInstance(Locale.getDefault());
 
-//        calenderView.drawSmallIndicatorForEvents(true);
+        calenderView.drawSmallIndicatorForEvents(true);
         calenderView.setDayColumnNames(new String[]{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"});
         calenderView.setUseThreeLetterAbbreviation(true);
 
@@ -124,7 +126,7 @@ public class ViewRecordCalenderFragment extends Fragment {
                     mCallback.onRecordCalenderCallBack(recordList.get(0));
 
                 } else {
-                    Log.e("ViewRecordCalender", "record list not found ");
+                    Log.i("ViewRecordCalender", "record list not found ");
                 }
 
             }
@@ -149,7 +151,23 @@ public class ViewRecordCalenderFragment extends Fragment {
      */
     private class GetRecordCalenderListTask extends AsyncTask<String, Void, ArrayList<Record>> {
 
+        private final String[] CALENDER_EVENT_COLOURS = {
+                "#45d3d3",
+                "#46cf9a",
+                "#48cb66",
+                "#8bc34a",
+                "#adcb48",
+                "#d3d345",
+                "#dbb842",
+                "#e4973e",
+                "#ec703a",
+                "#f44336",
+                "#607D8B"
+        };
+
         /**
+         * Set all map key dates time to midnight
+         *
          * @param calendar calender to change
          */
         private void setToMidnight(Calendar calendar) {
@@ -184,40 +202,40 @@ public class ViewRecordCalenderFragment extends Fragment {
                 int recordId = record.getRecordId();
                 long milliseconds = record.getStartTime().getTime();
                 int intensityColor;
-                switch (record.getIntensity()) {
+                switch (record.getIntensity()) {//Set event color
                     case 1:
-                        intensityColor = Color.parseColor("#45d3d3");
+                        intensityColor = Color.parseColor(CALENDER_EVENT_COLOURS[0]);
                         break;
                     case 2:
-                        intensityColor = Color.parseColor("#46cf9a");
+                        intensityColor = Color.parseColor(CALENDER_EVENT_COLOURS[1]);
                         break;
                     case 3:
-                        intensityColor = Color.parseColor("#48cb66");
+                        intensityColor = Color.parseColor(CALENDER_EVENT_COLOURS[2]);
                         break;
                     case 4:
-                        intensityColor = Color.parseColor("#8bc34a");
+                        intensityColor = Color.parseColor(CALENDER_EVENT_COLOURS[3]);
                         break;
                     case 5:
-                        intensityColor = Color.parseColor("#adcb48");
+                        intensityColor = Color.parseColor(CALENDER_EVENT_COLOURS[4]);
                         break;
                     case 6:
-                        intensityColor = Color.parseColor("#d3d345");
+                        intensityColor = Color.parseColor(CALENDER_EVENT_COLOURS[5]);
                         break;
                     case 7:
-                        intensityColor = Color.parseColor("#dbb842");
+                        intensityColor = Color.parseColor(CALENDER_EVENT_COLOURS[6]);
                         break;
                     case 8:
-                        intensityColor = Color.parseColor("#e4973e");
+                        intensityColor = Color.parseColor(CALENDER_EVENT_COLOURS[7]);
                         break;
                     case 9:
-                        intensityColor = Color.parseColor("#ec703a");
+                        intensityColor = Color.parseColor(CALENDER_EVENT_COLOURS[8]);
                         break;
                     case 10:
-                        intensityColor = Color.parseColor("#f44336");
+                        intensityColor = Color.parseColor(CALENDER_EVENT_COLOURS[9]);
                         break;
                     default:
                         Log.d("ViewRecordCalender", "intensityColor : " + record.getIntensity());
-                        intensityColor = Color.parseColor("#607D8B");
+                        intensityColor = Color.parseColor(CALENDER_EVENT_COLOURS[10]);
                         break;
                 }
 

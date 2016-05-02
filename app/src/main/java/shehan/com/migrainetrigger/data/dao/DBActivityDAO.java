@@ -20,6 +20,11 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
 public final class DBActivityDAO {
 
 
+    /**
+     * Get all activities
+     *
+     * @return ArrayList<LifeActivity>
+     */
     public static ArrayList<LifeActivity> getAllActivities() {
         Log.d("DBActivityDAO", " DB - getAllActivities ");
         ArrayList<LifeActivity> lifeActivityArrayList = new ArrayList<>();
@@ -53,6 +58,13 @@ public final class DBActivityDAO {
         return lifeActivityArrayList;
     }
 
+    /**
+     * add Activity Record to table
+     *
+     * @param activityId activityId
+     * @param recordId   recordId
+     * @return edited raw id
+     */
     public static long addActivityRecord(int activityId, int recordId) {
         Log.d("DBActivityDAO", "DB - addActivityRecord");
 
@@ -61,8 +73,7 @@ public final class DBActivityDAO {
 //            return -1;
 //        }
 
-        SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
-        try {
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
 
@@ -79,11 +90,16 @@ public final class DBActivityDAO {
 
             e.printStackTrace();
             return -1;
-        } finally {
-            db.close();
         }
     }
 
+    /**
+     * @param db         SQLiteDatabase
+     * @param activityId recordId
+     * @param recordId   recordId
+     * @return edited raw id
+     * @throws SQLiteException
+     */
     public static long addActivityRecord(SQLiteDatabase db, int activityId, int recordId) throws SQLiteException {
         Log.d("DBActivityDAO", "DB - addActivityRecord");
 
@@ -106,6 +122,12 @@ public final class DBActivityDAO {
 
     }
 
+    /**
+     * get Activity
+     *
+     * @param id id
+     * @return LifeActivity
+     */
     @Nullable
     public static LifeActivity getActivity(int id) {
         Log.d("DBActivityDAO", "getActivity");
@@ -153,6 +175,12 @@ public final class DBActivityDAO {
         return null;
     }
 
+    /**
+     * get Activities For Record
+     *
+     * @param recordId recordId
+     * @return ArrayList<LifeActivity>
+     */
     public static ArrayList<LifeActivity> getActivitiesForRecord(int recordId) {
         Log.d("DBActivityDAO", "getActivities");
 

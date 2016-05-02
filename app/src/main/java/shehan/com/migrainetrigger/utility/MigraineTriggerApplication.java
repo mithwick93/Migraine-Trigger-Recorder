@@ -13,6 +13,11 @@ import com.johnhiott.darkskyandroidlib.ForecastApi;
 public class MigraineTriggerApplication extends Application {
     private static Context context;
 
+    /**
+     * Get application context
+     *
+     * @return context of application
+     */
     public static Context getAppContext() {
         return context;
     }

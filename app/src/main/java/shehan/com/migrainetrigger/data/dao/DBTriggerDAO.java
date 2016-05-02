@@ -19,6 +19,11 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
  */
 public final class DBTriggerDAO {
 
+    /**
+     * get All Triggers
+     *
+     * @return ArrayList<Trigger>
+     */
     public static ArrayList<Trigger> getAllTriggers() {
         Log.d("DBTriggerDAO", " DB - getAllSymptoms ");
         ArrayList<Trigger> triggerArrayList = new ArrayList<>();
@@ -52,6 +57,13 @@ public final class DBTriggerDAO {
         return triggerArrayList;
     }
 
+    /**
+     * add Trigger Record
+     *
+     * @param triggerId triggerId
+     * @param recordId  recordId
+     * @return raw id
+     */
     public static long addTriggerRecord(int triggerId, int recordId) {
         Log.d("DBTriggerDAO", "DB - addTriggerRecord");
 
@@ -60,8 +72,7 @@ public final class DBTriggerDAO {
 //            return -1;
 //        }
 
-        SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
-        try {
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
 
@@ -78,11 +89,18 @@ public final class DBTriggerDAO {
 
             e.printStackTrace();
             return -1;
-        } finally {
-            db.close();
         }
     }
 
+    /**
+     * add Trigger Record
+     *
+     * @param db        SQLiteDatabase
+     * @param triggerId triggerId
+     * @param recordId  recordId
+     * @return raw id
+     * @throws SQLiteException
+     */
     public static long addTriggerRecord(SQLiteDatabase db, int triggerId, int recordId) throws SQLiteException {
         Log.d("DBTriggerDAO", "DB - addTriggerRecord");
 //
@@ -105,6 +123,12 @@ public final class DBTriggerDAO {
 
     }
 
+    /**
+     * get Trigger
+     *
+     * @param id id
+     * @return Trigger
+     */
     @Nullable
     public static Trigger getTrigger(int id) {
         Log.d("DBTriggerDAO", "getTrigger");
@@ -152,6 +176,12 @@ public final class DBTriggerDAO {
         return null;
     }
 
+    /**
+     * get Triggers For Record
+     *
+     * @param recordId recordId
+     * @return ArrayList<Trigger>
+     */
     public static ArrayList<Trigger> getTriggersForRecord(int recordId) {
         Log.d("DBTriggerDAO", "getTriggersForRecord");
 

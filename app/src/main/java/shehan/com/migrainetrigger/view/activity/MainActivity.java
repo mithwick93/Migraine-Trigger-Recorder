@@ -1,6 +1,5 @@
 package shehan.com.migrainetrigger.view.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -83,34 +82,12 @@ public class MainActivity
         }
 
         this.lastFragment = -1;
-
-        //TODO: remove following code
-        //just to initialize database
-//        new Runnable() {
-//            @Override
-//            public void run() {
-//                DatabaseHandler.getWritableDatabase();
-//            }
-//        }.run();
-
-
         Log.d("Main-onCreate", "onCreate success");
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        int count = getFragmentManager().getBackStackEntryCount();
-//
-//        if (drawer != null) {
-//            if (drawer.isDrawerOpen(GravityCompat.START)) {
-//                drawer.closeDrawer(GravityCompat.START);
-//            } else if (count > 0) {
-//                    getFragmentManager().popBackStack();
-//            } else {
-//                super.onBackPressed();
-//            }
-//        }
 
         if (drawer != null) {
             if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -127,6 +104,12 @@ public class MainActivity
 
     //region interface implementations
 
+    /**
+     * Action on navigation item click
+     *
+     * @param item clicked item
+     * @return clicked value
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -198,7 +181,7 @@ public class MainActivity
                 @Override
                 public void onClick(View view) {
                     Log.d("MainActivity-fab", "Launching information level dialog");
-                    animateFAB();
+
                     new MaterialDialog.Builder(MainActivity.this)
                             .title(R.string.levelOfInformationDialog)
                             .items(R.array.levelOfInformationOptions)
@@ -206,17 +189,11 @@ public class MainActivity
                             .itemsCallback(new MaterialDialog.ListCallback() {
                                 @Override
                                 public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                    animateFAB();
+
                                     Intent intent = new Intent(MainActivity.this, AddRecordActivity.class);
                                     intent.putExtra("levelOfInformation", which);
                                     Log.d("MainActivity-fab-dialog", "Launching new record activity");
                                     startActivity(intent);
-                                }
-                            })
-                            .dismissListener(new DialogInterface.OnDismissListener() {
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                    animateFAB();
                                 }
                             })
                             .show();
@@ -272,17 +249,6 @@ public class MainActivity
         if (fab != null) {
             fab.setVisibility(View.INVISIBLE);
         }
-    }
-
-    public void animateFAB() {
-//        if (isFabOpen) {
-//            fab.startAnimation(rotateBackward);
-//            isFabOpen = false;
-//        } else {
-//            fab.startAnimation(rotateForward);
-//            isFabOpen = true;
-//
-//        }
     }
 
 

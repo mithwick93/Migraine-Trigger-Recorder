@@ -19,9 +19,6 @@ public class BodyAreaController {
         return null;
     }
 
-    /**
-     * @return
-     */
     public static ArrayList<BodyArea> getAllBodyAreas() {
         Log.d("BodyAreaController", " getAllBodyAreas ");
         return DBBodyAreaDAO.getAllBodyAreas();
@@ -39,11 +36,6 @@ public class BodyAreaController {
 
     }
 
-    /**
-     * @param bodyAreaId
-     * @param recordId
-     * @return
-     */
     public static long addBodyAreaRecord(int bodyAreaId, int recordId) {
         Log.d("BodyAreaController", " addBodyAreaRecord ");
         return DBBodyAreaDAO.addBodyAreaRecord(bodyAreaId, recordId);

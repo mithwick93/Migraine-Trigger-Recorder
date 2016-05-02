@@ -68,7 +68,7 @@
                                 android:hint="@string/record_txt_start_date_hint"
                                 android:inputType="textMultiLine"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="#6c6c6c" />
+                                android:textSize="15sp" />
 
                             <EditText
                                 android:id="@+id/txt_record_start_time"
@@ -79,7 +79,7 @@
                                 android:hint="@string/record_txt_start_time_hint"
                                 android:inputType="textMultiLine"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="#6c6c6c" />
+                                android:textSize="15sp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -132,7 +132,7 @@
                                 android:hint="@string/record_txt_end_date_hint"
                                 android:inputType="textMultiLine"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="#6c6c6c" />
+                                android:textSize="15sp" />
 
                             <EditText
                                 android:id="@+id/txt_record_end_time"
@@ -143,7 +143,7 @@
                                 android:hint="@string/record_txt_end_time_hint"
                                 android:inputType="textMultiLine"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="#6c6c6c" />
+                                android:textSize="15sp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -190,7 +190,8 @@
                             android:clickable="true"
                             android:gravity="center_vertical|center_horizontal"
                             android:hint="@string/record_txt_intensity_hint"
-                            android:textColor="#6c6c6c" />
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textSize="12sp" />
                     </RelativeLayout>
 
                 </LinearLayout>

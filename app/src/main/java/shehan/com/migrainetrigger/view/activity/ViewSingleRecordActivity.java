@@ -78,8 +78,11 @@ public class ViewSingleRecordActivity
 
     }
 
+    /**
+     * Setup record view UI
+     */
     private void initialSetup() {
-        recordId = getIntent().getIntExtra("recordId", -1);
+        recordId = getIntent().getIntExtra("recordId", -1);//get passed record ID
         Log.d("ViewSingleRecord", "recordId : " + recordId);
 
         Fragment fragment = ViewRecordSingleFragment.newInstance(recordId);

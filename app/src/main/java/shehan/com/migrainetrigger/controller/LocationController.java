@@ -20,9 +20,6 @@ public class LocationController {
         return DBLocationDAO.getLocation(id);
     }
 
-    /**
-     * @return
-     */
     public static ArrayList<Location> getAllLocations() {
         Log.d("LocationController", " getAllLocations ");
         return DBLocationDAO.getAllLocations();

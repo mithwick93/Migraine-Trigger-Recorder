@@ -39,6 +39,12 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         // Required empty public constructor
     }
 
+    /**
+     * Static method to get new instance of this fragment
+     *
+     * @param recordId record Id selected
+     * @ ViewRecordSingleFragment fragment
+     */
     public static ViewRecordSingleFragment newInstance(int recordId) {
 
         ViewRecordSingleFragment fragment = new ViewRecordSingleFragment();
@@ -114,7 +120,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         Log.d("ViewRecordSingle", "initSingleRecordView ");
         super.initFullControls(view);
 
-        new LoadRecordTask().execute();
+        new LoadRecordTask().execute();//Load record data to view
     }
 
 
@@ -123,7 +129,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -136,6 +142,10 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     //
     //
     //
+
+    /**
+     * Asynk task to load record from db and show in UI
+     */
     private class LoadRecordTask extends AsyncTask<String, Void, Record> {
 
         @Override
@@ -149,7 +159,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
             Log.d("LoadRecordTask", "onPostExecute ");
 
 
-            //Get to start time
+            //Get start time
             if (record.getStartTime() != null) {
 
                 long timestamp = record.getStartTime().getTime();
@@ -169,7 +179,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
                 editTxtStartTime.setText(AppUtil.getFormattedTime(mHour, mMinute));
             }
 
-            //Get to end time
+            //Get end time
             if (record.getEndTime() != null) {
 
                 long timestamp = record.getEndTime().getTime();

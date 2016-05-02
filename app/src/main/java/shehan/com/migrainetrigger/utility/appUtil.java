@@ -24,11 +24,11 @@ public class AppUtil {
     public final static long ONE_DAY = ONE_HOUR * 24;
 
     /**
-     * Convert ime from daate picker to 12 hour time
+     * Convert ime from date picker to 12 hour time
      *
      * @param hourOfDay Range :0-23
      * @param minute    Range 0:59
-     * @return
+     * @return String FormattedTime
      */
     public static String getFormattedTime(int hourOfDay,
                                           int minute) {
@@ -65,6 +65,12 @@ public class AppUtil {
         return new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.getDefault()).format(timestamp);
     }
 
+    /**
+     * Convert long duration to human readable format
+     *
+     * @param duration time difference as a long
+     * @return string duration
+     */
     public static String getFriendlyDuration(long duration) {
 
         duration *= 1000;
@@ -73,23 +79,9 @@ public class AppUtil {
         int hours = (int) duration / 3600;
         int minutes = (int) (duration % 3600) / 60;
 
-//        if (hours == 1) {
-//            if (minutes == 1) {
-//                return String.format(Locale.getDefault(), "%d hour %02d minute ", hours, minutes);
-//            } else {
-//                return String.format(Locale.getDefault(), "%d hour %02d minutes ", hours, minutes);
-//            }
-//        } else {
-//            if (minutes == 1) {
-//                return String.format(Locale.getDefault(), "%d hours %02d minute ", hours, minutes);
-//            } else {
-//                return String.format(Locale.getDefault(), "%d hours %02d minutes ", hours, minutes);
-//            }
-//        }
-
         StringBuilder res = new StringBuilder();
 
-        long temp = 0;
+        long temp;
         if (duration >= ONE_SECOND) {
             temp = duration / ONE_DAY;
             if (temp > 0) {
@@ -111,7 +103,7 @@ public class AppUtil {
 
             temp = duration / ONE_MINUTE;
             if (temp > 0) {
-                duration -= temp * ONE_MINUTE;
+//                duration -= temp * ONE_MINUTE;
                 res.append(temp).append(" minute").append(temp > 1 ? "s" : "");
             }
 

@@ -78,6 +78,8 @@ public class FAQActivity
     }
 
     /**
+     * Change content of faq according to item selected
+     *
      * @param clickPosition clicked position of f.a.q topics
      */
     @Override

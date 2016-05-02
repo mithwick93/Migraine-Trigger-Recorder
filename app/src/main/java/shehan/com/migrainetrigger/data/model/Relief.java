@@ -3,7 +3,7 @@ package shehan.com.migrainetrigger.data.model;
 /**
  * Created by Shehan on 4/13/2016.
  */
-public class Relief  extends PriorityEntity{
+public class Relief extends PriorityEntity {
 
     private int reliefId;
     private String reliefName;

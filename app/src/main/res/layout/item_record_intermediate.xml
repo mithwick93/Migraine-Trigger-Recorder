@@ -54,8 +54,7 @@
                         android:ems="10"
                         android:focusable="false"
                         android:inputType="textNoSuggestions|textLongMessage|textMultiLine"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="#6c6c6c" />
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 </LinearLayout>
 
@@ -90,8 +89,7 @@
                         android:ems="10"
                         android:focusable="false"
                         android:inputType="textNoSuggestions|textMultiLine"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="#6c6c6c" />
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 </LinearLayout>
 
@@ -126,8 +124,7 @@
                         android:ems="10"
                         android:focusable="false"
                         android:inputType="textNoSuggestions|textMultiLine"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="#6c6c6c" />
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 </LinearLayout>
             </RelativeLayout>

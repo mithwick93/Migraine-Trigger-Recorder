@@ -71,8 +71,7 @@ public class DBBodyAreaDAO {
 //            return -1;
 //        }
 
-        SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
-        try {
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
 
@@ -89,8 +88,6 @@ public class DBBodyAreaDAO {
 
             e.printStackTrace();
             return -1;
-        } finally {
-            db.close();
         }
     }
 
@@ -125,7 +122,12 @@ public class DBBodyAreaDAO {
 
     }
 
-
+    /**
+     * get Body Area
+     *
+     * @param id id
+     * @return BodyArea
+     */
     @Nullable
     public static BodyArea getBodyArea(int id) {
         Log.d("DBBodyAreaDAO", "getBodyArea");
@@ -167,6 +169,12 @@ public class DBBodyAreaDAO {
         return null;
     }
 
+    /**
+     * get Body Areas For Record
+     *
+     * @param recordId recordId
+     * @return ArrayList<BodyArea>
+     */
     public static ArrayList<BodyArea> getBodyAreasForRecord(int recordId) {
         Log.d("DBBodyAreaDAO", "getBodyAreasForRecord");
 

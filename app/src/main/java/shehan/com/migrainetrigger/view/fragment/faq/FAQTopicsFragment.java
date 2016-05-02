@@ -39,7 +39,7 @@ public class FAQTopicsFragment extends Fragment implements FAQTopicsViewAdapter.
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.topics_recycler_view);
 
-        // this is data fpr recycler view
+        // this is data for recycler view
         FAQTopic faqTopicsData[] = {
                 new FAQTopic("Definition"),
                 new FAQTopic("Symptoms"),
@@ -81,6 +81,12 @@ public class FAQTopicsFragment extends Fragment implements FAQTopicsViewAdapter.
             throw new ClassCastException(context.toString()
                     + " must implement OnTopicSelectedListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
     }
 
     @Override

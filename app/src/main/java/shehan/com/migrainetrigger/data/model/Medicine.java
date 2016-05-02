@@ -3,7 +3,7 @@ package shehan.com.migrainetrigger.data.model;
 /**
  * Created by Shehan on 4/13/2016.
  */
-public class Medicine extends PriorityEntity{
+public class Medicine extends PriorityEntity {
     private int medicineId;
     private String medicineName;
     private boolean effective;

@@ -45,21 +45,7 @@ public class ViewRecordListFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_record_list, container, false);
 
-//        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.record_list_recycler_view);
-//
-//        // 2. set layoutManger
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//
-//        // 3. create an adapter
-//        RecordViewAdapter recordViewAdapter = new RecordViewAdapter(this, getRecordViewData());
-//
-//        // 4. set adapter
-//        recyclerView.setAdapter(recordViewAdapter);
-//
-//        // 5. set item animator to DefaultAnimator
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        new GetRecordListTask(view).execute();
+        new GetRecordListTask(view).execute();//Load records to list view
         return view;
     }
 
@@ -75,6 +61,15 @@ public class ViewRecordListFragment extends Fragment
             throw new ClassCastException(context.toString()
                     + " must implement RecordListListener");
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        if (mView != null) {
+//            new GetRecordListTask().execute();//Load records to list view
+//        }
+
     }
 
     @Override
@@ -117,9 +112,9 @@ public class ViewRecordListFragment extends Fragment
 
         private RecordViewData[] getRecordViewData() {
             ArrayList<Record> recordArrayList = RecordController.getAllRecords();
-
             RecordViewData recordViewData[] = new RecordViewData[recordArrayList.size()];
 
+            //Load data to recordViewData[]  from recordArrayList
             for (int i = 0; i < recordArrayList.size(); i++) {
                 Record record = recordArrayList.get(i);
                 int recordId = record.getRecordId();
@@ -145,7 +140,7 @@ public class ViewRecordListFragment extends Fragment
                 }
 
 
-                switch (record.getIntensity()) {
+                switch (record.getIntensity()) {//Set intensity pic
                     case 1:
                         intensity = R.drawable.num_1;
                         break;

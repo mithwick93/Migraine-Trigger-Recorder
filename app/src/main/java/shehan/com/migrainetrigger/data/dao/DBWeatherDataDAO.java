@@ -16,6 +16,15 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
  */
 public final class DBWeatherDataDAO {
 
+    /**
+     * add Weather Data
+     *
+     * @param db          SQLiteDatabase
+     * @param recordId    recordId
+     * @param weatherData weatherData
+     * @return raw id
+     * @throws SQLiteException
+     */
     public static long addWeatherData(SQLiteDatabase db, int recordId, WeatherData weatherData) throws SQLiteException {
         Log.d("DBWeatherDataDAO", "DB - addTriggerRecord");
 
@@ -43,6 +52,12 @@ public final class DBWeatherDataDAO {
 
     }
 
+    /**
+     * get Weather Data By RecordId
+     *
+     * @param recordId recordId
+     * @return WeatherData
+     */
     public static WeatherData getWeatherDataByRecordId(int recordId) {
         Log.d("DBWeatherDataDAO", "getWeatherDataById");
 

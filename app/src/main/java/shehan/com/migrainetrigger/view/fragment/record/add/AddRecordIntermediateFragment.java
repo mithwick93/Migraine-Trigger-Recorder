@@ -385,11 +385,15 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
 
     }
 
+    /**
+     * Save record,
+     * In subclasses handle this separately
+     */
     private void saveIntermediateRecord() {
         Log.d("AddRecordInterFragment", "saveIntermediateRecord");
         //validations
         //check start<end
-        Timestamp startTimestamp = null;
+        Timestamp startTimestamp;
 
         //Check for start date
         if (startDate[0] != -1) {

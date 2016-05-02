@@ -161,7 +161,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     public void onStart() {
         super.onStart();
         if (geoLocationService != null) {
-            geoLocationService.connect();
+//            geoLocationService.connect();
             Log.d("AddRecordBasicFragment", "geoLocationService.connect");
         }
     }
@@ -170,7 +170,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     public void onResume() {
         super.onResume();
         if (geoLocationService != null) {
-            geoLocationService.connect();
+//            geoLocationService.connect();
             Log.d("AddRecordBasicFragment", "geoLocationService.connect");
         }
     }
@@ -202,9 +202,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case GeoLocationService.PERMISSION_ACCESS_FINE_LOCATION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // All good!
-                } else {
+                if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     showToast(getContext(), "Need your location");
                 }
                 break;
@@ -556,6 +554,11 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
     }
 
+    /**
+     * Called whebn location is recieved
+     *
+     * @param location location object
+     */
     public void onLocationReceived(Location location) {
         Log.d("AddRecordBasic", "onLocationReceived ");
         Timestamp startTimestamp;
@@ -682,6 +685,9 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         }
     }
 
+    /**
+     * Choose to save record or get weather
+     */
     private void chooseSaveOrSummery() {
 
         if (!weatherDataLoaded || weatherData == null) {
@@ -714,14 +720,14 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     }
 
     /**
-     * save record,
+     * Save record,
      * In subclasses handle this separately
      */
     private void saveBasicRecord() {
         Log.d("AddRecordBasic", "saveRecord");
         //validations
         //check start<end
-        Timestamp startTimestamp = null;
+        Timestamp startTimestamp;
 
         //Check for start date
         if (startDate[0] != -1) {
@@ -839,7 +845,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
         @Override
         public void getWeatherData(double wLatitude, double wLongitude, Timestamp wTimestamp) {
-            RequestBuilder weather = new RequestBuilder();
+            RequestBuilder weather = new RequestBuilder();//weather requester and initialization
             Request request = new Request();
             request.setLat(String.valueOf(wLatitude));
             request.setLng(String.valueOf(wLongitude));

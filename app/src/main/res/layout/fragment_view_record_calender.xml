@@ -22,14 +22,10 @@
     <com.github.sundeepk.compactcalendarview.CompactCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/calender_view"
         android:layout_width="fill_parent"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         android:layout_below="@+id/calender_header"
         android:layout_marginBottom="5dp"
-        app:compactCalendarBackgroundColor="@color/colorControlBackground"
-        app:compactCalendarCurrentDayBackgroundColor="@color/colorAccent"
-        app:compactCalendarCurrentSelectedDayBackgroundColor="@color/colorSelectedCalender"
-        app:compactCalendarTargetHeight="300dp"
-        app:compactCalendarTextColor="@android:color/black"
+        app:compactCalendarTargetHeight="250dp"
         app:compactCalendarTextSize="12sp" />
 
     <TextSwitcher

@@ -18,6 +18,12 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
  * Created by Shehan on 4/13/2016.
  */
 public final class DBReliefDAO {
+
+    /**
+     * get All Reliefs
+     *
+     * @return ArrayList<Relief>
+     */
     public static ArrayList<Relief> getAllReliefs() {
         Log.d("DBReliefDAO", " DB - getAllReliefs ");
         ArrayList<Relief> reliefArrayList = new ArrayList<>();
@@ -51,6 +57,14 @@ public final class DBReliefDAO {
         return reliefArrayList;
     }
 
+    /**
+     * add Relief Record
+     *
+     * @param reliefId  reliefId
+     * @param recordId  recordId
+     * @param effective effective
+     * @return raw id
+     */
     public static long addReliefRecord(int reliefId, int recordId, boolean effective) {
         Log.d("DBReliefDAO", "DB - addReliefRecord");
 //
@@ -59,8 +73,7 @@ public final class DBReliefDAO {
 //            return -1;
 //        }
 
-        SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
-        try {
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
 
@@ -79,11 +92,19 @@ public final class DBReliefDAO {
 
             e.printStackTrace();
             return -1;
-        } finally {
-            db.close();
         }
     }
 
+    /**
+     * add Relief Record
+     *
+     * @param db        SQLiteDatabase
+     * @param reliefId  reliefId
+     * @param recordId  recordId
+     * @param effective effective
+     * @return raw id
+     * @throws SQLiteException
+     */
     public static long addReliefRecord(SQLiteDatabase db, int reliefId, int recordId, boolean effective) throws SQLiteException {
         Log.d("DBReliefDAO", "DB - addReliefRecord");
 
@@ -108,6 +129,12 @@ public final class DBReliefDAO {
 
     }
 
+    /**
+     * get Relief
+     *
+     * @param id id
+     * @return Relief
+     */
     @Nullable
     public static Relief getRelief(int id) {
         Log.d("DBReliefDAO", "getRelief");
@@ -155,6 +182,12 @@ public final class DBReliefDAO {
         return null;
     }
 
+    /**
+     * get Reliefs For Record
+     *
+     * @param recordId recordId
+     * @return ArrayList<Relief>
+     */
     public static ArrayList<Relief> getReliefsForRecord(int recordId) {
         Log.d("DBReliefDAO", "getReliefsForRecord");
 

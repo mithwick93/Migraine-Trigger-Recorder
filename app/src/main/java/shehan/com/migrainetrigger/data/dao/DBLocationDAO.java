@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.data.dao;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -16,6 +17,12 @@ import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
  * Created by Shehan on 4/13/2016.
  */
 public final class DBLocationDAO {
+
+    /**
+     * get All Locations
+     *
+     * @return ArrayList<Location>
+     */
     public static ArrayList<Location> getAllLocations() {
         Log.d("DBLocationDAO", " DB - getAllLocations ");
         ArrayList<Location> locationArrayList = new ArrayList<>();
@@ -48,6 +55,13 @@ public final class DBLocationDAO {
         return locationArrayList;
     }
 
+    /**
+     * ge tLocation
+     *
+     * @param id id
+     * @return Location
+     */
+    @Nullable
     public static Location getLocation(int id) {
         Log.d("DBLocationDAO", "getLocation");
 

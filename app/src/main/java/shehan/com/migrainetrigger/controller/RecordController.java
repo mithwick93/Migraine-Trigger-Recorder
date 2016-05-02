@@ -17,57 +17,48 @@ import shehan.com.migrainetrigger.utility.AppUtil;
  */
 public class RecordController {
 
-    /**
-     * @param record
-     * @param recordLevel
-     * @return
-     */
+
     public static boolean addNewRecord(Record record, int recordLevel) {
         Log.d("RecordController", "addNewRecord");
         return DBTransactionHandler.addRecordTransaction(record, recordLevel);
     }
 
-    /**
-     * @return
-     */
     public static int getLastId() {
         return DBRecordDAO.getLastRecordId();
     }
 
-    /**
-     * @param id
-     * @return
-     */
     public static Record getRecordById(int id) {
 
         return DBRecordDAO.getRecord(id);
     }
 
     /**
-     * @param id
-     * @return
+     * Get all record detail when record id is known
+     *
+     * @param recordId relevant record ID
+     * @return Record
      */
     @Nullable
-    public static Record getRecordAll(int id) {
+    public static Record getRecordAll(int recordId) {
         Log.d("RecordController", "getRecordAll");
-        Record record = DBRecordDAO.getRecord(id);
+        Record record = DBRecordDAO.getRecord(recordId);
         if (record != null) {
 
             if (record.getLocationId() > -1) {//set location
                 record.setLocation(LocationController.getLocationById(record.getLocationId()));
             }
 
-            record.setWeatherData(WeatherDataController.getWeatherDataByRecordId(id));//set weather data
+            record.setWeatherData(WeatherDataController.getWeatherDataByRecordId(recordId));//set weather data
 
-            record.setActivities(LifeActivityController.getActivitiesForRecord(id));//set activities
+            record.setActivities(LifeActivityController.getActivitiesForRecord(recordId));//set activities
 
-            record.setMedicines(MedicineController.getMedicinesForRecord(id));//Set medicine
+            record.setMedicines(MedicineController.getMedicinesForRecord(recordId));//Set medicine
 
-            record.setReliefs(ReliefController.getReliefsForRecord(id));//Set reliefs
+            record.setReliefs(ReliefController.getReliefsForRecord(recordId));//Set reliefs
 
-            record.setSymptoms(SymptomController.getSymptomsForRecord(id));//Set symptoms
+            record.setSymptoms(SymptomController.getSymptomsForRecord(recordId));//Set symptoms
 
-            record.setTriggers(TriggerController.getTriggersForRecord(id));//Set triggers
+            record.setTriggers(TriggerController.getTriggersForRecord(recordId));//Set triggers
 
             return record;
         }
@@ -76,16 +67,16 @@ public class RecordController {
         return null;
     }
 
-
-    /**
-     * @return
-     */
     public static ArrayList<Record> getAllRecords() {
 
         return DBRecordDAO.getAllRecords();
     }
 
-
+    /**
+     * Load status from db and show
+     *
+     * @return status string
+     */
     public static String getStatus() {
         Log.d("RecordController", "getStatus");
         String status;
@@ -100,7 +91,7 @@ public class RecordController {
                 long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
                 String duration = AppUtil.getFriendlyDuration(differenceInSeconds);
 
-                status = "Migraine free for : " + duration;
+                status = "Migraine free for " + duration;
             } else {
                 status = "Get well soon ";
             }
