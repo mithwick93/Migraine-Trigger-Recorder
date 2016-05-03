@@ -23,9 +23,6 @@ android {
             testCoverageEnabled = true
         }
     }
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
 }
 
 dependencies {
@@ -34,23 +31,19 @@ dependencies {
     compile('com.github.afollestad.material-dialogs:commons:0.8.5.8@aar') {
         transitive = true
     }
+    //
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.android.support:design:23.3.0'
     compile 'com.android.support:cardview-v7:23.3.0'
     compile 'com.android.support:recyclerview-v7:23.3.0'
     //
-//    compile 'com.google.android.gms:play-services:8.4.0'
-//    compile 'com.google.android.gms:play-services-auth:8.4.0'
-//    compile 'com.google.android.gms:play-services-gcm:8.4.0'
-//    compile 'com.google.android.gms:play-services-ads:8.4.0'
     compile 'com.google.android.gms:play-services-location:8.4.0'
     compile 'com.google.android.gms:play-services-auth:8.4.0'
     //
     compile 'com.github.johnhiott:DarkSkyApi:v0.1.4'
     compile 'com.github.sundeepk:compact-calendar-view:1.8.3'
     //
-
     // Required -- JUnit 4 framework
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test:runner:0.4') {
