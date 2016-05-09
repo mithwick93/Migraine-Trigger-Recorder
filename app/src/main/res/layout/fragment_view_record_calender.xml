@@ -16,7 +16,7 @@
         android:padding="5dp"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#6c6c6c"
+        android:textColor="@color/textColorSecondaryInverse"
         android:textSize="30sp" />
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"

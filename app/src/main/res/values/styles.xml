@@ -1,13 +1,43 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+    <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+    <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+    <!--<item name="colorAccent">@color/colorAccent</item>-->
+    <!--<item name="android:windowDisablePreview">true</item>-->
+
+    <!--</style>-->
+    <style name="AppTheme" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/colorPrimaryInverse</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkInverse</item>
+        <item name="colorAccent">@color/colorAccentInverse</item>
+        <item name="android:textColorPrimary">@color/textColorPrimaryInverse</item>
+        <item name="android:textColorSecondary">@color/textColorSecondaryInverse</item>
+        <item name="android:textColorPrimaryInverse">@color/textColorPrimary</item>
+        <item name="android:textColorSecondaryInverse">@color/textColorSecondary</item>
+
+        <item name="themedWeatherTemperature">@drawable/ic_temperature_inverse</item>
+        <item name="themedWeatherHumidity">@drawable/ic_humidity_inverse</item>
+        <item name="themedWeatherPressure">@drawable/ic_pressure_inverse</item>
+
+    </style>
+
+    <style name="AppTheme.Light" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
+        <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse</item>
         <item name="android:windowDisablePreview">true</item>
+        <!-- some other theme configurations for actionbar, overflow menu etc. -->
 
+        <item name="themedWeatherTemperature">@drawable/ic_temperature</item>
+        <item name="themedWeatherHumidity">@drawable/ic_humidity</item>
+        <item name="themedWeatherPressure">@drawable/ic_pressure</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

@@ -363,5 +363,8 @@ These medications include birth control pills and hormone replacement therapy. T
     <string name="record_view_duration">Duration</string>
     <string name="title_view_record">View record</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="content_desc_pressure">Pressure</string>
+    <string name="content_desc_humidity">Humidity</string>
+    <string name="content_desc_temperature">Temperature</string>
 
 </resources>

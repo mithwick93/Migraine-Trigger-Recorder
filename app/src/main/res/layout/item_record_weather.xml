@@ -60,7 +60,8 @@
                         android:layout_height="48dp"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:src="@drawable/ic_temperature" />
+                        android:contentDescription="@string/content_desc_temperature"
+                        android:src="?attr/themedWeatherTemperature" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -96,7 +97,8 @@
                             android:layout_alignParentStart="true"
                             android:layout_alignParentTop="true"
                             android:layout_marginStart="0dp"
-                            android:src="@drawable/ic_humidity" />
+                            android:contentDescription="@string/content_desc_humidity"
+                            android:src="?attr/themedWeatherHumidity" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -126,7 +128,8 @@
                             android:layout_alignParentStart="true"
                             android:layout_alignParentTop="true"
                             android:layout_marginStart="0dp"
-                            android:src="@drawable/ic_pressure" />
+                            android:contentDescription="@string/content_desc_pressure"
+                            android:src="?attr/themedWeatherPressure" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

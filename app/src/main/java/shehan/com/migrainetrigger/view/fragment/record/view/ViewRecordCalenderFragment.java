@@ -111,6 +111,10 @@ public class ViewRecordCalenderFragment extends Fragment {
         dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
         currentCalender = Calendar.getInstance(Locale.getDefault());
 
+        //Colors
+        //    calenderView.set(R.color.colorCalenderBackground);
+
+
         calenderView.drawSmallIndicatorForEvents(true);
         calenderView.setDayColumnNames(new String[]{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"});
         calenderView.setUseThreeLetterAbbreviation(true);
