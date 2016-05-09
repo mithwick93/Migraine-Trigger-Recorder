@@ -23,6 +23,10 @@ public class RecordController {
         return DBTransactionHandler.addRecordTransaction(record, recordLevel);
     }
 
+    public static boolean updateRecord(Record record) {
+        return DBTransactionHandler.updateRecord(record);
+    }
+
     public static int getLastId() {
         return DBRecordDAO.getLastRecordId();
     }
@@ -74,6 +78,11 @@ public class RecordController {
         return DBRecordDAO.getAllRecords();
     }
 
+    public static ArrayList<Record> getAllRecordsOrderByDate() {
+
+        return DBRecordDAO.getAllRecordsOrderByDate();
+    }
+
     /**
      * Load status from db and show
      *
@@ -108,8 +117,5 @@ public class RecordController {
 
     }
 
-    public static void updateRecord(Record record) {
-
-    }
 
 }

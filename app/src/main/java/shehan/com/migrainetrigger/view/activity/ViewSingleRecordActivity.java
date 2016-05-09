@@ -75,7 +75,10 @@ public class ViewSingleRecordActivity
 
     @Override
     public void onFragmentInteraction(int request) {
-
+        Log.d("ViewSingleRecord", "onFragmentInteraction request : " + request);
+        if (request == 0) {
+            ViewSingleRecordActivity.super.onBackPressed();
+        }
     }
 
     /**

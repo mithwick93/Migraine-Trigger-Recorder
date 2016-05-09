@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -25,6 +26,8 @@ import shehan.com.migrainetrigger.data.model.Trigger;
 import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordFullFragment;
 
+import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,7 +42,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
 
     private int recordId;
 
-    private OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener mCallback;
 
     public ViewRecordSingleFragment() {
         // Required empty public constructor
@@ -90,7 +93,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         //override this in sub classes
         int id = item.getItemId();
         if (id == R.id.action_confirm) {
-            //TODO: Update record call
+            updateRecord();
             return true;
         } else if (id == R.id.action_refresh) {
             showWeather();
@@ -104,7 +107,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            mCallback = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -114,7 +117,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mCallback = null;
     }
 
     @Override
@@ -129,6 +132,90 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         new LoadRecordTask().execute();//Load record data to view
     }
 
+    /**
+     * update record
+     */
+    private void updateRecord() {
+        Log.d("ViewRecordSingle", "updateRecord");
+
+        //validations
+        //check start<end
+        Timestamp startTimestamp;
+
+        //Check for start date
+        if (startDate[0] != -1) {
+
+            if (startTime[0] != -1) {
+                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
+                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":0";
+
+                startTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
+                startTimestamp = getTimeStampDate(tmpStr);
+            }
+        } else {
+            showMsg(getContext(), "Record must have start time");
+            return;
+        }
+
+        Calendar c = Calendar.getInstance();
+        if (startTimestamp.after(c.getTime())) {
+            showMsg(getContext(), "Start Date is past current time");
+            return;
+        }
+
+        //Check for end date
+        Timestamp endTimestamp = null;
+        if (endDate[0] != -1) {
+
+            if (endTime[0] != -1) {
+                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " "
+                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":0";
+                endTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " 0:0:0";
+                endTimestamp = getTimeStampDate(tmpStr);
+            }
+
+        }
+
+        if (endTimestamp != null) {
+            if (endTimestamp.after(c.getTime())) {
+                showMsg(getContext(), "End Date is past current time");
+                return;
+            }
+        }
+
+        //validate times
+        if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
+
+            new AsyncTask<String, Void, Boolean>() {
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    return RecordController.updateRecord(getFullRecordBuilder().setRecordId(recordId).createRecord());
+                }
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if (result) {
+                        showToast(getContext(), "Record was update successfully");
+                        if (mCallback != null) {
+                            mCallback.onFragmentInteraction(0);
+                        }
+
+                    } else {
+                        showToast(getContext(), "Record update failed");
+                    }
+                }
+            }.execute();
+
+        } else {
+            showMsg(getContext(), "Start time is greater than the end time");
+        }
+
+
+    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -202,7 +289,8 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
 
         private void setIntensity(Record record) {
             //Get intensity
-            setIntensityIcon(record.getIntensity());
+            intensity = record.getIntensity();
+            setIntensityIcon(intensity);
         }
 
         private void setWeatherData(Record record) {

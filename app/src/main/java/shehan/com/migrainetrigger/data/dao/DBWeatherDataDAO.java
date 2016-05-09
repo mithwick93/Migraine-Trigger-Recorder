@@ -43,13 +43,25 @@ public final class DBWeatherDataDAO {
 
         values.put(DatabaseDefinition.WEATHER_DATA_RECORD_ID_KEY, recordId);
 
-
         long row_id = db.insert(DatabaseDefinition.WEATHER_DATA_TABLE, null, values);
-
-        Log.d("DAO-add", "result : " + row_id);
 
         return row_id;
 
+    }
+
+
+    /**
+     * delete Weather Record
+     *
+     * @param db       SQLiteDatabase
+     * @param recordId recordId
+     * @return deleted no of rows
+     */
+    public static long deleteWeatherRecord(SQLiteDatabase db, int recordId) {
+        Log.d("DBWeatherDataDAO", "DB - deleteWeatherRecord");
+
+        long row_id = db.delete(DatabaseDefinition.WEATHER_DATA_TABLE, DatabaseDefinition.WEATHER_DATA_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
+        return row_id;
     }
 
     /**

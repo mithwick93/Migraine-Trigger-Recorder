@@ -33,6 +33,7 @@ import shehan.com.migrainetrigger.data.model.Record;
  */
 public class ViewRecordCalenderFragment extends Fragment {
 
+    private View mView;
     private RecordCalenderListener mCallback;
 
     private CompactCalendarView calenderView;
@@ -52,12 +53,12 @@ public class ViewRecordCalenderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_view_record_calender, container, false);
-        initCalenderView(view);
+        mView = inflater.inflate(R.layout.fragment_view_record_calender, container, false);
+        initCalenderView(mView);
 
         //loadEvents();
         new GetRecordCalenderListTask().execute();//load calender events
-        return view;
+        return mView;
     }
 
     @Override
@@ -83,6 +84,9 @@ public class ViewRecordCalenderFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (mView != null) {
+            new GetRecordCalenderListTask().execute();//Load records to list view
+        }
         if (calenderView != null) {
 //            new GetRecordCalenderListTask().execute();//load calender events
             calenderView.showCalendarWithAnimation();

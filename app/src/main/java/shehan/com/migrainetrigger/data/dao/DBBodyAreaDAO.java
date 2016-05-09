@@ -81,8 +81,6 @@ public class DBBodyAreaDAO {
 
             long row_id = db.insert(DatabaseDefinition.BODY_AREA_RECORD_TABLE, null, values); //Add new account to database
 
-            Log.d("DAO-add", "result : " + row_id);
-
             return row_id;
         } catch (SQLiteException e) {
 
@@ -116,10 +114,22 @@ public class DBBodyAreaDAO {
 
         long row_id = db.insert(DatabaseDefinition.BODY_AREA_RECORD_TABLE, null, values);
 
-        Log.d("DAO-add", "result : " + row_id);
-
         return row_id;
 
+    }
+
+    /**
+     * delete Body Area Records
+     *
+     * @param db       SQLiteDatabase
+     * @param recordId recordId
+     * @return deleted no of rows
+     */
+    public static long deleteBodyAreaRecords(SQLiteDatabase db, int recordId) {
+        Log.d("DBBodyAreaDAO", "DB - deleteBodyAreaRecords");
+
+        long row_id = db.delete(DatabaseDefinition.BODY_AREA_RECORD_TABLE, DatabaseDefinition.BODY_AREA_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
+        return row_id;
     }
 
     /**

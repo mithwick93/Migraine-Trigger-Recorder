@@ -33,6 +33,7 @@ public class ViewRecordListFragment extends Fragment
         implements RecordViewAdapter.RecordListViewClickListener {
 
     private Toast mToast;
+    private View mView;
     private RecordListListener mCallback;
 
     public ViewRecordListFragment() {
@@ -43,10 +44,10 @@ public class ViewRecordListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_view_record_list, container, false);
+        mView = inflater.inflate(R.layout.fragment_view_record_list, container, false);
 
-        new GetRecordListTask(view).execute();//Load records to list view
-        return view;
+        new GetRecordListTask(mView).execute();//Load records to list view
+        return mView;
     }
 
     @Override
@@ -66,7 +67,11 @@ public class ViewRecordListFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-//        if (mView != null) {
+        //update
+        if (mView != null) {
+            new GetRecordListTask(mView).execute();//Load records to list view
+        }
+        //        if (mView != null) {
 //            new GetRecordListTask().execute();//Load records to list view
 //        }
 
@@ -111,7 +116,7 @@ public class ViewRecordListFragment extends Fragment
         }
 
         private RecordViewData[] getRecordViewData() {
-            ArrayList<Record> recordArrayList = RecordController.getAllRecords();
+            ArrayList<Record> recordArrayList = RecordController.getAllRecordsOrderByDate();
             RecordViewData recordViewData[] = new RecordViewData[recordArrayList.size()];
 
             //Load data to recordViewData[]  from recordArrayList
@@ -206,6 +211,8 @@ public class ViewRecordListFragment extends Fragment
 
             // 5. set item animator to DefaultAnimator
             recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            showToast("Showing newest first");
 
         }
     }

@@ -83,8 +83,6 @@ public final class DBActivityDAO {
 
             long row_id = db.insert(DatabaseDefinition.ACTIVITY_RECORD_TABLE, null, values);
 
-            Log.d("DAO-add", "result : " + row_id);
-
             return row_id;
         } catch (SQLiteException e) {
 
@@ -116,10 +114,22 @@ public final class DBActivityDAO {
 
         long row_id = db.insert(DatabaseDefinition.ACTIVITY_RECORD_TABLE, null, values);
 
-        Log.d("DAO-add", "result : " + row_id);
-
         return row_id;
 
+    }
+
+    /**
+     * delete Activity Records
+     *
+     * @param db       SQLiteDatabase
+     * @param recordId recordId
+     * @return deleted no of rows
+     */
+    public static long deleteActivityRecords(SQLiteDatabase db, int recordId) {
+        Log.d("DBActivityDAO", "DB - deleteActivityRecords");
+
+        long row_id = db.delete(DatabaseDefinition.ACTIVITY_RECORD_TABLE, DatabaseDefinition.ACTIVITY_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
+        return row_id;
     }
 
     /**
@@ -235,5 +245,6 @@ public final class DBActivityDAO {
 
         return lifeActivities;
     }
+
 
 }

@@ -81,8 +81,6 @@ public final class DBSymptomDAO {
 
             long row_id = db.insert(DatabaseDefinition.SYMPTOM_RECORD_TABLE, null, values);
 
-            Log.d("DAO-add", "result : " + row_id);
-
             return row_id;
         } catch (SQLiteException e) {
 
@@ -116,10 +114,22 @@ public final class DBSymptomDAO {
 
         long row_id = db.insert(DatabaseDefinition.SYMPTOM_RECORD_TABLE, null, values);
 
-        Log.d("DAO-add", "result : " + row_id);
-
         return row_id;
 
+    }
+
+    /**
+     * delete Symptom Records
+     *
+     * @param db       SQLiteDatabase
+     * @param recordId recordId
+     * @return deleted no of rows
+     */
+    public static long deleteSymptomRecords(SQLiteDatabase db, int recordId) {
+        Log.d("DBSymptomDAO", "DB - deleteSymptomRecords");
+
+        long row_id = db.delete(DatabaseDefinition.SYMPTOM_RECORD_TABLE, DatabaseDefinition.SYMPTOM_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
+        return row_id;
     }
 
     /**
