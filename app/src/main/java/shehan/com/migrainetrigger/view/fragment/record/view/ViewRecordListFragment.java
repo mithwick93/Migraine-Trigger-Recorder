@@ -52,6 +52,7 @@ public class ViewRecordListFragment extends Fragment
 
     @Override
     public void onAttach(Context context) {
+
         super.onAttach(context);
 
         // This makes sure that the container activity has implemented
@@ -66,6 +67,7 @@ public class ViewRecordListFragment extends Fragment
 
     @Override
     public void onResume() {
+        Log.d("ViewRecordListFragment", "onResume");
         super.onResume();
         //update
         if (mView != null) {

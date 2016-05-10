@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -33,7 +34,7 @@ public class MainActivity
     private static final boolean DEVELOPER_MODE = true;
 
     private FloatingActionButton fab;
-    private int lastFragment;
+    private Toast mToast;
     private Boolean isFabOpen = false;
     private Animation rotateForward, rotateBackward;
 
@@ -81,13 +82,13 @@ public class MainActivity
             setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
         }
 
-        this.lastFragment = -1;
         Log.d("Main-onCreate", "onCreate success");
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
 
         if (drawer != null) {
             if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -118,15 +119,27 @@ public class MainActivity
 
         if (id == R.id.nav_home) {
             Log.d("Main-navigation", "Home selected");
-            setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
+            HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_home));
+            if (homeFragment != null && homeFragment.isVisible()) {
+                showToast("Home already selected");
+            } else {
+                setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
+            }
 
         } else if (id == R.id.nav_severity) {
             Log.d("Main-navigation", "Severity selected");
-            setFragment(new SeverityFragment(), R.string.nav_severity, View.INVISIBLE, true);
 
+            SeverityFragment severityFragment = (SeverityFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_severity));
+            if (severityFragment != null && severityFragment.isVisible()) {
+                showToast("Severity already selected");
+            } else {
+                setFragment(new SeverityFragment(), R.string.nav_severity, View.VISIBLE, true);
+            }
         } else if (id == R.id.nav_answers) {
             Log.d("Main-navigation", "Answers selected");
-            showNotImplemented();
+            Intent intent = new Intent(MainActivity.this, ManageAnswersActivity.class);
+            Log.d("Main-navigation", "Launching manage answers activity");
+            startActivity(intent);
 
         } else if (id == R.id.nav_faq) {
             Log.d("Main-navigation", "F.A.Q selected");
@@ -142,7 +155,9 @@ public class MainActivity
 
         } else if (id == R.id.nav_report) {
             Log.d("Main-navigation", "Report selected");
-            showNotImplemented();
+            Intent intent = new Intent(MainActivity.this, ReportActivity.class);
+            Log.d("Main-navigation", "Launching report activity");
+            startActivity(intent);
 
         } else if (id == R.id.nav_settings) {
             Log.d("Main-navigation", "Settings selected");
@@ -150,7 +165,13 @@ public class MainActivity
 
         } else if (id == R.id.nav_about) {
             Log.d("Main-navigation", "About selected");
-            setFragment(new AboutFragment(), R.string.nav_about, View.INVISIBLE, true);
+
+            AboutFragment aboutFragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_about));
+            if (aboutFragment != null && aboutFragment.isVisible()) {
+                showToast("about already selected");
+            } else {
+                setFragment(new AboutFragment(), R.string.nav_about, View.VISIBLE, true);
+            }
         }
 
 
@@ -216,21 +237,36 @@ public class MainActivity
 
 
         Log.d("Main-setFragment", fragment.toString() + " , " + Integer.toString(toolBarTitle) + " , " + Integer.toString(fabVisibility));
+
         String tag = getString(toolBarTitle);
 
-        if (lastFragment == toolBarTitle) {
-            Log.d("Main-setFragment", "Fragment already in view");
-//            return;
-        }
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+
+        final int newBackStackLength = fragmentManager.getBackStackEntryCount() + 1;
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.replace(R.id.container_body, fragment, tag);
         if (addToBackStack) {
-            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.addToBackStack(tag);
         }
         fragmentTransaction.commit();
+
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                int nowCount = fragmentManager.getBackStackEntryCount();
+                if (newBackStackLength != nowCount) {
+                    // we don't really care if going back or forward. we already performed the logic here.
+                    fragmentManager.removeOnBackStackChangedListener(this);
+
+                    if (newBackStackLength > nowCount) { // user pressed back
+                        fragmentManager.popBackStackImmediate();
+                    }
+                }
+            }
+        });
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(toolBarTitle);
@@ -240,8 +276,6 @@ public class MainActivity
             fab.setVisibility(fabVisibility);
         }
 
-        //Track last fragment
-        lastFragment = toolBarTitle;
     }
 
     private void showNotImplemented() {
@@ -250,6 +284,14 @@ public class MainActivity
         }
     }
 
+    private void showToast(String message) {
+        if (mToast != null) {
+            mToast.cancel();
+            mToast = null;
+        }
+        mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        mToast.show();
+    }
 
     //endregion
 }

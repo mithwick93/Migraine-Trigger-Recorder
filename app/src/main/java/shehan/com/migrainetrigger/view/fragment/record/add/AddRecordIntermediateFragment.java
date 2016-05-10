@@ -110,10 +110,11 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_confirm) {
-            chooseSaveOrSummery();
-            return true;
-        } else if (id == R.id.action_refresh) {
+//        if (id == R.id.action_confirm) {
+//            recordAcceptAction();
+//            return true;
+//        } else
+        if (id == R.id.action_refresh) {
             showWeather();
             return true;
         }
@@ -354,7 +355,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     //
     //
     //
-    private void chooseSaveOrSummery() {
+    public void recordAcceptAction() {
 
         if (!weatherDataLoaded || weatherData == null) {
             new MaterialDialog.Builder(getContext())

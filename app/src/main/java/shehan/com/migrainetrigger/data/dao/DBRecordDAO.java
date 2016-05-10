@@ -73,6 +73,7 @@ public final class DBRecordDAO {
 
     /**
      * add Record To DB
+     *
      * @param db     SQLiteDatabase
      * @param record record
      * @return raw id
@@ -117,7 +118,8 @@ public final class DBRecordDAO {
 
     /**
      * update Record
-     * @param db SQLiteDatabase
+     *
+     * @param db     SQLiteDatabase
      * @param record record
      * @return whether the record update
      * @throws SQLiteException
@@ -156,6 +158,20 @@ public final class DBRecordDAO {
         // Inserting Row
         long row_id = db.update(DatabaseDefinition.RECORD_TABLE, values, DatabaseDefinition.RECORD_ID_KEY + " = ?", new String[]{String.valueOf(record.getRecordId())});
 
+        return row_id;
+    }
+
+    /**
+     * Delete record
+     *
+     * @param db       SQLiteDatabase
+     * @param recordId recordId
+     * @return whether record deleted
+     */
+    public static long deleteRecord(SQLiteDatabase db, int recordId) {
+        Log.d("DBRecordDAO", "deleteRecord");
+
+        long row_id = db.delete(DatabaseDefinition.RECORD_TABLE, DatabaseDefinition.RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
         return row_id;
     }
 

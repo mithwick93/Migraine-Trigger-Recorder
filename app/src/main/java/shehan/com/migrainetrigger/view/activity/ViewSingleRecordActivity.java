@@ -3,12 +3,13 @@ package shehan.com.migrainetrigger.view.activity;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -23,6 +24,8 @@ public class ViewSingleRecordActivity
 
     private static final boolean DEVELOPER_MODE = true;
 
+    private ViewRecordSingleFragment mViewRecordSingleFragment;
+    private FloatingActionButton fabUpdate;
     private Toast mToast;
     private int recordId;
 
@@ -88,16 +91,38 @@ public class ViewSingleRecordActivity
         recordId = getIntent().getIntExtra("recordId", -1);//get passed record ID
         Log.d("ViewSingleRecord", "recordId : " + recordId);
 
-        Fragment fragment = ViewRecordSingleFragment.newInstance(recordId);
+        mViewRecordSingleFragment = ViewRecordSingleFragment.newInstance(recordId);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.single_record_container, fragment);
+        fragmentTransaction.replace(R.id.single_record_container, mViewRecordSingleFragment);
         fragmentTransaction.commit();
-        if (fragment != null) {
+        if (mViewRecordSingleFragment != null) {
             showToast("Selected record Id : " + recordId);
         }
 
+        fabSetup();
+
+    }
+
+    /**
+     * Floating action button behaviour
+     */
+    private void fabSetup() {
+
+        fabUpdate = (FloatingActionButton) findViewById(R.id.fab_update);
+
+        if (fabUpdate != null) {
+            fabUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("ViewSingleRecord", "sending Update action");
+                    if (mViewRecordSingleFragment != null) {
+                        mViewRecordSingleFragment.updateRecord();
+                    }
+                }
+            });
+        }
     }
 
     private void showToast(String message) {

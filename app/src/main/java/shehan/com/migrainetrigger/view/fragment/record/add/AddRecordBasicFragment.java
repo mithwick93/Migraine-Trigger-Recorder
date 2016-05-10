@@ -144,10 +144,11 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     public boolean onOptionsItemSelected(MenuItem item) {
         //override this in sub classes
         int id = item.getItemId();
-        if (id == R.id.action_confirm) {
-            chooseSaveOrSummery();
-            return true;
-        } else if (id == R.id.action_refresh) {
+//        if (id == R.id.action_confirm) {
+//            recordAcceptAction();
+//            return true;
+//        } else
+        if (id == R.id.action_refresh) {
             showWeather();
             return true;
         }
@@ -686,7 +687,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     /**
      * Choose to save record or get weather
      */
-    private void chooseSaveOrSummery() {
+    public void recordAcceptAction() {
 
         if (!weatherDataLoaded || weatherData == null) {
             new MaterialDialog.Builder(getContext())

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.view.adapter.FAQTopicsViewAdapter;
-import shehan.com.migrainetrigger.view.model.FAQTopic;
+import shehan.com.migrainetrigger.view.model.FAQViewData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,17 +40,17 @@ public class FAQTopicsFragment extends Fragment implements FAQTopicsViewAdapter.
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.topics_recycler_view);
 
         // this is data for recycler view
-        FAQTopic faqTopicsData[] = {
-                new FAQTopic("Definition"),
-                new FAQTopic("Symptoms"),
-                new FAQTopic("Causes"),
-                new FAQTopic("Risk factors"),
-                new FAQTopic("Complications"),
-                new FAQTopic("Tests and diagnosis"),
-                new FAQTopic("Treatments and drugs"),
-                new FAQTopic("Lifestyle and home remedies"),
-                new FAQTopic("Alternative medicine"),
-                new FAQTopic("Prevention")
+        FAQViewData faqTopicsData[] = {
+                new FAQViewData("Definition"),
+                new FAQViewData("Symptoms"),
+                new FAQViewData("Causes"),
+                new FAQViewData("Risk factors"),
+                new FAQViewData("Complications"),
+                new FAQViewData("Tests and diagnosis"),
+                new FAQViewData("Treatments and drugs"),
+                new FAQViewData("Lifestyle and home remedies"),
+                new FAQViewData("Alternative medicine"),
+                new FAQViewData("Prevention")
         };
 
         // 2. set layoutManger

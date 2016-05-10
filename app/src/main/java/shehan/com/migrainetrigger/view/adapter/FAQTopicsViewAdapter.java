@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import shehan.com.migrainetrigger.R;
-import shehan.com.migrainetrigger.view.model.FAQTopic;
+import shehan.com.migrainetrigger.view.model.FAQViewData;
 
 /**
  * Created by Shehan on 4/15/2016.
@@ -19,16 +19,16 @@ public class FAQTopicsViewAdapter
 
     private static FAQTopicsViewClickListener itemListener;
     private Context context;
-    private FAQTopic[] faqTopics;
+    private FAQViewData[] faqViewDatas;
 
     public FAQTopicsViewAdapter(
             Context context,
             FAQTopicsViewClickListener itemListener,
-            FAQTopic[] faqTopics) {
+            FAQViewData[] faqViewDatas) {
 
         this.context = context;
         FAQTopicsViewAdapter.itemListener = itemListener;
-        this.faqTopics = faqTopics;
+        this.faqViewDatas = faqViewDatas;
     }
 
     // Create new views (invoked by the layout manager)
@@ -47,13 +47,13 @@ public class FAQTopicsViewAdapter
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.txtViewDefinition.setText(faqTopics[position].getDefinition());
+        viewHolder.txtViewDefinition.setText(faqViewDatas[position].getDefinition());
     }
 
     // Return the size of your itemsData (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return faqTopics.length;
+        return faqViewDatas.length;
     }
 
 

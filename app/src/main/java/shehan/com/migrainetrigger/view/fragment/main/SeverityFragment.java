@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.view.adapter.SeverityViewAdapter;
-import shehan.com.migrainetrigger.view.model.SeverityData;
+import shehan.com.migrainetrigger.view.model.SeverityViewData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,17 +38,17 @@ public class SeverityFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.severity_recycler_view);
 
         // this is data for recycler view
-        SeverityData severityData[] = {
-                new SeverityData("Hurts a bit", "Pain is present but does not limit activity", R.drawable.num_1),
-                new SeverityData("Hurts a little", "Pain is present but does not limit activity", R.drawable.num_2),
-                new SeverityData("Hurts little more", "Can do most activities", R.drawable.num_3),
-                new SeverityData("Mild", "Can do most activities", R.drawable.num_4),
-                new SeverityData("Hurts more", "Unable to do some activities", R.drawable.num_5),
-                new SeverityData("Moderate", "Unable to do some activities", R.drawable.num_6),
-                new SeverityData("Hurts a lot", "Unable to do most activities", R.drawable.num_7),
-                new SeverityData("Severe", "Unable to do most activities", R.drawable.num_8),
-                new SeverityData("Hurts the most ", "Unable to do any activity", R.drawable.num_9),
-                new SeverityData("Worst ever", "Unable to do any activity", R.drawable.num_10)
+        SeverityViewData severityViewData[] = {
+                new SeverityViewData("Hurts a bit", "Pain is present but does not limit activity", R.drawable.num_1),
+                new SeverityViewData("Hurts a little", "Pain is present but does not limit activity", R.drawable.num_2),
+                new SeverityViewData("Hurts little more", "Can do most activities", R.drawable.num_3),
+                new SeverityViewData("Mild", "Can do most activities", R.drawable.num_4),
+                new SeverityViewData("Hurts more", "Unable to do some activities", R.drawable.num_5),
+                new SeverityViewData("Moderate", "Unable to do some activities", R.drawable.num_6),
+                new SeverityViewData("Hurts a lot", "Unable to do most activities", R.drawable.num_7),
+                new SeverityViewData("Severe", "Unable to do most activities", R.drawable.num_8),
+                new SeverityViewData("Hurts the most ", "Unable to do any activity", R.drawable.num_9),
+                new SeverityViewData("Worst ever", "Unable to do any activity", R.drawable.num_10)
         };
 
 
@@ -56,7 +56,7 @@ public class SeverityFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // 3. create an adapter
-        SeverityViewAdapter severityViewAdapter = new SeverityViewAdapter(severityData);
+        SeverityViewAdapter severityViewAdapter = new SeverityViewAdapter(severityViewData);
 
         // 4. set adapter
 //      recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));

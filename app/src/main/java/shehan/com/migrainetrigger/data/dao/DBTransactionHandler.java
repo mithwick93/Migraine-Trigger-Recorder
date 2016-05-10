@@ -288,4 +288,80 @@ public class DBTransactionHandler {
             db.close();
         }
     }
+
+    public static boolean deleteRecord(int recordId) {
+        Log.d("DBTransactionHandler", "deleteRecord - start transaction");
+
+        SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
+        db.beginTransaction();
+        try {
+
+
+            //delete from record tables where record id match
+            long response;
+            //Triggers
+            response = DBTriggerDAO.deleteTriggerRecords(db, recordId);
+            Log.d("DBTransactionHandler", "delete - Triggers response : " + response);
+            if (response < 0) {
+                throw new Exception("Triggers record delete failed. code : " + response);
+            }
+
+            //Symptoms
+            response = DBSymptomDAO.deleteSymptomRecords(db, recordId);
+            Log.d("DBTransactionHandler", "delete - Symptoms response : " + response);
+            if (response < 0) {
+                throw new Exception("Symptoms record delete failed. code : " + response);
+            }
+
+            //Activities
+            response = DBActivityDAO.deleteActivityRecords(db, recordId);
+            Log.d("DBTransactionHandler", "delete - Activities response : " + response);
+            if (response < 0) {
+                throw new Exception("Activities record delete failed. code : " + response);
+            }
+
+            //Body areas
+            response = DBBodyAreaDAO.deleteBodyAreaRecords(db, recordId);
+            Log.d("DBTransactionHandler", "delete - Body areas response : " + response);
+            if (response < 0) {
+                throw new Exception("Body areas record delete failed. code : " + response);
+            }
+
+            //Medicines
+            response = DBMedicineDAO.deleteMedicineRecords(db, recordId);
+            Log.d("DBTransactionHandler", "delete - Medicines response : " + response);
+            if (response < 0) {
+                throw new Exception("Medicines record delete failed. code : " + response);
+            }
+
+            //Reliefs
+            response = DBReliefDAO.deleteReliefRecords(db, recordId);
+            Log.d("DBTransactionHandler", "delete - Reliefs response : " + response);
+            if (response < 0) {
+                throw new Exception("Reliefs record delete failed. code : " + response);
+            }
+
+
+            //Delete from weather where record id match
+            response = DBWeatherDataDAO.deleteWeatherRecord(db, recordId);
+            Log.d("DBTransactionHandler", "delete - Weather Data response : " + response);
+            if (response < 0) {
+                throw new Exception("Weather Data record delete failed. code : " + response);
+            }
+
+            //Delete record
+            long result = DBRecordDAO.deleteRecord(db, recordId);
+            if (result < 0) {
+                throw new Exception("Record delete failed. code : " + result);
+            }
+            db.setTransactionSuccessful();
+            return result > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+    }
 }

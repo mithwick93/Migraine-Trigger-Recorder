@@ -83,6 +83,7 @@ public class ViewRecordCalenderFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Log.d("ViewRecordCalenderFrag", "onResume");
         super.onResume();
         if (mView != null) {
             new GetRecordCalenderListTask().execute();//Load records to list view
@@ -203,6 +204,7 @@ public class ViewRecordCalenderFragment extends Fragment {
             4.Add to calender event list
             5.Add to calender
              */
+            recordsMap.clear();
             List<CalendarDayEvent> calendarDayEvents = new ArrayList<>();
             for (int i = 0; i < recordArrayList.size(); i++) {
                 Record record = recordArrayList.get(i);
@@ -264,7 +266,7 @@ public class ViewRecordCalenderFragment extends Fragment {
                 CalendarDayEvent calendarDayEvent = new CalendarDayEvent(milliseconds, intensityColor);
                 calendarDayEvents.add(calendarDayEvent);
             }
-
+            calenderView.removeAllEvents();
             calenderView.addEvents(calendarDayEvents);
         }
     }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -122,10 +123,11 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         //override this in sub classes
         int id = item.getItemId();
-        if (id == R.id.action_confirm) {
-            chooseSaveOrSummery();
-            return true;
-        } else if (id == R.id.action_refresh) {
+//        if (id == R.id.action_confirm) {
+//            recordAcceptAction();
+//            return true;
+//        } else
+        if (id == R.id.action_refresh) {
             showWeather();
             return true;
         }
@@ -180,8 +182,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
     //
     //
-    //
-    protected void initFullControls(View view) {
+    protected void initFullControls(final View view) {
         Log.d("AddRecordFullFragment", "initFullControls ");
 
         if (editTxtLocation != null) {
@@ -199,7 +200,6 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
         viewLayoutRecordEffectiveMedicine = (RelativeLayout) view.findViewById(R.id.record_full_layout_effective_medicine);
         viewLayoutRecordEffectiveRelief = (RelativeLayout) view.findViewById(R.id.record_full_layout_effective_relief);
-
 
         new AsyncTask<String, Void, String>() {
             @Override
@@ -267,7 +267,6 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                         .show();
             }
         });
-
 
 //--------------------------------------------------
 
@@ -362,6 +361,11 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                 if (selectedMedicines.size() > 0) {
                                     viewLayoutRecordEffectiveMedicine.setVisibility(View.VISIBLE);
                                 }
+
+                                if (which.length > 0) {
+                                    ((ScrollView) view.findViewById(R.id.full_record_scroll_view)).fullScroll(View.FOCUS_DOWN);
+                                }
+
                                 return true; // allow selection
                             }
                         })
@@ -425,6 +429,11 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                 if (selectedReliefs.size() > 0) {
                                     viewLayoutRecordEffectiveRelief.setVisibility(View.VISIBLE);
                                 }
+
+                                if (which.length > 0) {
+                                    ((ScrollView) view.findViewById(R.id.full_record_scroll_view)).fullScroll(View.FOCUS_DOWN);
+                                }
+
                                 return true; // allow selection
                             }
                         })
@@ -488,6 +497,11 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                     }
 
                                     editTxtMedicineEffective.setText(selectedStr);
+
+                                    if (which.length > 0) {
+                                        ((ScrollView) view.findViewById(R.id.full_record_scroll_view)).fullScroll(View.FOCUS_DOWN);
+                                    }
+
                                     return true; // allow selection
                                 }
                             })
@@ -581,15 +595,12 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
             }
         });
 
-//--------------------------------------------------
-        //start time
-
     }
 
     /**
      * Choose to save record or get weather
      */
-    private void chooseSaveOrSummery() {
+    public void recordAcceptAction() {
 
         if (!weatherDataLoaded || weatherData == null) {
             new MaterialDialog.Builder(getContext())

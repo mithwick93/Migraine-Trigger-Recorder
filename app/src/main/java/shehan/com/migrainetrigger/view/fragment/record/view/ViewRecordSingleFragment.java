@@ -3,12 +3,18 @@ package shehan.com.migrainetrigger.view.fragment.record.view;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -87,13 +93,17 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.view_record_menu, menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //override this in sub classes
         int id = item.getItemId();
-        if (id == R.id.action_confirm) {
-            updateRecord();
+        if (id == R.id.action_delete) {
+            deleteRecord();
             return true;
         } else if (id == R.id.action_refresh) {
             showWeather();
@@ -135,7 +145,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     /**
      * update record
      */
-    private void updateRecord() {
+    public void updateRecord() {
         Log.d("ViewRecordSingle", "updateRecord");
 
         //validations
@@ -215,6 +225,45 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         }
 
 
+    }
+
+    /**
+     * delete record
+     */
+    public void deleteRecord() {
+        Log.d("ViewRecordSingle", "deleteRecord");
+
+
+        new MaterialDialog.Builder(getContext())
+                .title("Delete record")
+                .content("Do you want to delete record permanently ?")
+                .negativeText("Cancel")
+                .positiveText("Delete weather")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        new AsyncTask<String, Void, Boolean>() {
+                            @Override
+                            protected Boolean doInBackground(String... params) {
+                                return RecordController.deleteRecord(recordId);
+                            }
+
+                            @Override
+                            protected void onPostExecute(Boolean result) {
+                                if (result) {
+                                    showToast(getContext(), "Record deleted successfully");
+                                    if (mCallback != null) {
+                                        mCallback.onFragmentInteraction(0);
+                                    }
+
+                                } else {
+                                    showToast(getContext(), "Record delete failed");
+                                }
+                            }
+                        }.execute();
+                    }
+                })
+                .show();
     }
 
     /**

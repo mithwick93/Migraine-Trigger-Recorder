@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import shehan.com.migrainetrigger.R;
-import shehan.com.migrainetrigger.view.model.SeverityData;
+import shehan.com.migrainetrigger.view.model.SeverityViewData;
 
 /**
  * Created by Shehan on 4/15/2016.SeverityViewAdapter
@@ -18,10 +18,10 @@ public class SeverityViewAdapter
         extends RecyclerView.Adapter<SeverityViewAdapter.ViewHolder> {
 
 
-    private SeverityData[] severityData;
+    private SeverityViewData[] severityViewData;
 
-    public SeverityViewAdapter(SeverityData[] severityData) {
-        this.severityData = severityData;
+    public SeverityViewAdapter(SeverityViewData[] severityViewData) {
+        this.severityViewData = severityViewData;
     }
 
     // Create new views (invoked by the layout manager)
@@ -45,16 +45,16 @@ public class SeverityViewAdapter
         // - get data from your itemsData at this position
         // - replace the contents of the view with that itemsData
 
-        viewHolder.txtViewTitle.setText(severityData[position].getTitle());
-        viewHolder.txtViewDesc.setText(severityData[position].getDescription());
-        viewHolder.imgViewIcon.setImageResource(severityData[position].getImageUrl());
+        viewHolder.txtViewTitle.setText(severityViewData[position].getTitle());
+        viewHolder.txtViewDesc.setText(severityViewData[position].getDescription());
+        viewHolder.imgViewIcon.setImageResource(severityViewData[position].getImageUrl());
 
     }
 
     // Return the size of your itemsData (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return severityData.length;
+        return severityViewData.length;
     }
 
 

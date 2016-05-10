@@ -3,12 +3,12 @@ package shehan.com.migrainetrigger.view.model;
 /**
  * Created by Shehan on 4/15/2016.
  */
-public class SeverityData {
+public class SeverityViewData {
     private String title;
     private String description;
     private int imageUrl;
 
-    public SeverityData(String title, String description, int imageUrl) {
+    public SeverityViewData(String title, String description, int imageUrl) {
 
         this.title = title;
         this.description = description;

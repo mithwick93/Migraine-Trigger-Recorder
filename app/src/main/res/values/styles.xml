@@ -9,7 +9,7 @@
     <!--<item name="android:windowDisablePreview">true</item>-->
 
     <!--</style>-->
-    <style name="AppTheme" parent="Theme.AppCompat">
+    <style name="AppTheme.Dark" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/colorPrimaryInverse</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkInverse</item>
         <item name="colorAccent">@color/colorAccentInverse</item>
@@ -21,10 +21,11 @@
         <item name="themedWeatherTemperature">@drawable/ic_temperature_inverse</item>
         <item name="themedWeatherHumidity">@drawable/ic_humidity_inverse</item>
         <item name="themedWeatherPressure">@drawable/ic_pressure_inverse</item>
+        <item name="themedFAQChevron">@drawable/ic_chevron_right_white_24dp</item>
 
     </style>
 
-    <style name="AppTheme.Light" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -38,6 +39,7 @@
         <item name="themedWeatherTemperature">@drawable/ic_temperature</item>
         <item name="themedWeatherHumidity">@drawable/ic_humidity</item>
         <item name="themedWeatherPressure">@drawable/ic_pressure</item>
+        <item name="themedFAQChevron">@drawable/ic_chevron_right_black_24dp</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

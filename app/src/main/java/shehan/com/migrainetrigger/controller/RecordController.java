@@ -27,6 +27,10 @@ public class RecordController {
         return DBTransactionHandler.updateRecord(record);
     }
 
+    public static boolean deleteRecord(int recordId) {
+        return DBTransactionHandler.deleteRecord(recordId);
+    }
+
     public static int getLastId() {
         return DBRecordDAO.getLastRecordId();
     }
@@ -112,10 +116,5 @@ public class RecordController {
 
         return status;
     }
-
-    public static void deleteRecord() {
-
-    }
-
 
 }
