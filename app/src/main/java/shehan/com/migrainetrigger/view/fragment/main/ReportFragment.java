@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +29,9 @@ import java.util.Locale;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
+import shehan.com.migrainetrigger.controller.TriggerController;
+import shehan.com.migrainetrigger.view.adapter.ReportViewAdapter;
+import shehan.com.migrainetrigger.view.model.ReportViewData;
 
 import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
 
@@ -39,6 +45,8 @@ public class ReportFragment extends Fragment {
 
     private OnReportFragmentInteractionListener mCallback;
     private Toast mToast;
+
+    private View mView;
 
     private TextView txtViewFrom;
     private TextView txtViewTo;
@@ -109,6 +117,9 @@ public class ReportFragment extends Fragment {
 
     private void initReport(View view) {
         //Load ui
+
+        this.mView = view;
+
         txtViewFrom = (TextView) view.findViewById(R.id.txt_report_from);
         txtViewTo = (TextView) view.findViewById(R.id.txt_report_to);
         txtViewTotal = (TextView) view.findViewById(R.id.txt_report_total);
@@ -206,6 +217,7 @@ public class ReportFragment extends Fragment {
         //validate times
         if ((toTimestamp != null && fromTimestamp.before(toTimestamp)) || toTimestamp == null) {
             new LoadReportSummeryTask(fromTimestamp, toTimestamp).execute();
+            new LoadReportStatisticsTask(mView, fromTimestamp, toTimestamp).execute();
         } else {
             showMsg(getContext(), "Start time is greater than the end time");
         }
@@ -357,5 +369,89 @@ public class ReportFragment extends Fragment {
         }
     }
 
+
+    /**
+     * Async task to load statistics
+     */
+    private class LoadReportStatisticsTask extends AsyncTask<String, Void, ReportViewData[]> {
+
+        private View mView;
+        private Timestamp from;
+        private Timestamp to;
+
+        public LoadReportStatisticsTask(View mView, Timestamp from, Timestamp to) {
+            this.mView = mView;
+            this.from = from;
+            this.to = to;
+        }
+
+        private ReportViewData[] getReportViewData(ArrayList<ArrayList<String>> statisticsList) {
+            ReportViewData[] reportViewData = new ReportViewData[statisticsList.size()];
+
+            //Triggers
+            ArrayList<String> topTriggers = statisticsList.get(0);
+            ReportViewData triggerReportViewData = new ReportViewData("Top Triggers");
+
+            for (int i = 0; i < topTriggers.size(); i++) {
+                if (i == 0) {
+                    triggerReportViewData.setContent_1(topTriggers.get(i));
+                } else if (i == 1) {
+                    triggerReportViewData.setContent_2(topTriggers.get(i));
+                } else if (i == 2) {
+                    triggerReportViewData.setContent_3(topTriggers.get(i));
+                }
+            }
+            reportViewData[0] = triggerReportViewData;
+
+            //Symptoms
+            //Activities
+            //Location
+            //Pain in
+            //Medicine
+            //Effective medicine
+            //Relief
+            //Effective Relief
+
+            return reportViewData;
+        }
+
+        @Override
+        protected ReportViewData[] doInBackground(String... params) {
+            Log.d("LoadReportStatistics", "doInBackground ");
+            ArrayList<ArrayList<String>> statisticsList = new ArrayList<>();
+
+            //Triggers
+            statisticsList.add(TriggerController.getTopTriggers(from, to, 3));
+
+            //Symptoms
+            //Activities
+            //Location
+            //Pain in
+            //Medicine
+            //Effective medicine
+            //Relief
+            //Effective Relief
+            return getReportViewData(statisticsList);
+        }
+
+        @Override
+        protected void onPostExecute(ReportViewData[] reportViewData) {
+            Log.d("LoadReportStatistics", "onPostExecute ");
+
+            RecyclerView recyclerView = (RecyclerView) mView.findViewById(R.id.report_recycler_view);
+
+            // 2. set layoutManger
+            recyclerView.setLayoutManager(new LinearLayoutManager(ReportFragment.this.getActivity()));
+
+            // 3. create an adapter
+            ReportViewAdapter reportViewAdapter = new ReportViewAdapter(reportViewData);
+
+            // 4. set adapter
+            recyclerView.setAdapter(reportViewAdapter);
+
+            // 5. set item animator to DefaultAnimator
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+        }
+    }
 
 }

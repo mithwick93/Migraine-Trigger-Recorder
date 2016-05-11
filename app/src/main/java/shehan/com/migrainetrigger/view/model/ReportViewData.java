@@ -10,11 +10,11 @@ public class ReportViewData {
     private String content_2;
     private String content_3;
 
-    public ReportViewData(String topic, String content_1, String content_2, String content_3) {
+    public ReportViewData(String topic) {
         this.topic = topic;
-        this.content_1 = content_1;
-        this.content_2 = content_2;
-        this.content_3 = content_3;
+        this.content_1 = "EMPTY";
+        this.content_2 = "EMPTY";
+        this.content_3 = "EMPTY";
     }
 
     public String getTopic() {

@@ -37,6 +37,9 @@ public class ReportViewAdapter extends RecyclerView.Adapter<ReportViewAdapter.Vi
     @Override
     public void onBindViewHolder(ReportViewAdapter.ViewHolder holder, int position) {
         //Logic to show
+        if (getItemCount() < 1) {
+            return;
+        }
         ReportViewData reportViewData = reportViewDatas[position];
         holder.txtViewTopic.setText(reportViewData.getTopic());
 
