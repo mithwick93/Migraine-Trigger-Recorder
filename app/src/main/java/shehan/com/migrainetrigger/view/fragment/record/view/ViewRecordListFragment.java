@@ -8,20 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
-import shehan.com.migrainetrigger.data.model.Record;
-import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.adapter.RecordViewAdapter;
 import shehan.com.migrainetrigger.view.model.RecordViewData;
 
@@ -117,83 +111,12 @@ public class ViewRecordListFragment extends Fragment
             this.mView = mView;
         }
 
-        private RecordViewData[] getRecordViewData() {
-            ArrayList<Record> recordArrayList = RecordController.getAllRecordsOrderByDate();
-            RecordViewData recordViewData[] = new RecordViewData[recordArrayList.size()];
-
-            //Load data to recordViewData[]  from recordArrayList
-            for (int i = 0; i < recordArrayList.size(); i++) {
-                Record record = recordArrayList.get(i);
-                int recordId = record.getRecordId();
-                String start = "-";
-                String duration = "-";
-                int intensity;
-
-                if (record.getStartTime() != null) {
-                    start = AppUtil.getFriendlyStringDate(record.getStartTime());
-
-                    if (record.getEndTime() != null) {
-                        Timestamp startTime = record.getStartTime();
-                        Timestamp endTime = record.getEndTime();
-
-                        if (startTime != null) {
-                            if (endTime != null) {
-                                long difference = endTime.getTime() - startTime.getTime();
-                                long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
-                                duration = AppUtil.getFriendlyDuration(differenceInSeconds);
-                            }
-                        }
-                    }
-                }
-
-
-                switch (record.getIntensity()) {//Set intensity pic
-                    case 1:
-                        intensity = R.drawable.num_1;
-                        break;
-                    case 2:
-                        intensity = R.drawable.num_2;
-                        break;
-                    case 3:
-                        intensity = R.drawable.num_3;
-                        break;
-                    case 4:
-                        intensity = R.drawable.num_4;
-                        break;
-                    case 5:
-                        intensity = R.drawable.num_5;
-                        break;
-                    case 6:
-                        intensity = R.drawable.num_6;
-                        break;
-                    case 7:
-                        intensity = R.drawable.num_7;
-                        break;
-                    case 8:
-                        intensity = R.drawable.num_8;
-                        break;
-                    case 9:
-                        intensity = R.drawable.num_9;
-                        break;
-                    case 10:
-                        intensity = R.drawable.num_10;
-                        break;
-                    default:
-                        intensity = 0;
-                        break;
-                }
-
-                recordViewData[i] = new RecordViewData(recordId, start, duration, intensity);
-            }
-
-            return recordViewData;
-        }
 
         @Override
         protected RecordViewData[] doInBackground(String... params) {
             Log.d("GetRecordList", " doInBackground - query records");
 
-            return getRecordViewData();
+            return RecordController.getRecordViewData();
         }
 
         @Override

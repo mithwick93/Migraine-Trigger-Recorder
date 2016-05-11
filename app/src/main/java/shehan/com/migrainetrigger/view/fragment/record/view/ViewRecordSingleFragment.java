@@ -156,12 +156,12 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         if (startDate[0] != -1) {
 
             if (startTime[0] != -1) {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
-                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":0";
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " "
+                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":00";
 
                 startTimestamp = getTimeStampDate(tmpStr);
             } else {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " 00:00:00";
                 startTimestamp = getTimeStampDate(tmpStr);
             }
         } else {
@@ -180,11 +180,11 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         if (endDate[0] != -1) {
 
             if (endTime[0] != -1) {
-                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " "
-                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":0";
+                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " "
+                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":00";
                 endTimestamp = getTimeStampDate(tmpStr);
             } else {
-                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " 0:0:0";
+                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " 00:00:00";
                 endTimestamp = getTimeStampDate(tmpStr);
             }
 
@@ -209,7 +209,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
                 @Override
                 protected void onPostExecute(Boolean result) {
                     if (result) {
-                        showToast(getContext(), "Record was update successfully");
+                        showToast(getContext(), "Record was updated successfully");
                         if (mCallback != null) {
                             mCallback.onFragmentInteraction(0);
                         }
@@ -294,7 +294,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         private void setStartTime(Record record) {
             //Get start time
             if (record.getStartTime() != null) {
-
+                Log.d("LoadRecordTask", "setStartTime - " + AppUtil.getStringDate(record.getStartTime()));
                 long timestamp = record.getStartTime().getTime();
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(timestamp);
@@ -306,7 +306,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
 
                 editTxtStartTime.setEnabled(true);
 
-                mHour = startTime[0] = cal.get(Calendar.HOUR);
+                mHour = startTime[0] = cal.get(Calendar.HOUR_OF_DAY);
                 mMinute = startTime[1] = cal.get(Calendar.MINUTE);
 
                 editTxtStartTime.setText(AppUtil.getFormattedTime(mHour, mMinute));
@@ -316,7 +316,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         private void setEndTime(Record record) {
             //Get end time
             if (record.getEndTime() != null) {
-
+                Log.d("LoadRecordTask", "setEndTime - " + AppUtil.getStringDate(record.getEndTime()));
                 long timestamp = record.getEndTime().getTime();
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(timestamp);
@@ -329,7 +329,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
 
                 editTxtEndTime.setEnabled(true);
 
-                mHour = endTime[0] = cal.get(Calendar.HOUR);
+                mHour = endTime[0] = cal.get(Calendar.HOUR_OF_DAY);
                 mMinute = endTime[1] = cal.get(Calendar.MINUTE);
 
                 editTxtEndTime.setText(AppUtil.getFormattedTime(mHour, mMinute));

@@ -1,5 +1,6 @@
 package shehan.com.migrainetrigger.utility;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.sql.Timestamp;
@@ -43,14 +44,14 @@ public class AppUtil {
 
     /**
      * Convert Timestamp object value to string
-     * string format : dd/MM/yyyy HH:mm:ss
+     * string format : yyyy-MM-dd HH:mm:ss
      *
      * @param timestamp timestamp to convert to string
      * @ string object with time
      */
     public static String getStringDate(Timestamp timestamp) {
         Log.d("AppUtil", "getStringDate timestamp value : " + timestamp.toString());
-        return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(timestamp);
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(timestamp);
     }
 
     /**
@@ -71,6 +72,7 @@ public class AppUtil {
      * @param duration time difference as a long
      * @return string duration
      */
+    @NonNull
     public static String getFriendlyDuration(long duration) {
 
         duration *= 1000;
@@ -139,7 +141,7 @@ public class AppUtil {
 
     /**
      * Convert String object value to timestamp
-     * string format : dd/MM/yyyy HH:mm:ss
+     * string format : yyyy-MM-dd HH:mm:ss
      *
      * @param str string to convert to timestamp
      * @return timestamp object with time .nullable
@@ -148,7 +150,28 @@ public class AppUtil {
         Log.d("AppUtil", "getTimeStampDate str value : " + str);
         Timestamp timestamp = null;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+            //str = str.replace("/", "-");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            Date parsedDate = dateFormat.parse(str);
+            timestamp = new java.sql.Timestamp(parsedDate.getTime());
+        } catch (Exception e) {//this generic but you can control another types of exception
+            e.printStackTrace();
+        }
+        return timestamp;
+    }
+
+    /**
+     * Convert String object value to timestamp
+     * string format : dd/MM/yyyy
+     *
+     * @param str string to convert to timestamp
+     * @return timestamp object with time .nullable
+     */
+    public static Timestamp getTimeStampDay(String str) {
+        Log.d("AppUtil", "getTimeStampDay str value : " + str);
+        Timestamp timestamp = null;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             Date parsedDate = dateFormat.parse(str);
             timestamp = new java.sql.Timestamp(parsedDate.getTime());
         } catch (Exception e) {//this generic but you can control another types of exception

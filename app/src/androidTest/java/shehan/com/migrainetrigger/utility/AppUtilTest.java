@@ -40,7 +40,7 @@ public class AppUtilTest {
     @Test
     public void testGetStringDate() throws Exception {
         Timestamp testTimestamp = new Timestamp(new Date().getTime());
-        String expected = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(testTimestamp);
+        String expected = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(testTimestamp);
         String result = AppUtil.getStringDate(testTimestamp);
 
         assertEquals(expected, result);

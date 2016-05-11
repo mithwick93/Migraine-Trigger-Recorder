@@ -496,12 +496,12 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
             Log.d("AddRecordBasic", "getBasicRecordBuilder - startDate");
             Timestamp startTimestamp;
             if (startTime[0] != -1) {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
-                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":0";
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " "
+                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":00";
 
                 startTimestamp = getTimeStampDate(tmpStr);
             } else {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " 00:00:00";
 
                 startTimestamp = getTimeStampDate(tmpStr);
             }
@@ -512,11 +512,11 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
             Log.d("AddRecordBasic", "getBasicRecordBuilder - endDate");
             Timestamp endTimestamp;
             if (endTime[0] != -1) {
-                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " "
-                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":0";
+                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " "
+                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":00";
                 endTimestamp = getTimeStampDate(tmpStr);
             } else {
-                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " 0:0:0";
+                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " 00:00:00";
                 endTimestamp = getTimeStampDate(tmpStr);
             }
             recordBuilder = recordBuilder.setEndTime(endTimestamp);
@@ -563,11 +563,11 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         Timestamp startTimestamp;
         if (startDate[0] != -1) {
             if (startTime[0] != -1) {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
-                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":0";
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " "
+                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":00";
                 startTimestamp = getTimeStampDate(tmpStr);
             } else {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " 00:00:00";
                 startTimestamp = getTimeStampDate(tmpStr);
             }
         } else {
@@ -732,12 +732,12 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         if (startDate[0] != -1) {
 
             if (startTime[0] != -1) {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " "
-                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":0";
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " "
+                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":00";
 
                 startTimestamp = getTimeStampDate(tmpStr);
             } else {
-                String tmpStr = String.valueOf(startDate[2]) + "/" + String.valueOf(startDate[1]) + "/" + String.valueOf(startDate[0]) + " 0:0:0";
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " 00:00:00";
                 startTimestamp = getTimeStampDate(tmpStr);
             }
         } else {
@@ -756,11 +756,11 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         if (endDate[0] != -1) {
 
             if (endTime[0] != -1) {
-                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " "
-                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":0";
+                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " "
+                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":00";
                 endTimestamp = getTimeStampDate(tmpStr);
             } else {
-                String tmpStr = String.valueOf(endDate[2]) + "/" + String.valueOf(endDate[1]) + "/" + String.valueOf(endDate[0]) + " 0:0:0";
+                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " 00:00:00";
                 endTimestamp = getTimeStampDate(tmpStr);
             }
 

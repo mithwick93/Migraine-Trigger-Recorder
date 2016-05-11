@@ -113,7 +113,7 @@ public class DBTransactionHandler {
             }
 
             //Add record itself
-            long result = DBRecordDAO.addRecordTo(db, record);
+            long result = DBRecordDAO.addRecord(db, record);
             if (result < 1) {
                 throw new Exception("Record insert failed. code : " + result);
             }

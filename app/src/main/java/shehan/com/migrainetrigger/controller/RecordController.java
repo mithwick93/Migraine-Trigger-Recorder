@@ -7,10 +7,12 @@ import android.util.Log;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.data.dao.DBRecordDAO;
 import shehan.com.migrainetrigger.data.dao.DBTransactionHandler;
 import shehan.com.migrainetrigger.data.model.Record;
 import shehan.com.migrainetrigger.utility.AppUtil;
+import shehan.com.migrainetrigger.view.model.RecordViewData;
 
 /**
  * Created by Shehan on 4/13/2016.
@@ -35,9 +37,55 @@ public class RecordController {
         return DBRecordDAO.getLastRecordId();
     }
 
+
+    public static Timestamp getFirstRecordStartTimestamp() {
+        Record firstRecord = DBRecordDAO.getFirstRecord();
+        if (firstRecord != null && firstRecord.getStartTime() != null) {
+            return firstRecord.getStartTime();
+        } else {
+            Log.d("RecordController", "No first record found, creating default");
+            return AppUtil.getTimeStampDay("01/01/2016");
+        }
+    }
+
     public static Record getRecordById(int id) {
 
         return DBRecordDAO.getRecord(id);
+    }
+
+    public static int getTotalRecords(Timestamp from, Timestamp to) {
+        return DBRecordDAO.getTotalRecords(from, to);
+    }
+
+    public static String getAverage(Timestamp from, Timestamp to) {
+        ArrayList<Record> averageRecords = DBRecordDAO.getAverageReportRecords(from, to);
+        String strTotal = "-";
+        if (averageRecords.size() > 0) {
+
+            long total = 0;
+            int count = 0;
+            for (int i = 0; i < averageRecords.size(); i++) {
+                Record record = averageRecords.get(i);
+
+                if (record.getStartTime() != null && record.getEndTime() != null) {
+
+                    Timestamp startTime = record.getStartTime();
+                    Timestamp endTime = record.getEndTime();
+
+                    if (startTime != null && endTime != null) {
+                        long difference = endTime.getTime() - startTime.getTime();
+                        long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
+                        total += differenceInSeconds;
+                        count++;
+                    }
+                }
+            }
+            if (count != 0) {
+                long average = total / count;
+                strTotal = AppUtil.getFriendlyDuration(average);
+            }
+        }
+        return strTotal;
     }
 
     /**
@@ -115,6 +163,78 @@ public class RecordController {
         }
 
         return status;
+    }
+
+    public static RecordViewData[] getRecordViewData() {
+        ArrayList<Record> recordArrayList = getAllRecordsOrderByDate();
+        RecordViewData recordViewData[] = new RecordViewData[recordArrayList.size()];
+
+        //Load data to recordViewData[]  from recordArrayList
+        for (int i = 0; i < recordArrayList.size(); i++) {
+            Record record = recordArrayList.get(i);
+            int recordId = record.getRecordId();
+            String start = "-";
+            String duration = "-";
+            int intensity;
+
+            if (record.getStartTime() != null) {
+                start = AppUtil.getFriendlyStringDate(record.getStartTime());
+
+                if (record.getEndTime() != null) {
+                    Timestamp startTime = record.getStartTime();
+                    Timestamp endTime = record.getEndTime();
+
+                    if (startTime != null) {
+                        if (endTime != null) {
+                            long difference = endTime.getTime() - startTime.getTime();
+                            long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
+                            duration = AppUtil.getFriendlyDuration(differenceInSeconds);
+                        }
+                    }
+                }
+            }
+
+
+            switch (record.getIntensity()) {//Set intensity pic
+                case 1:
+                    intensity = R.drawable.num_1;
+                    break;
+                case 2:
+                    intensity = R.drawable.num_2;
+                    break;
+                case 3:
+                    intensity = R.drawable.num_3;
+                    break;
+                case 4:
+                    intensity = R.drawable.num_4;
+                    break;
+                case 5:
+                    intensity = R.drawable.num_5;
+                    break;
+                case 6:
+                    intensity = R.drawable.num_6;
+                    break;
+                case 7:
+                    intensity = R.drawable.num_7;
+                    break;
+                case 8:
+                    intensity = R.drawable.num_8;
+                    break;
+                case 9:
+                    intensity = R.drawable.num_9;
+                    break;
+                case 10:
+                    intensity = R.drawable.num_10;
+                    break;
+                default:
+                    intensity = 0;
+                    break;
+            }
+
+            recordViewData[i] = new RecordViewData(recordId, start, duration, intensity);
+        }
+
+        return recordViewData;
     }
 
 }

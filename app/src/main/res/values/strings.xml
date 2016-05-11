@@ -368,12 +368,13 @@ These medications include birth control pills and hormone replacement therapy. T
     <string name="content_desc_pressure">Pressure</string>
     <string name="content_desc_humidity">Humidity</string>
     <string name="content_desc_temperature">Temperature</string>
-    <string name="report_from">From : </string>
-    <string name="report_to">To : </string>
+    <string name="report_from">"From : "</string>
+    <string name="report_to">"| To : "</string>
     <string name="report_total">Total</string>
     <string name="report_average_duration">Average duration</string>
     <string name="record_no_enough_records">Not enough records</string>
-    <string name="update_delete">Confirm</string>
+    <string name="update_delete">Delete</string>
     <string name="update_sync">Sync</string>
+    <string name="report_refresh">Refresh</string>
 
 </resources>
