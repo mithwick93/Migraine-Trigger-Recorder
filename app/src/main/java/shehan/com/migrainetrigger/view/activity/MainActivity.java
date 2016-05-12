@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,12 +23,13 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.main.AboutFragment;
 import shehan.com.migrainetrigger.view.fragment.main.HomeFragment;
 import shehan.com.migrainetrigger.view.fragment.main.SeverityFragment;
 
 public class MainActivity
-        extends AppCompatActivity
+        extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final boolean DEVELOPER_MODE = true;
@@ -81,6 +82,8 @@ public class MainActivity
         if (savedInstanceState == null) {
             setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
         }
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         Log.d("Main-onCreate", "onCreate success");
     }
@@ -161,7 +164,9 @@ public class MainActivity
 
         } else if (id == R.id.nav_settings) {
             Log.d("Main-navigation", "Settings selected");
-            showNotImplemented();
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            Log.d("Main-navigation", "Launching settings activity");
+            startActivity(intent);
 
         } else if (id == R.id.nav_about) {
             Log.d("Main-navigation", "About selected");

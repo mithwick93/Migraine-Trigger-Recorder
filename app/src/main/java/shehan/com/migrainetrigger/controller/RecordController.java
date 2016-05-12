@@ -53,41 +53,6 @@ public class RecordController {
         return DBRecordDAO.getRecord(id);
     }
 
-    public static int getTotalRecords(Timestamp from, Timestamp to) {
-        return DBRecordDAO.getTotalRecords(from, to);
-    }
-
-    public static String getAverage(Timestamp from, Timestamp to) {
-        ArrayList<Record> averageRecords = DBRecordDAO.getAverageReportRecords(from, to);
-        String strTotal = "-";
-        if (averageRecords.size() > 0) {
-
-            long total = 0;
-            int count = 0;
-            for (int i = 0; i < averageRecords.size(); i++) {
-                Record record = averageRecords.get(i);
-
-                if (record.getStartTime() != null && record.getEndTime() != null) {
-
-                    Timestamp startTime = record.getStartTime();
-                    Timestamp endTime = record.getEndTime();
-
-                    if (startTime != null && endTime != null) {
-                        long difference = endTime.getTime() - startTime.getTime();
-                        long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
-                        total += differenceInSeconds;
-                        count++;
-                    }
-                }
-            }
-            if (count != 0) {
-                long average = total / count;
-                strTotal = AppUtil.getFriendlyDuration(average);
-            }
-        }
-        return strTotal;
-    }
-
     /**
      * Get all record detail when record id is known
      *

@@ -2,7 +2,6 @@ package shehan.com.migrainetrigger.controller;
 
 import android.util.Log;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -49,9 +48,5 @@ public class TriggerController {
 
     public static ArrayList<Trigger> getTriggersForRecord(int recordId) {
         return DBTriggerDAO.getTriggersForRecord(recordId);
-    }
-
-    public static ArrayList<String> getTopTriggers(Timestamp from, Timestamp to, int limit) {
-        return DBTriggerDAO.getTopTriggers(from, to, limit);
     }
 }

@@ -9,7 +9,27 @@
     <!--<item name="android:windowDisablePreview">true</item>-->
 
     <!--</style>-->
-    <style name="AppTheme" parent="Theme.AppCompat">
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
+        <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!-- some other theme configurations for actionbar, overflow menu etc. -->
+
+        <item name="themedWeatherTemperature">@drawable/ic_temperature</item>
+        <item name="themedWeatherHumidity">@drawable/ic_humidity</item>
+        <item name="themedWeatherPressure">@drawable/ic_pressure</item>
+        <item name="themedFAQChevron">@drawable/ic_chevron_right_black_24dp</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/colorPrimaryInverse</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkInverse</item>
         <item name="colorAccent">@color/colorAccentInverse</item>
@@ -17,6 +37,8 @@
         <item name="android:textColorSecondary">@color/textColorSecondaryInverse</item>
         <item name="android:textColorPrimaryInverse">@color/textColorPrimary</item>
         <item name="android:textColorSecondaryInverse">@color/textColorSecondary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
 
         <item name="themedWeatherTemperature">@drawable/ic_temperature_inverse</item>
         <item name="themedWeatherHumidity">@drawable/ic_humidity_inverse</item>
@@ -24,23 +46,6 @@
         <item name="themedFAQChevron">@drawable/ic_chevron_right_white_24dp</item>
 
     </style>
-
-    <!--<style name="AppTheme" parent="Theme.AppCompat.Light">-->
-    <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-    <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-    <!--<item name="colorAccent">@color/colorAccent</item>-->
-    <!--<item name="android:textColorPrimary">@color/textColorPrimary</item>-->
-    <!--<item name="android:textColorSecondary">@color/textColorSecondary</item>-->
-    <!--<item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>-->
-    <!--<item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse</item>-->
-    <!--<item name="android:windowDisablePreview">true</item>-->
-    <!--&lt;!&ndash; some other theme configurations for actionbar, overflow menu etc. &ndash;&gt;-->
-
-    <!--<item name="themedWeatherTemperature">@drawable/ic_temperature</item>-->
-    <!--<item name="themedWeatherHumidity">@drawable/ic_humidity</item>-->
-    <!--<item name="themedWeatherPressure">@drawable/ic_pressure</item>-->
-    <!--<item name="themedFAQChevron">@drawable/ic_chevron_right_black_24dp</item>-->
-    <!--</style>-->
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

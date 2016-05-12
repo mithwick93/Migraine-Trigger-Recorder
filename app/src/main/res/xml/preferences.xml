@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="light_theme"
+        android:entries="@array/listArray"
+        android:entryValues="@array/listValues"
+        android:key="pref_appTheme"
+        android:summary="Select the theme for Migraine Trigger"
+        android:title="Application theme" />
+</PreferenceScreen>

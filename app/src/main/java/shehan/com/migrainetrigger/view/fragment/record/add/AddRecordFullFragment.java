@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -362,9 +361,9 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                     viewLayoutRecordEffectiveMedicine.setVisibility(View.VISIBLE);
                                 }
 
-                                if (which.length > 0) {
-                                    ((ScrollView) view.findViewById(R.id.full_record_scroll_view)).fullScroll(View.FOCUS_DOWN);
-                                }
+//                                if (which.length > 0) {
+//                                    ((ScrollView) view.findViewById(R.id.full_record_scroll_view)).fullScroll(View.FOCUS_DOWN);
+//                                }
 
                                 return true; // allow selection
                             }
@@ -430,9 +429,9 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                     viewLayoutRecordEffectiveRelief.setVisibility(View.VISIBLE);
                                 }
 
-                                if (which.length > 0) {
-                                    ((ScrollView) view.findViewById(R.id.full_record_scroll_view)).fullScroll(View.FOCUS_DOWN);
-                                }
+//                                if (which.length > 0) {
+//                                    ((ScrollView) view.findViewById(R.id.full_record_scroll_view)).fullScroll(View.FOCUS_DOWN);
+//                                }
 
                                 return true; // allow selection
                             }
@@ -498,9 +497,9 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
                                     editTxtMedicineEffective.setText(selectedStr);
 
-                                    if (which.length > 0) {
-                                        ((ScrollView) view.findViewById(R.id.full_record_scroll_view)).fullScroll(View.FOCUS_DOWN);
-                                    }
+//                                    if (which.length > 0) {
+//                                        ((ScrollView) view.findViewById(R.id.full_record_scroll_view)).fullScroll(View.FOCUS_DOWN);
+//                                    }
 
                                     return true; // allow selection
                                 }

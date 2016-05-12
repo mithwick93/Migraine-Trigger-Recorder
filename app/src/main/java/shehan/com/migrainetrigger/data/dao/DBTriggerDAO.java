@@ -250,6 +250,14 @@ public final class DBTriggerDAO {
         return triggers;
     }
 
+    /**
+     * get Top Triggers
+     *
+     * @param from  from date
+     * @param to    to date
+     * @param limit limit
+     * @return ArrayList<String>
+     */
     public static ArrayList<String> getTopTriggers(Timestamp from, Timestamp to, int limit) {
         Log.d("DBTriggerDAO", "getTopTriggers");
 

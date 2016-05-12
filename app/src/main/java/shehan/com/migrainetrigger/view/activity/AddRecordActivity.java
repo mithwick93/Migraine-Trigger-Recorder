@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -16,12 +15,13 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordBasicFragment;
 import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordFullFragment;
 import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordIntermediateFragment;
 
 public class AddRecordActivity
-        extends AppCompatActivity
+        extends BaseActivity
         implements AddRecordBasicFragment.AddRecordBasicListener, AddRecordIntermediateFragment.AddRecordIntermediateListener, AddRecordFullFragment.AddRecordFullListener {
 
     private static final boolean DEVELOPER_MODE = true;

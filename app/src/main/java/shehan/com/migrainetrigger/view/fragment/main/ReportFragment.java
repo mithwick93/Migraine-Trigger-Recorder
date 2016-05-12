@@ -1,7 +1,9 @@
 package shehan.com.migrainetrigger.view.fragment.main;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,7 +31,7 @@ import java.util.Locale;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
-import shehan.com.migrainetrigger.controller.TriggerController;
+import shehan.com.migrainetrigger.controller.ReportController;
 import shehan.com.migrainetrigger.view.adapter.ReportViewAdapter;
 import shehan.com.migrainetrigger.view.model.ReportViewData;
 
@@ -48,9 +50,12 @@ public class ReportFragment extends Fragment {
 
     private View mView;
 
+    private ProgressDialog nDialog;
+
     private TextView txtViewFrom;
     private TextView txtViewTo;
     private TextView txtViewTotal;
+    private TextView txtViewIntensity;
     private TextView txtViewAverage;
 
     private CardView cardViewReportSummery;
@@ -89,7 +94,7 @@ public class ReportFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
-            showToast(getContext(), "Refreshing ...");
+            //showToast(getContext(), "Refreshing ...");
             refreshSummery();
             return true;
         }
@@ -123,6 +128,7 @@ public class ReportFragment extends Fragment {
         txtViewFrom = (TextView) view.findViewById(R.id.txt_report_from);
         txtViewTo = (TextView) view.findViewById(R.id.txt_report_to);
         txtViewTotal = (TextView) view.findViewById(R.id.txt_report_total);
+        txtViewIntensity = (TextView) view.findViewById(R.id.txt_report_intensity);
         txtViewAverage = (TextView) view.findViewById(R.id.txt_report_average);
         cardViewReportSummery = (CardView) view.findViewById(R.id.card_report_summery);
 
@@ -150,6 +156,7 @@ public class ReportFragment extends Fragment {
                                 mYear = fromDate[0] = year;
                                 mMonth = fromDate[1] = monthOfYear + 1;
                                 mDay = fromDate[2] = dayOfMonth;
+                                showToast(getContext(), "Please refresh report");
                             }
                         }, mYear, mMonth - 1, mDay);
                 datePickerDialog.show();
@@ -171,6 +178,7 @@ public class ReportFragment extends Fragment {
                                 mYear = toDate[0] = year;
                                 mMonth = toDate[1] = monthOfYear + 1;
                                 mDay = toDate[2] = dayOfMonth;
+                                showToast(getContext(), "Please refresh report");
                             }
                         }, mYear, mMonth - 1, mDay);
                 datePickerDialog.show();
@@ -216,6 +224,14 @@ public class ReportFragment extends Fragment {
 
         //validate times
         if ((toTimestamp != null && fromTimestamp.before(toTimestamp)) || toTimestamp == null) {
+
+            nDialog = new ProgressDialog(getActivity()); //Here I get an error: The constructor ProgressDialog(PFragment) is undefined
+            nDialog.setMessage("Refreshing report...");
+            nDialog.setTitle("Processing");
+            nDialog.setIndeterminate(false);
+            nDialog.setCancelable(false);
+            nDialog.show();
+
             new LoadReportSummeryTask(fromTimestamp, toTimestamp).execute();
             new LoadReportStatisticsTask(mView, fromTimestamp, toTimestamp).execute();
         } else {
@@ -337,6 +353,28 @@ public class ReportFragment extends Fragment {
 
         private void setTotal(int total) {
             txtViewTotal.setText(String.valueOf(total));
+            if (total <= 3) {
+                txtViewTotal.setTextColor(Color.parseColor("#46cf9a"));
+            } else if (total <= 7) {
+                txtViewTotal.setTextColor(Color.parseColor("#adcb48"));
+            } else if (total <= 10) {
+                txtViewTotal.setTextColor(Color.parseColor("#dbb842"));
+            } else {
+                txtViewTotal.setTextColor(Color.parseColor("#f44336"));
+            }
+        }
+
+        private void setIntensity(double intensity) {
+            txtViewIntensity.setText(String.format(Locale.getDefault(), "%.1f", intensity));
+            if (intensity < 2.5) {
+                txtViewIntensity.setTextColor(Color.parseColor("#46cf9a"));
+            } else if (intensity < 5) {
+                txtViewIntensity.setTextColor(Color.parseColor("#adcb48"));
+            } else if (intensity < 7.5) {
+                txtViewIntensity.setTextColor(Color.parseColor("#dbb842"));
+            } else {
+                txtViewIntensity.setTextColor(Color.parseColor("#f44336"));
+            }
         }
 
         private void setAverage(String average) {
@@ -347,9 +385,9 @@ public class ReportFragment extends Fragment {
         protected ArrayList<Object> doInBackground(String... params) {
             Log.d("LoadReportSummeryTask", "doInBackground ");
             ArrayList<Object> summeryList = new ArrayList<>();
-            summeryList.add(RecordController.getTotalRecords(from, to));
-
-            summeryList.add(RecordController.getAverage(from, to));
+            summeryList.add(ReportController.getTotalRecords(from, to));
+            summeryList.add(ReportController.getIntensity(from, to));
+            summeryList.add(ReportController.getAverage(from, to));
 
             return summeryList;
         }
@@ -362,8 +400,13 @@ public class ReportFragment extends Fragment {
                 setTotal((int) summeryList.get(0));
                 cardViewReportSummery.setVisibility(View.VISIBLE);
             }
-            if (summeryList.size() == 2) {
-                setAverage((String) summeryList.get(1));
+
+            if (summeryList.size() > 1) {
+                setIntensity((double) summeryList.get(1));
+            }
+
+            if (summeryList.size() == 3) {
+                setAverage((String) summeryList.get(2));
             }
 
         }
@@ -388,29 +431,167 @@ public class ReportFragment extends Fragment {
         private ReportViewData[] getReportViewData(ArrayList<ArrayList<String>> statisticsList) {
             ReportViewData[] reportViewData = new ReportViewData[statisticsList.size()];
 
+            int triggers = 0;
+            int symptoms = 1;
+            int activities = 2;
+            int location = 3;
+            int bodyArea = 4;
+            int medicine = 5;
+            int effectiveMedicine = 6;
+            int reliefs = 7;
+            int effectiveReliefs = 8;
             //Triggers
-            ArrayList<String> topTriggers = statisticsList.get(0);
-            ReportViewData triggerReportViewData = new ReportViewData("Top Triggers");
+            {
+                ArrayList<String> topTriggers = statisticsList.get(triggers);
+                ReportViewData triggerReportViewData = new ReportViewData("Top triggers");
 
-            for (int i = 0; i < topTriggers.size(); i++) {
-                if (i == 0) {
-                    triggerReportViewData.setContent_1(topTriggers.get(i));
-                } else if (i == 1) {
-                    triggerReportViewData.setContent_2(topTriggers.get(i));
-                } else if (i == 2) {
-                    triggerReportViewData.setContent_3(topTriggers.get(i));
+                for (int i = 0; i < topTriggers.size(); i++) {
+                    if (i == 0) {
+                        triggerReportViewData.setContent_1(topTriggers.get(i));
+                    } else if (i == 1) {
+                        triggerReportViewData.setContent_2(topTriggers.get(i));
+                    } else if (i == 2) {
+                        triggerReportViewData.setContent_3(topTriggers.get(i));
+                    }
                 }
+                reportViewData[triggers] = triggerReportViewData;
             }
-            reportViewData[0] = triggerReportViewData;
 
             //Symptoms
+            {
+                ArrayList<String> topSymptoms = statisticsList.get(symptoms);
+                ReportViewData symptomReportViewData = new ReportViewData("Top symptoms");
+
+                for (int i = 0; i < topSymptoms.size(); i++) {
+                    if (i == 0) {
+                        symptomReportViewData.setContent_1(topSymptoms.get(i));
+                    } else if (i == 1) {
+                        symptomReportViewData.setContent_2(topSymptoms.get(i));
+                    } else if (i == 2) {
+                        symptomReportViewData.setContent_3(topSymptoms.get(i));
+                    }
+                }
+                reportViewData[symptoms] = symptomReportViewData;
+            }
+
             //Activities
+            {
+                ArrayList<String> topActivities = statisticsList.get(activities);
+                ReportViewData activityReportViewData = new ReportViewData("Top activities");
+
+                for (int i = 0; i < topActivities.size(); i++) {
+                    if (i == 0) {
+                        activityReportViewData.setContent_1(topActivities.get(i));
+                    } else if (i == 1) {
+                        activityReportViewData.setContent_2(topActivities.get(i));
+                    } else if (i == 2) {
+                        activityReportViewData.setContent_3(topActivities.get(i));
+                    }
+                }
+                reportViewData[activities] = activityReportViewData;
+            }
+
             //Location
+            {
+                ArrayList<String> topLocations = statisticsList.get(location);
+                ReportViewData locationReportViewData = new ReportViewData("Top locations");
+
+                for (int i = 0; i < topLocations.size(); i++) {
+                    if (i == 0) {
+                        locationReportViewData.setContent_1(topLocations.get(i));
+                    } else if (i == 1) {
+                        locationReportViewData.setContent_2(topLocations.get(i));
+                    } else if (i == 2) {
+                        locationReportViewData.setContent_3(topLocations.get(i));
+                    }
+                }
+                reportViewData[location] = locationReportViewData;
+            }
+
             //Pain in
+            {
+                ArrayList<String> topBodyAreas = statisticsList.get(bodyArea);
+                ReportViewData bodyAreaReportViewData = new ReportViewData("Top pain areas");
+
+                for (int i = 0; i < topBodyAreas.size(); i++) {
+                    if (i == 0) {
+                        bodyAreaReportViewData.setContent_1(topBodyAreas.get(i));
+                    } else if (i == 1) {
+                        bodyAreaReportViewData.setContent_2(topBodyAreas.get(i));
+                    } else if (i == 2) {
+                        bodyAreaReportViewData.setContent_3(topBodyAreas.get(i));
+                    }
+                }
+                reportViewData[bodyArea] = bodyAreaReportViewData;
+            }
+
             //Medicine
+            {
+                ArrayList<String> topMedicines = statisticsList.get(medicine);
+                ReportViewData medicineReportViewData = new ReportViewData("Top medicine");
+
+                for (int i = 0; i < topMedicines.size(); i++) {
+                    if (i == 0) {
+                        medicineReportViewData.setContent_1(topMedicines.get(i));
+                    } else if (i == 1) {
+                        medicineReportViewData.setContent_2(topMedicines.get(i));
+                    } else if (i == 2) {
+                        medicineReportViewData.setContent_3(topMedicines.get(i));
+                    }
+                }
+                reportViewData[medicine] = medicineReportViewData;
+            }
+
             //Effective medicine
+            {
+                ArrayList<String> topEffectiveMedicines = statisticsList.get(effectiveMedicine);
+                ReportViewData effectiveMedicineReportViewData = new ReportViewData("Top effective medicine");
+
+                for (int i = 0; i < topEffectiveMedicines.size(); i++) {
+                    if (i == 0) {
+                        effectiveMedicineReportViewData.setContent_1(topEffectiveMedicines.get(i));
+                    } else if (i == 1) {
+                        effectiveMedicineReportViewData.setContent_2(topEffectiveMedicines.get(i));
+                    } else if (i == 2) {
+                        effectiveMedicineReportViewData.setContent_3(topEffectiveMedicines.get(i));
+                    }
+                }
+                reportViewData[effectiveMedicine] = effectiveMedicineReportViewData;
+            }
+
             //Relief
+            {
+                ArrayList<String> topReliefs = statisticsList.get(reliefs);
+                ReportViewData reliefReportViewData = new ReportViewData("Top reliefs");
+
+                for (int i = 0; i < topReliefs.size(); i++) {
+                    if (i == 0) {
+                        reliefReportViewData.setContent_1(topReliefs.get(i));
+                    } else if (i == 1) {
+                        reliefReportViewData.setContent_2(topReliefs.get(i));
+                    } else if (i == 2) {
+                        reliefReportViewData.setContent_3(topReliefs.get(i));
+                    }
+                }
+                reportViewData[reliefs] = reliefReportViewData;
+            }
+
             //Effective Relief
+            {
+                ArrayList<String> topEffectiveReliefs = statisticsList.get(effectiveReliefs);
+                ReportViewData effectiveReliefReportViewData = new ReportViewData("Top effective reliefs");
+
+                for (int i = 0; i < topEffectiveReliefs.size(); i++) {
+                    if (i == 0) {
+                        effectiveReliefReportViewData.setContent_1(topEffectiveReliefs.get(i));
+                    } else if (i == 1) {
+                        effectiveReliefReportViewData.setContent_2(topEffectiveReliefs.get(i));
+                    } else if (i == 2) {
+                        effectiveReliefReportViewData.setContent_3(topEffectiveReliefs.get(i));
+                    }
+                }
+                reportViewData[effectiveReliefs] = effectiveReliefReportViewData;
+            }
 
             return reportViewData;
         }
@@ -421,16 +602,38 @@ public class ReportFragment extends Fragment {
             ArrayList<ArrayList<String>> statisticsList = new ArrayList<>();
 
             //Triggers
-            statisticsList.add(TriggerController.getTopTriggers(from, to, 3));
+            statisticsList.add(ReportController.getTopTriggers(from, to, 3));
 
             //Symptoms
+            statisticsList.add(ReportController.getTopSymptoms(from, to, 3));
+
             //Activities
+            statisticsList.add(ReportController.getTopActivities(from, to, 3));
+
             //Location
+            statisticsList.add(ReportController.getTopLocations(from, to, 3));
+
             //Pain in
+            statisticsList.add(ReportController.getTopBodyAreas(from, to, 3));
+
             //Medicine
+            statisticsList.add(ReportController.getTopMedicines(from, to, 3));
+
             //Effective medicine
+            statisticsList.add(ReportController.getTopEffectiveMedicines(from, to, 3));
+
             //Relief
+            statisticsList.add(ReportController.getTopReliefs(from, to, 3));
+
             //Effective Relief
+            statisticsList.add(ReportController.getTopEffectiveReliefs(from, to, 3));
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             return getReportViewData(statisticsList);
         }
 
@@ -439,6 +642,7 @@ public class ReportFragment extends Fragment {
             Log.d("LoadReportStatistics", "onPostExecute ");
 
             RecyclerView recyclerView = (RecyclerView) mView.findViewById(R.id.report_recycler_view);
+            recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
 
             // 2. set layoutManger
             recyclerView.setLayoutManager(new LinearLayoutManager(ReportFragment.this.getActivity()));
@@ -451,6 +655,10 @@ public class ReportFragment extends Fragment {
 
             // 5. set item animator to DefaultAnimator
             recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            if (nDialog != null) {
+                nDialog.dismiss();
+            }
         }
     }
 

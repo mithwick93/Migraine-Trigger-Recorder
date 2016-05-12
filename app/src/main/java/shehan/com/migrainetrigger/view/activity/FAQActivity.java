@@ -5,12 +5,12 @@ import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.faq.AlternativeFragment;
 import shehan.com.migrainetrigger.view.fragment.faq.CausesFragment;
 import shehan.com.migrainetrigger.view.fragment.faq.ComplicationsFragment;
@@ -24,7 +24,7 @@ import shehan.com.migrainetrigger.view.fragment.faq.SymptomsFragment;
 import shehan.com.migrainetrigger.view.fragment.faq.TreatmentsFragment;
 
 public class FAQActivity
-        extends AppCompatActivity
+        extends BaseActivity
         implements FAQTopicsFragment.OnTopicSelectedListener {
 
     private static final boolean DEVELOPER_MODE = true;

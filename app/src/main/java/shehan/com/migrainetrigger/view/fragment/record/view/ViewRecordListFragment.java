@@ -94,9 +94,10 @@ public class ViewRecordListFragment extends Fragment
         mCallback.onRecordListCallBack(recordId);
     }
 
+
     //Parent activity must implement this interface to communicate
     public interface RecordListListener {
-        void onRecordListCallBack(int recordId);
+        void onRecordListCallBack(int request);
     }
 
 
@@ -122,6 +123,12 @@ public class ViewRecordListFragment extends Fragment
         @Override
         protected void onPostExecute(RecordViewData recordViewData[]) {
             Log.d("GetRecordList", " onPostExecute - update ui");
+
+            if (recordViewData.length == 0) {//Records in db
+                showToast("No records found in database");
+                mCallback.onRecordListCallBack(-1);
+                return;
+            }
 
             RecyclerView recyclerView = (RecyclerView) mView.findViewById(R.id.record_list_recycler_view);
 

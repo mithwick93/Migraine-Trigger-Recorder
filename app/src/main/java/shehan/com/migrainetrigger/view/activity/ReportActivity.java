@@ -5,14 +5,14 @@ import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.main.ReportFragment;
 
-public class ReportActivity extends AppCompatActivity
+public class ReportActivity extends BaseActivity
         implements ReportFragment.OnReportFragmentInteractionListener {
 
     private static final boolean DEVELOPER_MODE = true;

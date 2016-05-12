@@ -8,17 +8,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordCalenderFragment;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordListFragment;
 
 public class ViewRecordsActivity
-        extends AppCompatActivity
+        extends BaseActivity
         implements ViewRecordListFragment.RecordListListener, ViewRecordCalenderFragment.RecordCalenderListener {
 
     private static final boolean DEVELOPER_MODE = true;
@@ -104,8 +104,12 @@ public class ViewRecordsActivity
     }
 
     @Override
-    public void onRecordListCallBack(int recordId) {
-        showSingleRecordActivity(recordId);
+    public void onRecordListCallBack(int request) {
+        if (request == -1) {
+            ViewRecordsActivity.super.onBackPressed();
+            return;
+        }
+        showSingleRecordActivity(request);
     }
 
 

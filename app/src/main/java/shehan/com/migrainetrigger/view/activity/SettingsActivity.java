@@ -2,13 +2,15 @@ package shehan.com.migrainetrigger.view.activity;
 
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v7.widget.Toolbar;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.BaseActivity;
+import shehan.com.migrainetrigger.view.fragment.main.SettingsFragment;
 
-public class ManageAnswersActivity extends BaseActivity {
-
+/**
+ * Created by Shehan on 12/05/2016.
+ */
+public class SettingsActivity extends BaseActivity {
     private static final boolean DEVELOPER_MODE = true;
 
     @Override
@@ -28,12 +30,17 @@ public class ManageAnswersActivity extends BaseActivity {
                     .build());
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_answers);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.manage_answers_toolbar);
+        setContentView(R.layout.activity_settings);
+
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.settings_toolbar);
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.nav_answers);
+            getSupportActionBar().setTitle("Settings");
         }
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.settings_container, new SettingsFragment())
+                .commit();
     }
 }

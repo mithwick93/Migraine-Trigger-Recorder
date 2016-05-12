@@ -41,7 +41,7 @@
                     android:padding="3dp"
                     android:text="@string/report_from"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/txt_report_from"
@@ -49,11 +49,12 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentTop="true"
+                    android:layout_marginEnd="5dp"
                     android:layout_toStartOf="@+id/textView8"
                     android:gravity="center_vertical"
                     android:text="99-99-9999"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/textView8"
@@ -64,7 +65,7 @@
                     android:gravity="center_vertical"
                     android:text="▼"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </RelativeLayout>
 
@@ -84,7 +85,7 @@
                     android:padding="3dp"
                     android:text="@string/report_to"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/txt_report_to"
@@ -92,11 +93,12 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentTop="true"
+                    android:layout_marginEnd="5dp"
                     android:layout_toStartOf="@+id/textView7"
                     android:gravity="center_vertical"
                     android:text="99-99-9999"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -109,7 +111,7 @@
                     android:gravity="center_vertical"
                     android:text="▼"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -137,31 +139,79 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:gravity="center|center_horizontal"
-                    android:padding="5dp"
-                    android:text="@string/report_total"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="40sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/txt_report_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/textView2"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:padding="3dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="40sp" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:gravity="center|center_horizontal"
+                            android:padding="5dp"
+                            android:text="@string/report_total"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textSize="25sp" />
+
+                        <TextView
+                            android:id="@+id/txt_report_total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginEnd="10dp"
+                            android:layout_toEndOf="@+id/textView2"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:padding="3dp"
+                            android:textAlignment="textEnd"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textSize="25sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:gravity="center|center_horizontal"
+                            android:padding="5dp"
+                            android:text="@string/report_intensity"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textSize="25sp" />
+
+                        <TextView
+                            android:id="@+id/txt_report_intensity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginEnd="10dp"
+                            android:layout_toEndOf="@+id/textView5"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:padding="3dp"
+                            android:textAlignment="textEnd"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textSize="25sp" />
+                    </RelativeLayout>
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -205,6 +255,7 @@
         android:id="@+id/report_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:clipToPadding="false"
         android:paddingBottom="16dp"
         android:paddingTop="16dp"

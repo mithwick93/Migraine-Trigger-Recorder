@@ -1,6 +1,7 @@
 package shehan.com.migrainetrigger.view.adapter;
 
 import android.annotation.SuppressLint;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,7 @@ public class ReportViewAdapter extends RecyclerView.Adapter<ReportViewAdapter.Vi
             holder.txtViewContent_1.setText(R.string.record_no_enough_records);
             holder.layoutContent_2.setVisibility(View.GONE);
             holder.layoutContent_3.setVisibility(View.GONE);
-            return;
+            //return;
         } else {
             holder.txtViewContent_1.setText(content_1);
         }
@@ -57,7 +58,7 @@ public class ReportViewAdapter extends RecyclerView.Adapter<ReportViewAdapter.Vi
         if (content_2.equals("EMPTY")) {
             holder.layoutContent_2.setVisibility(View.GONE);
             holder.layoutContent_3.setVisibility(View.GONE);
-            return;
+            // return;
         } else {
             holder.txtViewContent_2.setText(content_2);
         }
@@ -69,6 +70,7 @@ public class ReportViewAdapter extends RecyclerView.Adapter<ReportViewAdapter.Vi
             holder.txtViewContent_3.setText(content_3);
         }
 
+        holder.cardViewSection.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -88,6 +90,8 @@ public class ReportViewAdapter extends RecyclerView.Adapter<ReportViewAdapter.Vi
         public RelativeLayout layoutContent_2;
         public RelativeLayout layoutContent_3;
 
+        public CardView cardViewSection;
+
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
             txtViewTopic = (TextView) itemLayoutView.findViewById(R.id.txt_report_section_topic);
@@ -98,6 +102,8 @@ public class ReportViewAdapter extends RecyclerView.Adapter<ReportViewAdapter.Vi
             layoutContent_1 = (RelativeLayout) itemLayoutView.findViewById(R.id.layout_report_section_content_1);
             layoutContent_2 = (RelativeLayout) itemLayoutView.findViewById(R.id.layout_report_section_content_2);
             layoutContent_3 = (RelativeLayout) itemLayoutView.findViewById(R.id.layout_report_section_content_3);
+
+            cardViewSection = (CardView) itemLayoutView.findViewById(R.id.card_view_record_section);
         }
 
     }

@@ -7,12 +7,15 @@ import android.database.sqlite.SQLiteException;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import shehan.com.migrainetrigger.data.builders.BodyAreaBuilder;
 import shehan.com.migrainetrigger.data.model.BodyArea;
 import shehan.com.migrainetrigger.utility.database.DatabaseDefinition;
 import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
+
+import static shehan.com.migrainetrigger.utility.AppUtil.getStringDate;
 
 /**
  * Created by Shehan on 4/13/2016.
@@ -232,5 +235,65 @@ public class DBBodyAreaDAO {
         }
 
         return bodyAreas;
+    }
+
+    /**
+     * get Top Body Areas
+     *
+     * @param from  from date
+     * @param to    to date
+     * @param limit limit
+     * @return ArrayList<String>
+     */
+    public static ArrayList<String> getTopBodyAreas(Timestamp from, Timestamp to, int limit) {
+        Log.d("DBBodyAreaDAO", "getTopBodyAreas");
+
+        ArrayList<String> top = new ArrayList<>();
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            String topic = DatabaseDefinition.BODY_AREA_NAME_KEY;//Dynamic
+            String topicId = DatabaseDefinition.BODY_AREA_ID_KEY;//Dynamic
+
+            String rightTable = DatabaseDefinition.RECORD_TABLE;
+            String leftTable = DatabaseDefinition.BODY_AREA_TABLE;//Dynamic
+            String middleTable = DatabaseDefinition.BODY_AREA_RECORD_TABLE;//Dynamic
+
+            String rightId = DatabaseDefinition.RECORD_ID_KEY;
+
+            String filter = DatabaseDefinition.RECORD_START_TIME_KEY;
+
+            String joinQuery =
+                    "SELECT " + topic + ", COUNT(" + topicId + ") as topCount " +
+                            "FROM " + leftTable + " NATURAL JOIN " + middleTable + ", " + rightTable +
+                            " WHERE " + middleTable + "." + rightId + " = " + rightTable + "." + rightId +
+                            " AND " + rightTable + "." + filter + " BETWEEN ? AND ? " +
+                            "GROUP BY " + topic + " ORDER BY topCount DESC LIMIT " + String.valueOf(limit);
+
+            String[] selectionArgs = {getStringDate(from), getStringDate(to)};
+            cursor = db.rawQuery(joinQuery, selectionArgs);
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
+                    String title = cursor.getString(0);
+                    top.add(title);
+                } while (cursor.moveToNext());
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return top;
     }
 }
