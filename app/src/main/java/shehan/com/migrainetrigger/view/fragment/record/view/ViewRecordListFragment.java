@@ -12,10 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
+import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.adapter.RecordViewAdapter;
 import shehan.com.migrainetrigger.view.model.RecordViewData;
 
@@ -26,7 +26,6 @@ import shehan.com.migrainetrigger.view.model.RecordViewData;
 public class ViewRecordListFragment extends Fragment
         implements RecordViewAdapter.RecordListViewClickListener {
 
-    private Toast mToast;
     private View mView;
     private RecordListListener mCallback;
 
@@ -79,15 +78,6 @@ public class ViewRecordListFragment extends Fragment
         mCallback = null;
     }
 
-    private void showToast(String message) {
-        if (mToast != null) {
-            mToast.cancel();
-            mToast = null;
-        }
-        mToast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
-        mToast.show();
-    }
-
 
     @Override
     public void recordListItemClicked(int recordId) {
@@ -125,7 +115,7 @@ public class ViewRecordListFragment extends Fragment
             Log.d("GetRecordList", " onPostExecute - update ui");
 
             if (recordViewData.length == 0) {//Records in db
-                showToast("No records found in database");
+                AppUtil.showToast(ViewRecordListFragment.this.getContext(), "No records found in database");
                 mCallback.onRecordListCallBack(-1);
                 return;
             }
@@ -144,7 +134,7 @@ public class ViewRecordListFragment extends Fragment
             // 5. set item animator to DefaultAnimator
             recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-            showToast("Showing newest first");
+            AppUtil.showToast(ViewRecordListFragment.this.getContext(), "Showing newest first");
 
         }
     }

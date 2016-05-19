@@ -9,12 +9,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFragment;
 
@@ -26,7 +26,6 @@ public class ViewSingleRecordActivity
 
     private ViewRecordSingleFragment mViewRecordSingleFragment;
     private FloatingActionButton fabUpdate;
-    private Toast mToast;
     private int recordId;
 
     @Override
@@ -68,7 +67,7 @@ public class ViewSingleRecordActivity
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        showToast("Record discarded");
+                        AppUtil.showToast(ViewSingleRecordActivity.this, "Record discarded");
                         ViewSingleRecordActivity.super.onBackPressed();
                     }
                 })
@@ -98,7 +97,7 @@ public class ViewSingleRecordActivity
         fragmentTransaction.replace(R.id.single_record_container, mViewRecordSingleFragment);
         fragmentTransaction.commit();
         if (mViewRecordSingleFragment != null) {
-            showToast("Selected record Id : " + recordId);
+            AppUtil.showToast(ViewSingleRecordActivity.this, "Selected record Id : " + recordId);
         }
 
         fabSetup();
@@ -125,12 +124,4 @@ public class ViewSingleRecordActivity
         }
     }
 
-    private void showToast(String message) {
-        if (mToast != null) {
-            mToast.cancel();
-            mToast = null;
-        }
-        mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        mToast.show();
-    }
 }

@@ -18,11 +18,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.main.AboutFragment;
 import shehan.com.migrainetrigger.view.fragment.main.HomeFragment;
@@ -35,7 +35,6 @@ public class MainActivity
     private static final boolean DEVELOPER_MODE = true;
 
     private FloatingActionButton fab;
-    private Toast mToast;
     private Boolean isFabOpen = false;
     private Animation rotateForward, rotateBackward;
 
@@ -124,7 +123,7 @@ public class MainActivity
             Log.d("Main-navigation", "Home selected");
             HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_home));
             if (homeFragment != null && homeFragment.isVisible()) {
-                showToast("Home already selected");
+                AppUtil.showToast(MainActivity.this, "Home already selected");
             } else {
                 setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
             }
@@ -134,7 +133,7 @@ public class MainActivity
 
             SeverityFragment severityFragment = (SeverityFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_severity));
             if (severityFragment != null && severityFragment.isVisible()) {
-                showToast("Severity already selected");
+                AppUtil.showToast(MainActivity.this, "Severity already selected");
             } else {
                 setFragment(new SeverityFragment(), R.string.nav_severity, View.VISIBLE, true);
             }
@@ -173,7 +172,7 @@ public class MainActivity
 
             AboutFragment aboutFragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_about));
             if (aboutFragment != null && aboutFragment.isVisible()) {
-                showToast("about already selected");
+                AppUtil.showToast(MainActivity.this, "about already selected");
             } else {
                 setFragment(new AboutFragment(), R.string.nav_about, View.VISIBLE, true);
             }
@@ -287,15 +286,6 @@ public class MainActivity
         if (fab != null) {
             fab.setVisibility(View.INVISIBLE);
         }
-    }
-
-    private void showToast(String message) {
-        if (mToast != null) {
-            mToast.cancel();
-            mToast = null;
-        }
-        mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        mToast.show();
     }
 
     //endregion

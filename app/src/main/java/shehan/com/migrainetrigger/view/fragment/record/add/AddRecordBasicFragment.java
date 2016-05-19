@@ -599,32 +599,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         mToast.show();
     }
 
-    /**
-     * Show dialog box msg
-     *
-     * @param context context to show text
-     * @param msg     string msg
-     */
-    protected void showMsg(Context context, String msg) {
-        new MaterialDialog.Builder(context)
-                .content(msg)
-                .negativeText(R.string.cancelButtonDialog)
-                .show();
-    }
-
-    /**
-     * @param context context to show text
-     * @param msg     string msg
-     * @param title   title of msg dialog
-     */
-    protected void showMsg(Context context, String msg, String title) {
-        new MaterialDialog.Builder(context)
-                .title(title)
-                .content(msg)
-                .negativeText(R.string.cancelButtonDialog)
-                .show();
-    }
-
     //
     //
     //
@@ -741,13 +715,13 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                 startTimestamp = getTimeStampDate(tmpStr);
             }
         } else {
-            showMsg(getContext(), "Record must have start time");
+            AppUtil.showMsg(getContext(), "Record must have start time");
             return;
         }
 
         Calendar c = Calendar.getInstance();
         if (startTimestamp.after(c.getTime())) {
-            showMsg(getContext(), "Start Date is past current time");
+            AppUtil.showMsg(getContext(), "Start Date is past current time");
             return;
         }
 
@@ -768,7 +742,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
         if (endTimestamp != null) {
             if (endTimestamp.after(c.getTime())) {
-                showMsg(getContext(), "End Date is past current time");
+                AppUtil.showMsg(getContext(), "End Date is past current time");
                 return;
             }
         }
@@ -796,7 +770,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                 }
             }.execute();
         } else {
-            showMsg(getContext(), "Start time is greater than the end time");
+            AppUtil.showMsg(getContext(), "Start time is greater than the end time");
         }
     }
 
@@ -932,7 +906,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                 layoutWeather.setVisibility(View.GONE);
 
                 if (networkProblem) {
-                    showMsg(getContext(), "There was an error connecting to the weather service. Please check network connectivity and try again.", "Could not get weather data");
+                    AppUtil.showMsg(getContext(), "There was an error connecting to the weather service. Please check network connectivity and try again.", "Could not get weather data");
                 } else {
                     Toast.makeText(getContext(), "Task canceled", Toast.LENGTH_SHORT).show();
                 }
@@ -953,7 +927,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
             } else {
                 Log.d("showWeather", "null weather data");
-                showMsg(getContext(), "network service disconnected");
+                AppUtil.showMsg(getContext(), "network service disconnected");
             }
         }
     }

@@ -9,12 +9,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordBasicFragment;
 import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordFullFragment;
@@ -29,7 +29,6 @@ public class AddRecordActivity
     private AddRecordBasicFragment mFragment;
     private FloatingActionButton fabAdd;
     private int levelOfInformation;
-    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,7 @@ public class AddRecordActivity
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        showToast("Record discarded");
+                        AppUtil.showToast(AddRecordActivity.this, "Record discarded");
                         AddRecordActivity.super.onBackPressed();
                     }
                 })
@@ -107,7 +106,7 @@ public class AddRecordActivity
         fragmentTransaction.replace(R.id.new_record_container, mFragment);
         fragmentTransaction.commit();
         if (mFragment != null) {
-            showToast(mFragment.toString() + " record selected");
+            AppUtil.showToast(AddRecordActivity.this, mFragment.toString() + " record selected");
         }
 
         fabSetup();
@@ -131,15 +130,6 @@ public class AddRecordActivity
                 }
             });
         }
-    }
-
-    private void showToast(String message) {
-        if (mToast != null) {
-            mToast.cancel();
-            mToast = null;
-        }
-        mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        mToast.show();
     }
 
     @Override

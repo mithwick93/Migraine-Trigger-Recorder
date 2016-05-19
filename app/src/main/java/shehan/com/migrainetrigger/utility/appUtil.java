@@ -1,12 +1,18 @@
 package shehan.com.migrainetrigger.utility;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import shehan.com.migrainetrigger.R;
 
 /**
  * Created by Shehan on 4/17/2016.
@@ -23,6 +29,8 @@ public class AppUtil {
     public final static long HOURS = 24;
 
     public final static long ONE_DAY = ONE_HOUR * 24;
+
+    private static Toast mToast;
 
     /**
      * Convert ime from date picker to 12 hour time
@@ -180,5 +188,41 @@ public class AppUtil {
         return timestamp;
     }
 
+
+    public static void showToast(Context context, String message) {
+
+        if (mToast != null) {
+            mToast.cancel();
+            mToast = null;
+        }
+        mToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        mToast.show();
+    }
+
+    /**
+     * Show dialog box msg
+     *
+     * @param context context to show text
+     * @param msg     string msg
+     */
+    public static void showMsg(Context context, String msg) {
+        new MaterialDialog.Builder(context)
+                .content(msg)
+                .negativeText(R.string.cancelButtonDialog)
+                .show();
+    }
+
+    /**
+     * @param context context to show text
+     * @param msg     string msg
+     * @param title   title of msg dialog
+     */
+    public static void showMsg(Context context, String msg, String title) {
+        new MaterialDialog.Builder(context)
+                .title(title)
+                .content(msg)
+                .negativeText(R.string.cancelButtonDialog)
+                .show();
+    }
 
 }

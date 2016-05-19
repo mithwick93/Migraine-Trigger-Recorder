@@ -20,9 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -32,6 +29,7 @@ import java.util.Locale;
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.controller.ReportController;
+import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.adapter.ReportViewAdapter;
 import shehan.com.migrainetrigger.view.model.ReportViewData;
 
@@ -46,7 +44,6 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
 public class ReportFragment extends Fragment {
 
     private OnReportFragmentInteractionListener mCallback;
-    private Toast mToast;
 
     private View mView;
 
@@ -156,7 +153,7 @@ public class ReportFragment extends Fragment {
                                 mYear = fromDate[0] = year;
                                 mMonth = fromDate[1] = monthOfYear + 1;
                                 mDay = fromDate[2] = dayOfMonth;
-                                showToast(getContext(), "Please refresh report");
+                                AppUtil.showToast(getContext(), "Please refresh report");
                             }
                         }, mYear, mMonth - 1, mDay);
                 datePickerDialog.show();
@@ -178,7 +175,7 @@ public class ReportFragment extends Fragment {
                                 mYear = toDate[0] = year;
                                 mMonth = toDate[1] = monthOfYear + 1;
                                 mDay = toDate[2] = dayOfMonth;
-                                showToast(getContext(), "Please refresh report");
+                                AppUtil.showToast(getContext(), "Please refresh report");
                             }
                         }, mYear, mMonth - 1, mDay);
                 datePickerDialog.show();
@@ -204,7 +201,7 @@ public class ReportFragment extends Fragment {
 
         Calendar c = Calendar.getInstance();
         if (fromTimestamp.after(c.getTime())) {
-            showMsg(getContext(), "Start Date is past current time");
+            AppUtil.showMsg(getContext(), "Start Date is past current time");
             return;
         }
 
@@ -217,7 +214,7 @@ public class ReportFragment extends Fragment {
 
         if (toTimestamp != null) {
             if (toTimestamp.after(c.getTime())) {
-                showMsg(getContext(), "End Date is past current time");
+                AppUtil.showMsg(getContext(), "End Date is past current time");
                 return;
             }
         }
@@ -235,44 +232,9 @@ public class ReportFragment extends Fragment {
             new LoadReportSummeryTask(fromTimestamp, toTimestamp).execute();
             new LoadReportStatisticsTask(mView, fromTimestamp, toTimestamp).execute();
         } else {
-            showMsg(getContext(), "Start time is greater than the end time");
+            AppUtil.showMsg(getContext(), "Start time is greater than the end time");
         }
 
-    }
-
-    protected void showToast(Context context, String message) {
-        if (mToast != null) {
-            mToast.cancel();
-            mToast = null;
-        }
-        mToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-        mToast.show();
-    }
-
-    /**
-     * Show dialog box msg
-     *
-     * @param context context to show text
-     * @param msg     string msg
-     */
-    protected void showMsg(Context context, String msg) {
-        new MaterialDialog.Builder(context)
-                .content(msg)
-                .negativeText(R.string.cancelButtonDialog)
-                .show();
-    }
-
-    /**
-     * @param context context to show text
-     * @param msg     string msg
-     * @param title   title of msg dialog
-     */
-    protected void showMsg(Context context, String msg, String title) {
-        new MaterialDialog.Builder(context)
-                .title(title)
-                .content(msg)
-                .negativeText(R.string.cancelButtonDialog)
-                .show();
     }
 
     /**
@@ -304,6 +266,12 @@ public class ReportFragment extends Fragment {
             mMonth = fromDate[1] = cal.get(Calendar.MONTH) + 1;
             mDay = fromDate[2] = cal.get(Calendar.DAY_OF_MONTH);
 
+            if (mYear == 2016 && mMonth == 1 && mDay == 1) {
+                AppUtil.showToast(getContext(), "No records found in database");
+                mCallback.onReportFragmentInteraction(0);
+                return;
+            }
+
             txtViewFrom.setText(String.format(Locale.getDefault(), "%02d-%02d-%d ", mDay, mMonth, mYear));
 
         }
@@ -330,6 +298,7 @@ public class ReportFragment extends Fragment {
         @Override
         protected void onPostExecute(Timestamp timestamp) {
             Log.d("LoadReportDatesTask", "onPostExecute ");
+
 
             setFromDate(timestamp);
             setToDate();

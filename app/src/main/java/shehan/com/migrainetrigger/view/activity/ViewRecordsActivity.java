@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.Toast;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.BaseActivity;
@@ -23,7 +22,6 @@ public class ViewRecordsActivity
 
     private static final boolean DEVELOPER_MODE = true;
 
-    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,14 +92,6 @@ public class ViewRecordsActivity
         return "View records";
     }
 
-    private void showToast(String message) {
-        if (mToast != null) {
-            mToast.cancel();
-            mToast = null;
-        }
-        mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        mToast.show();
-    }
 
     @Override
     public void onRecordListCallBack(int request) {

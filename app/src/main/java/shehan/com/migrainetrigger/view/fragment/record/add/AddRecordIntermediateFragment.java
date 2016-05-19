@@ -29,6 +29,7 @@ import shehan.com.migrainetrigger.data.builders.RecordBuilder;
 import shehan.com.migrainetrigger.data.model.LifeActivity;
 import shehan.com.migrainetrigger.data.model.Symptom;
 import shehan.com.migrainetrigger.data.model.Trigger;
+import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFragment;
 
 import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
@@ -409,13 +410,13 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                 startTimestamp = getTimeStampDate(tmpStr);
             }
         } else {
-            showMsg(getContext(), "Record must have start time");
+            AppUtil.showMsg(getContext(), "Record must have start time");
             return;
         }
 
         Calendar c = Calendar.getInstance();
         if (startTimestamp.after(c.getTime())) {
-            showMsg(getContext(), "Start Date is past current time");
+            AppUtil.showMsg(getContext(), "Start Date is past current time");
             return;
         }
 
@@ -436,7 +437,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
 
         if (endTimestamp != null) {
             if (endTimestamp.after(c.getTime())) {
-                showMsg(getContext(), "End Date is past current time");
+                AppUtil.showMsg(getContext(), "End Date is past current time");
                 return;
             }
         }
@@ -463,7 +464,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                 }
             }.execute();
         } else {
-            showMsg(getContext(), "Start time is greater than the end time");
+            AppUtil.showMsg(getContext(), "Start time is greater than the end time");
         }
     }
 

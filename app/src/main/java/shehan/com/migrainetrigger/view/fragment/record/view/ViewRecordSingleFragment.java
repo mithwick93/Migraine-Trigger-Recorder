@@ -165,13 +165,13 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
                 startTimestamp = getTimeStampDate(tmpStr);
             }
         } else {
-            showMsg(getContext(), "Record must have start time");
+            AppUtil.showMsg(getContext(), "Record must have start time");
             return;
         }
 
         Calendar c = Calendar.getInstance();
         if (startTimestamp.after(c.getTime())) {
-            showMsg(getContext(), "Start Date is past current time");
+            AppUtil.showMsg(getContext(), "Start Date is past current time");
             return;
         }
 
@@ -192,7 +192,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
 
         if (endTimestamp != null) {
             if (endTimestamp.after(c.getTime())) {
-                showMsg(getContext(), "End Date is past current time");
+                AppUtil.showMsg(getContext(), "End Date is past current time");
                 return;
             }
         }
@@ -221,7 +221,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
             }.execute();
 
         } else {
-            showMsg(getContext(), "Start time is greater than the end time");
+            AppUtil.showMsg(getContext(), "Start time is greater than the end time");
         }
 
 
@@ -238,7 +238,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
                 .title("Delete record")
                 .content("Do you want to delete record permanently ?")
                 .negativeText("Cancel")
-                .positiveText("Delete weather")
+                .positiveText("Delete record")
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {

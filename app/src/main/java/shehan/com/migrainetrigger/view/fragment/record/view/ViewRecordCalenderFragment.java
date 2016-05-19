@@ -135,6 +135,7 @@ public class ViewRecordCalenderFragment extends Fragment {
                     mCallback.onRecordCalenderCallBack(recordList.get(0));
 
                 } else {
+
                     Log.i("ViewRecordCalender", "record list not found ");
                 }
 
