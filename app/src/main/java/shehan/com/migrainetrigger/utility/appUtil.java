@@ -188,7 +188,12 @@ public class AppUtil {
         return timestamp;
     }
 
-
+    /**
+     * show toast messages
+     *
+     * @param context context
+     * @param message msg to show
+     */
     public static void showToast(Context context, String message) {
 
         if (mToast != null) {
