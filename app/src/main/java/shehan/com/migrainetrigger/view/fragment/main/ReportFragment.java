@@ -186,7 +186,7 @@ public class ReportFragment extends Fragment {
 
     private void loadRecordData(View view) {
         //Load all data
-        new LoadReportDatesTask().execute();
+        new CheckRecordsTask().execute();
     }
 
     private void refreshSummery() {
@@ -252,6 +252,31 @@ public class ReportFragment extends Fragment {
     }
 
     /**
+     * Async task to check if reports can be generated
+     */
+    private class CheckRecordsTask extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            Log.d("CheckRecordsTask", "doInBackground ");
+            return RecordController.getLastId();
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            Log.d("CheckRecordsTask", "onPostExecute ");
+
+            if (integer == -1) {
+                AppUtil.showToast(getContext(), "No records found in database");
+                mCallback.onReportFragmentInteraction(0);
+            } else {
+                new LoadReportDatesTask().execute();
+            }
+
+        }
+    }
+
+    /**
      * Async task to load data
      */
     private class LoadReportDatesTask extends AsyncTask<String, Void, Timestamp> {
@@ -265,12 +290,6 @@ public class ReportFragment extends Fragment {
             mYear = fromDate[0] = cal.get(Calendar.YEAR);
             mMonth = fromDate[1] = cal.get(Calendar.MONTH) + 1;
             mDay = fromDate[2] = cal.get(Calendar.DAY_OF_MONTH);
-
-            if (mYear == 2016 && mMonth == 1 && mDay == 1) {
-                AppUtil.showToast(getContext(), "No records found in database");
-                mCallback.onReportFragmentInteraction(0);
-                return;
-            }
 
             txtViewFrom.setText(String.format(Locale.getDefault(), "%02d-%02d-%d ", mDay, mMonth, mYear));
 
@@ -298,7 +317,6 @@ public class ReportFragment extends Fragment {
         @Override
         protected void onPostExecute(Timestamp timestamp) {
             Log.d("LoadReportDatesTask", "onPostExecute ");
-
 
             setFromDate(timestamp);
             setToDate();

@@ -83,6 +83,7 @@ public class ViewRecordsActivity
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.nav_records);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 

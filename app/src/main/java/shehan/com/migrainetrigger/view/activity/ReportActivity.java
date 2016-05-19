@@ -40,6 +40,7 @@ public class ReportActivity extends BaseActivity
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.nav_report);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         showFAQFragment();
     }

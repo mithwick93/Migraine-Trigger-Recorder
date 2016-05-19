@@ -37,6 +37,7 @@ public class SettingsActivity extends BaseActivity {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Settings");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         getFragmentManager().beginTransaction()

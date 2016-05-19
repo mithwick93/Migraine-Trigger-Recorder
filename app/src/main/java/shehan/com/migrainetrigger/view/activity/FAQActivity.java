@@ -52,6 +52,7 @@ public class FAQActivity
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.nav_f_a_q);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         showFAQFragment();
