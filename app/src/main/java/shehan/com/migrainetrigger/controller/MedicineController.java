@@ -49,4 +49,21 @@ public class MedicineController {
         return DBMedicineDAO.getMedicinesForRecord(recordId);
     }
 
+    public static long addMedicine(Medicine medicine) {
+        return DBMedicineDAO.addMedicine(medicine);
+    }
+
+    public static long addMedicines(ArrayList<Medicine> lst) {
+        for (Medicine itm : lst) {
+            long result = addMedicine(itm);
+            if (result < 1) {
+                return 0;
+            }
+        }
+        return lst.size();
+    }
+
+    public static long deleteMedicine(int id) {
+        return DBMedicineDAO.deleteMedicine(id);
+    }
 }

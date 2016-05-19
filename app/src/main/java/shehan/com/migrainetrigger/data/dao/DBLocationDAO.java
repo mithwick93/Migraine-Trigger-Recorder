@@ -1,5 +1,6 @@
 package shehan.com.migrainetrigger.data.dao;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -161,5 +162,50 @@ public final class DBLocationDAO {
         }
 
         return top;
+    }
+
+    /**
+     * add Location
+     *
+     * @param location location
+     * @return affected no of rows
+     */
+    public static long addLocation(Location location) {
+        Log.d("DBLocationDAO", "DB - addLocation");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            ContentValues values = new ContentValues();
+
+            values.put(DatabaseDefinition.LOCATION_ID_KEY, location.getLocationId());
+
+            values.put(DatabaseDefinition.LOCATION_NAME_KEY, location.getLocationName());
+
+            long row_id = db.insert(DatabaseDefinition.LOCATION_TABLE, null, values);
+
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
+     * delete Location
+     *
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteLocation(int id) {
+        Log.d("DBLocationDAO", "deleteLocation");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            long row_id = db.delete(DatabaseDefinition.LOCATION_TABLE, DatabaseDefinition.LOCATION_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
     }
 }

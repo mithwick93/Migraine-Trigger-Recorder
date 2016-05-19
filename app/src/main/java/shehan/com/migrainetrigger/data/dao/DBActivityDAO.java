@@ -308,4 +308,53 @@ public final class DBActivityDAO {
 
         return top;
     }
+
+    /**
+     * add Activity
+     *
+     * @param lifeActivity lifeActivity
+     * @return affected no of rows
+     */
+    public static long addActivity(LifeActivity lifeActivity) {
+        Log.d("DBActivityDAO", "DB - addActivity");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            ContentValues values = new ContentValues();
+
+            values.put(DatabaseDefinition.ACTIVITY_ID_KEY, lifeActivity.getActivityId());
+
+            values.put(DatabaseDefinition.ACTIVITY_NAME_KEY, lifeActivity.getActivityName());
+
+            values.put(DatabaseDefinition.ACTIVITY_PRIORITY_KEY, lifeActivity.getPriority());
+
+            long row_id = db.insert(DatabaseDefinition.ACTIVITY_TABLE, null, values);
+
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
+     * delete Activity
+     *
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteActivity(int id) {
+        Log.d("DBActivityDAO", "deleteActivity");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            long row_id = db.delete(DatabaseDefinition.ACTIVITY_TABLE, DatabaseDefinition.ACTIVITY_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+
 }

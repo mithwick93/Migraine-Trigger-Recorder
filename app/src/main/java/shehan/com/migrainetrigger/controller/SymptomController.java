@@ -47,4 +47,22 @@ public class SymptomController {
     public static ArrayList<Symptom> getSymptomsForRecord(int recordId) {
         return DBSymptomDAO.getSymptomsForRecord(recordId);
     }
+
+    public static long addSymptom(Symptom symptom) {
+        return DBSymptomDAO.addSymptom(symptom);
+    }
+
+    public static long addSymptoms(ArrayList<Symptom> lst) {
+        for (Symptom itm : lst) {
+            long result = addSymptom(itm);
+            if (result < 1) {
+                return 0;
+            }
+        }
+        return lst.size();
+    }
+
+    public static long deleteSymptom(int id) {
+        return DBSymptomDAO.deleteSymptom(id);
+    }
 }

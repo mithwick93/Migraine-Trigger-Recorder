@@ -36,4 +36,22 @@ public class LocationController {
     public static void reorderPriority(Location location) {
 
     }
+
+    public static long addLocation(Location location) {
+        return DBLocationDAO.addLocation(location);
+    }
+
+    public static long addLocations(ArrayList<Location> lst) {
+        for (Location itm : lst) {
+            long result = addLocation(itm);
+            if (result < 1) {
+                return 0;
+            }
+        }
+        return lst.size();
+    }
+
+    public static long deleteLocation(int id) {
+        return DBLocationDAO.deleteLocation(id);
+    }
 }

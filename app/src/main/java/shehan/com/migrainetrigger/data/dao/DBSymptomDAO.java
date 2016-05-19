@@ -308,4 +308,51 @@ public final class DBSymptomDAO {
 
         return top;
     }
+
+    /**
+     * add Symptom
+     *
+     * @param symptom symptom
+     * @return affected no of rows
+     */
+    public static long addSymptom(Symptom symptom) {
+        Log.d("DBSymptomDAO", "DB - addSymptom");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            ContentValues values = new ContentValues();
+
+            values.put(DatabaseDefinition.SYMPTOM_ID_KEY, symptom.getSymptomId());
+
+            values.put(DatabaseDefinition.SYMPTOM_NAME_KEY, symptom.getSymptomName());
+
+            values.put(DatabaseDefinition.SYMPTOM_PRIORITY_KEY, symptom.getPriority());
+
+            long row_id = db.insert(DatabaseDefinition.SYMPTOM_TABLE, null, values);
+
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
+     * delete Symptom
+     *
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteSymptom(int id) {
+        Log.d("DBSymptomDAO", "deleteSymptom");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            long row_id = db.delete(DatabaseDefinition.SYMPTOM_TABLE, DatabaseDefinition.SYMPTOM_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

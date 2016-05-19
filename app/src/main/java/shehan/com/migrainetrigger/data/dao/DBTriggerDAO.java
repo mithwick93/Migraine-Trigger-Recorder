@@ -309,4 +309,51 @@ public final class DBTriggerDAO {
 
         return top;
     }
+
+    /**
+     * add Trigger
+     *
+     * @param trigger trigger
+     * @return affected no of rows
+     */
+    public static long addTrigger(Trigger trigger) {
+        Log.d("DBTriggerDAO", "DB - addTrigger");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            ContentValues values = new ContentValues();
+
+            values.put(DatabaseDefinition.TRIGGER_ID_KEY, trigger.getTriggerId());
+
+            values.put(DatabaseDefinition.TRIGGER_NAME_KEY, trigger.getTriggerName());
+
+            values.put(DatabaseDefinition.TRIGGER_PRIORITY_KEY, trigger.getPriority());
+
+            long row_id = db.insert(DatabaseDefinition.TRIGGER_TABLE, null, values);
+
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
+     * delete Trigger
+     *
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteTrigger(int id) {
+        Log.d("DBTriggerDAO", "deleteTrigger");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            long row_id = db.delete(DatabaseDefinition.TRIGGER_TABLE, DatabaseDefinition.TRIGGER_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

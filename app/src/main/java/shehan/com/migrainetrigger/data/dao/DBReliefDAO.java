@@ -383,4 +383,50 @@ public final class DBReliefDAO {
         return top;
     }
 
+    /**
+     * add Relief
+     *
+     * @param relief relief
+     * @return affected no of rows
+     */
+    public static long addRelief(Relief relief) {
+        Log.d("DBReliefDAO", "DB - addRelief");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            ContentValues values = new ContentValues();
+
+            values.put(DatabaseDefinition.RELIEF_ID_KEY, relief.getReliefId());
+
+            values.put(DatabaseDefinition.RELIEF_NAME_KEY, relief.getReliefName());
+
+            values.put(DatabaseDefinition.RELIEF_PRIORITY_KEY, relief.getPriority());
+
+            long row_id = db.insert(DatabaseDefinition.RELIEF_TABLE, null, values);
+
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
+     * delete Relief
+     *
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteRelief(int id) {
+        Log.d("DBReliefDAO", "deleteMedicine");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            long row_id = db.delete(DatabaseDefinition.RELIEF_TABLE, DatabaseDefinition.RELIEF_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

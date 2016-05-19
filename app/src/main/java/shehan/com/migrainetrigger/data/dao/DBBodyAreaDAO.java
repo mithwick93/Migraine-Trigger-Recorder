@@ -296,4 +296,49 @@ public class DBBodyAreaDAO {
 
         return top;
     }
+
+    /**
+     * add Body Area
+     *
+     * @param bodyArea bodyArea
+     * @return affected no of rows
+     */
+    public static long addBodyArea(BodyArea bodyArea) {
+        Log.d("DBBodyAreaDAO", "DB - addBodyArea");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            ContentValues values = new ContentValues();
+
+            values.put(DatabaseDefinition.BODY_AREA_ID_KEY, bodyArea.getBodyAreaId());
+
+            values.put(DatabaseDefinition.BODY_AREA_NAME_KEY, bodyArea.getBodyAreaName());
+
+            long row_id = db.insert(DatabaseDefinition.BODY_AREA_TABLE, null, values);
+
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
+     * delete Body Area
+     *
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteBodyArea(int id) {
+        Log.d("DBBodyAreaDAO", "deleteBodyArea");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            long row_id = db.delete(DatabaseDefinition.BODY_AREA_TABLE, DatabaseDefinition.BODY_AREA_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

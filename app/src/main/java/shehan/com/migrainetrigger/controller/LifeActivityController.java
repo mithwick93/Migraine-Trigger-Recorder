@@ -50,4 +50,21 @@ public class LifeActivityController {
         return DBActivityDAO.getActivitiesForRecord(recordId);
     }
 
+    public static long addActivity(LifeActivity lifeActivity) {
+        return DBActivityDAO.addActivity(lifeActivity);
+    }
+
+    public static long addActivities(ArrayList<LifeActivity> lst) {
+        for (LifeActivity itm : lst) {
+            long result = addActivity(itm);
+            if (result < 1) {
+                return 0;
+            }
+        }
+        return lst.size();
+    }
+
+    public static long deleteActivity(int id) {
+        return DBActivityDAO.deleteActivity(id);
+    }
 }

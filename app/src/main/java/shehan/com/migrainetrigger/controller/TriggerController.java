@@ -49,4 +49,22 @@ public class TriggerController {
     public static ArrayList<Trigger> getTriggersForRecord(int recordId) {
         return DBTriggerDAO.getTriggersForRecord(recordId);
     }
+
+    public static long addTrigger(Trigger trigger) {
+        return DBTriggerDAO.addTrigger(trigger);
+    }
+
+    public static long addTriggers(ArrayList<Trigger> lst) {
+        for (Trigger itm : lst) {
+            long result = addTrigger(itm);
+            if (result < 1) {
+                return 0;
+            }
+        }
+        return lst.size();
+    }
+
+    public static long deleteTrigger(int id) {
+        return DBTriggerDAO.deleteTrigger(id);
+    }
 }

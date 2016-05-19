@@ -382,4 +382,53 @@ public final class DBMedicineDAO {
 
         return top;
     }
+
+    /**
+     * add Medicine
+     *
+     * @param medicine medicine
+     * @return affected no of rows
+     */
+    public static long addMedicine(Medicine medicine) {
+        Log.d("DBMedicineDAO", "DB - addMedicine");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            ContentValues values = new ContentValues();
+
+            values.put(DatabaseDefinition.MEDICINE_ID_KEY, medicine.getMedicineId());
+
+            values.put(DatabaseDefinition.MEDICINE_NAME_KEY, medicine.getMedicineName());
+
+            values.put(DatabaseDefinition.MEDICINE_PRIORITY_KEY, medicine.getPriority());
+
+            long row_id = db.insert(DatabaseDefinition.MEDICINE_TABLE, null, values);
+
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
+     * delete Medicine
+     *
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteMedicine(int id) {
+        Log.d("DBMedicineDAO", "deleteMedicine");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            long row_id = db.delete(DatabaseDefinition.MEDICINE_TABLE, DatabaseDefinition.MEDICINE_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+
 }

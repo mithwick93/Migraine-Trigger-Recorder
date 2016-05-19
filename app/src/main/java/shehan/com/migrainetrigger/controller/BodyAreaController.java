@@ -44,4 +44,22 @@ public class BodyAreaController {
     public static ArrayList<BodyArea> getBodyAreasForRecord(int recordId) {
         return DBBodyAreaDAO.getBodyAreasForRecord(recordId);
     }
+
+    public static long addBodyArea(BodyArea bodyArea) {
+        return DBBodyAreaDAO.addBodyArea(bodyArea);
+    }
+
+    public static long addBodyAreas(ArrayList<BodyArea> lst) {
+        for (BodyArea itm : lst) {
+            long result = addBodyArea(itm);
+            if (result < 1) {
+                return 0;
+            }
+        }
+        return lst.size();
+    }
+
+    public static long deleteBodyArea(int id) {
+        return DBBodyAreaDAO.deleteBodyArea(id);
+    }
 }

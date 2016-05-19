@@ -48,4 +48,22 @@ public class ReliefController {
     public static ArrayList<Relief> getReliefsForRecord(int recordId) {
         return DBReliefDAO.getReliefsForRecord(recordId);
     }
+
+    public static long addRelief(Relief relief) {
+        return DBReliefDAO.addRelief(relief);
+    }
+
+    public static long addReliefs(ArrayList<Relief> lst) {
+        for (Relief itm : lst) {
+            long result = addRelief(itm);
+            if (result < 1) {
+                return 0;
+            }
+        }
+        return lst.size();
+    }
+
+    public static long deleteRelief(int id) {
+        return DBReliefDAO.deleteRelief(id);
+    }
 }
