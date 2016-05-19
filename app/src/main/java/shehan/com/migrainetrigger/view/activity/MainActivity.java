@@ -26,11 +26,12 @@ import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.main.AboutFragment;
 import shehan.com.migrainetrigger.view.fragment.main.HomeFragment;
+import shehan.com.migrainetrigger.view.fragment.main.ManageAnswersFragment;
 import shehan.com.migrainetrigger.view.fragment.main.SeverityFragment;
 
 public class MainActivity
         extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ManageAnswersFragment.OnManageAnswersFragmentInteractionListener {
 
     private static final boolean DEVELOPER_MODE = true;
 
@@ -139,9 +140,12 @@ public class MainActivity
             }
         } else if (id == R.id.nav_answers) {
             Log.d("Main-navigation", "Answers selected");
-            Intent intent = new Intent(MainActivity.this, ManageAnswersActivity.class);
-            Log.d("Main-navigation", "Launching manage answers activity");
-            startActivity(intent);
+            ManageAnswersFragment answersFragment = (ManageAnswersFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_answers));
+            if (answersFragment != null && answersFragment.isVisible()) {
+                AppUtil.showToast(MainActivity.this, "Answers already selected");
+            } else {
+                setFragment(new ManageAnswersFragment(), R.string.nav_answers, View.VISIBLE, true);
+            }
 
         } else if (id == R.id.nav_faq) {
             Log.d("Main-navigation", "F.A.Q selected");
@@ -286,6 +290,13 @@ public class MainActivity
         if (fab != null) {
             fab.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void OnManageAnswersInteraction(String answer) {
+//        Intent intent = new Intent(MainActivity.this, ManageAnswersActivity.class);
+//        Log.d("Main-navigation", "Launching manage answers activity");
+//        startActivity(intent);
     }
 
     //endregion

@@ -106,7 +106,7 @@ public class ReportFragment extends Fragment {
             mCallback = (OnReportFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnReportFragmentInteractionListener");
         }
     }
 
