@@ -2,10 +2,15 @@ package shehan.com.migrainetrigger.view.activity;
 
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.utility.BaseActivity;
+import shehan.com.migrainetrigger.view.fragment.answer.AnswerSectionFragment;
 
 public class ManageAnswersActivity extends BaseActivity {
 
@@ -32,8 +37,28 @@ public class ManageAnswersActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.manage_answers_toolbar);
         setSupportActionBar(toolbar);
 
+        initialSetup();
+    }
+
+    /**
+     * Setup answer manage UI
+     */
+    private void initialSetup() {
+        String answerSection = getIntent().getStringExtra("answerSection");//get answer section
+        Log.d("ManageAnswersActivity", "answerSection : " + answerSection);
+
+        AppUtil.showToast(this, answerSection);
+
+        AnswerSectionFragment answerSectionFragment = AnswerSectionFragment.newInstance(answerSection);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.manage_answers_container, answerSectionFragment);
+        fragmentTransaction.commit();
+
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.nav_answers);
+            getSupportActionBar().setTitle(answerSection);
         }
+
     }
 }

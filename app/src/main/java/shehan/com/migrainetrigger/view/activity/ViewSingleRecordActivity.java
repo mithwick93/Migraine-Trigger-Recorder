@@ -26,7 +26,7 @@ public class ViewSingleRecordActivity
 
     private ViewRecordSingleFragment mViewRecordSingleFragment;
     private FloatingActionButton fabUpdate;
-    private int recordId;
+    //private int recordId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,7 @@ public class ViewSingleRecordActivity
      * Setup record view UI
      */
     private void initialSetup() {
-        recordId = getIntent().getIntExtra("recordId", -1);//get passed record ID
+        int recordId = getIntent().getIntExtra("recordId", -1);//get passed record ID
         Log.d("ViewSingleRecord", "recordId : " + recordId);
 
         mViewRecordSingleFragment = ViewRecordSingleFragment.newInstance(recordId);

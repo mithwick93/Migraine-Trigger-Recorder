@@ -4,6 +4,7 @@ package shehan.com.migrainetrigger.view.fragment.main;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,14 @@ public class ManageAnswersFragment extends Fragment {
 
     private OnManageAnswersFragmentInteractionListener mCallback;
 
+    private CardView cardViewTriggers;
+    private CardView cardViewSymptoms;
+    private CardView cardViewActivities;
+    private CardView cardViewLocations;
+    private CardView cardViewPainAreas;
+    private CardView cardViewMedicines;
+    private CardView cardViewReliefs;
+
     public ManageAnswersFragment() {
         // Required empty public constructor
     }
@@ -30,6 +39,7 @@ public class ManageAnswersFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_manage_answers, container, false);
+        init(view);
         return view;
     }
 
@@ -50,6 +60,59 @@ public class ManageAnswersFragment extends Fragment {
         mCallback = null;
     }
 
+
+    private void init(View view) {
+        cardViewTriggers = (CardView) view.findViewById(R.id.card_view_answers_triggers);
+        cardViewSymptoms = (CardView) view.findViewById(R.id.card_view_answers_symptoms);
+        cardViewActivities = (CardView) view.findViewById(R.id.card_view_answers_activities);
+        cardViewLocations = (CardView) view.findViewById(R.id.card_view_answers_locations);
+        cardViewPainAreas = (CardView) view.findViewById(R.id.card_view_answers_pain_areas);
+        cardViewMedicines = (CardView) view.findViewById(R.id.card_view_answers_medicines);
+        cardViewReliefs = (CardView) view.findViewById(R.id.card_view_answers_reliefs);
+
+        cardViewTriggers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.OnManageAnswersInteraction("Triggers");
+            }
+        });
+        cardViewSymptoms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.OnManageAnswersInteraction("Symptoms");
+            }
+        });
+        cardViewActivities.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.OnManageAnswersInteraction("Activities");
+            }
+        });
+        cardViewLocations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.OnManageAnswersInteraction("Locations");
+            }
+        });
+        cardViewPainAreas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.OnManageAnswersInteraction("Pain areas");
+            }
+        });
+        cardViewMedicines.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.OnManageAnswersInteraction("Medicines");
+            }
+        });
+        cardViewReliefs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.OnManageAnswersInteraction("Reliefs");
+            }
+        });
+    }
 
     /**
      * This interface must be implemented by activities that contain this

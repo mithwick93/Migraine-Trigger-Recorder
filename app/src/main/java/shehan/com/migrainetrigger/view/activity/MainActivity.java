@@ -294,9 +294,11 @@ public class MainActivity
 
     @Override
     public void OnManageAnswersInteraction(String answer) {
-//        Intent intent = new Intent(MainActivity.this, ManageAnswersActivity.class);
-//        Log.d("Main-navigation", "Launching manage answers activity");
-//        startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, ManageAnswersActivity.class);
+        intent.putExtra("answerSection", answer);
+        Log.d("Main-navigation", "Launching manage answers activity");
+        startActivity(intent);
+
     }
 
     //endregion
