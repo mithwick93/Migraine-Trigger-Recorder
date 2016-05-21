@@ -5,11 +5,11 @@ package shehan.com.migrainetrigger.data.model;
  */
 public class WeatherData {
 
-    private int weatherDataId;
     private double humidity;
     private double pressure;
-    private double temperature;
     private int recordId;
+    private double temperature;
+    private int weatherDataId;
 
     public WeatherData(int weatherDataId, double humidity, double pressure, double temperature, int recordId) {
         this.weatherDataId = weatherDataId;
@@ -17,14 +17,6 @@ public class WeatherData {
         this.pressure = pressure;
         this.temperature = temperature;
         this.recordId = recordId;
-    }
-
-    public int getWeatherDataId() {
-        return weatherDataId;
-    }
-
-    public void setWeatherDataId(int weatherDataId) {
-        this.weatherDataId = weatherDataId;
     }
 
     public double getHumidity() {
@@ -43,6 +35,14 @@ public class WeatherData {
         this.pressure = pressure;
     }
 
+    public int getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(int recordId) {
+        this.recordId = recordId;
+    }
+
     public double getTemperature() {
         return temperature;
     }
@@ -51,11 +51,11 @@ public class WeatherData {
         this.temperature = temperature;
     }
 
-    public int getRecordId() {
-        return recordId;
+    public int getWeatherDataId() {
+        return weatherDataId;
     }
 
-    public void setRecordId(int recordId) {
-        this.recordId = recordId;
+    public void setWeatherDataId(int weatherDataId) {
+        this.weatherDataId = weatherDataId;
     }
 }

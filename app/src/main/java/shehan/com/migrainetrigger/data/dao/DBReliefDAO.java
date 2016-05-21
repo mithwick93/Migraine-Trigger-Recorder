@@ -23,41 +23,31 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getStringDate;
 public final class DBReliefDAO {
 
     /**
-     * get All Reliefs
+     * add Relief
      *
-     * @return ArrayList<Relief>
+     * @param relief relief
+     * @return affected no of rows
      */
-    public static ArrayList<Relief> getAllReliefs() {
-        Log.d("DBReliefDAO", " DB - getAllReliefs ");
-        ArrayList<Relief> reliefArrayList = new ArrayList<>();
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
+    public static long addRelief(Relief relief) {
+        Log.d("DBReliefDAO", "DB - addRelief");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
-            cursor = db.query(DatabaseDefinition.RELIEF_TABLE, null, null, null, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-                do {
+            ContentValues values = new ContentValues();
 
-                    Relief relief = new ReliefBuilder()
-                            .setReliefId(cursor.getInt(0))
-                            .setReliefName(cursor.getString(1))
-                            .setPriority(cursor.getInt(2))
-                            .createRelief();
-                    reliefArrayList.add(relief);
-                } while (cursor.moveToNext());
-            }
+            values.put(DatabaseDefinition.RELIEF_ID_KEY, relief.getReliefId());
+
+            values.put(DatabaseDefinition.RELIEF_NAME_KEY, relief.getReliefName());
+
+            values.put(DatabaseDefinition.RELIEF_PRIORITY_KEY, relief.getPriority());
+
+            long row_id = db.insert(DatabaseDefinition.RELIEF_TABLE, null, values);
+
+            return row_id;
         } catch (SQLiteException e) {
+
             e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
+            return -1;
         }
-        return reliefArrayList;
     }
 
     /**
@@ -129,6 +119,25 @@ public final class DBReliefDAO {
     }
 
     /**
+     * delete Relief
+     *
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteRelief(int id) {
+        Log.d("DBReliefDAO", "deleteMedicine");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            long row_id = db.delete(DatabaseDefinition.RELIEF_TABLE, DatabaseDefinition.RELIEF_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
      * delete Relief Records
      *
      * @param db       SQLiteDatabase
@@ -140,6 +149,88 @@ public final class DBReliefDAO {
 
         long row_id = db.delete(DatabaseDefinition.RELIEF_RECORD_TABLE, DatabaseDefinition.RELIEF_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
         return row_id;
+    }
+
+    /**
+     * get All Reliefs
+     *
+     * @return ArrayList<Relief>
+     */
+    public static ArrayList<Relief> getAllReliefs() {
+        Log.d("DBReliefDAO", " DB - getAllReliefs ");
+        ArrayList<Relief> reliefArrayList = new ArrayList<>();
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            cursor = db.query(DatabaseDefinition.RELIEF_TABLE, null, null, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
+
+                    Relief relief = new ReliefBuilder()
+                            .setReliefId(cursor.getInt(0))
+                            .setReliefName(cursor.getString(1))
+                            .setPriority(cursor.getInt(2))
+                            .createRelief();
+                    reliefArrayList.add(relief);
+                } while (cursor.moveToNext());
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+        return reliefArrayList;
+    }
+
+    /**
+     * get Last Record Id
+     *
+     * @return last relief record id
+     */
+    public static int getLastRecordId() {
+        Log.d("DBReliefDAO", "getLastRecordId");
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        int recordId = -1;
+        try {
+            String[] projection = {DatabaseDefinition.RELIEF_ID_KEY};
+            db = DatabaseHandler.getReadableDatabase();
+            cursor = db.query(
+                    DatabaseDefinition.RELIEF_TABLE,
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    DatabaseDefinition.RELIEF_ID_KEY + " DESC",
+                    "1");
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                recordId = Integer.valueOf(cursor.getString(0));
+                Log.d("getLastRecordId ", "Value: " + String.valueOf(recordId));
+            } else {
+                Log.d("getLastRecordId ", "Empty");
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+
+        }
+        return recordId;
     }
 
     /**
@@ -264,66 +355,6 @@ public final class DBReliefDAO {
     }
 
     /**
-     * get Top Reliefs
-     *
-     * @param from  from date
-     * @param to    to date
-     * @param limit limit
-     * @return ArrayList<String>
-     */
-    public static ArrayList<String> getTopReliefs(Timestamp from, Timestamp to, int limit) {
-        Log.d("DBReliefDAO", "getTopReliefs");
-
-        ArrayList<String> top = new ArrayList<>();
-
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
-
-            String topic = DatabaseDefinition.RELIEF_NAME_KEY;//Dynamic
-            String topicId = DatabaseDefinition.RELIEF_ID_KEY;//Dynamic
-
-            String rightTable = DatabaseDefinition.RECORD_TABLE;
-            String leftTable = DatabaseDefinition.RELIEF_TABLE;//Dynamic
-            String middleTable = DatabaseDefinition.RELIEF_RECORD_TABLE;//Dynamic
-
-            String rightId = DatabaseDefinition.RECORD_ID_KEY;
-
-            String filter = DatabaseDefinition.RECORD_START_TIME_KEY;
-
-            String joinQuery =
-                    "SELECT " + topic + ", COUNT(" + topicId + ") as topCount " +
-                            "FROM " + leftTable + " NATURAL JOIN " + middleTable + ", " + rightTable +
-                            " WHERE " + middleTable + "." + rightId + " = " + rightTable + "." + rightId +
-                            " AND " + rightTable + "." + filter + " BETWEEN ? AND ? " +
-                            "GROUP BY " + topic + " ORDER BY topCount DESC LIMIT " + String.valueOf(limit);
-
-            String[] selectionArgs = {getStringDate(from), getStringDate(to)};
-            cursor = db.rawQuery(joinQuery, selectionArgs);
-
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-                do {
-                    String title = cursor.getString(0);
-                    top.add(title);
-                } while (cursor.moveToNext());
-            }
-
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
-        }
-
-        return top;
-    }
-
-    /**
      * get Top Effective Reliefs
      *
      * @param from  from date
@@ -384,45 +415,97 @@ public final class DBReliefDAO {
     }
 
     /**
-     * add Relief
+     * get Top Reliefs
+     *
+     * @param from  from date
+     * @param to    to date
+     * @param limit limit
+     * @return ArrayList<String>
+     */
+    public static ArrayList<String> getTopReliefs(Timestamp from, Timestamp to, int limit) {
+        Log.d("DBReliefDAO", "getTopReliefs");
+
+        ArrayList<String> top = new ArrayList<>();
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            String topic = DatabaseDefinition.RELIEF_NAME_KEY;//Dynamic
+            String topicId = DatabaseDefinition.RELIEF_ID_KEY;//Dynamic
+
+            String rightTable = DatabaseDefinition.RECORD_TABLE;
+            String leftTable = DatabaseDefinition.RELIEF_TABLE;//Dynamic
+            String middleTable = DatabaseDefinition.RELIEF_RECORD_TABLE;//Dynamic
+
+            String rightId = DatabaseDefinition.RECORD_ID_KEY;
+
+            String filter = DatabaseDefinition.RECORD_START_TIME_KEY;
+
+            String joinQuery =
+                    "SELECT " + topic + ", COUNT(" + topicId + ") as topCount " +
+                            "FROM " + leftTable + " NATURAL JOIN " + middleTable + ", " + rightTable +
+                            " WHERE " + middleTable + "." + rightId + " = " + rightTable + "." + rightId +
+                            " AND " + rightTable + "." + filter + " BETWEEN ? AND ? " +
+                            "GROUP BY " + topic + " ORDER BY topCount DESC LIMIT " + String.valueOf(limit);
+
+            String[] selectionArgs = {getStringDate(from), getStringDate(to)};
+            cursor = db.rawQuery(joinQuery, selectionArgs);
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
+                    String title = cursor.getString(0);
+                    top.add(title);
+                } while (cursor.moveToNext());
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return top;
+    }
+
+    /**
+     * update Relief Record
      *
      * @param relief relief
-     * @return affected no of rows
+     * @return no of effected rows
      */
-    public static long addRelief(Relief relief) {
-        Log.d("DBReliefDAO", "DB - addRelief");
+    public static long updateReliefRecord(Relief relief) {
+        Log.d("DBReliefDAO", "DB - updateReliefRecord");
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
 
-            values.put(DatabaseDefinition.RELIEF_ID_KEY, relief.getReliefId());
+            if (relief.getReliefName().equals("") && relief.getPriority() < 0) {
+                throw new SQLiteException("Empty update");
+            }
 
-            values.put(DatabaseDefinition.RELIEF_NAME_KEY, relief.getReliefName());
+            if (!relief.getReliefName().equals("")) {
+                values.put(DatabaseDefinition.RELIEF_NAME_KEY, relief.getReliefName());
+            }
+            if (relief.getPriority() >= 0) {
+                values.put(DatabaseDefinition.RELIEF_PRIORITY_KEY, relief.getPriority());
+            }
 
-            values.put(DatabaseDefinition.RELIEF_PRIORITY_KEY, relief.getPriority());
 
-            long row_id = db.insert(DatabaseDefinition.RELIEF_TABLE, null, values);
+            long result = db.update(
+                    DatabaseDefinition.RELIEF_TABLE,
+                    values,
+                    DatabaseDefinition.RELIEF_ID_KEY + " = ?",
+                    new String[]{String.valueOf(relief.getReliefId())}
+            );
 
-            return row_id;
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    /**
-     * delete Relief
-     *
-     * @param id id
-     * @return affected no of rows
-     */
-    public static long deleteRelief(int id) {
-        Log.d("DBReliefDAO", "deleteMedicine");
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
-            long row_id = db.delete(DatabaseDefinition.RELIEF_TABLE, DatabaseDefinition.RELIEF_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-            return row_id;
+            return result;
         } catch (SQLiteException e) {
 
             e.printStackTrace();

@@ -18,7 +18,7 @@
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
         <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
         <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse</item>
-        <item name="android:windowDisablePreview">true</item>
+        <!--<item name="android:windowDisablePreview">true</item>-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!-- some other theme configurations for actionbar, overflow menu etc. -->
@@ -53,11 +53,11 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:windowDisablePreview">true</item>
+        <!--<item name="android:windowDisablePreview">true</item>-->
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:windowDisablePreview">true</item>
+        <!--<item name="android:windowDisablePreview">true</item>-->
     </style>
 
 </resources>

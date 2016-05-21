@@ -87,23 +87,6 @@ public class ViewRecordsActivity
         }
     }
 
-
-    @Override
-    public String toString() {
-        return "View records";
-    }
-
-
-    @Override
-    public void onRecordListCallBack(int request) {
-        if (request == -1) {
-            ViewRecordsActivity.super.onBackPressed();
-            return;
-        }
-        showSingleRecordActivity(request);
-    }
-
-
     @Override
     public void onRecordCalenderCallBack(int recordId) {
         showSingleRecordActivity(recordId);
@@ -116,19 +99,38 @@ public class ViewRecordsActivity
         startActivity(intent);
     }
 
+    @Override
+    public void onRecordListCallBack(int request) {
+        if (request == -1) {
+            ViewRecordsActivity.super.onBackPressed();
+            return;
+        }
+        showSingleRecordActivity(request);
+    }
+
+    @Override
+    public String toString() {
+        return "View records";
+    }
+
     /**
      * private static adapter class to host tabs
      */
     public static class PagerAdapter extends FragmentStatePagerAdapter {
         int mNumOfTabs;
-        ViewRecordListFragment viewRecordListFragment;
         ViewRecordCalenderFragment viewRecordCalenderFragment;
+        ViewRecordListFragment viewRecordListFragment;
 
         public PagerAdapter(FragmentManager fm, int NumOfTabs) {
             super(fm);
             this.mNumOfTabs = NumOfTabs;
             this.viewRecordListFragment = new ViewRecordListFragment();
             this.viewRecordCalenderFragment = new ViewRecordCalenderFragment();
+        }
+
+        @Override
+        public int getCount() {
+            return mNumOfTabs;
         }
 
         @Override
@@ -141,11 +143,6 @@ public class ViewRecordsActivity
                 default:
                     return null;
             }
-        }
-
-        @Override
-        public int getCount() {
-            return mNumOfTabs;
         }
 
 

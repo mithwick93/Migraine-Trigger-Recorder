@@ -30,6 +30,20 @@ public class FAQTopicsFragment extends Fragment implements FAQTopicsViewAdapter.
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnTopicSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnTopicSelectedListener");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,20 +81,6 @@ public class FAQTopicsFragment extends Fragment implements FAQTopicsViewAdapter.
 
         // Inflate the layout for this fragment
         return rootView;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnTopicSelectedListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnTopicSelectedListener");
-        }
     }
 
     @Override

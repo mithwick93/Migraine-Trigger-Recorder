@@ -12,27 +12,6 @@ public class BodyArea {
         this.bodyAreaName = bodyAreaName;
     }
 
-    public int getBodyAreaId() {
-        return bodyAreaId;
-    }
-
-    public void setBodyAreaId(int bodyAreaId) {
-        this.bodyAreaId = bodyAreaId;
-    }
-
-    public String getBodyAreaName() {
-        return bodyAreaName;
-    }
-
-    public void setBodyAreaName(String bodyAreaName) {
-        this.bodyAreaName = bodyAreaName;
-    }
-
-    @Override
-    public String toString() {
-        return bodyAreaName != null ? bodyAreaName : "Body area : " + bodyAreaId;
-    }
-
     @Override
     public boolean equals(Object object) {
         boolean isEqual = false;
@@ -47,6 +26,27 @@ public class BodyArea {
     @Override
     public int hashCode() {
         return this.bodyAreaId;
+    }
+
+    @Override
+    public String toString() {
+        return bodyAreaName != null ? bodyAreaName : "Body area : " + bodyAreaId;
+    }
+
+    public int getBodyAreaId() {
+        return bodyAreaId;
+    }
+
+    public void setBodyAreaId(int bodyAreaId) {
+        this.bodyAreaId = bodyAreaId;
+    }
+
+    public String getBodyAreaName() {
+        return bodyAreaName;
+    }
+
+    public void setBodyAreaName(String bodyAreaName) {
+        this.bodyAreaName = bodyAreaName;
     }
 
 }

@@ -119,51 +119,6 @@ public final class DBRecordDAO {
     }
 
     /**
-     * update Record
-     *
-     * @param db     SQLiteDatabase
-     * @param record record
-     * @return whether the record update
-     * @throws SQLiteException
-     */
-    public static long updateRecord(SQLiteDatabase db, Record record) throws SQLiteException {
-        Log.d("DBRecordDAO", "updateRecord");
-
-        if (record == null) {
-            Log.e("DAO-update", "null record");
-            return -1;
-        }
-
-        ContentValues values = new ContentValues();
-
-        //Start time
-        if (record.getStartTime() != null) {
-            Log.d("DBRecordDAO", "updateRecord sTime : " + record.getStartTime().getTime());
-            values.put(DatabaseDefinition.RECORD_START_TIME_KEY, getStringDate(record.getStartTime()));
-        }
-        //End time
-        if (record.getEndTime() != null) {
-            Log.d("DBRecordDAO", "updateRecord eTime : " + record.getEndTime().getTime());
-            values.put(DatabaseDefinition.RECORD_END_TIME_KEY, getStringDate(record.getEndTime()));
-        }
-
-        //Intensity
-        values.put(DatabaseDefinition.RECORD_INTENSITY_KEY, record.getIntensity());
-
-        //Location
-        if (record.getLocation() != null) {
-            values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, record.getLocation().getLocationId());
-        } else {
-            values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, -1);
-        }
-
-        // Inserting Row
-        long row_id = db.update(DatabaseDefinition.RECORD_TABLE, values, DatabaseDefinition.RECORD_ID_KEY + " = ?", new String[]{String.valueOf(record.getRecordId())});
-
-        return row_id;
-    }
-
-    /**
      * Delete record
      *
      * @param db       SQLiteDatabase
@@ -175,300 +130,6 @@ public final class DBRecordDAO {
 
         long row_id = db.delete(DatabaseDefinition.RECORD_TABLE, DatabaseDefinition.RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
         return row_id;
-    }
-
-    /**
-     * get Last Record Id
-     *
-     * @return last record id
-     */
-    public static int getLastRecordId() {
-        Log.d("DBRecordDAO", "getLastRecordId");
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        int recordId = -1;
-        try {
-            String[] projection = {DatabaseDefinition.RECORD_ID_KEY};
-            db = DatabaseHandler.getReadableDatabase();
-            cursor = db.query(
-                    DatabaseDefinition.RECORD_TABLE,
-                    projection,
-                    null,
-                    null,
-                    null,
-                    null,
-                    DatabaseDefinition.RECORD_ID_KEY + " DESC",
-                    "1");
-
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-                recordId = Integer.valueOf(cursor.getString(0));
-                Log.d("getLastRecordId ", "Value: " + String.valueOf(recordId));
-            } else {
-                Log.d("getLastRecordId ", "Empty: ");
-            }
-
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
-
-        }
-        return recordId;
-    }
-
-    /**
-     * get Last Record
-     *
-     * @return Record
-     */
-    public static Record getLastRecord() {
-        Log.d("DBRecordDAO", "getLastRecord");
-        Record record = null;
-
-        //Get last record from db after sorting in descending order of start date
-
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
-
-            String[] columns = {DatabaseDefinition.RECORD_ID_KEY, DatabaseDefinition.RECORD_START_TIME_KEY, DatabaseDefinition.RECORD_END_TIME_KEY};
-
-            cursor = db.query(
-                    DatabaseDefinition.RECORD_TABLE,//Table
-                    columns,//Columns
-                    null,//Selection
-                    null,//Selection conditions
-                    null,//Group by
-                    null,//Having
-                    "datetime(" + DatabaseDefinition.RECORD_START_TIME_KEY + ")" + " DESC",//Order by
-                    "1" //limit
-            );
-
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-                int recordId = cursor.getInt(0);
-
-                RecordBuilder recordBuilder = new RecordBuilder().setRecordId(recordId);
-
-                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_START_TIME_KEY);
-
-                if (!cursor.isNull(index)) {
-                    String start = cursor.getString(index);
-                    Log.d("DBRecordDAO", "getLastRecord sTime : " + start);
-                    recordBuilder = recordBuilder.setStartTime(getTimeStampDate(start));
-                }
-
-                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_END_TIME_KEY);
-
-                if (!cursor.isNull(index)) {
-                    String end = cursor.getString(index);
-                    Log.d("DBRecordDAO", "getLastRecord eTime : " + end);
-                    recordBuilder = recordBuilder.setEndTime(getTimeStampDate(end));
-                }
-
-                record = recordBuilder.createRecord();
-
-            }
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
-        }
-
-        return record;
-    }
-
-    /**
-     * get First Record
-     *
-     * @return First record
-     */
-    public static Record getFirstRecord() {
-        Log.d("DBRecordDAO", "getFirstRecord");
-        Record record = null;
-
-        //Get first record from db after sorting in ascending order of start date
-
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
-
-            String[] columns = {DatabaseDefinition.RECORD_ID_KEY, DatabaseDefinition.RECORD_START_TIME_KEY, DatabaseDefinition.RECORD_END_TIME_KEY};
-
-            cursor = db.query(
-                    DatabaseDefinition.RECORD_TABLE,//Table
-                    columns,//Columns
-                    null,//Selection
-                    null,//Selection conditions
-                    null,//Group by
-                    null,//Having
-                    "datetime(" + DatabaseDefinition.RECORD_START_TIME_KEY + ")",//Order by
-                    "1" //limit
-            );
-
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-                int recordId = cursor.getInt(0);
-
-                RecordBuilder recordBuilder = new RecordBuilder().setRecordId(recordId);
-
-                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_START_TIME_KEY);
-
-                if (!cursor.isNull(index)) {
-                    String start = cursor.getString(index);
-                    Log.d("DBRecordDAO", "getFirstRecord sTime : " + start);
-                    recordBuilder = recordBuilder.setStartTime(getTimeStampDate(start));
-                }
-
-                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_END_TIME_KEY);
-
-                if (!cursor.isNull(index)) {
-                    String end = cursor.getString(index);
-                    Log.d("DBRecordDAO", "getFirstRecord eTime : " + end);
-                    recordBuilder = recordBuilder.setEndTime(getTimeStampDate(end));
-                }
-
-                record = recordBuilder.createRecord();
-
-            }
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
-        }
-
-        return record;
-    }
-
-    public static int getTotalRecords(Timestamp from, Timestamp to) {
-        Log.d("DBRecordDAO", "getTotalRecords");
-        int total = -1;
-
-        Log.d("DBRecordDAO", "from " + AppUtil.getStringDate(from));
-        Log.d("DBRecordDAO", "to " + AppUtil.getStringDate(to));
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
-
-            String[] columns = {"COUNT(" + DatabaseDefinition.RECORD_ID_KEY + ")"};
-            String[] selectionArgs = {getStringDate(from), getStringDate(to)};
-
-
-            cursor = db.query(
-                    DatabaseDefinition.RECORD_TABLE,//Table
-                    columns,//Columns
-                    DatabaseDefinition.RECORD_START_TIME_KEY + " BETWEEN ? AND ?",//Selection
-                    selectionArgs,//Selection conditions
-                    null,//Group by
-                    null,//Having
-                    null,//Order by
-                    null //limit
-            );
-
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-                total = cursor.getInt(0);
-            }
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
-        }
-        return total;
-    }
-
-
-    public static ArrayList<Record> getAverageReportRecords(Timestamp from, Timestamp to) {
-        Log.d("DBRecordDAO", "getAverageReportRecords");
-
-        ArrayList<Record> records = new ArrayList<>();
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
-
-            String[] selectionArgs = {getStringDate(from), getStringDate(to)};
-
-            cursor = db.query(
-                    DatabaseDefinition.RECORD_TABLE,//Table
-                    null,//Columns
-                    DatabaseDefinition.RECORD_START_TIME_KEY + " BETWEEN ? AND ?",//Selection
-                    selectionArgs,//Selection conditions
-                    null,//Group by
-                    null,//Having
-                    null,//Order by
-                    null //limit
-            );
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-                do {
-
-                    int recordId = cursor.getInt(0);
-
-                    RecordBuilder recordBuilder = new RecordBuilder().setRecordId(recordId);
-
-                    int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_START_TIME_KEY);
-
-                    if (!cursor.isNull(index)) {
-                        String start = cursor.getString(index);
-                        Log.d("DBRecordDAO", "getAverageReportRecords sTime : " + start);
-                        recordBuilder = recordBuilder.setStartTime(getTimeStampDate(start));
-                    }
-
-                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_END_TIME_KEY);
-
-                    if (!cursor.isNull(index)) {
-                        String end = cursor.getString(index);
-                        Log.d("DBRecordDAO", "getAverageReportRecords eTime : " + end);
-                        recordBuilder = recordBuilder.setEndTime(getTimeStampDate(end));
-                    }
-
-                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_INTENSITY_KEY);
-
-                    if (!cursor.isNull(index)) {
-                        Integer intensity = cursor.getInt(index);
-                        recordBuilder = recordBuilder.setIntensity(intensity);
-                    }
-
-                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_LOCATION_ID_KEY);
-
-                    if (!cursor.isNull(index)) {
-                        Integer locationId = cursor.getInt(index);
-                        recordBuilder = recordBuilder.setLocationId(locationId);
-                    }
-                    records.add(recordBuilder.createRecord());
-                } while (cursor.moveToNext());
-            }
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
-        }
-        return records;
     }
 
     /**
@@ -609,6 +270,257 @@ public final class DBRecordDAO {
         return records;
     }
 
+    public static ArrayList<Record> getAverageReportRecords(Timestamp from, Timestamp to) {
+        Log.d("DBRecordDAO", "getAverageReportRecords");
+
+        ArrayList<Record> records = new ArrayList<>();
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            String[] selectionArgs = {getStringDate(from), getStringDate(to)};
+
+            cursor = db.query(
+                    DatabaseDefinition.RECORD_TABLE,//Table
+                    null,//Columns
+                    DatabaseDefinition.RECORD_START_TIME_KEY + " BETWEEN ? AND ?",//Selection
+                    selectionArgs,//Selection conditions
+                    null,//Group by
+                    null,//Having
+                    null,//Order by
+                    null //limit
+            );
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
+
+                    int recordId = cursor.getInt(0);
+
+                    RecordBuilder recordBuilder = new RecordBuilder().setRecordId(recordId);
+
+                    int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_START_TIME_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        String start = cursor.getString(index);
+                        Log.d("DBRecordDAO", "getAverageReportRecords sTime : " + start);
+                        recordBuilder = recordBuilder.setStartTime(getTimeStampDate(start));
+                    }
+
+                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_END_TIME_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        String end = cursor.getString(index);
+                        Log.d("DBRecordDAO", "getAverageReportRecords eTime : " + end);
+                        recordBuilder = recordBuilder.setEndTime(getTimeStampDate(end));
+                    }
+
+                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_INTENSITY_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        Integer intensity = cursor.getInt(index);
+                        recordBuilder = recordBuilder.setIntensity(intensity);
+                    }
+
+                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_LOCATION_ID_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        Integer locationId = cursor.getInt(index);
+                        recordBuilder = recordBuilder.setLocationId(locationId);
+                    }
+                    records.add(recordBuilder.createRecord());
+                } while (cursor.moveToNext());
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+        return records;
+    }
+
+    /**
+     * get First Record
+     *
+     * @return First record
+     */
+    public static Record getFirstRecord() {
+        Log.d("DBRecordDAO", "getFirstRecord");
+        Record record = null;
+
+        //Get first record from db after sorting in ascending order of start date
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            String[] columns = {DatabaseDefinition.RECORD_ID_KEY, DatabaseDefinition.RECORD_START_TIME_KEY, DatabaseDefinition.RECORD_END_TIME_KEY};
+
+            cursor = db.query(
+                    DatabaseDefinition.RECORD_TABLE,//Table
+                    columns,//Columns
+                    null,//Selection
+                    null,//Selection conditions
+                    null,//Group by
+                    null,//Having
+                    "datetime(" + DatabaseDefinition.RECORD_START_TIME_KEY + ")",//Order by
+                    "1" //limit
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                int recordId = cursor.getInt(0);
+
+                RecordBuilder recordBuilder = new RecordBuilder().setRecordId(recordId);
+
+                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_START_TIME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String start = cursor.getString(index);
+                    Log.d("DBRecordDAO", "getFirstRecord sTime : " + start);
+                    recordBuilder = recordBuilder.setStartTime(getTimeStampDate(start));
+                }
+
+                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_END_TIME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String end = cursor.getString(index);
+                    Log.d("DBRecordDAO", "getFirstRecord eTime : " + end);
+                    recordBuilder = recordBuilder.setEndTime(getTimeStampDate(end));
+                }
+
+                record = recordBuilder.createRecord();
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return record;
+    }
+
+    /**
+     * get Last Record
+     *
+     * @return Record
+     */
+    public static Record getLastRecord() {
+        Log.d("DBRecordDAO", "getLastRecord");
+        Record record = null;
+
+        //Get last record from db after sorting in descending order of start date
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            String[] columns = {DatabaseDefinition.RECORD_ID_KEY, DatabaseDefinition.RECORD_START_TIME_KEY, DatabaseDefinition.RECORD_END_TIME_KEY};
+
+            cursor = db.query(
+                    DatabaseDefinition.RECORD_TABLE,//Table
+                    columns,//Columns
+                    null,//Selection
+                    null,//Selection conditions
+                    null,//Group by
+                    null,//Having
+                    "datetime(" + DatabaseDefinition.RECORD_START_TIME_KEY + ")" + " DESC",//Order by
+                    "1" //limit
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                int recordId = cursor.getInt(0);
+
+                RecordBuilder recordBuilder = new RecordBuilder().setRecordId(recordId);
+
+                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_START_TIME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String start = cursor.getString(index);
+                    Log.d("DBRecordDAO", "getLastRecord sTime : " + start);
+                    recordBuilder = recordBuilder.setStartTime(getTimeStampDate(start));
+                }
+
+                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_END_TIME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String end = cursor.getString(index);
+                    Log.d("DBRecordDAO", "getLastRecord eTime : " + end);
+                    recordBuilder = recordBuilder.setEndTime(getTimeStampDate(end));
+                }
+
+                record = recordBuilder.createRecord();
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return record;
+    }
+
+    /**
+     * get Last Record Id
+     *
+     * @return last record id
+     */
+    public static int getLastRecordId() {
+        Log.d("DBRecordDAO", "getLastRecordId");
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        int recordId = -1;
+        try {
+            String[] projection = {DatabaseDefinition.RECORD_ID_KEY};
+            db = DatabaseHandler.getReadableDatabase();
+            cursor = db.query(
+                    DatabaseDefinition.RECORD_TABLE,
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    DatabaseDefinition.RECORD_ID_KEY + " DESC",
+                    "1");
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                recordId = Integer.valueOf(cursor.getString(0));
+                Log.d("getLastRecordId ", "Value: " + String.valueOf(recordId));
+            } else {
+                Log.d("getLastRecordId ", "Empty");
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+
+        }
+        return recordId;
+    }
+
     /**
      * get Record
      *
@@ -676,5 +588,92 @@ public final class DBRecordDAO {
             }
         }
         return null;
+    }
+
+    public static int getTotalRecords(Timestamp from, Timestamp to) {
+        Log.d("DBRecordDAO", "getTotalRecords");
+        int total = -1;
+
+        Log.d("DBRecordDAO", "from " + AppUtil.getStringDate(from));
+        Log.d("DBRecordDAO", "to " + AppUtil.getStringDate(to));
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            String[] columns = {"COUNT(" + DatabaseDefinition.RECORD_ID_KEY + ")"};
+            String[] selectionArgs = {getStringDate(from), getStringDate(to)};
+
+
+            cursor = db.query(
+                    DatabaseDefinition.RECORD_TABLE,//Table
+                    columns,//Columns
+                    DatabaseDefinition.RECORD_START_TIME_KEY + " BETWEEN ? AND ?",//Selection
+                    selectionArgs,//Selection conditions
+                    null,//Group by
+                    null,//Having
+                    null,//Order by
+                    null //limit
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                total = cursor.getInt(0);
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+        return total;
+    }
+
+    /**
+     * update Record
+     *
+     * @param db     SQLiteDatabase
+     * @param record record
+     * @return whether the record update
+     * @throws SQLiteException
+     */
+    public static long updateRecord(SQLiteDatabase db, Record record) throws SQLiteException {
+        Log.d("DBRecordDAO", "updateRecord");
+
+        if (record == null) {
+            Log.e("DAO-update", "null record");
+            return -1;
+        }
+
+        ContentValues values = new ContentValues();
+
+        //Start time
+        if (record.getStartTime() != null) {
+            Log.d("DBRecordDAO", "updateRecord sTime : " + record.getStartTime().getTime());
+            values.put(DatabaseDefinition.RECORD_START_TIME_KEY, getStringDate(record.getStartTime()));
+        }
+        //End time
+        if (record.getEndTime() != null) {
+            Log.d("DBRecordDAO", "updateRecord eTime : " + record.getEndTime().getTime());
+            values.put(DatabaseDefinition.RECORD_END_TIME_KEY, getStringDate(record.getEndTime()));
+        }
+
+        //Intensity
+        values.put(DatabaseDefinition.RECORD_INTENSITY_KEY, record.getIntensity());
+
+        //Location
+        if (record.getLocation() != null) {
+            values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, record.getLocation().getLocationId());
+        } else {
+            values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, -1);
+        }
+
+        // Inserting Row
+        long row_id = db.update(DatabaseDefinition.RECORD_TABLE, values, DatabaseDefinition.RECORD_ID_KEY + " = ?", new String[]{String.valueOf(record.getRecordId())});
+
+        return row_id;
     }
 }

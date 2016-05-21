@@ -14,43 +14,22 @@ import shehan.com.migrainetrigger.data.model.Trigger;
 import shehan.com.migrainetrigger.data.model.WeatherData;
 
 public class RecordBuilder {
-    private int recordId;
-    private int intensity;
-    private Timestamp startTime;
-    private Timestamp endTime;
-    private int locationId;
     private ArrayList<LifeActivity> activities;
     private ArrayList<BodyArea> bodyAreas;
+    private Timestamp endTime;
+    private int intensity;
     private Location location;
+    private int locationId;
     private ArrayList<Medicine> medicines;
+    private int recordId;
     private ArrayList<Relief> reliefs;
+    private Timestamp startTime;
     private ArrayList<Symptom> symptoms;
     private ArrayList<Trigger> triggers;
     private WeatherData weatherData;
 
-    public RecordBuilder setRecordId(int recordId) {
-        this.recordId = recordId;
-        return this;
-    }
-
-    public RecordBuilder setIntensity(int intensity) {
-        this.intensity = intensity;
-        return this;
-    }
-
-    public RecordBuilder setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    public RecordBuilder setEndTime(Timestamp endTime) {
-        this.endTime = endTime;
-        return this;
-    }
-
-    public RecordBuilder setLocationId(int locationId) {
-        this.locationId = locationId;
-        return this;
+    public Record createRecord() {
+        return new Record(recordId, intensity, startTime, endTime, locationId, activities, bodyAreas, location, medicines, reliefs, symptoms, triggers, weatherData);
     }
 
     public RecordBuilder setActivities(ArrayList<LifeActivity> activities) {
@@ -63,8 +42,23 @@ public class RecordBuilder {
         return this;
     }
 
+    public RecordBuilder setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+        return this;
+    }
+
+    public RecordBuilder setIntensity(int intensity) {
+        this.intensity = intensity;
+        return this;
+    }
+
     public RecordBuilder setLocation(Location location) {
         this.location = location;
+        return this;
+    }
+
+    public RecordBuilder setLocationId(int locationId) {
+        this.locationId = locationId;
         return this;
     }
 
@@ -73,8 +67,18 @@ public class RecordBuilder {
         return this;
     }
 
+    public RecordBuilder setRecordId(int recordId) {
+        this.recordId = recordId;
+        return this;
+    }
+
     public RecordBuilder setReliefs(ArrayList<Relief> reliefs) {
         this.reliefs = reliefs;
+        return this;
+    }
+
+    public RecordBuilder setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
         return this;
     }
 
@@ -91,9 +95,5 @@ public class RecordBuilder {
     public RecordBuilder setWeatherData(WeatherData weatherData) {
         this.weatherData = weatherData;
         return this;
-    }
-
-    public Record createRecord() {
-        return new Record(recordId, intensity, startTime, endTime, locationId, activities, bodyAreas, location, medicines, reliefs, symptoms, triggers, weatherData);
     }
 }

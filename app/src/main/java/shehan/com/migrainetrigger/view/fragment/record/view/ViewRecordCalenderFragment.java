@@ -33,32 +33,16 @@ import shehan.com.migrainetrigger.data.model.Record;
  */
 public class ViewRecordCalenderFragment extends Fragment {
 
-    private View mView;
-    private RecordCalenderListener mCallback;
-
     private CompactCalendarView calenderView;
-    private TextView txtViewCalenderHeader;
-
-    private SimpleDateFormat dateFormatForMonth;
     private Calendar currentCalender;
-
+    private SimpleDateFormat dateFormatForMonth;
+    private RecordCalenderListener mCallback;
+    private View mView;
     private Map<Date, List<Integer>> recordsMap;
+    private TextView txtViewCalenderHeader;
 
     public ViewRecordCalenderFragment() {
         // Required empty public constructor
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        mView = inflater.inflate(R.layout.fragment_view_record_calender, container, false);
-        initCalenderView(mView);
-
-        //loadEvents();
-        new GetRecordCalenderListTask().execute();//load calender events
-        return mView;
     }
 
     @Override
@@ -76,9 +60,15 @@ public class ViewRecordCalenderFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallback = null;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        mView = inflater.inflate(R.layout.fragment_view_record_calender, container, false);
+        initCalenderView(mView);
+
+        //loadEvents();
+        new GetRecordCalenderListTask().execute();//load calender events
+        return mView;
     }
 
     @Override
@@ -100,6 +90,12 @@ public class ViewRecordCalenderFragment extends Fragment {
             calenderView.hideCalendar();
         }
         super.onPause();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
     }
 
     private void initCalenderView(View view) {
@@ -174,18 +170,6 @@ public class ViewRecordCalenderFragment extends Fragment {
                 "#f44336",
                 "#607D8B"
         };
-
-        /**
-         * Set all map key dates time to midnight
-         *
-         * @param calendar calender to change
-         */
-        private void setToMidnight(Calendar calendar) {
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
-        }
 
         @Override
         protected ArrayList<Record> doInBackground(String... params) {
@@ -269,6 +253,18 @@ public class ViewRecordCalenderFragment extends Fragment {
             }
             calenderView.removeAllEvents();
             calenderView.addEvents(calendarDayEvents);
+        }
+
+        /**
+         * Set all map key dates time to midnight
+         *
+         * @param calendar calender to change
+         */
+        private void setToMidnight(Calendar calendar) {
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
         }
     }
 }

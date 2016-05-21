@@ -44,35 +44,33 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
  * A simple {@link Fragment} subclass.
  */
 public class AddRecordFullFragment extends AddRecordIntermediateFragment {
+    protected ArrayList<BodyArea> bodyAreas;
+    protected EditText editTxtBodyAreas;
     //full
     //Controls
     protected EditText editTxtLocation;
-    protected EditText editTxtBodyAreas;
     protected EditText editTxtMedicine;
     protected EditText editTxtMedicineEffective;
     protected EditText editTxtRelief;
     protected EditText editTxtReliefEffective;
-    protected RelativeLayout viewLayoutRecordEffectiveMedicine;
-    protected RelativeLayout viewLayoutRecordEffectiveRelief;
-
-    //Data storage
-    protected ArrayList<Location> locations;
-    protected ArrayList<BodyArea> bodyAreas;
-    protected ArrayList<Medicine> medicines;
-    protected ArrayList<Relief> reliefs;
     //Choices
     protected Location location;
+    //Data storage
+    protected ArrayList<Location> locations;
+    protected ArrayList<Medicine> medicines;
+    protected ArrayList<Relief> reliefs;
     protected ArrayList<BodyArea> selectedBodyAreas;
-    protected ArrayList<Medicine> selectedMedicines;
-    protected ArrayList<Relief> selectedReliefs;
-    //Maintain indexes
-    protected int selectedLocation;
     protected Integer[] selectedBodyIndexes;
-    protected Integer[] selectedMedicineIndexes;
-    protected Integer[] selectedReliefIndexes;
     protected Integer[] selectedEffectiveMedicineIndexes;
     protected Integer[] selectedEffectiveReliefIndexes;
-
+    //Maintain indexes
+    protected int selectedLocation;
+    protected Integer[] selectedMedicineIndexes;
+    protected ArrayList<Medicine> selectedMedicines;
+    protected Integer[] selectedReliefIndexes;
+    protected ArrayList<Relief> selectedReliefs;
+    protected RelativeLayout viewLayoutRecordEffectiveMedicine;
+    protected RelativeLayout viewLayoutRecordEffectiveRelief;
     //Callback
     private AddRecordFullListener mCallback;
 
@@ -80,19 +78,43 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
         // Required empty public constructor
     }
 
+    /**
+     * Choose to save record or get weather
+     */
+    public void recordAcceptAction() {
+
+        if (!weatherDataLoaded || weatherData == null) {
+            new MaterialDialog.Builder(getContext())
+                    .title("Compete record")
+                    .content("Do you want to view weather information or save record now?")
+                    .negativeText("Save record")
+                    .positiveText("Show weather")
+                    .neutralText("Cancel")
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            //Save without  summery
+                            saveFullRecord();
+                        }
+                    })
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            //show summery
+                            showWeather();
+                        }
+                    })
+                    .show();
+        } else {
+            //weatherData shown already ,just save record
+            saveFullRecord();
+        }
+
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // Inflate the layout for this fragment
-
-        View view = inflater.inflate(R.layout.fragment_add_record_full, container, false);
-
-        initFullControls(view);
-        setHasOptionsMenu(true);
-
-        Log.d("AddRecordFull-onCreate", "variables initialized, onCreate complete");
-        return view;
+    public String toString() {
+        return "Full";
     }
 
     @Override
@@ -114,10 +136,29 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        // Inflate the layout for this fragment
+
+        View view = inflater.inflate(R.layout.fragment_add_record_full, container, false);
+
+        initFullControls(view);
+        setHasOptionsMenu(true);
+
+        Log.d("AddRecordFull-onCreate", "variables initialized, onCreate complete");
+        return view;
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mCallback = null;
     }
+
+    //
+    //
+    //
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -133,51 +174,6 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public String toString() {
-        return "Full";
-    }
-
-    //
-    //
-    //
-
-    /**
-     * Get basic data of record
-     * Does not check constraints
-     *
-     * @return record builder with full data saved
-     */
-    protected RecordBuilder getFullRecordBuilder() {
-        Log.d("AddFullFragment", "getFullRecordBuilder");
-
-        //Call parent method to get intermediate info
-        RecordBuilder recordBuilder = getIntermediateRecordBuilder();
-
-        if (location != null) {
-            Log.d("AddFullFragment", "getFullRecordBuilder - location");
-            recordBuilder = recordBuilder.setLocation(location);
-            recordBuilder = recordBuilder.setLocationId(location.getLocationId());
-        }
-
-        if (selectedBodyAreas.size() > 0) {
-            Log.d("AddFullFragment", "getFullRecordBuilder - selectedBodyAreas");
-            recordBuilder = recordBuilder.setBodyAreas(selectedBodyAreas);
-        }
-
-        if (selectedMedicines.size() > 0) {
-            Log.d("AddFullFragment", " - selectedMedicines");
-            recordBuilder = recordBuilder.setMedicines(selectedMedicines);
-        }
-
-        if (selectedReliefs.size() > 0) {
-            Log.d("AddFullFragment", " - selectedReliefs");
-            recordBuilder = recordBuilder.setReliefs(selectedReliefs);
-        }
-
-        return recordBuilder;
     }
 
     //
@@ -598,40 +594,6 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     }
 
     /**
-     * Choose to save record or get weather
-     */
-    public void recordAcceptAction() {
-
-        if (!weatherDataLoaded || weatherData == null) {
-            new MaterialDialog.Builder(getContext())
-                    .title("Compete record")
-                    .content("Do you want to view weather information or save record now?")
-                    .negativeText("Save record")
-                    .positiveText("Show weather")
-                    .neutralText("Cancel")
-                    .onNegative(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            //Save without  summery
-                            saveFullRecord();
-                        }
-                    })
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            //show summery
-                            showWeather();
-                        }
-                    })
-                    .show();
-        } else {
-            //weatherData shown already ,just save record
-            saveFullRecord();
-        }
-
-    }
-
-    /**
      * Save record,
      * In subclasses handle this separately
      */
@@ -712,6 +674,42 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
         } else {
             AppUtil.showMsg(getContext(), "Start time is greater than the end time");
         }
+    }
+
+    /**
+     * Get basic data of record
+     * Does not check constraints
+     *
+     * @return record builder with full data saved
+     */
+    protected RecordBuilder getFullRecordBuilder() {
+        Log.d("AddFullFragment", "getFullRecordBuilder");
+
+        //Call parent method to get intermediate info
+        RecordBuilder recordBuilder = getIntermediateRecordBuilder();
+
+        if (location != null) {
+            Log.d("AddFullFragment", "getFullRecordBuilder - location");
+            recordBuilder = recordBuilder.setLocation(location);
+            recordBuilder = recordBuilder.setLocationId(location.getLocationId());
+        }
+
+        if (selectedBodyAreas.size() > 0) {
+            Log.d("AddFullFragment", "getFullRecordBuilder - selectedBodyAreas");
+            recordBuilder = recordBuilder.setBodyAreas(selectedBodyAreas);
+        }
+
+        if (selectedMedicines.size() > 0) {
+            Log.d("AddFullFragment", " - selectedMedicines");
+            recordBuilder = recordBuilder.setMedicines(selectedMedicines);
+        }
+
+        if (selectedReliefs.size() > 0) {
+            Log.d("AddFullFragment", " - selectedReliefs");
+            recordBuilder = recordBuilder.setReliefs(selectedReliefs);
+        }
+
+        return recordBuilder;
     }
     //
     //

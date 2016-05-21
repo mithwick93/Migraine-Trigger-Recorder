@@ -25,18 +25,14 @@ public class RecordController {
         return DBTransactionHandler.addRecordTransaction(record, recordLevel);
     }
 
-    public static boolean updateRecord(Record record) {
-        return DBTransactionHandler.updateRecord(record);
-    }
-
     public static boolean deleteRecord(int recordId) {
         return DBTransactionHandler.deleteRecord(recordId);
     }
 
-    public static int getLastId() {
-        return DBRecordDAO.getLastRecordId();
-    }
+    public static ArrayList<Record> getAllRecords() {
 
+        return DBRecordDAO.getAllRecords();
+    }
 
     public static Timestamp getFirstRecordStartTimestamp() {
         Record firstRecord = DBRecordDAO.getFirstRecord();
@@ -48,9 +44,8 @@ public class RecordController {
         }
     }
 
-    public static Record getRecordById(int id) {
-
-        return DBRecordDAO.getRecord(id);
+    public static int getLastId() {
+        return DBRecordDAO.getLastRecordId();
     }
 
     /**
@@ -90,44 +85,9 @@ public class RecordController {
         return null;
     }
 
-    public static ArrayList<Record> getAllRecords() {
+    public static Record getRecordById(int id) {
 
-        return DBRecordDAO.getAllRecords();
-    }
-
-    public static ArrayList<Record> getAllRecordsOrderByDate() {
-
-        return DBRecordDAO.getAllRecordsOrderByDate();
-    }
-
-    /**
-     * Load status from db and show
-     *
-     * @return status string
-     */
-    public static String getStatus() {
-        Log.d("RecordController", "getStatus");
-        String status;
-
-        Record lastRecord = DBRecordDAO.getLastRecord();
-        if (lastRecord != null) {
-            if (lastRecord.getEndTime() != null) {
-                Timestamp endTime = lastRecord.getEndTime();
-                Timestamp currentTime = new Timestamp(new java.util.Date().getTime());
-
-                long difference = currentTime.getTime() - endTime.getTime();
-                long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
-                String duration = AppUtil.getFriendlyDuration(differenceInSeconds);
-
-                status = "Migraine free for\n " + duration;
-            } else {
-                status = "Get well soon ";
-            }
-        } else {
-            status = "No migraine records yet.";
-        }
-
-        return status;
+        return DBRecordDAO.getRecord(id);
     }
 
     public static RecordViewData[] getRecordViewData() {
@@ -200,6 +160,45 @@ public class RecordController {
         }
 
         return recordViewData;
+    }
+
+    public static ArrayList<Record> getAllRecordsOrderByDate() {
+
+        return DBRecordDAO.getAllRecordsOrderByDate();
+    }
+
+    /**
+     * Load status from db and show
+     *
+     * @return status string
+     */
+    public static String getStatus() {
+        Log.d("RecordController", "getStatus");
+        String status;
+
+        Record lastRecord = DBRecordDAO.getLastRecord();
+        if (lastRecord != null) {
+            if (lastRecord.getEndTime() != null) {
+                Timestamp endTime = lastRecord.getEndTime();
+                Timestamp currentTime = new Timestamp(new java.util.Date().getTime());
+
+                long difference = currentTime.getTime() - endTime.getTime();
+                long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
+                String duration = AppUtil.getFriendlyDuration(differenceInSeconds);
+
+                status = "Migraine free for\n " + duration;
+            } else {
+                status = "Get well soon ";
+            }
+        } else {
+            status = "No migraine records yet.";
+        }
+
+        return status;
+    }
+
+    public static boolean updateRecord(Record record) {
+        return DBTransactionHandler.updateRecord(record);
     }
 
 }

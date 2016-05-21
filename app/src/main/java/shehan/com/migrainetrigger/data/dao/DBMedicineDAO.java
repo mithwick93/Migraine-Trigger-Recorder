@@ -23,41 +23,31 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getStringDate;
 public final class DBMedicineDAO {
 
     /**
-     * get All Medicines
+     * add Medicine
      *
-     * @return ArrayList<Medicine>
+     * @param medicine medicine
+     * @return affected no of rows
      */
-    public static ArrayList<Medicine> getAllMedicines() {
-        Log.d("DBMedicineDAO", " DB - getAllMedicines ");
-        ArrayList<Medicine> medicineArrayList = new ArrayList<>();
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
+    public static long addMedicine(Medicine medicine) {
+        Log.d("DBMedicineDAO", "DB - addMedicine");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
-            cursor = db.query(DatabaseDefinition.MEDICINE_TABLE, null, null, null, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-                do {
+            ContentValues values = new ContentValues();
 
-                    Medicine medicine = new MedicineBuilder()
-                            .setMedicineId(cursor.getInt(0))
-                            .setMedicineName(cursor.getString(1))
-                            .setPriority(cursor.getInt(2))
-                            .createMedicine();
-                    medicineArrayList.add(medicine);
-                } while (cursor.moveToNext());
-            }
+            values.put(DatabaseDefinition.MEDICINE_ID_KEY, medicine.getMedicineId());
+
+            values.put(DatabaseDefinition.MEDICINE_NAME_KEY, medicine.getMedicineName());
+
+            values.put(DatabaseDefinition.MEDICINE_PRIORITY_KEY, medicine.getPriority());
+
+            long row_id = db.insert(DatabaseDefinition.MEDICINE_TABLE, null, values);
+
+            return row_id;
         } catch (SQLiteException e) {
+
             e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
+            return -1;
         }
-        return medicineArrayList;
     }
 
     /**
@@ -129,6 +119,25 @@ public final class DBMedicineDAO {
     }
 
     /**
+     * delete Medicine
+     *
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteMedicine(int id) {
+        Log.d("DBMedicineDAO", "deleteMedicine");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            long row_id = db.delete(DatabaseDefinition.MEDICINE_TABLE, DatabaseDefinition.MEDICINE_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
      * delete Medicine Records
      *
      * @param db       SQLiteDatabase
@@ -140,6 +149,88 @@ public final class DBMedicineDAO {
 
         long row_id = db.delete(DatabaseDefinition.MEDICINE_RECORD_TABLE, DatabaseDefinition.MEDICINE_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
         return row_id;
+    }
+
+    /**
+     * get All Medicines
+     *
+     * @return ArrayList<Medicine>
+     */
+    public static ArrayList<Medicine> getAllMedicines() {
+        Log.d("DBMedicineDAO", " DB - getAllMedicines ");
+        ArrayList<Medicine> medicineArrayList = new ArrayList<>();
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            cursor = db.query(DatabaseDefinition.MEDICINE_TABLE, null, null, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
+
+                    Medicine medicine = new MedicineBuilder()
+                            .setMedicineId(cursor.getInt(0))
+                            .setMedicineName(cursor.getString(1))
+                            .setPriority(cursor.getInt(2))
+                            .createMedicine();
+                    medicineArrayList.add(medicine);
+                } while (cursor.moveToNext());
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+        return medicineArrayList;
+    }
+
+    /**
+     * get Last Record Id
+     *
+     * @return last medicine record id
+     */
+    public static int getLastRecordId() {
+        Log.d("DBMedicineDAO", "getLastRecordId");
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        int recordId = -1;
+        try {
+            String[] projection = {DatabaseDefinition.MEDICINE_ID_KEY};
+            db = DatabaseHandler.getReadableDatabase();
+            cursor = db.query(
+                    DatabaseDefinition.MEDICINE_TABLE,
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    DatabaseDefinition.MEDICINE_ID_KEY + " DESC",
+                    "1");
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                recordId = Integer.valueOf(cursor.getString(0));
+                Log.d("getLastRecordId ", "Value: " + String.valueOf(recordId));
+            } else {
+                Log.d("getLastRecordId ", "Empty");
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+
+        }
+        return recordId;
     }
 
     /**
@@ -264,66 +355,6 @@ public final class DBMedicineDAO {
     }
 
     /**
-     * get Top Medicines
-     *
-     * @param from  from date
-     * @param to    to date
-     * @param limit limit
-     * @return ArrayList<String>
-     */
-    public static ArrayList<String> getTopMedicines(Timestamp from, Timestamp to, int limit) {
-        Log.d("DBMedicineDAO", "getTopMedicines");
-
-        ArrayList<String> top = new ArrayList<>();
-
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
-
-            String topic = DatabaseDefinition.MEDICINE_NAME_KEY;//Dynamic
-            String topicId = DatabaseDefinition.MEDICINE_ID_KEY;//Dynamic
-
-            String rightTable = DatabaseDefinition.RECORD_TABLE;
-            String leftTable = DatabaseDefinition.MEDICINE_TABLE;//Dynamic
-            String middleTable = DatabaseDefinition.MEDICINE_RECORD_TABLE;//Dynamic
-
-            String rightId = DatabaseDefinition.RECORD_ID_KEY;
-
-            String filter = DatabaseDefinition.RECORD_START_TIME_KEY;
-
-            String joinQuery =
-                    "SELECT " + topic + ", COUNT(" + topicId + ") as topCount " +
-                            "FROM " + leftTable + " NATURAL JOIN " + middleTable + ", " + rightTable +
-                            " WHERE " + middleTable + "." + rightId + " = " + rightTable + "." + rightId +
-                            " AND " + rightTable + "." + filter + " BETWEEN ? AND ? " +
-                            "GROUP BY " + topic + " ORDER BY topCount DESC LIMIT " + String.valueOf(limit);
-
-            String[] selectionArgs = {getStringDate(from), getStringDate(to)};
-            cursor = db.rawQuery(joinQuery, selectionArgs);
-
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-                do {
-                    String title = cursor.getString(0);
-                    top.add(title);
-                } while (cursor.moveToNext());
-            }
-
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
-        }
-
-        return top;
-    }
-
-    /**
      * get Top Effective Medicines
      *
      * @param from  from date
@@ -384,45 +415,97 @@ public final class DBMedicineDAO {
     }
 
     /**
-     * add Medicine
+     * get Top Medicines
+     *
+     * @param from  from date
+     * @param to    to date
+     * @param limit limit
+     * @return ArrayList<String>
+     */
+    public static ArrayList<String> getTopMedicines(Timestamp from, Timestamp to, int limit) {
+        Log.d("DBMedicineDAO", "getTopMedicines");
+
+        ArrayList<String> top = new ArrayList<>();
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            String topic = DatabaseDefinition.MEDICINE_NAME_KEY;//Dynamic
+            String topicId = DatabaseDefinition.MEDICINE_ID_KEY;//Dynamic
+
+            String rightTable = DatabaseDefinition.RECORD_TABLE;
+            String leftTable = DatabaseDefinition.MEDICINE_TABLE;//Dynamic
+            String middleTable = DatabaseDefinition.MEDICINE_RECORD_TABLE;//Dynamic
+
+            String rightId = DatabaseDefinition.RECORD_ID_KEY;
+
+            String filter = DatabaseDefinition.RECORD_START_TIME_KEY;
+
+            String joinQuery =
+                    "SELECT " + topic + ", COUNT(" + topicId + ") as topCount " +
+                            "FROM " + leftTable + " NATURAL JOIN " + middleTable + ", " + rightTable +
+                            " WHERE " + middleTable + "." + rightId + " = " + rightTable + "." + rightId +
+                            " AND " + rightTable + "." + filter + " BETWEEN ? AND ? " +
+                            "GROUP BY " + topic + " ORDER BY topCount DESC LIMIT " + String.valueOf(limit);
+
+            String[] selectionArgs = {getStringDate(from), getStringDate(to)};
+            cursor = db.rawQuery(joinQuery, selectionArgs);
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
+                    String title = cursor.getString(0);
+                    top.add(title);
+                } while (cursor.moveToNext());
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return top;
+    }
+
+    /**
+     * update Medicine Record
      *
      * @param medicine medicine
-     * @return affected no of rows
+     * @return no of effected rows
      */
-    public static long addMedicine(Medicine medicine) {
-        Log.d("DBMedicineDAO", "DB - addMedicine");
+    public static long updateMedicineRecord(Medicine medicine) {
+        Log.d("DBMedicineDAO", "DB - updateMedicineRecord");
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
 
-            values.put(DatabaseDefinition.MEDICINE_ID_KEY, medicine.getMedicineId());
+            if (medicine.getMedicineName().equals("") && medicine.getPriority() < 0) {
+                throw new SQLiteException("Empty update");
+            }
 
-            values.put(DatabaseDefinition.MEDICINE_NAME_KEY, medicine.getMedicineName());
+            if (!medicine.getMedicineName().equals("")) {
+                values.put(DatabaseDefinition.MEDICINE_NAME_KEY, medicine.getMedicineName());
+            }
+            if (medicine.getPriority() >= 0) {
+                values.put(DatabaseDefinition.MEDICINE_PRIORITY_KEY, medicine.getPriority());
+            }
 
-            values.put(DatabaseDefinition.MEDICINE_PRIORITY_KEY, medicine.getPriority());
 
-            long row_id = db.insert(DatabaseDefinition.MEDICINE_TABLE, null, values);
+            long result = db.update(
+                    DatabaseDefinition.MEDICINE_TABLE,
+                    values,
+                    DatabaseDefinition.MEDICINE_ID_KEY + " = ?",
+                    new String[]{String.valueOf(medicine.getMedicineId())}
+            );
 
-            return row_id;
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    /**
-     * delete Medicine
-     *
-     * @param id id
-     * @return affected no of rows
-     */
-    public static long deleteMedicine(int id) {
-        Log.d("DBMedicineDAO", "deleteMedicine");
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
-            long row_id = db.delete(DatabaseDefinition.MEDICINE_TABLE, DatabaseDefinition.MEDICINE_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-            return row_id;
+            return result;
         } catch (SQLiteException e) {
 
             e.printStackTrace();

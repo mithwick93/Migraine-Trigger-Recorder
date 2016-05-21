@@ -51,30 +51,6 @@ public class AppUtil {
     }
 
     /**
-     * Convert Timestamp object value to string
-     * string format : yyyy-MM-dd HH:mm:ss
-     *
-     * @param timestamp timestamp to convert to string
-     * @ string object with time
-     */
-    public static String getStringDate(Timestamp timestamp) {
-        Log.d("AppUtil", "getStringDate timestamp value : " + timestamp.toString());
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(timestamp);
-    }
-
-    /**
-     * Convert Timestamp object value to string
-     * string format : dd/MM/yyyy h:mm a
-     *
-     * @param timestamp timestamp to convert to string
-     * @ string object with time
-     */
-    public static String getFriendlyStringDate(Timestamp timestamp) {
-        Log.d("AppUtil", "getFriendlyStringDate timestamp value : " + timestamp.toString());
-        return new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.getDefault()).format(timestamp);
-    }
-
-    /**
      * Convert long duration to human readable format
      *
      * @param duration time difference as a long
@@ -134,6 +110,30 @@ public class AppUtil {
 
     /**
      * Convert Timestamp object value to string
+     * string format : dd/MM/yyyy h:mm a
+     *
+     * @param timestamp timestamp to convert to string
+     * @ string object with time
+     */
+    public static String getFriendlyStringDate(Timestamp timestamp) {
+        Log.d("AppUtil", "getFriendlyStringDate timestamp value : " + timestamp.toString());
+        return new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.getDefault()).format(timestamp);
+    }
+
+    /**
+     * Convert Timestamp object value to string
+     * string format : yyyy-MM-dd HH:mm:ss
+     *
+     * @param timestamp timestamp to convert to string
+     * @ string object with time
+     */
+    public static String getStringDate(Timestamp timestamp) {
+        Log.d("AppUtil", "getStringDate timestamp value : " + timestamp.toString());
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(timestamp);
+    }
+
+    /**
+     * Convert Timestamp object value to string
      * string format : yyyy-MM-dd HH:mm:ss  2016-04-18T22:30:45
      *
      * @param timestamp timestamp to convert to string
@@ -189,22 +189,6 @@ public class AppUtil {
     }
 
     /**
-     * show toast messages
-     *
-     * @param context context
-     * @param message msg to show
-     */
-    public static void showToast(Context context, String message) {
-
-        if (mToast != null) {
-            mToast.cancel();
-            mToast = null;
-        }
-        mToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-        mToast.show();
-    }
-
-    /**
      * Show dialog box msg
      *
      * @param context context to show text
@@ -228,6 +212,22 @@ public class AppUtil {
                 .content(msg)
                 .negativeText(R.string.cancelButtonDialog)
                 .show();
+    }
+
+    /**
+     * show toast messages
+     *
+     * @param context context
+     * @param message msg to show
+     */
+    public static void showToast(Context context, String message) {
+
+        if (mToast != null) {
+            mToast.cancel();
+            mToast = null;
+        }
+        mToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        mToast.show();
     }
 
 }

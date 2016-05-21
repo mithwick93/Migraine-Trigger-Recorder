@@ -21,34 +21,6 @@ import shehan.com.migrainetrigger.utility.AppUtil;
  */
 public class ReportController {
 
-    public static int getTotalRecords(Timestamp from, Timestamp to) {
-        return DBRecordDAO.getTotalRecords(from, to);
-    }
-
-    public static double getIntensity(Timestamp from, Timestamp to) {
-        ArrayList<Record> averageRecords = DBRecordDAO.getAverageReportRecords(from, to);
-        double intensity = 0;
-
-        if (averageRecords.size() > 0) {
-
-            long total = 0;
-            int count = 0;
-            for (int i = 0; i < averageRecords.size(); i++) {
-                Record record = averageRecords.get(i);
-
-                if (record != null && record.getIntensity() > 0) {
-                    total += record.getIntensity();
-                    count++;
-
-                }
-            }
-            if (count != 0) {
-                intensity = (double) total / count;
-            }
-        }
-        return intensity;
-    }
-
     public static String getAverage(Timestamp from, Timestamp to) {
         ArrayList<Record> averageRecords = DBRecordDAO.getAverageReportRecords(from, to);
         String strTotal = "-";
@@ -80,39 +52,67 @@ public class ReportController {
         return strTotal;
     }
 
-    public static ArrayList<String> getTopTriggers(Timestamp from, Timestamp to, int limit) {
-        return DBTriggerDAO.getTopTriggers(from, to, limit);
-    }
+    public static double getIntensity(Timestamp from, Timestamp to) {
+        ArrayList<Record> averageRecords = DBRecordDAO.getAverageReportRecords(from, to);
+        double intensity = 0;
 
-    public static ArrayList<String> getTopSymptoms(Timestamp from, Timestamp to, int limit) {
-        return DBSymptomDAO.getTopSymptoms(from, to, limit);
+        if (averageRecords.size() > 0) {
+
+            long total = 0;
+            int count = 0;
+            for (int i = 0; i < averageRecords.size(); i++) {
+                Record record = averageRecords.get(i);
+
+                if (record != null && record.getIntensity() > 0) {
+                    total += record.getIntensity();
+                    count++;
+
+                }
+            }
+            if (count != 0) {
+                intensity = (double) total / count;
+            }
+        }
+        return intensity;
     }
 
     public static ArrayList<String> getTopActivities(Timestamp from, Timestamp to, int limit) {
         return DBActivityDAO.getTopActivities(from, to, limit);
     }
 
-    public static ArrayList<String> getTopLocations(Timestamp from, Timestamp to, int limit) {
-        return DBLocationDAO.getTopLocations(from, to, limit);
-    }
-
     public static ArrayList<String> getTopBodyAreas(Timestamp from, Timestamp to, int limit) {
         return DBBodyAreaDAO.getTopBodyAreas(from, to, limit);
-    }
-
-    public static ArrayList<String> getTopMedicines(Timestamp from, Timestamp to, int limit) {
-        return DBMedicineDAO.getTopMedicines(from, to, limit);
     }
 
     public static ArrayList<String> getTopEffectiveMedicines(Timestamp from, Timestamp to, int limit) {
         return DBMedicineDAO.getTopEffectiveMedicines(from, to, limit);
     }
 
+    public static ArrayList<String> getTopEffectiveReliefs(Timestamp from, Timestamp to, int limit) {
+        return DBReliefDAO.getTopEffectiveReliefs(from, to, limit);
+    }
+
+    public static ArrayList<String> getTopLocations(Timestamp from, Timestamp to, int limit) {
+        return DBLocationDAO.getTopLocations(from, to, limit);
+    }
+
+    public static ArrayList<String> getTopMedicines(Timestamp from, Timestamp to, int limit) {
+        return DBMedicineDAO.getTopMedicines(from, to, limit);
+    }
+
     public static ArrayList<String> getTopReliefs(Timestamp from, Timestamp to, int limit) {
         return DBReliefDAO.getTopReliefs(from, to, limit);
     }
 
-    public static ArrayList<String> getTopEffectiveReliefs(Timestamp from, Timestamp to, int limit) {
-        return DBReliefDAO.getTopEffectiveReliefs(from, to, limit);
+    public static ArrayList<String> getTopSymptoms(Timestamp from, Timestamp to, int limit) {
+        return DBSymptomDAO.getTopSymptoms(from, to, limit);
+    }
+
+    public static ArrayList<String> getTopTriggers(Timestamp from, Timestamp to, int limit) {
+        return DBTriggerDAO.getTopTriggers(from, to, limit);
+    }
+
+    public static int getTotalRecords(Timestamp from, Timestamp to) {
+        return DBRecordDAO.getTotalRecords(from, to);
     }
 }

@@ -5,24 +5,16 @@ package shehan.com.migrainetrigger.view.model;
  */
 public class ReportViewData {
 
-    private String topic;
     private String content_1;
     private String content_2;
     private String content_3;
+    private String topic;
 
     public ReportViewData(String topic) {
         this.topic = topic;
         this.content_1 = "EMPTY";
         this.content_2 = "EMPTY";
         this.content_3 = "EMPTY";
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
     }
 
     public String getContent_1() {
@@ -47,5 +39,13 @@ public class ReportViewData {
 
     public void setContent_3(String content_3) {
         this.content_3 = content_3;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 }

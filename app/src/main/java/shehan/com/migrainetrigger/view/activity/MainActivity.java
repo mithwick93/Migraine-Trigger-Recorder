@@ -42,6 +42,34 @@ public class MainActivity
     //region activity default
 
     @Override
+    public void OnManageAnswersInteraction(String answer) {
+        Intent intent = new Intent(MainActivity.this, ManageAnswersActivity.class);
+        intent.putExtra("answerSection", answer);
+        Log.d("Main-navigation", "Launching manage answers activity");
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
+        if (drawer != null) {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
+        }
+    }
+
+
+    //endregion
+
+    //region interface implementations
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         if (DEVELOPER_MODE) {
@@ -86,108 +114,6 @@ public class MainActivity
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         Log.d("Main-onCreate", "onCreate success");
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-
-        if (drawer != null) {
-            if (drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.closeDrawer(GravityCompat.START);
-            } else {
-                super.onBackPressed();
-            }
-        }
-    }
-
-
-    //endregion
-
-
-    //region interface implementations
-
-    /**
-     * Action on navigation item click
-     *
-     * @param item clicked item
-     * @return clicked value
-     */
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        //Navigation drawer logic
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-            Log.d("Main-navigation", "Home selected");
-            HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_home));
-            if (homeFragment != null && homeFragment.isVisible()) {
-                AppUtil.showToast(MainActivity.this, "Home already selected");
-            } else {
-                setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
-            }
-
-        } else if (id == R.id.nav_severity) {
-            Log.d("Main-navigation", "Severity selected");
-
-            SeverityFragment severityFragment = (SeverityFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_severity));
-            if (severityFragment != null && severityFragment.isVisible()) {
-                AppUtil.showToast(MainActivity.this, "Severity already selected");
-            } else {
-                setFragment(new SeverityFragment(), R.string.nav_severity, View.VISIBLE, true);
-            }
-        } else if (id == R.id.nav_answers) {
-            Log.d("Main-navigation", "Answers selected");
-            ManageAnswersFragment answersFragment = (ManageAnswersFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_answers));
-            if (answersFragment != null && answersFragment.isVisible()) {
-                AppUtil.showToast(MainActivity.this, "Answers already selected");
-            } else {
-                setFragment(new ManageAnswersFragment(), R.string.nav_answers, View.VISIBLE, true);
-            }
-
-        } else if (id == R.id.nav_faq) {
-            Log.d("Main-navigation", "F.A.Q selected");
-            Intent intent = new Intent(MainActivity.this, FAQActivity.class);
-            Log.d("Main-navigation", "Launching F.A.Q activity");
-            startActivity(intent);
-
-        } else if (id == R.id.nav_record) {
-            Log.d("Main-navigation", "Record selected");
-            Intent intent = new Intent(MainActivity.this, ViewRecordsActivity.class);
-            Log.d("Main-navigation", "Launching view record activity");
-            startActivity(intent);
-
-        } else if (id == R.id.nav_report) {
-            Log.d("Main-navigation", "Report selected");
-            Intent intent = new Intent(MainActivity.this, ReportActivity.class);
-            Log.d("Main-navigation", "Launching report activity");
-            startActivity(intent);
-
-        } else if (id == R.id.nav_settings) {
-            Log.d("Main-navigation", "Settings selected");
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            Log.d("Main-navigation", "Launching settings activity");
-            startActivity(intent);
-
-        } else if (id == R.id.nav_about) {
-            Log.d("Main-navigation", "About selected");
-
-            AboutFragment aboutFragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_about));
-            if (aboutFragment != null && aboutFragment.isVisible()) {
-                AppUtil.showToast(MainActivity.this, "about already selected");
-            } else {
-                setFragment(new AboutFragment(), R.string.nav_about, View.VISIBLE, true);
-            }
-        }
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer != null) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        return true;
     }
 
 
@@ -286,19 +212,92 @@ public class MainActivity
 
     }
 
+    /**
+     * Action on navigation item click
+     *
+     * @param item clicked item
+     * @return clicked value
+     */
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        //Navigation drawer logic
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+            Log.d("Main-navigation", "Home selected");
+            HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_home));
+            if (homeFragment != null && homeFragment.isVisible()) {
+                AppUtil.showToast(MainActivity.this, "Home already selected");
+            } else {
+                setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
+            }
+
+        } else if (id == R.id.nav_severity) {
+            Log.d("Main-navigation", "Severity selected");
+
+            SeverityFragment severityFragment = (SeverityFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_severity));
+            if (severityFragment != null && severityFragment.isVisible()) {
+                AppUtil.showToast(MainActivity.this, "Severity already selected");
+            } else {
+                setFragment(new SeverityFragment(), R.string.nav_severity, View.VISIBLE, true);
+            }
+        } else if (id == R.id.nav_answers) {
+            Log.d("Main-navigation", "Answers selected");
+            ManageAnswersFragment answersFragment = (ManageAnswersFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_answers));
+            if (answersFragment != null && answersFragment.isVisible()) {
+                AppUtil.showToast(MainActivity.this, "Answers already selected");
+            } else {
+                setFragment(new ManageAnswersFragment(), R.string.nav_answers, View.VISIBLE, true);
+            }
+
+        } else if (id == R.id.nav_faq) {
+            Log.d("Main-navigation", "F.A.Q selected");
+            Intent intent = new Intent(MainActivity.this, FAQActivity.class);
+            Log.d("Main-navigation", "Launching F.A.Q activity");
+            startActivity(intent);
+
+        } else if (id == R.id.nav_record) {
+            Log.d("Main-navigation", "Record selected");
+            Intent intent = new Intent(MainActivity.this, ViewRecordsActivity.class);
+            Log.d("Main-navigation", "Launching view record activity");
+            startActivity(intent);
+
+        } else if (id == R.id.nav_report) {
+            Log.d("Main-navigation", "Report selected");
+            Intent intent = new Intent(MainActivity.this, ReportActivity.class);
+            Log.d("Main-navigation", "Launching report activity");
+            startActivity(intent);
+
+        } else if (id == R.id.nav_settings) {
+            Log.d("Main-navigation", "Settings selected");
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            Log.d("Main-navigation", "Launching settings activity");
+            startActivity(intent);
+
+        } else if (id == R.id.nav_about) {
+            Log.d("Main-navigation", "About selected");
+
+            AboutFragment aboutFragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_about));
+            if (aboutFragment != null && aboutFragment.isVisible()) {
+                AppUtil.showToast(MainActivity.this, "about already selected");
+            } else {
+                setFragment(new AboutFragment(), R.string.nav_about, View.VISIBLE, true);
+            }
+        }
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer != null) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        return true;
+    }
+
     private void showNotImplemented() {
         if (fab != null) {
             fab.setVisibility(View.INVISIBLE);
         }
-    }
-
-    @Override
-    public void OnManageAnswersInteraction(String answer) {
-        Intent intent = new Intent(MainActivity.this, ManageAnswersActivity.class);
-        intent.putExtra("answerSection", answer);
-        Log.d("Main-navigation", "Launching manage answers activity");
-        startActivity(intent);
-
     }
 
     //endregion

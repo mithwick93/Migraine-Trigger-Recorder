@@ -11,7 +11,6 @@ public abstract class PriorityEntity implements Comparable<PriorityEntity> {
 
     @Override
     public int compareTo(@NonNull PriorityEntity priorityEntity) {
-//        Log.d("PriorityEntity", "compareTo");
         return (priority - priorityEntity.priority);
     }
 

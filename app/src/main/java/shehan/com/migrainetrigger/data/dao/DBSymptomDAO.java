@@ -23,41 +23,31 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getStringDate;
 public final class DBSymptomDAO {
 
     /**
-     * get All Symptoms
+     * add Symptom
      *
-     * @return ArrayList<Symptom>
+     * @param symptom symptom
+     * @return affected no of rows
      */
-    public static ArrayList<Symptom> getAllSymptoms() {
-        Log.d("DBSymptomDAO", " DB - getAllSymptoms ");
-        ArrayList<Symptom> symptomArrayList = new ArrayList<>();
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
+    public static long addSymptom(Symptom symptom) {
+        Log.d("DBSymptomDAO", "DB - addSymptom");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
-            cursor = db.query(DatabaseDefinition.SYMPTOM_TABLE, null, null, null, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-                do {
+            ContentValues values = new ContentValues();
 
-                    Symptom relief = new SymptomBuilder()
-                            .setSymptomId(cursor.getInt(0))
-                            .setSymptomName(cursor.getString(1))
-                            .setPriority(cursor.getInt(2))
-                            .createSymptom();
-                    symptomArrayList.add(relief);
-                } while (cursor.moveToNext());
-            }
+            values.put(DatabaseDefinition.SYMPTOM_ID_KEY, symptom.getSymptomId());
+
+            values.put(DatabaseDefinition.SYMPTOM_NAME_KEY, symptom.getSymptomName());
+
+            values.put(DatabaseDefinition.SYMPTOM_PRIORITY_KEY, symptom.getPriority());
+
+            long row_id = db.insert(DatabaseDefinition.SYMPTOM_TABLE, null, values);
+
+            return row_id;
         } catch (SQLiteException e) {
+
             e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
+            return -1;
         }
-        return symptomArrayList;
     }
 
     /**
@@ -122,6 +112,25 @@ public final class DBSymptomDAO {
     }
 
     /**
+     * delete Symptom
+     *
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteSymptom(int id) {
+        Log.d("DBSymptomDAO", "deleteSymptom");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            long row_id = db.delete(DatabaseDefinition.SYMPTOM_TABLE, DatabaseDefinition.SYMPTOM_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
      * delete Symptom Records
      *
      * @param db       SQLiteDatabase
@@ -133,6 +142,88 @@ public final class DBSymptomDAO {
 
         long row_id = db.delete(DatabaseDefinition.SYMPTOM_RECORD_TABLE, DatabaseDefinition.SYMPTOM_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
         return row_id;
+    }
+
+    /**
+     * get All Symptoms
+     *
+     * @return ArrayList<Symptom>
+     */
+    public static ArrayList<Symptom> getAllSymptoms() {
+        Log.d("DBSymptomDAO", " DB - getAllSymptoms ");
+        ArrayList<Symptom> symptomArrayList = new ArrayList<>();
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            cursor = db.query(DatabaseDefinition.SYMPTOM_TABLE, null, null, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
+
+                    Symptom relief = new SymptomBuilder()
+                            .setSymptomId(cursor.getInt(0))
+                            .setSymptomName(cursor.getString(1))
+                            .setPriority(cursor.getInt(2))
+                            .createSymptom();
+                    symptomArrayList.add(relief);
+                } while (cursor.moveToNext());
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+        return symptomArrayList;
+    }
+
+    /**
+     * get Last Record Id
+     *
+     * @return last symptom record id
+     */
+    public static int getLastRecordId() {
+        Log.d("DBSymptomDAO", "getLastRecordId");
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        int recordId = -1;
+        try {
+            String[] projection = {DatabaseDefinition.SYMPTOM_ID_KEY};
+            db = DatabaseHandler.getReadableDatabase();
+            cursor = db.query(
+                    DatabaseDefinition.SYMPTOM_TABLE,
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    DatabaseDefinition.SYMPTOM_ID_KEY + " DESC",
+                    "1");
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                recordId = Integer.valueOf(cursor.getString(0));
+                Log.d("getLastRecordId ", "Value: " + String.valueOf(recordId));
+            } else {
+                Log.d("getLastRecordId ", "Empty");
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+
+        }
+        return recordId;
     }
 
     /**
@@ -310,45 +401,37 @@ public final class DBSymptomDAO {
     }
 
     /**
-     * add Symptom
+     * update Symptom Record
      *
      * @param symptom symptom
-     * @return affected no of rows
+     * @return no of effected rows
      */
-    public static long addSymptom(Symptom symptom) {
-        Log.d("DBSymptomDAO", "DB - addSymptom");
+    public static long updateSymptomRecord(Symptom symptom) {
+        Log.d("DBSymptomDAO", "DB - updateReliefRecord");
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
 
-            values.put(DatabaseDefinition.SYMPTOM_ID_KEY, symptom.getSymptomId());
+            if (symptom.getSymptomName().equals("") && symptom.getPriority() < 0) {
+                throw new SQLiteException("Empty update");
+            }
 
-            values.put(DatabaseDefinition.SYMPTOM_NAME_KEY, symptom.getSymptomName());
+            if (!symptom.getSymptomName().equals("")) {
+                values.put(DatabaseDefinition.SYMPTOM_NAME_KEY, symptom.getSymptomName());
+            }
+            if (symptom.getPriority() >= 0) {
+                values.put(DatabaseDefinition.SYMPTOM_PRIORITY_KEY, symptom.getPriority());
+            }
 
-            values.put(DatabaseDefinition.SYMPTOM_PRIORITY_KEY, symptom.getPriority());
 
-            long row_id = db.insert(DatabaseDefinition.SYMPTOM_TABLE, null, values);
+            long result = db.update(
+                    DatabaseDefinition.SYMPTOM_TABLE,
+                    values,
+                    DatabaseDefinition.SYMPTOM_ID_KEY + " = ?",
+                    new String[]{String.valueOf(symptom.getSymptomId())}
+            );
 
-            return row_id;
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    /**
-     * delete Symptom
-     *
-     * @param id id
-     * @return affected no of rows
-     */
-    public static long deleteSymptom(int id) {
-        Log.d("DBSymptomDAO", "deleteSymptom");
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
-            long row_id = db.delete(DatabaseDefinition.SYMPTOM_TABLE, DatabaseDefinition.SYMPTOM_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-            return row_id;
+            return result;
         } catch (SQLiteException e) {
 
             e.printStackTrace();

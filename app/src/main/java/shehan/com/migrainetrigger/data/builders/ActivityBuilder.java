@@ -7,6 +7,10 @@ public class ActivityBuilder {
     private String activityName;
     private int priority;
 
+    public LifeActivity createActivity() {
+        return new LifeActivity(activityId, activityName, priority);
+    }
+
     public ActivityBuilder setActivityId(int activityId) {
         this.activityId = activityId;
         return this;
@@ -20,9 +24,5 @@ public class ActivityBuilder {
     public ActivityBuilder setPriority(int priority) {
         this.priority = priority;
         return this;
-    }
-
-    public LifeActivity createActivity() {
-        return new LifeActivity(activityId, activityName, priority);
     }
 }

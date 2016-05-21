@@ -24,41 +24,31 @@ public final class DBActivityDAO {
 
 
     /**
-     * Get all activities
+     * add Activity
      *
-     * @return ArrayList<LifeActivity>
+     * @param lifeActivity lifeActivity
+     * @return affected no of rows
      */
-    public static ArrayList<LifeActivity> getAllActivities() {
-        Log.d("DBActivityDAO", " DB - getAllActivities ");
-        ArrayList<LifeActivity> lifeActivityArrayList = new ArrayList<>();
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
+    public static long addActivity(LifeActivity lifeActivity) {
+        Log.d("DBActivityDAO", "DB - addActivity");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
-            cursor = db.query(DatabaseDefinition.ACTIVITY_TABLE, null, null, null, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-                do {
+            ContentValues values = new ContentValues();
 
-                    LifeActivity lifeActivity = new ActivityBuilder()
-                            .setActivityId(cursor.getInt(0))
-                            .setActivityName(cursor.getString(1))
-                            .setPriority(cursor.getInt(2))
-                            .createActivity();
-                    lifeActivityArrayList.add(lifeActivity);
-                } while (cursor.moveToNext());
-            }
+            values.put(DatabaseDefinition.ACTIVITY_ID_KEY, lifeActivity.getActivityId());
+
+            values.put(DatabaseDefinition.ACTIVITY_NAME_KEY, lifeActivity.getActivityName());
+
+            values.put(DatabaseDefinition.ACTIVITY_PRIORITY_KEY, lifeActivity.getPriority());
+
+            long row_id = db.insert(DatabaseDefinition.ACTIVITY_TABLE, null, values);
+
+            return row_id;
         } catch (SQLiteException e) {
+
             e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
+            return -1;
         }
-        return lifeActivityArrayList;
     }
 
     /**
@@ -122,6 +112,25 @@ public final class DBActivityDAO {
     }
 
     /**
+     * delete Activity
+     *
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteActivity(int id) {
+        Log.d("DBActivityDAO", "deleteActivity");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            long row_id = db.delete(DatabaseDefinition.ACTIVITY_TABLE, DatabaseDefinition.ACTIVITY_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
      * delete Activity Records
      *
      * @param db       SQLiteDatabase
@@ -133,59 +142,6 @@ public final class DBActivityDAO {
 
         long row_id = db.delete(DatabaseDefinition.ACTIVITY_RECORD_TABLE, DatabaseDefinition.ACTIVITY_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
         return row_id;
-    }
-
-    /**
-     * get Activity
-     *
-     * @param id id
-     * @return LifeActivity
-     */
-    @Nullable
-    public static LifeActivity getActivity(int id) {
-        Log.d("DBActivityDAO", "getActivity");
-
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
-
-            cursor = db.query(DatabaseDefinition.ACTIVITY_TABLE, null, DatabaseDefinition.ACTIVITY_ID_KEY + " = ?", new String[]{String.valueOf(id)}, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-
-
-                int activityId = cursor.getInt(0);
-
-                ActivityBuilder activityBuilder = new ActivityBuilder().setActivityId(activityId);
-
-                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.ACTIVITY_NAME_KEY);
-
-                if (!cursor.isNull(index)) {
-                    String name = cursor.getString(index);
-                    activityBuilder = activityBuilder.setActivityName(name);
-                }
-
-                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.ACTIVITY_PRIORITY_KEY);
-
-                if (!cursor.isNull(index)) {
-                    String priority = cursor.getString(index);
-                    activityBuilder = activityBuilder.setPriority(Integer.parseInt(priority));
-                }
-
-                return activityBuilder.createActivity();
-            }
-
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
-        }
-        return null;
     }
 
     /**
@@ -250,6 +206,141 @@ public final class DBActivityDAO {
     }
 
     /**
+     * get Activity
+     *
+     * @param id id
+     * @return LifeActivity
+     */
+    @Nullable
+    public static LifeActivity getActivity(int id) {
+        Log.d("DBActivityDAO", "getActivity");
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            cursor = db.query(DatabaseDefinition.ACTIVITY_TABLE, null, DatabaseDefinition.ACTIVITY_ID_KEY + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+
+
+                int activityId = cursor.getInt(0);
+
+                ActivityBuilder activityBuilder = new ActivityBuilder().setActivityId(activityId);
+
+                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.ACTIVITY_NAME_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String name = cursor.getString(index);
+                    activityBuilder = activityBuilder.setActivityName(name);
+                }
+
+                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.ACTIVITY_PRIORITY_KEY);
+
+                if (!cursor.isNull(index)) {
+                    String priority = cursor.getString(index);
+                    activityBuilder = activityBuilder.setPriority(Integer.parseInt(priority));
+                }
+
+                return activityBuilder.createActivity();
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get all activities
+     *
+     * @return ArrayList<LifeActivity>
+     */
+    public static ArrayList<LifeActivity> getAllActivities() {
+        Log.d("DBActivityDAO", " DB - getAllActivities ");
+        ArrayList<LifeActivity> lifeActivityArrayList = new ArrayList<>();
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            cursor = db.query(DatabaseDefinition.ACTIVITY_TABLE, null, null, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
+
+                    LifeActivity lifeActivity = new ActivityBuilder()
+                            .setActivityId(cursor.getInt(0))
+                            .setActivityName(cursor.getString(1))
+                            .setPriority(cursor.getInt(2))
+                            .createActivity();
+                    lifeActivityArrayList.add(lifeActivity);
+                } while (cursor.moveToNext());
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+        return lifeActivityArrayList;
+    }
+
+    /**
+     * get Last Record Id
+     *
+     * @return last activity record id
+     */
+    public static int getLastRecordId() {
+        Log.d("DBActivityDAO", "getLastRecordId");
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        int recordId = -1;
+        try {
+            String[] projection = {DatabaseDefinition.ACTIVITY_ID_KEY};
+            db = DatabaseHandler.getReadableDatabase();
+            cursor = db.query(
+                    DatabaseDefinition.ACTIVITY_TABLE,
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    DatabaseDefinition.ACTIVITY_ID_KEY + " DESC",
+                    "1");
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                recordId = Integer.valueOf(cursor.getString(0));
+                Log.d("getLastRecordId ", "Value: " + String.valueOf(recordId));
+            } else {
+                Log.d("getLastRecordId ", "Empty");
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+
+        }
+        return recordId;
+    }
+
+    /**
      * get Top Activities
      *
      * @param from  from date
@@ -310,51 +401,41 @@ public final class DBActivityDAO {
     }
 
     /**
-     * add Activity
+     * update Activity Record
      *
      * @param lifeActivity lifeActivity
-     * @return affected no of rows
+     * @return no of effected rows
      */
-    public static long addActivity(LifeActivity lifeActivity) {
-        Log.d("DBActivityDAO", "DB - addActivity");
+    public static long updateActivityRecord(LifeActivity lifeActivity) {
+        Log.d("DBActivityDAO", "DB - updateActivityRecord");
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
 
-            values.put(DatabaseDefinition.ACTIVITY_ID_KEY, lifeActivity.getActivityId());
+            if (lifeActivity.getActivityName().equals("") && lifeActivity.getPriority() < 0) {
+                throw new SQLiteException("Empty update");
+            }
 
-            values.put(DatabaseDefinition.ACTIVITY_NAME_KEY, lifeActivity.getActivityName());
+            if (!lifeActivity.getActivityName().equals("")) {
+                values.put(DatabaseDefinition.ACTIVITY_NAME_KEY, lifeActivity.getActivityName());
+            }
+            if (lifeActivity.getPriority() >= 0) {
+                values.put(DatabaseDefinition.ACTIVITY_PRIORITY_KEY, lifeActivity.getPriority());
+            }
 
-            values.put(DatabaseDefinition.ACTIVITY_PRIORITY_KEY, lifeActivity.getPriority());
 
-            long row_id = db.insert(DatabaseDefinition.ACTIVITY_TABLE, null, values);
+            long result = db.update(
+                    DatabaseDefinition.ACTIVITY_TABLE,
+                    values,
+                    DatabaseDefinition.ACTIVITY_ID_KEY + " = ?",
+                    new String[]{String.valueOf(lifeActivity.getActivityId())}
+            );
 
-            return row_id;
+            return result;
         } catch (SQLiteException e) {
 
             e.printStackTrace();
             return -1;
         }
     }
-
-    /**
-     * delete Activity
-     *
-     * @param id id
-     * @return affected no of rows
-     */
-    public static long deleteActivity(int id) {
-        Log.d("DBActivityDAO", "deleteActivity");
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
-            long row_id = db.delete(DatabaseDefinition.ACTIVITY_TABLE, DatabaseDefinition.ACTIVITY_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-            return row_id;
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-
 }

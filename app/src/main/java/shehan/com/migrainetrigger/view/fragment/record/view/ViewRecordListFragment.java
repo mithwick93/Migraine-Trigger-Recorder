@@ -26,21 +26,11 @@ import shehan.com.migrainetrigger.view.model.RecordViewData;
 public class ViewRecordListFragment extends Fragment
         implements RecordViewAdapter.RecordListViewClickListener {
 
-    private View mView;
     private RecordListListener mCallback;
+    private View mView;
 
     public ViewRecordListFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        mView = inflater.inflate(R.layout.fragment_view_record_list, container, false);
-
-        new GetRecordListTask(mView).execute();//Load records to list view
-        return mView;
     }
 
     @Override
@@ -56,6 +46,16 @@ public class ViewRecordListFragment extends Fragment
             throw new ClassCastException(context.toString()
                     + " must implement RecordListListener");
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        mView = inflater.inflate(R.layout.fragment_view_record_list, container, false);
+
+        new GetRecordListTask(mView).execute();//Load records to list view
+        return mView;
     }
 
     @Override

@@ -14,35 +14,6 @@ public class Trigger extends PriorityEntity {
         this.priority = priority;
     }
 
-    public int getTriggerId() {
-        return triggerId;
-    }
-
-    public void setTriggerId(int triggerId) {
-        this.triggerId = triggerId;
-    }
-
-    public String getTriggerName() {
-        return triggerName;
-    }
-
-    public void setTriggerName(String triggerName) {
-        this.triggerName = triggerName;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
-    @Override
-    public String toString() {
-        return triggerName != null ? triggerName : "Trigger : " + triggerId;
-    }
-
     @Override
     public boolean equals(Object object) {
         boolean isEqual = false;
@@ -57,5 +28,34 @@ public class Trigger extends PriorityEntity {
     @Override
     public int hashCode() {
         return this.triggerId;
+    }
+
+    @Override
+    public String toString() {
+        return triggerName != null ? triggerName : "Trigger : " + triggerId;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public int getTriggerId() {
+        return triggerId;
+    }
+
+    public void setTriggerId(int triggerId) {
+        this.triggerId = triggerId;
+    }
+
+    public String getTriggerName() {
+        return triggerName;
+    }
+
+    public void setTriggerName(String triggerName) {
+        this.triggerName = triggerName;
     }
 }

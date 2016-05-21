@@ -40,28 +40,23 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
  */
 public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
 
+    //Data storage
+    protected ArrayList<LifeActivity> activities;
+    protected EditText editTxtActivities;
+    protected EditText editTxtSymptoms;
     //intermediate
     //Controls
     protected EditText editTxtTriggers;
-    protected EditText editTxtSymptoms;
-    protected EditText editTxtActivities;
-
-
-    //Data storage
-    protected ArrayList<LifeActivity> activities;
-    protected ArrayList<Trigger> triggers;
-    protected ArrayList<Symptom> symptoms;
     //
     protected ArrayList<LifeActivity> selectedActivities;
-    protected ArrayList<Trigger> selectedTriggers;
-    protected ArrayList<Symptom> selectedSymptoms;
-
     //Track selected incises
     protected Integer[] selectedActivityIndexes;
-    protected Integer[] selectedTriggerIndexes;
+    protected ArrayList<Symptom> selectedSymptoms;
     protected Integer[] selectedSymptomsIndexes;
-
-
+    protected Integer[] selectedTriggerIndexes;
+    protected ArrayList<Trigger> selectedTriggers;
+    protected ArrayList<Symptom> symptoms;
+    protected ArrayList<Trigger> triggers;
     //Callback
     private AddRecordIntermediateListener mCallback;
 
@@ -69,19 +64,43 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         // Required empty public constructor
     }
 
+    //
+    //
+    //
+    public void recordAcceptAction() {
+
+        if (!weatherDataLoaded || weatherData == null) {
+            new MaterialDialog.Builder(getContext())
+                    .title("Compete record")
+                    .content("Do you want to view weather information or save record now?")
+                    .negativeText("Save record")
+                    .positiveText("Show weather")
+                    .neutralText("Cancel")
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            //Save without  summery
+                            saveIntermediateRecord();
+                        }
+                    })
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            //show summery
+                            showWeather();
+                        }
+                    })
+                    .show();
+        } else {
+            //weatherData shown already ,just save record
+            saveIntermediateRecord();
+        }
+
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-        View view = inflater.inflate(R.layout.fragment_add_record_intermediate, container, false);
-
-        initIntermediateControls(view);
-
-        setHasOptionsMenu(true);
-
-        Log.d("AddRecordInter-onCreate", "variables initialized, onCreate complete");
-        return view;
+    public String toString() {
+        return "Intermediate";
     }
 
     @Override
@@ -103,10 +122,29 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+
+        View view = inflater.inflate(R.layout.fragment_add_record_intermediate, container, false);
+
+        initIntermediateControls(view);
+
+        setHasOptionsMenu(true);
+
+        Log.d("AddRecordInter-onCreate", "variables initialized, onCreate complete");
+        return view;
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mCallback = null;
     }
+
+    //
+    //
+    //
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -122,15 +160,6 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
 
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public String toString() {
-        return "Intermediate";
-    }
-
-    //
-    //
-    //
 
     /**
      * initiate intermediate controls
@@ -324,70 +353,6 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     }
 
     /**
-     * Get basic data of record
-     * Does not check constraints
-     *
-     * @return record builder with intermediate data saved
-     */
-    protected RecordBuilder getIntermediateRecordBuilder() {
-        Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder");
-
-        //Call parent method to get basic info
-        RecordBuilder recordBuilder = getBasicRecordBuilder();
-
-        if (selectedActivities.size() > 0) {
-            Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder - selectedActivities");
-            recordBuilder = recordBuilder.setActivities(selectedActivities);
-        }
-
-        if (selectedTriggers.size() > 0) {
-            Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder - selectedTriggers");
-            recordBuilder = recordBuilder.setTriggers(selectedTriggers);
-        }
-
-        if (selectedSymptoms.size() > 0) {
-            Log.d("AddRecordInterFragment", " - selectedSymptoms");
-            recordBuilder = recordBuilder.setSymptoms(selectedSymptoms);
-        }
-
-        return recordBuilder;
-    }
-
-    //
-    //
-    //
-    public void recordAcceptAction() {
-
-        if (!weatherDataLoaded || weatherData == null) {
-            new MaterialDialog.Builder(getContext())
-                    .title("Compete record")
-                    .content("Do you want to view weather information or save record now?")
-                    .negativeText("Save record")
-                    .positiveText("Show weather")
-                    .neutralText("Cancel")
-                    .onNegative(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            //Save without  summery
-                            saveIntermediateRecord();
-                        }
-                    })
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            //show summery
-                            showWeather();
-                        }
-                    })
-                    .show();
-        } else {
-            //weatherData shown already ,just save record
-            saveIntermediateRecord();
-        }
-
-    }
-
-    /**
      * Save record,
      * In subclasses handle this separately
      */
@@ -466,6 +431,36 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         } else {
             AppUtil.showMsg(getContext(), "Start time is greater than the end time");
         }
+    }
+
+    /**
+     * Get basic data of record
+     * Does not check constraints
+     *
+     * @return record builder with intermediate data saved
+     */
+    protected RecordBuilder getIntermediateRecordBuilder() {
+        Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder");
+
+        //Call parent method to get basic info
+        RecordBuilder recordBuilder = getBasicRecordBuilder();
+
+        if (selectedActivities.size() > 0) {
+            Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder - selectedActivities");
+            recordBuilder = recordBuilder.setActivities(selectedActivities);
+        }
+
+        if (selectedTriggers.size() > 0) {
+            Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder - selectedTriggers");
+            recordBuilder = recordBuilder.setTriggers(selectedTriggers);
+        }
+
+        if (selectedSymptoms.size() > 0) {
+            Log.d("AddRecordInterFragment", " - selectedSymptoms");
+            recordBuilder = recordBuilder.setSymptoms(selectedSymptoms);
+        }
+
+        return recordBuilder;
     }
 
     //

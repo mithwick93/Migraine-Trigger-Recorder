@@ -7,18 +7,17 @@ import java.util.ArrayList;
  * Created by Shehan on 4/13/2016.
  */
 public class Record {
-    private int recordId;
-    private int intensity;
-    private Timestamp startTime;
-    private Timestamp endTime;
-    private int locationId;
-
     //Holders
     private ArrayList<LifeActivity> activities;
     private ArrayList<BodyArea> bodyAreas;
+    private Timestamp endTime;
+    private int intensity;
     private Location location;
+    private int locationId;
     private ArrayList<Medicine> medicines;
+    private int recordId;
     private ArrayList<Relief> reliefs;
+    private Timestamp startTime;
     private ArrayList<Symptom> symptoms;
     private ArrayList<Trigger> triggers;
     private WeatherData weatherData;
@@ -39,46 +38,6 @@ public class Record {
         this.weatherData = weatherData;
     }
 
-    public int getRecordId() {
-        return recordId;
-    }
-
-    public void setRecordId(int recordId) {
-        this.recordId = recordId;
-    }
-
-    public int getIntensity() {
-        return intensity;
-    }
-
-    public void setIntensity(int intensity) {
-        this.intensity = intensity;
-    }
-
-    public Timestamp getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
-
-    public Timestamp getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Timestamp endTime) {
-        this.endTime = endTime;
-    }
-
-    public int getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
-    }
-
     public ArrayList<LifeActivity> getActivities() {
         return activities;
     }
@@ -95,12 +54,36 @@ public class Record {
         this.bodyAreas = bodyAreas;
     }
 
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
+    public int getIntensity() {
+        return intensity;
+    }
+
+    public void setIntensity(int intensity) {
+        this.intensity = intensity;
+    }
+
     public Location getLocation() {
         return location;
     }
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public int getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(int locationId) {
+        this.locationId = locationId;
     }
 
     public ArrayList<Medicine> getMedicines() {
@@ -111,12 +94,28 @@ public class Record {
         this.medicines = medicines;
     }
 
+    public int getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(int recordId) {
+        this.recordId = recordId;
+    }
+
     public ArrayList<Relief> getReliefs() {
         return reliefs;
     }
 
     public void setReliefs(ArrayList<Relief> reliefs) {
         this.reliefs = reliefs;
+    }
+
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
     }
 
     public ArrayList<Symptom> getSymptoms() {

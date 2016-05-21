@@ -81,16 +81,14 @@ public class ReportViewAdapter extends RecyclerView.Adapter<ReportViewAdapter.Vi
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtViewTopic;
-        public TextView txtViewContent_1;
-        public TextView txtViewContent_2;
-        public TextView txtViewContent_3;
-
+        public CardView cardViewSection;
         public RelativeLayout layoutContent_1;
         public RelativeLayout layoutContent_2;
         public RelativeLayout layoutContent_3;
-
-        public CardView cardViewSection;
+        public TextView txtViewContent_1;
+        public TextView txtViewContent_2;
+        public TextView txtViewContent_3;
+        public TextView txtViewTopic;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);

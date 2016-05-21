@@ -16,8 +16,8 @@ import shehan.com.migrainetrigger.view.model.RecordViewData;
  */
 public class RecordViewAdapter extends RecyclerView.Adapter<RecordViewAdapter.ViewHolder> {
 
-    private static RecordViewData[] recordViewData;
     private static RecordListViewClickListener itemListener;
+    private static RecordViewData[] recordViewData;
 
     public RecordViewAdapter(RecordListViewClickListener itemListener, RecordViewData[] recordViewData) {
         RecordViewAdapter.recordViewData = recordViewData;
@@ -71,9 +71,9 @@ public class RecordViewAdapter extends RecyclerView.Adapter<RecordViewAdapter.Vi
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView txtViewStartDate;
-        public TextView txtViewDuration;
         public TextView imgIntensity;
+        public TextView txtViewDuration;
+        public TextView txtViewStartDate;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);

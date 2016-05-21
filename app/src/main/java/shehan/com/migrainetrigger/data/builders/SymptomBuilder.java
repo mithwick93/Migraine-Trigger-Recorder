@@ -3,9 +3,18 @@ package shehan.com.migrainetrigger.data.builders;
 import shehan.com.migrainetrigger.data.model.Symptom;
 
 public class SymptomBuilder {
+    private int priority;
     private int symptomId;
     private String symptomName;
-    private int priority;
+
+    public Symptom createSymptom() {
+        return new Symptom(symptomId, symptomName, priority);
+    }
+
+    public SymptomBuilder setPriority(int priority) {
+        this.priority = priority;
+        return this;
+    }
 
     public SymptomBuilder setSymptomId(int symptomId) {
         this.symptomId = symptomId;
@@ -15,14 +24,5 @@ public class SymptomBuilder {
     public SymptomBuilder setSymptomName(String symptomName) {
         this.symptomName = symptomName;
         return this;
-    }
-
-    public SymptomBuilder setPriority(int priority) {
-        this.priority = priority;
-        return this;
-    }
-
-    public Symptom createSymptom() {
-        return new Symptom(symptomId, symptomName, priority);
     }
 }

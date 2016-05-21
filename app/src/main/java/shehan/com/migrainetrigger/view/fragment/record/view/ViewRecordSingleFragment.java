@@ -45,10 +45,8 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
  */
 public class ViewRecordSingleFragment extends AddRecordFullFragment {
     private static final String ARG_RECORD_ID = "recordId";
-
-    private int recordId;
-
     private OnFragmentInteractionListener mCallback;
+    private int recordId;
 
     public ViewRecordSingleFragment() {
         // Required empty public constructor
@@ -81,6 +79,27 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.view_record_menu, menu);
+    }
+
+    @Override
+    public String toString() {
+        return "Single record view";
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mCallback = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -94,8 +113,9 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.view_record_menu, menu);
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
     }
 
     @Override
@@ -113,26 +133,43 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mCallback = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+    /**
+     * delete record
+     */
+    public void deleteRecord() {
+        Log.d("ViewRecordSingle", "deleteRecord");
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallback = null;
-    }
 
-    @Override
-    public String toString() {
-        return "Single record view";
+        new MaterialDialog.Builder(getContext())
+                .title("Delete record")
+                .content("Do you want to delete record permanently ?")
+                .negativeText("Cancel")
+                .positiveText("Delete record")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        new AsyncTask<String, Void, Boolean>() {
+                            @Override
+                            protected Boolean doInBackground(String... params) {
+                                return RecordController.deleteRecord(recordId);
+                            }
+
+                            @Override
+                            protected void onPostExecute(Boolean result) {
+                                if (result) {
+                                    showToast(getContext(), "Record deleted successfully");
+                                    if (mCallback != null) {
+                                        mCallback.onFragmentInteraction(0);
+                                    }
+
+                                } else {
+                                    showToast(getContext(), "Record delete failed");
+                                }
+                            }
+                        }.execute();
+                    }
+                })
+                .show();
     }
 
     private void initSingleRecordView(View view) {
@@ -225,45 +262,6 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         }
 
 
-    }
-
-    /**
-     * delete record
-     */
-    public void deleteRecord() {
-        Log.d("ViewRecordSingle", "deleteRecord");
-
-
-        new MaterialDialog.Builder(getContext())
-                .title("Delete record")
-                .content("Do you want to delete record permanently ?")
-                .negativeText("Cancel")
-                .positiveText("Delete record")
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        new AsyncTask<String, Void, Boolean>() {
-                            @Override
-                            protected Boolean doInBackground(String... params) {
-                                return RecordController.deleteRecord(recordId);
-                            }
-
-                            @Override
-                            protected void onPostExecute(Boolean result) {
-                                if (result) {
-                                    showToast(getContext(), "Record deleted successfully");
-                                    if (mCallback != null) {
-                                        mCallback.onFragmentInteraction(0);
-                                    }
-
-                                } else {
-                                    showToast(getContext(), "Record delete failed");
-                                }
-                            }
-                        }.execute();
-                    }
-                })
-                .show();
     }
 
     /**

@@ -13,6 +13,10 @@ public class WeatherDataController {
 
     }
 
+    public static void deleteWeatherData() {
+
+    }
+
     public static WeatherData getWeatherDataById(int id) {
         return null;
     }
@@ -20,10 +24,6 @@ public class WeatherDataController {
     public static WeatherData getWeatherDataByRecordId(int recordId) {
 
         return DBWeatherDataDAO.getWeatherDataByRecordId(recordId);
-    }
-
-    public static void deleteWeatherData() {
-
     }
 
     public static void updateWeatherData(WeatherData weatherData) {

@@ -61,9 +61,9 @@ public class SeverityViewAdapter
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtViewTitle;
-        public TextView txtViewDesc;
         public ImageView imgViewIcon;
+        public TextView txtViewDesc;
+        public TextView txtViewTitle;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);

@@ -19,28 +19,17 @@ import shehan.com.migrainetrigger.R;
  */
 public class ManageAnswersFragment extends Fragment {
 
-    private OnManageAnswersFragmentInteractionListener mCallback;
-
-    private CardView cardViewTriggers;
-    private CardView cardViewSymptoms;
     private CardView cardViewActivities;
     private CardView cardViewLocations;
-    private CardView cardViewPainAreas;
     private CardView cardViewMedicines;
+    private CardView cardViewPainAreas;
     private CardView cardViewReliefs;
+    private CardView cardViewSymptoms;
+    private CardView cardViewTriggers;
+    private OnManageAnswersFragmentInteractionListener mCallback;
 
     public ManageAnswersFragment() {
         // Required empty public constructor
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_manage_answers, container, false);
-        init(view);
-        return view;
     }
 
     @Override
@@ -52,6 +41,15 @@ public class ManageAnswersFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnManageAnswersFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_manage_answers, container, false);
+        init(view);
+        return view;
     }
 
     @Override

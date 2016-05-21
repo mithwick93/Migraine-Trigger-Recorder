@@ -130,7 +130,7 @@ public interface DatabaseDefinition {
                     "\n" +
                     "  activity_id INT AUTO INCREMENT,\n" +
                     "  activity_name TEXT UNIQUE NOT NULL,\n" +
-                    "  priority INT UNIQUE NOT NULL,\n" +
+                    "  priority INT NOT NULL,\n" +
                     "  \n" +
                     "  PRIMARY KEY (activity_id)\n" +
                     "  \n" +
@@ -164,7 +164,7 @@ public interface DatabaseDefinition {
                     "\n" +
                     "  medicine_id INT AUTO INCREMENT,\n" +
                     "  medicine_name TEXT UNIQUE NOT NULL,\n" +
-                    "  priority INT UNIQUE NOT NULL,\n" +
+                    "  priority INT NOT NULL,\n" +
                     "  \n" +
                     "  PRIMARY KEY (medicine_id)\n" +
                     "  \n" +
@@ -191,7 +191,7 @@ public interface DatabaseDefinition {
                     "\n" +
                     "  relief_id INT AUTO INCREMENT,\n" +
                     "  relief_name TEXT UNIQUE NOT NULL,\n" +
-                    "  priority INT UNIQUE NOT NULL,\n" +
+                    "  priority INT NOT NULL,\n" +
                     "  \n" +
                     "  PRIMARY KEY (relief_id)\n" +
                     "  \n" +
@@ -203,7 +203,7 @@ public interface DatabaseDefinition {
                     "\n" +
                     "  symptom_id INT AUTO INCREMENT,\n" +
                     "  symptom_name TEXT UNIQUE NOT NULL,\n" +
-                    "  priority INT UNIQUE NOT NULL,\n" +
+                    "  priority INT NOT NULL,\n" +
                     "  \n" +
                     "  PRIMARY KEY (symptom_id)\n" +
                     "  \n" +
@@ -215,7 +215,7 @@ public interface DatabaseDefinition {
                     "\n" +
                     "  trigger_id INT AUTO INCREMENT,\n" +
                     "  trigger_name TEXT UNIQUE NOT NULL,\n" +
-                    "  priority INT UNIQUE NOT NULL,\n" +
+                    "  priority INT NOT NULL,\n" +
                     "  \n" +
                     "  PRIMARY KEY (trigger_id)\n" +
                     "  \n" +
@@ -263,18 +263,6 @@ public interface DatabaseDefinition {
                     "  \n" +
                     ");";
 
-//    //Create LOCATION_RECORD_TABLE
-//    String LOCATION_RECORD_CREATE =
-//            "CREATE TABLE location_record(\n" +
-//                    "\n" +
-//                    "  location_id INT,\n" +
-//                    "  record_id INT,\n" +
-//                    "  \n" +
-//                    "  PRIMARY KEY (location_id,record_id),\n" +
-//                    "  CONSTRAINT fk__location_record_location_id FOREIGN KEY (location_id) REFERENCES location(location_id) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
-//                    "  CONSTRAINT fk_location_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
-//                    "  \n" +
-//                    ");";
 
     //Create MEDICINE_RECORD_TABLE
     String MEDICINE_RECORD_CREATE =

@@ -23,10 +23,27 @@ public class ViewSingleRecordActivity
         implements ViewRecordSingleFragment.OnFragmentInteractionListener {
 
     private static final boolean DEVELOPER_MODE = true;
-
-    private ViewRecordSingleFragment mViewRecordSingleFragment;
     private FloatingActionButton fabUpdate;
+    private ViewRecordSingleFragment mViewRecordSingleFragment;
     //private int recordId;
+
+    @Override
+    public void onBackPressed() {
+        new MaterialDialog.Builder(this)
+                .title("Discard record changes")
+                .content("Do you want to discard the changes made to the record ?")
+                .positiveText("Discard")
+                .negativeText(R.string.cancelButtonGeneral)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        AppUtil.showToast(ViewSingleRecordActivity.this, "Record discarded");
+                        ViewSingleRecordActivity.super.onBackPressed();
+                    }
+                })
+                .show();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,32 +72,6 @@ public class ViewSingleRecordActivity
         }
 
         initialSetup();
-    }
-
-    @Override
-    public void onBackPressed() {
-        new MaterialDialog.Builder(this)
-                .title("Discard record changes")
-                .content("Do you want to discard the changes made to the record ?")
-                .positiveText("Discard")
-                .negativeText(R.string.cancelButtonGeneral)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        AppUtil.showToast(ViewSingleRecordActivity.this, "Record discarded");
-                        ViewSingleRecordActivity.super.onBackPressed();
-                    }
-                })
-                .show();
-
-    }
-
-    @Override
-    public void onFragmentInteraction(int request) {
-        Log.d("ViewSingleRecord", "onFragmentInteraction request : " + request);
-        if (request == 0) {
-            ViewSingleRecordActivity.super.onBackPressed();
-        }
     }
 
     /**
@@ -121,6 +112,14 @@ public class ViewSingleRecordActivity
                     }
                 }
             });
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(int request) {
+        Log.d("ViewSingleRecord", "onFragmentInteraction request : " + request);
+        if (request == 0) {
+            ViewSingleRecordActivity.super.onBackPressed();
         }
     }
 

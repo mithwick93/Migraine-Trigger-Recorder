@@ -12,27 +12,6 @@ public class Location {
         this.locationName = locationName;
     }
 
-    public int getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
-    }
-
-    public String getLocationName() {
-        return locationName;
-    }
-
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
-    }
-
-    @Override
-    public String toString() {
-        return locationName != null ? locationName : "Location : " + locationId;
-    }
-
     @Override
     public boolean equals(Object object) {
         boolean isEqual = false;
@@ -47,5 +26,26 @@ public class Location {
     @Override
     public int hashCode() {
         return this.locationId;
+    }
+
+    @Override
+    public String toString() {
+        return locationName != null ? locationName : "Location : " + locationId;
+    }
+
+    public int getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(int locationId) {
+        this.locationId = locationId;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 }

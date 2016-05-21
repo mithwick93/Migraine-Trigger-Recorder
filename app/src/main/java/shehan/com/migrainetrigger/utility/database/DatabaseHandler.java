@@ -21,23 +21,6 @@ public class DatabaseHandler implements DatabaseDefinition {
     }
 
     /**
-     * Open database for insert,update,delete in synchronized manner
-     *
-     * @return - SQLiteDatabase
-     * @throws SQLiteException
-     */
-    public static SQLiteDatabase getWritableDatabase() throws SQLiteException {
-        if (DBHelper == null) {
-            synchronized (DatabaseHandler.class) {
-                DBHelper = new DataBaseHelper();
-                Log.d("DatabaseHandler", "new DataBaseHelper()");
-            }
-        }
-        Log.d("DatabaseHandler", "return getWritableDatabase");
-        return DBHelper.getWritableDatabase();
-    }
-
-    /**
      * Open database for read
      *
      * @return - SQLiteDatabase
@@ -52,6 +35,23 @@ public class DatabaseHandler implements DatabaseDefinition {
         }
         Log.d("DatabaseHandler", "return getReadableDatabase");
         return DBHelper.getReadableDatabase();
+    }
+
+    /**
+     * Open database for insert,update,delete in synchronized manner
+     *
+     * @return - SQLiteDatabase
+     * @throws SQLiteException
+     */
+    public static SQLiteDatabase getWritableDatabase() throws SQLiteException {
+        if (DBHelper == null) {
+            synchronized (DatabaseHandler.class) {
+                DBHelper = new DataBaseHelper();
+                Log.d("DatabaseHandler", "new DataBaseHelper()");
+            }
+        }
+        Log.d("DatabaseHandler", "return getWritableDatabase");
+        return DBHelper.getWritableDatabase();
     }
 
     /**

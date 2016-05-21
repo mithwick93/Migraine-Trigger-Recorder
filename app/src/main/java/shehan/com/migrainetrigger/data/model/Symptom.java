@@ -13,35 +13,6 @@ public class Symptom extends PriorityEntity {
         this.priority = priority;
     }
 
-    public int getSymptomId() {
-        return symptomId;
-    }
-
-    public void setSymptomId(int symptomId) {
-        this.symptomId = symptomId;
-    }
-
-    public String getSymptomName() {
-        return symptomName;
-    }
-
-    public void setSymptomName(String symptomName) {
-        this.symptomName = symptomName;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
-    @Override
-    public String toString() {
-        return symptomName != null ? symptomName : "Symptom : " + symptomId;
-    }
-
     @Override
     public boolean equals(Object object) {
         boolean isEqual = false;
@@ -56,5 +27,34 @@ public class Symptom extends PriorityEntity {
     @Override
     public int hashCode() {
         return this.symptomId;
+    }
+
+    @Override
+    public String toString() {
+        return symptomName != null ? symptomName : "Symptom : " + symptomId;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public int getSymptomId() {
+        return symptomId;
+    }
+
+    public void setSymptomId(int symptomId) {
+        this.symptomId = symptomId;
+    }
+
+    public String getSymptomName() {
+        return symptomName;
+    }
+
+    public void setSymptomName(String symptomName) {
+        this.symptomName = symptomName;
     }
 }

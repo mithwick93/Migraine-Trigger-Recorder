@@ -23,6 +23,51 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getStringDate;
 public final class DBLocationDAO {
 
     /**
+     * add Location
+     *
+     * @param location location
+     * @return affected no of rows
+     */
+    public static long addLocation(Location location) {
+        Log.d("DBLocationDAO", "DB - addLocation");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            ContentValues values = new ContentValues();
+
+            values.put(DatabaseDefinition.LOCATION_ID_KEY, location.getLocationId());
+
+            values.put(DatabaseDefinition.LOCATION_NAME_KEY, location.getLocationName());
+
+            long row_id = db.insert(DatabaseDefinition.LOCATION_TABLE, null, values);
+
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
+     * delete Location
+     *
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteLocation(int id) {
+        Log.d("DBLocationDAO", "deleteLocation");
+        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
+
+            long row_id = db.delete(DatabaseDefinition.LOCATION_TABLE, DatabaseDefinition.LOCATION_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+            return row_id;
+        } catch (SQLiteException e) {
+
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
      * get All Locations
      *
      * @return ArrayList<Location>
@@ -57,6 +102,50 @@ public final class DBLocationDAO {
             }
         }
         return locationArrayList;
+    }
+
+    /**
+     * get Last Record Id
+     *
+     * @return last location record id
+     */
+    public static int getLastRecordId() {
+        Log.d("DBLocationDAO", "getLastRecordId");
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        int recordId = -1;
+        try {
+            String[] projection = {DatabaseDefinition.LOCATION_ID_KEY};
+            db = DatabaseHandler.getReadableDatabase();
+            cursor = db.query(
+                    DatabaseDefinition.LOCATION_TABLE,
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    DatabaseDefinition.LOCATION_ID_KEY + " DESC",
+                    "1");
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                recordId = Integer.valueOf(cursor.getString(0));
+                Log.d("getLastRecordId ", "Value: " + String.valueOf(recordId));
+            } else {
+                Log.d("getLastRecordId ", "Empty");
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+
+        }
+        return recordId;
     }
 
     /**
@@ -165,43 +254,32 @@ public final class DBLocationDAO {
     }
 
     /**
-     * add Location
+     * update Location Record
      *
      * @param location location
-     * @return affected no of rows
+     * @return no of effected rows
      */
-    public static long addLocation(Location location) {
-        Log.d("DBLocationDAO", "DB - addLocation");
+    public static long updateLocationRecord(Location location) {
+        Log.d("DBLocationDAO", "DB - updateLocationRecord");
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
 
-            values.put(DatabaseDefinition.LOCATION_ID_KEY, location.getLocationId());
+            if (location.getLocationName().equals("")) {
+                throw new SQLiteException("Empty update");
+            } else {
+                values.put(DatabaseDefinition.LOCATION_NAME_KEY, location.getLocationName());
+            }
 
-            values.put(DatabaseDefinition.LOCATION_NAME_KEY, location.getLocationName());
 
-            long row_id = db.insert(DatabaseDefinition.LOCATION_TABLE, null, values);
+            long result = db.update(
+                    DatabaseDefinition.LOCATION_TABLE,
+                    values,
+                    DatabaseDefinition.LOCATION_ID_KEY + " = ?",
+                    new String[]{String.valueOf(location.getLocationId())}
+            );
 
-            return row_id;
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    /**
-     * delete Location
-     *
-     * @param id id
-     * @return affected no of rows
-     */
-    public static long deleteLocation(int id) {
-        Log.d("DBLocationDAO", "deleteLocation");
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
-            long row_id = db.delete(DatabaseDefinition.LOCATION_TABLE, DatabaseDefinition.LOCATION_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-            return row_id;
+            return result;
         } catch (SQLiteException e) {
 
             e.printStackTrace();

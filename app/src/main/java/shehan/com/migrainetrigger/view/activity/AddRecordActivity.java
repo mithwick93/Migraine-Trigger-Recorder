@@ -25,10 +25,35 @@ public class AddRecordActivity
         implements AddRecordBasicFragment.AddRecordBasicListener, AddRecordIntermediateFragment.AddRecordIntermediateListener, AddRecordFullFragment.AddRecordFullListener {
 
     private static final boolean DEVELOPER_MODE = true;
-
-    private AddRecordBasicFragment mFragment;
     private FloatingActionButton fabAdd;
     private int levelOfInformation;
+    private AddRecordBasicFragment mFragment;
+
+    @Override
+    public void onBackPressed() {
+        new MaterialDialog.Builder(this)
+                .title("Discard new record")
+                .content("Do you want to discard the new Migraine record ?")
+                .positiveText("Discard")
+                .negativeText(R.string.cancelButtonGeneral)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        AppUtil.showToast(AddRecordActivity.this, "Record discarded");
+                        AddRecordActivity.super.onBackPressed();
+                    }
+                })
+                .show();
+
+    }
+
+    @Override
+    public void onBasicRecordInteraction(int request) {
+        Log.d("AddRecordActivity", "onBasicRecordInteraction request : " + request);
+        if (request == 0) {
+            AddRecordActivity.super.onBackPressed();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,24 +81,6 @@ public class AddRecordActivity
         }
 
         initialSetup();
-    }
-
-    @Override
-    public void onBackPressed() {
-        new MaterialDialog.Builder(this)
-                .title("Discard new record")
-                .content("Do you want to discard the new Migraine record ?")
-                .positiveText("Discard")
-                .negativeText(R.string.cancelButtonGeneral)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        AppUtil.showToast(AddRecordActivity.this, "Record discarded");
-                        AddRecordActivity.super.onBackPressed();
-                    }
-                })
-                .show();
-
     }
 
     /**
@@ -129,14 +136,6 @@ public class AddRecordActivity
                     }
                 }
             });
-        }
-    }
-
-    @Override
-    public void onBasicRecordInteraction(int request) {
-        Log.d("AddRecordActivity", "onBasicRecordInteraction request : " + request);
-        if (request == 0) {
-            AddRecordActivity.super.onBackPressed();
         }
     }
 

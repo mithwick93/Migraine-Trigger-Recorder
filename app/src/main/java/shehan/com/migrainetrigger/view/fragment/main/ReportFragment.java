@@ -43,28 +43,33 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
  */
 public class ReportFragment extends Fragment {
 
+    private CardView cardViewReportSummery;
+    private int[] fromDate;
     private OnReportFragmentInteractionListener mCallback;
-
     private View mView;
-
+    private int mYear, mMonth, mDay;
     private ProgressDialog nDialog;
-
+    private int[] toDate;
+    private TextView txtViewAverage;
     private TextView txtViewFrom;
+    private TextView txtViewIntensity;
     private TextView txtViewTo;
     private TextView txtViewTotal;
-    private TextView txtViewIntensity;
-    private TextView txtViewAverage;
-
-    private CardView cardViewReportSummery;
-
-    private int[] fromDate;
-    private int[] toDate;
-    private int mYear, mMonth, mDay;
 
     public ReportFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnReportFragmentInteractionListener) {
+            mCallback = (OnReportFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnReportFragmentInteractionListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,6 +84,11 @@ public class ReportFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -99,23 +109,53 @@ public class ReportFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnReportFragmentInteractionListener) {
-            mCallback = (OnReportFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnReportFragmentInteractionListener");
+    private void refreshSummery() {
+
+        Timestamp fromTimestamp;
+
+        //Check for start date
+
+        String tmpFrom = String.valueOf(fromDate[0]) + "-" + String.valueOf(fromDate[1]) + "-" + String.valueOf(fromDate[2]) + " 00:00:00";
+        fromTimestamp = getTimeStampDate(tmpFrom);
+
+
+        Calendar c = Calendar.getInstance();
+        if (fromTimestamp.after(c.getTime())) {
+            AppUtil.showMsg(getContext(), "Start Date is past current time");
+            return;
         }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallback = null;
-    }
+        //Check for end date
+        Timestamp toTimestamp;
 
+        String tmpTo = String.valueOf(toDate[0]) + "-" + String.valueOf(toDate[1]) + "-" + String.valueOf(toDate[2]) + " 00:00:00";
+        toTimestamp = getTimeStampDate(tmpTo);
+
+
+        if (toTimestamp != null) {
+            if (toTimestamp.after(c.getTime())) {
+                AppUtil.showMsg(getContext(), "End Date is past current time");
+                return;
+            }
+        }
+
+        //validate times
+        if ((toTimestamp != null && fromTimestamp.before(toTimestamp)) || toTimestamp == null) {
+
+            nDialog = new ProgressDialog(getActivity()); //Here I get an error: The constructor ProgressDialog(PFragment) is undefined
+            nDialog.setMessage("Refreshing report...");
+            nDialog.setTitle("Processing");
+            nDialog.setIndeterminate(false);
+            nDialog.setCancelable(false);
+            nDialog.show();
+
+            new LoadReportSummeryTask(fromTimestamp, toTimestamp).execute();
+            new LoadReportStatisticsTask(mView, fromTimestamp, toTimestamp).execute();
+        } else {
+            AppUtil.showMsg(getContext(), "Start time is greater than the end time");
+        }
+
+    }
 
     private void initReport(View view) {
         //Load ui
@@ -187,54 +227,6 @@ public class ReportFragment extends Fragment {
     private void loadRecordData(View view) {
         //Load all data
         new CheckRecordsTask().execute();
-    }
-
-    private void refreshSummery() {
-
-        Timestamp fromTimestamp;
-
-        //Check for start date
-
-        String tmpFrom = String.valueOf(fromDate[0]) + "-" + String.valueOf(fromDate[1]) + "-" + String.valueOf(fromDate[2]) + " 00:00:00";
-        fromTimestamp = getTimeStampDate(tmpFrom);
-
-
-        Calendar c = Calendar.getInstance();
-        if (fromTimestamp.after(c.getTime())) {
-            AppUtil.showMsg(getContext(), "Start Date is past current time");
-            return;
-        }
-
-        //Check for end date
-        Timestamp toTimestamp;
-
-        String tmpTo = String.valueOf(toDate[0]) + "-" + String.valueOf(toDate[1]) + "-" + String.valueOf(toDate[2]) + " 00:00:00";
-        toTimestamp = getTimeStampDate(tmpTo);
-
-
-        if (toTimestamp != null) {
-            if (toTimestamp.after(c.getTime())) {
-                AppUtil.showMsg(getContext(), "End Date is past current time");
-                return;
-            }
-        }
-
-        //validate times
-        if ((toTimestamp != null && fromTimestamp.before(toTimestamp)) || toTimestamp == null) {
-
-            nDialog = new ProgressDialog(getActivity()); //Here I get an error: The constructor ProgressDialog(PFragment) is undefined
-            nDialog.setMessage("Refreshing report...");
-            nDialog.setTitle("Processing");
-            nDialog.setIndeterminate(false);
-            nDialog.setCancelable(false);
-            nDialog.show();
-
-            new LoadReportSummeryTask(fromTimestamp, toTimestamp).execute();
-            new LoadReportStatisticsTask(mView, fromTimestamp, toTimestamp).execute();
-        } else {
-            AppUtil.showMsg(getContext(), "Start time is greater than the end time");
-        }
-
     }
 
     /**
@@ -326,87 +318,12 @@ public class ReportFragment extends Fragment {
     }
 
     /**
-     * Async task to load summery
-     */
-    private class LoadReportSummeryTask extends AsyncTask<String, Void, ArrayList<Object>> {
-
-        private Timestamp from;
-        private Timestamp to;
-
-        public LoadReportSummeryTask(Timestamp from, Timestamp to) {
-            this.from = from;
-            this.to = to;
-        }
-
-        private void setTotal(int total) {
-            txtViewTotal.setText(String.valueOf(total));
-            if (total <= 3) {
-                txtViewTotal.setTextColor(Color.parseColor("#46cf9a"));
-            } else if (total <= 7) {
-                txtViewTotal.setTextColor(Color.parseColor("#adcb48"));
-            } else if (total <= 10) {
-                txtViewTotal.setTextColor(Color.parseColor("#dbb842"));
-            } else {
-                txtViewTotal.setTextColor(Color.parseColor("#f44336"));
-            }
-        }
-
-        private void setIntensity(double intensity) {
-            txtViewIntensity.setText(String.format(Locale.getDefault(), "%.1f", intensity));
-            if (intensity < 2.5) {
-                txtViewIntensity.setTextColor(Color.parseColor("#46cf9a"));
-            } else if (intensity < 5) {
-                txtViewIntensity.setTextColor(Color.parseColor("#adcb48"));
-            } else if (intensity < 7.5) {
-                txtViewIntensity.setTextColor(Color.parseColor("#dbb842"));
-            } else {
-                txtViewIntensity.setTextColor(Color.parseColor("#f44336"));
-            }
-        }
-
-        private void setAverage(String average) {
-            txtViewAverage.setText(average);
-        }
-
-        @Override
-        protected ArrayList<Object> doInBackground(String... params) {
-            Log.d("LoadReportSummeryTask", "doInBackground ");
-            ArrayList<Object> summeryList = new ArrayList<>();
-            summeryList.add(ReportController.getTotalRecords(from, to));
-            summeryList.add(ReportController.getIntensity(from, to));
-            summeryList.add(ReportController.getAverage(from, to));
-
-            return summeryList;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Object> summeryList) {
-            Log.d("LoadReportSummeryTask", "onPostExecute ");
-
-            if (summeryList.size() > 0) {
-                setTotal((int) summeryList.get(0));
-                cardViewReportSummery.setVisibility(View.VISIBLE);
-            }
-
-            if (summeryList.size() > 1) {
-                setIntensity((double) summeryList.get(1));
-            }
-
-            if (summeryList.size() == 3) {
-                setAverage((String) summeryList.get(2));
-            }
-
-        }
-    }
-
-
-    /**
      * Async task to load statistics
      */
     private class LoadReportStatisticsTask extends AsyncTask<String, Void, ReportViewData[]> {
 
-        private View mView;
         private Timestamp from;
+        private View mView;
         private Timestamp to;
 
         public LoadReportStatisticsTask(View mView, Timestamp from, Timestamp to) {
@@ -646,6 +563,80 @@ public class ReportFragment extends Fragment {
             if (nDialog != null) {
                 nDialog.dismiss();
             }
+        }
+    }
+
+    /**
+     * Async task to load summery
+     */
+    private class LoadReportSummeryTask extends AsyncTask<String, Void, ArrayList<Object>> {
+
+        private Timestamp from;
+        private Timestamp to;
+
+        public LoadReportSummeryTask(Timestamp from, Timestamp to) {
+            this.from = from;
+            this.to = to;
+        }
+
+        private void setTotal(int total) {
+            txtViewTotal.setText(String.valueOf(total));
+            if (total <= 3) {
+                txtViewTotal.setTextColor(Color.parseColor("#46cf9a"));
+            } else if (total <= 7) {
+                txtViewTotal.setTextColor(Color.parseColor("#adcb48"));
+            } else if (total <= 10) {
+                txtViewTotal.setTextColor(Color.parseColor("#dbb842"));
+            } else {
+                txtViewTotal.setTextColor(Color.parseColor("#f44336"));
+            }
+        }
+
+        private void setIntensity(double intensity) {
+            txtViewIntensity.setText(String.format(Locale.getDefault(), "%.1f", intensity));
+            if (intensity < 2.5) {
+                txtViewIntensity.setTextColor(Color.parseColor("#46cf9a"));
+            } else if (intensity < 5) {
+                txtViewIntensity.setTextColor(Color.parseColor("#adcb48"));
+            } else if (intensity < 7.5) {
+                txtViewIntensity.setTextColor(Color.parseColor("#dbb842"));
+            } else {
+                txtViewIntensity.setTextColor(Color.parseColor("#f44336"));
+            }
+        }
+
+        private void setAverage(String average) {
+            txtViewAverage.setText(average);
+        }
+
+        @Override
+        protected ArrayList<Object> doInBackground(String... params) {
+            Log.d("LoadReportSummeryTask", "doInBackground ");
+            ArrayList<Object> summeryList = new ArrayList<>();
+            summeryList.add(ReportController.getTotalRecords(from, to));
+            summeryList.add(ReportController.getIntensity(from, to));
+            summeryList.add(ReportController.getAverage(from, to));
+
+            return summeryList;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Object> summeryList) {
+            Log.d("LoadReportSummeryTask", "onPostExecute ");
+
+            if (summeryList.size() > 0) {
+                setTotal((int) summeryList.get(0));
+                cardViewReportSummery.setVisibility(View.VISIBLE);
+            }
+
+            if (summeryList.size() > 1) {
+                setIntensity((double) summeryList.get(1));
+            }
+
+            if (summeryList.size() == 3) {
+                setAverage((String) summeryList.get(2));
+            }
+
         }
     }
 
