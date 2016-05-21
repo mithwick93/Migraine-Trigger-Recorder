@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.afollestad.materialdialogs.prefs.MaterialListPreference
-        android:defaultValue="light_theme"
-        android:entries="@array/listArray"
-        android:entryValues="@array/listValues"
-        android:key="pref_appTheme"
-        android:summary="Select the theme for Migraine Trigger"
-        android:title="Application theme" />
+    <PreferenceCategory
+        android:key="pref_key_theme_settings"
+        android:title="@string/preferences_title_theme">
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:defaultValue="light_theme"
+            android:entries="@array/listArray"
+            android:entryValues="@array/listValues"
+            android:key="pref_appTheme"
+            android:summary="@string/pref_theme_summery"
+            android:title="@string/pref_theme_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/preferences_title_backup">
+        <Preference
+            android:key="pref_key_backup"
+            android:summary="@string/pref_backup_summery"
+            android:title="@string/pref_backup">
+
+        </Preference>
+        <Preference
+            android:key="pref_key_restore"
+            android:summary="@string/pref_restore_summery"
+            android:title="@string/pref_restore">
+
+        </Preference>
+    </PreferenceCategory>
 </PreferenceScreen>

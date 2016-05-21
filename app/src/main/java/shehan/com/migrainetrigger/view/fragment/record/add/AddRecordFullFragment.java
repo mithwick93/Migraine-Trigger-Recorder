@@ -251,7 +251,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                         .onNegative(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                showToast(getContext(), "Selection cleared");
+                                AppUtil.showToast(getContext(), "Selection cleared");
                                 location = null;
                                 selectedLocation = -1;
                                 editTxtLocation.setText("");
@@ -304,7 +304,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                         .onNeutral(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                showToast(getContext(), "Selection cleared");
+                                AppUtil.showToast(getContext(), "Selection cleared");
                                 dialog.clearSelectedIndices();
                                 selectedBodyAreas.clear();
                                 selectedBodyIndexes = null;
@@ -368,7 +368,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                         .onNeutral(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                showToast(getContext(), "Selection cleared");
+                                AppUtil.showToast(getContext(), "Selection cleared");
                                 dialog.clearSelectedIndices();
                                 selectedMedicines.clear();
                                 selectedMedicineIndexes = null;
@@ -436,7 +436,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                         .onNeutral(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                showToast(getContext(), "Selection cleared");
+                                AppUtil.showToast(getContext(), "Selection cleared");
                                 dialog.clearSelectedIndices();
                                 selectedReliefs.clear();
                                 selectedReliefIndexes = null;
@@ -504,7 +504,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                             .onNeutral(new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    showToast(getContext(), "Selection cleared");
+                                    AppUtil.showToast(getContext(), "Selection cleared");
                                     dialog.clearSelectedIndices();
 
                                     selectedMedicines.clear();
@@ -570,7 +570,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                             .onNeutral(new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    showToast(getContext(), "Selection cleared");
+                                    AppUtil.showToast(getContext(), "Selection cleared");
                                     dialog.clearSelectedIndices();
 
                                     selectedReliefs.clear();
@@ -660,13 +660,13 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                 @Override
                 protected void onPostExecute(Boolean result) {
                     if (result) {
-                        showToast(getContext(), "Record was saved successfully");
+                        AppUtil.showToast(getContext(), "Record was saved successfully");
                         if (mCallback != null) {
                             mCallback.onFullRecordInteraction(0);
                         }
 
                     } else {
-                        showToast(getContext(), "Record save failed");
+                        AppUtil.showToast(getContext(), "Record save failed");
                     }
                 }
             }.execute();

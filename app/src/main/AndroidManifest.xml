@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="shehan.com.migrainetrigger">
+          package="shehan.com.migrainetrigger">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".utility.MigraineTriggerApplication"
@@ -18,9 +19,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
@@ -30,7 +31,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="shehan.com.migrainetrigger.view.activity.MainActivity" />
+                android:value="shehan.com.migrainetrigger.view.activity.MainActivity"/>
         </activity>
         <activity
             android:name=".view.activity.ViewRecordsActivity"
@@ -39,7 +40,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="shehan.com.migrainetrigger.view.activity.MainActivity" />
+                android:value="shehan.com.migrainetrigger.view.activity.MainActivity"/>
         </activity>
         <activity
             android:name=".view.activity.FAQActivity"
@@ -48,13 +49,13 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="shehan.com.migrainetrigger.view.activity.MainActivity" />
+                android:value="shehan.com.migrainetrigger.view.activity.MainActivity"/>
         </activity>
         <activity
             android:name=".view.activity.ViewSingleRecordActivity"
             android:label="@string/title_view_record"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view.activity.ReportActivity"
             android:label="@string/title_view_report"
@@ -62,7 +63,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="shehan.com.migrainetrigger.view.activity.MainActivity" />
+                android:value="shehan.com.migrainetrigger.view.activity.MainActivity"/>
         </activity>
         <activity
             android:name=".view.activity.ManageAnswersActivity"
@@ -71,7 +72,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="shehan.com.migrainetrigger.view.activity.MainActivity" />
+                android:value="shehan.com.migrainetrigger.view.activity.MainActivity"/>
         </activity>
         <activity
             android:name=".view.activity.SettingsActivity"
@@ -80,7 +81,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="shehan.com.migrainetrigger.view.activity.MainActivity" />
+                android:value="shehan.com.migrainetrigger.view.activity.MainActivity"/>
         </activity>
     </application>
 

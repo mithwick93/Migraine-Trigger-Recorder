@@ -38,10 +38,9 @@ public class AppUtilTest {
     }
 
     @Test
-    public void testGetStringDate() throws Exception {
-        Timestamp testTimestamp = new Timestamp(new Date().getTime());
-        String expected = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(testTimestamp);
-        String result = AppUtil.getStringDate(testTimestamp);
+    public void testGetFriendlyDuration() throws Exception {
+        String expected = "2 days, 21 hours and 26 minutes";
+        String result = AppUtil.getFriendlyDuration(250000);
 
         assertEquals(expected, result);
     }
@@ -56,9 +55,10 @@ public class AppUtilTest {
     }
 
     @Test
-    public void testGetFriendlyDuration() throws Exception {
-        String expected = "2 days, 21 hours and 26 minutes";
-        String result = AppUtil.getFriendlyDuration(250000);
+    public void testGetStringDate() throws Exception {
+        Timestamp testTimestamp = new Timestamp(new Date().getTime());
+        String expected = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(testTimestamp);
+        String result = AppUtil.getStringDate(testTimestamp);
 
         assertEquals(expected, result);
     }

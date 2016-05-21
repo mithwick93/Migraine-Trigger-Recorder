@@ -14,12 +14,12 @@ import static org.junit.Assert.assertTrue;
 public class DatabaseHandlerTest {
 
     @Test
-    public void getWritableDBTest() {
-        assertTrue(DatabaseHandler.getWritableDatabase() != null);
+    public void getReadableDBTest() {
+        assertTrue(DatabaseHandler.getReadableDatabase() != null);
     }
 
     @Test
-    public void getReadableDBTest() {
-        assertTrue(DatabaseHandler.getReadableDatabase() != null);
+    public void getWritableDBTest() {
+        assertTrue(DatabaseHandler.getWritableDatabase() != null);
     }
 }

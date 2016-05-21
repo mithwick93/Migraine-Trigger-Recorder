@@ -1,11 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
-    android:orientation="vertical"
-    android:padding="5dp"
-    android:weightSum="1">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:animateLayoutChanges="true"
+              android:orientation="vertical"
+              android:padding="5dp"
+              android:weightSum="1">
 
 
     <android.support.v7.widget.CardView
@@ -41,7 +41,7 @@
                     android:padding="3dp"
                     android:text="@string/report_from"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/txt_report_from"
@@ -53,7 +53,7 @@
                     android:layout_toStartOf="@+id/textView8"
                     android:gravity="center_vertical"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/textView8"
@@ -64,7 +64,7 @@
                     android:gravity="center_vertical"
                     android:text="▼"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
             </RelativeLayout>
 
@@ -84,7 +84,7 @@
                     android:padding="3dp"
                     android:text="@string/report_to"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/txt_report_to"
@@ -96,7 +96,7 @@
                     android:layout_toStartOf="@+id/textView7"
                     android:gravity="center_vertical"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/textView7"
@@ -109,7 +109,7 @@
                     android:gravity="center_vertical"
                     android:text="▼"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
             </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -158,7 +158,7 @@
                             android:padding="5dp"
                             android:text="@string/report_total"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textSize="25sp" />
+                            android:textSize="25sp"/>
 
                         <TextView
                             android:id="@+id/txt_report_total"
@@ -173,7 +173,7 @@
                             android:padding="3dp"
                             android:textAlignment="textEnd"
                             android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textSize="25sp" />
+                            android:textSize="25sp"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -192,7 +192,7 @@
                             android:padding="5dp"
                             android:text="@string/report_intensity"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textSize="25sp" />
+                            android:textSize="25sp"/>
 
                         <TextView
                             android:id="@+id/txt_report_intensity"
@@ -207,7 +207,7 @@
                             android:padding="3dp"
                             android:textAlignment="textEnd"
                             android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textSize="25sp" />
+                            android:textSize="25sp"/>
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -230,7 +230,7 @@
                     android:text="@string/report_average_duration"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textIsSelectable="false"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:id="@+id/txt_report_average"
@@ -243,19 +243,19 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:padding="3dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
             </RelativeLayout>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/report_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:clipToPadding="false"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp"
-        android:scrollbars="none" />
+                                            android:id="@+id/report_recycler_view"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginTop="10dp"
+                                            android:clipToPadding="false"
+                                            android:paddingBottom="16dp"
+                                            android:paddingTop="16dp"
+                                            android:scrollbars="none"/>
 </LinearLayout>

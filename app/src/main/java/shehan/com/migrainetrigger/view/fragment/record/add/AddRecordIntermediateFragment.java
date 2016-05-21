@@ -236,7 +236,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                         .onNeutral(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                showToast(getContext(), "Selection cleared");
+                                AppUtil.showToast(getContext(), "Selection cleared");
                                 dialog.clearSelectedIndices();
                                 selectedTriggers.clear();
                                 selectedTriggerIndexes = null;
@@ -287,7 +287,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                         .onNeutral(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                showToast(getContext(), "Selection cleared");
+                                AppUtil.showToast(getContext(), "Selection cleared");
                                 dialog.clearSelectedIndices();
                                 selectedSymptoms.clear();
                                 selectedSymptomsIndexes = null;
@@ -338,7 +338,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                         .onNeutral(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                showToast(getContext(), "Selection cleared");
+                                AppUtil.showToast(getContext(), "Selection cleared");
                                 dialog.clearSelectedIndices();
                                 selectedActivities.clear();
                                 selectedActivityIndexes = null;
@@ -419,12 +419,12 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                 @Override
                 protected void onPostExecute(Boolean result) {
                     if (result) {
-                        showToast(getContext(), "Record was saved successfully");
+                        AppUtil.showToast(getContext(), "Record was saved successfully");
                         if (mCallback != null) {
                             mCallback.onIntermediateRecordInteraction(0);
                         }
                     } else {
-                        showToast(getContext(), "Record save failed");
+                        AppUtil.showToast(getContext(), "Record save failed");
                     }
                 }
             }.execute();

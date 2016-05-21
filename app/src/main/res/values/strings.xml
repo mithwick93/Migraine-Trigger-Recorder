@@ -444,5 +444,13 @@ These medications include birth control pills and hormone replacement therapy. T
     <string name="manage_answers_pain_areas">Pain Areas</string>
     <string name="manage_answers_medicines">Medicines</string>
     <string name="manage_answers_reliefs">Reliefs</string>
+    <string name="preferences_title_theme">Theme</string>
+    <string name="preferences_title_backup">"Backup and Restore "</string>
+    <string name="pref_backup">Backup</string>
+    <string name="pref_restore">Restore</string>
+    <string name="pref_theme_summery">Select the theme for Migraine Trigger</string>
+    <string name="pref_theme_title">Application theme</string>
+    <string name="pref_backup_summery">Backup application database</string>
+    <string name="pref_restore_summery">Restore application database</string>
 
 </resources>

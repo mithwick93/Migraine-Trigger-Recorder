@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -118,24 +119,9 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
         } else {
             Log.d("AddRecordBasic", "fallback to default coordinates ");
-            showToast(getContext(), "Using default coordinates");
+            AppUtil.showToast(getContext(), "Using default coordinates");
             new GetWeatherTask(6.6839861, 79.9275146, startTimestamp).execute();
         }
-    }
-
-    /**
-     * Show a toast
-     *
-     * @param context context to show toast
-     * @param message string msg
-     */
-    protected void showToast(Context context, String message) {
-        if (mToast != null) {
-            mToast.cancel();
-            mToast = null;
-        }
-        mToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-        mToast.show();
     }
 
     /**
@@ -239,13 +225,13 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                 @Override
                 protected void onPostExecute(Boolean result) {
                     if (result) {
-                        showToast(getContext(), "Record was saved successfully");
+                        AppUtil.showToast(getContext(), "Record was saved successfully");
                         if (mCallback != null) {
                             mCallback.onBasicRecordInteraction(0);
                         }
 
                     } else {
-                        showToast(getContext(), "Record save failed");
+                        AppUtil.showToast(getContext(), "Record save failed");
                     }
                 }
             }.execute();
@@ -260,26 +246,9 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
      */
     protected void showWeather() {
         Log.d("AddRecordBasic", "showWeather");
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestLocationPermission();
+        if (isLocationPermissionGranted()) {
+            getWeatherFromService();
         }
-        try {
-            if (geoLocationService != null) {
-                geoLocationService.disconnect();
-            }
-
-            geoLocationService = new GeoLocationService(getActivity(), this);
-            Log.d("GeoLocationService", "GeoLocationService - created googleApiClient");
-        } catch (Exception e) {
-            if (geoLocationService != null) {
-                geoLocationService.disconnect();
-            }
-            Log.e("AddRecordBasic", "exception :");
-            showToast(getContext(), "Something went wrong");
-            e.printStackTrace();
-        }
-
-
     }
 
     /**
@@ -335,17 +304,52 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         return recordBuilder;
     }
 
-    //
-    //
-    //
-    private void requestLocationPermission() {
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-            showToast(getContext(), "Location data allows to get better weather predictions. Please allow in App Settings for accurate functionality.");
-
+    public boolean isLocationPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                Log.v("AddRecordBasic", "Permission is granted");
+                return true;
+            } else {
+                Log.v("AddRecordBasic", "Permission is revoked");
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    new MaterialDialog.Builder(getContext())
+                            .content("This app wants to access your fine location.")
+                            .positiveText("Agree")
+                            .negativeText("Disagree")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, GeoLocationService.PERMISSION_ACCESS_FINE_LOCATION);
+                                }
+                            })
+                            .show();
+                    return false;
+                }
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, GeoLocationService.PERMISSION_ACCESS_FINE_LOCATION);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("AddRecordBasic", "Permission is granted");
+            return true;
         }
-        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, GeoLocationService.PERMISSION_ACCESS_FINE_LOCATION);
+    }
+
+    private void getWeatherFromService() {
+        try {
+            if (geoLocationService != null) {
+                geoLocationService.disconnect();
+            }
+
+            geoLocationService = new GeoLocationService(getActivity(), this);
+            Log.d("GeoLocationService", "GeoLocationService - created googleApiClient");
+        } catch (Exception e) {
+            if (geoLocationService != null) {
+                geoLocationService.disconnect();
+            }
+            Log.e("AddRecordBasic", "exception :");
+            AppUtil.showToast(getContext(), "Something went wrong");
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -357,10 +361,16 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case GeoLocationService.PERMISSION_ACCESS_FINE_LOCATION:
-                if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    showToast(getContext(), "Need your location");
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    getWeatherFromService();
+                } else {
+                    // Permission Denied
+                    AppUtil.showToast(getActivity(), "Location access Denied");
                 }
                 break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
@@ -530,7 +540,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                                                   int monthOfYear, int dayOfMonth) {
 
                                 editTxtStartDate.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
-                                showToast(getContext(), "Long press to clear date");
+                                AppUtil.showToast(getContext(), "Long press to clear date");
                                 mYear = startDate[0] = year;
                                 mMonth = startDate[1] = monthOfYear + 1;
                                 mDay = startDate[2] = dayOfMonth;
@@ -583,7 +593,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                                                   int minute) {
 
                                 editTxtStartTime.setText(AppUtil.getFormattedTime(hourOfDay, minute));
-                                showToast(getContext(), "Long press to clear time");
+                                AppUtil.showToast(getContext(), "Long press to clear time");
                                 mHour = startTime[0] = hourOfDay;
                                 mMinute = startTime[1] = minute;
 
@@ -626,7 +636,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                                                   int monthOfYear, int dayOfMonth) {
 
                                 editTxtEndDate.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
-                                showToast(getContext(), "Long press to clear date");
+                                AppUtil.showToast(getContext(), "Long press to clear date");
                                 mYear = endDate[0] = year;
                                 mMonth = endDate[1] = monthOfYear + 1;
                                 mDay = endDate[2] = dayOfMonth;
@@ -668,7 +678,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                                                   int minute) {
 
                                 editTxtEndTime.setText(AppUtil.getFormattedTime(hourOfDay, minute));
-                                showToast(getContext(), "Long press to clear time");
+                                AppUtil.showToast(getContext(), "Long press to clear time");
                                 mHour = endTime[0] = hourOfDay;
                                 mMinute = endTime[1] = minute;
                             }
@@ -701,7 +711,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 intensity = which + 1;
                                 setIntensityIcon(intensity);
-                                showToast(getContext(), "Long press to clear");
+                                AppUtil.showToast(getContext(), "Long press to clear");
                                 return true; // allow selection
                             }
                         })

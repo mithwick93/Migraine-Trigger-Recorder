@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+              xmlns:card_view="http://schemas.android.com/apk/res-auto"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -38,7 +38,7 @@
                         android:layout_alignParentStart="true"
                         android:text="@string/migraine_definition_para1"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
@@ -65,7 +65,7 @@
                         android:layout_alignParentStart="true"
                         android:text="@string/migraine_definition_para2"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
@@ -92,7 +92,7 @@
                         android:layout_alignParentStart="true"
                         android:text="@string/migraine_definition_para3"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
@@ -119,7 +119,7 @@
                         android:layout_alignParentStart="true"
                         android:text="@string/migraine_definition_para4"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>

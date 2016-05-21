@@ -157,13 +157,13 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
                             @Override
                             protected void onPostExecute(Boolean result) {
                                 if (result) {
-                                    showToast(getContext(), "Record deleted successfully");
+                                    AppUtil.showToast(getContext(), "Record deleted successfully");
                                     if (mCallback != null) {
                                         mCallback.onFragmentInteraction(0);
                                     }
 
                                 } else {
-                                    showToast(getContext(), "Record delete failed");
+                                    AppUtil.showToast(getContext(), "Record delete failed");
                                 }
                             }
                         }.execute();
@@ -246,13 +246,13 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
                 @Override
                 protected void onPostExecute(Boolean result) {
                     if (result) {
-                        showToast(getContext(), "Record was updated successfully");
+                        AppUtil.showToast(getContext(), "Record was updated successfully");
                         if (mCallback != null) {
                             mCallback.onFragmentInteraction(0);
                         }
 
                     } else {
-                        showToast(getContext(), "Record update failed");
+                        AppUtil.showToast(getContext(), "Record update failed");
                     }
                 }
             }.execute();
@@ -269,7 +269,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
