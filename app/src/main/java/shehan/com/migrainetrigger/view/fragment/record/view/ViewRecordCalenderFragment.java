@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.CalendarDayEvent;
 
@@ -27,6 +28,7 @@ import java.util.Map;
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.data.model.Record;
+import shehan.com.migrainetrigger.utility.AppUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -122,17 +124,17 @@ public class ViewRecordCalenderFragment extends Fragment {
             public void onDayClick(Date dateClicked) {
                 Log.d("ViewRecordCalender", "inside onclick " + dateClicked);
                 ArrayList<Integer> recordList = (ArrayList<Integer>) recordsMap.get(dateClicked);
-                if (recordList != null) {
-                    for (Integer integer : recordList) {
-                        Log.d("ViewRecordCalender", "record Id " + integer);
+                if (recordList != null && recordList.size() > 0) {
+                    if (recordList.size() == 1) {
+                        //Only one record per day
+                        mCallback.onRecordCalenderRequest(recordList.get(0));
+                    } else {
+                        //Multiple records per day
+                        new LoadRecordsTask(recordList).execute();
                     }
-
-                    //TODO : Show dialog to choose record on same day, for now show first record in list
-                    mCallback.onRecordCalenderRequest(recordList.get(0));
-
                 } else {
-
                     Log.i("ViewRecordCalender", "record list not found ");
+                    AppUtil.showToast(getContext(), "No records found");
                 }
 
             }
@@ -266,5 +268,64 @@ public class ViewRecordCalenderFragment extends Fragment {
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
         }
+    }
+
+    /**
+     * Async task to load records from db and show options
+     */
+    private class LoadRecordsTask extends AsyncTask<Void, Void, ArrayList<Record>> {
+        ArrayList<Integer> recordList;
+
+        public LoadRecordsTask(ArrayList<Integer> recordList) {
+            this.recordList = recordList;
+        }
+
+        @Override
+        protected ArrayList<Record> doInBackground(Void... v) {
+            Log.d("LoadRecordsTask", " doInBackground - load records");
+            ArrayList<Record> recordsForDay = new ArrayList<>();
+            for (Integer recordId : recordList) {
+                recordsForDay.add(RecordController.getRecordById(recordId));
+            }
+            return recordsForDay;
+        }
+
+        @Override
+        protected void onPostExecute(final ArrayList<Record> recordArrayList) {
+            Log.d("LoadRecordsTask", " onPostExecute - show choices");
+
+            CharSequence[] recordOptions = new CharSequence[recordArrayList.size()];
+            for (int itr = 0; itr < recordArrayList.size(); itr++) {
+
+                String idStr = String.valueOf(recordArrayList.get(itr).getRecordId());
+
+                long timestamp = recordArrayList.get(itr).getStartTime().getTime();
+                Calendar tmpCal = Calendar.getInstance();
+                tmpCal.setTimeInMillis(timestamp);
+
+                int mHour = tmpCal.get(Calendar.HOUR_OF_DAY);
+                int mMinute = tmpCal.get(Calendar.MINUTE);
+
+                String startTime = AppUtil.getFormattedTime(mHour, mMinute);
+                recordOptions[itr] = "Record id " + idStr + ", Start time " + startTime;
+
+            }
+            new MaterialDialog.Builder(getContext())
+                    .title("Choose record")
+                    .items(recordOptions)
+                    .negativeText("Cancel")
+                    .itemsCallback(new MaterialDialog.ListCallback() {
+                        @Override
+                        public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                            if (0 <= which && which < recordArrayList.size()) {
+                                mCallback.onRecordCalenderRequest(recordArrayList.get(which).getRecordId());
+                            } else {
+                                Log.e("LoadRecordsTask", " invalid record selection");
+                            }
+                        }
+                    })
+                    .show();
+        }
+
     }
 }

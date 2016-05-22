@@ -3,12 +3,13 @@ package shehan.com.migrainetrigger.view.fragment.main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.TextView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
 
@@ -47,10 +48,10 @@ public class AboutFragment extends Fragment {
     private void displayLicensesAlertDialog() {
         WebView view = (WebView) LayoutInflater.from(getContext()).inflate(R.layout.dialog_licenses, null);
         view.loadUrl("file:///android_asset/open_source_licenses.html");
-        new AlertDialog.Builder(getContext())
-                .setTitle("Open source licenses")
-                .setView(view)
-                .setPositiveButton(android.R.string.ok, null)
+        MaterialDialog dialog = new MaterialDialog.Builder(getContext())
+                .title("Open source licenses")
+                .customView(view, true)
+                .positiveText("Ok")
                 .show();
     }
 
