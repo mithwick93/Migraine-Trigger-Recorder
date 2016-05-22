@@ -17,13 +17,13 @@ import shehan.com.migrainetrigger.view.model.FAQViewData;
 public class FAQTopicsViewAdapter
         extends RecyclerView.Adapter<FAQTopicsViewAdapter.ViewHolder> {
 
-    private static FAQTopicsViewClickListener itemListener;
+    private static FAQTopicsRowClickListener itemListener;
     private Context context;
     private FAQViewData[] faqViewDatas;
 
     public FAQTopicsViewAdapter(
             Context context,
-            FAQTopicsViewClickListener itemListener,
+            FAQTopicsRowClickListener itemListener,
             FAQViewData[] faqViewDatas) {
 
         this.context = context;
@@ -58,8 +58,8 @@ public class FAQTopicsViewAdapter
 
 
     //Listener interface to sent recycler click to containing fragment or activity
-    public interface FAQTopicsViewClickListener {
-        void recyclerViewListClicked(int clickPosition);
+    public interface FAQTopicsRowClickListener {
+        void onRowClicked(int clickPosition);
     }
 
     // inner class to hold a reference to each item of RecyclerView
@@ -75,7 +75,7 @@ public class FAQTopicsViewAdapter
 
         @Override
         public void onClick(View v) {
-            itemListener.recyclerViewListClicked(this.getLayoutPosition());
+            itemListener.onRowClicked(this.getLayoutPosition());
 
         }
     }

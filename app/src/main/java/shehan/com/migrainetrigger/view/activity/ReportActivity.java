@@ -13,9 +13,17 @@ import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.main.ReportFragment;
 
 public class ReportActivity extends BaseActivity
-        implements ReportFragment.OnReportFragmentInteractionListener {
+        implements ReportFragment.ReportFragmentListener {
 
     private static final boolean DEVELOPER_MODE = true;
+
+    @Override
+    public void onReportFragmentRequest(int request) {
+        Log.d("ReportActivity", "onReportFragmentRequest");
+        if (request == 0) {
+            ReportActivity.super.onBackPressed();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +59,5 @@ public class ReportActivity extends BaseActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.report_container, fragment);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    public void onReportFragmentInteraction(int request) {
-        Log.d("ReportActivity", "onReportFragmentInteraction");
-        if (request == 0) {
-            ReportActivity.super.onBackPressed();
-        }
     }
 }

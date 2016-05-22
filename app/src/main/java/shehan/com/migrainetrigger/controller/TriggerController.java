@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import shehan.com.migrainetrigger.data.dao.DBTriggerDAO;
 import shehan.com.migrainetrigger.data.model.Trigger;
@@ -41,15 +42,15 @@ public class TriggerController {
         return DBTriggerDAO.deleteTrigger(id);
     }
 
-    public static AnswerSectionViewData[] getAnswerSectionViewData() {
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
         ArrayList<Trigger> lst = getAllTriggers();
-        AnswerSectionViewData[] answerSectionViewData = new AnswerSectionViewData[lst.size()];
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             Trigger trigger = lst.get(i);
 
-            answerSectionViewData[i] = new AnswerSectionViewData(trigger.getTriggerId(), trigger.getTriggerName(), trigger.getPriority());
+            answerSectionViewDataLst.add(new AnswerSectionViewData(trigger.getTriggerId(), trigger.getTriggerName(), trigger.getPriority()));
         }
-        return answerSectionViewData;
+        return answerSectionViewDataLst;
     }
 
     public static ArrayList<Trigger> getAllTriggers() {

@@ -16,10 +16,10 @@ import shehan.com.migrainetrigger.view.model.RecordViewData;
  */
 public class RecordViewAdapter extends RecyclerView.Adapter<RecordViewAdapter.ViewHolder> {
 
-    private static RecordListViewClickListener itemListener;
+    private static RecordListViewRowClickListener itemListener;
     private static RecordViewData[] recordViewData;
 
-    public RecordViewAdapter(RecordListViewClickListener itemListener, RecordViewData[] recordViewData) {
+    public RecordViewAdapter(RecordListViewRowClickListener itemListener, RecordViewData[] recordViewData) {
         RecordViewAdapter.recordViewData = recordViewData;
         RecordViewAdapter.itemListener = itemListener;
     }
@@ -62,10 +62,15 @@ public class RecordViewAdapter extends RecyclerView.Adapter<RecordViewAdapter.Vi
         return recordViewData.length;
     }
 
+    public void setData(RecordViewData[] recordViewData) {
+        RecordViewAdapter.recordViewData = recordViewData;
+        notifyDataSetChanged();
+    }
+
 
     //Listener interface to sent recycler click to containing fragment or activity
-    public interface RecordListViewClickListener {
-        void recordListItemClicked(int recordId);
+    public interface RecordListViewRowClickListener {
+        void onRecordListRowClicked(int recordId);
     }
 
     // inner class to hold a reference to each item of RecyclerView
@@ -93,7 +98,7 @@ public class RecordViewAdapter extends RecyclerView.Adapter<RecordViewAdapter.Vi
             } else {
                 Log.i("RecordViewAdapter", "Click position error");
             }
-            itemListener.recordListItemClicked(recordId);
+            itemListener.onRecordListRowClicked(recordId);
 
         }
     }

@@ -58,7 +58,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     protected ArrayList<Symptom> symptoms;
     protected ArrayList<Trigger> triggers;
     //Callback
-    private AddRecordIntermediateListener mCallback;
+    private AddRecordIntermediateFragmentListener mCallback;
 
     public AddRecordIntermediateFragment() {
         // Required empty public constructor
@@ -107,17 +107,17 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof ViewRecordSingleFragment.OnFragmentInteractionListener) {
-            Log.w("AddRecordInter-onAttach", "Context instanceof ViewRecordSingleFragment.OnFragmentInteractionListener");
+        if (context instanceof ViewRecordSingleFragment.SingleRecordViewFragmentListener) {
+            Log.w("AddRecordInter-onAttach", "Context instanceof ViewRecordSingleFragment.SingleRecordViewFragmentListener");
             return;
         }
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (AddRecordIntermediateListener) context;
+            mCallback = (AddRecordIntermediateFragmentListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement AddRecordIntermediateListener");
+                    + " must implement AddRecordIntermediateFragmentListener");
         }
     }
 
@@ -421,7 +421,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                     if (result) {
                         AppUtil.showToast(getContext(), "Record was saved successfully");
                         if (mCallback != null) {
-                            mCallback.onIntermediateRecordInteraction(0);
+                            mCallback.onAddRecordIntermediateRequest(0);
                         }
                     } else {
                         AppUtil.showToast(getContext(), "Record save failed");
@@ -470,11 +470,11 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     /**
      * Parent activity must implement this interface to communicate
      */
-    public interface AddRecordIntermediateListener {
+    public interface AddRecordIntermediateFragmentListener {
         /**
          * Parent activity must implement this method to communicate
          */
-        void onIntermediateRecordInteraction(int request);
+        void onAddRecordIntermediateRequest(int request);
     }
 
 }

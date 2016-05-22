@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import shehan.com.migrainetrigger.data.dao.DBMedicineDAO;
 import shehan.com.migrainetrigger.data.model.Medicine;
@@ -41,15 +42,15 @@ public class MedicineController {
         return DBMedicineDAO.deleteMedicine(id);
     }
 
-    public static AnswerSectionViewData[] getAnswerSectionViewData() {
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
         ArrayList<Medicine> lst = getAllMedicines();
-        AnswerSectionViewData[] answerSectionViewData = new AnswerSectionViewData[lst.size()];
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             Medicine medicine = lst.get(i);
 
-            answerSectionViewData[i] = new AnswerSectionViewData(medicine.getMedicineId(), medicine.getMedicineName(), medicine.getPriority());
+            answerSectionViewDataLst.add(new AnswerSectionViewData(medicine.getMedicineId(), medicine.getMedicineName(), medicine.getPriority()));
         }
-        return answerSectionViewData;
+        return answerSectionViewDataLst;
     }
 
     public static ArrayList<Medicine> getAllMedicines() {

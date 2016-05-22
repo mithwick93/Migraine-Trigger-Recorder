@@ -18,12 +18,12 @@ import shehan.com.migrainetrigger.view.model.FAQViewData;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnTopicSelectedListener } interface
+ * {@link TopicSelectedListener } interface
  * to handle interaction events.
  */
-public class FAQTopicsFragment extends Fragment implements FAQTopicsViewAdapter.FAQTopicsViewClickListener {
+public class FAQTopicsFragment extends Fragment implements FAQTopicsViewAdapter.FAQTopicsRowClickListener {
 
-    private OnTopicSelectedListener mCallback;
+    private TopicSelectedListener mCallback;
 
     public FAQTopicsFragment() {
         // Required empty public constructor
@@ -36,10 +36,10 @@ public class FAQTopicsFragment extends Fragment implements FAQTopicsViewAdapter.
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (OnTopicSelectedListener) context;
+            mCallback = (TopicSelectedListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnTopicSelectedListener");
+                    + " must implement TopicSelectedListener");
         }
     }
 
@@ -90,12 +90,12 @@ public class FAQTopicsFragment extends Fragment implements FAQTopicsViewAdapter.
     }
 
     @Override
-    public void recyclerViewListClicked(int clickPosition) {
-        mCallback.onFragmentInteraction(clickPosition);
+    public void onRowClicked(int clickPosition) {
+        mCallback.onTopicRawClicked(clickPosition);
     }
 
     //Parent activity must implement this interface to communicate
-    public interface OnTopicSelectedListener {
-        void onFragmentInteraction(int clickPosition);
+    public interface TopicSelectedListener {
+        void onTopicRawClicked(int clickPosition);
     }
 }

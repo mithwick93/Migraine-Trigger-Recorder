@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.controller;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import shehan.com.migrainetrigger.data.dao.DBLocationDAO;
 import shehan.com.migrainetrigger.data.model.Location;
@@ -35,15 +36,15 @@ public class LocationController {
         return DBLocationDAO.deleteLocation(id);
     }
 
-    public static AnswerSectionViewData[] getAnswerSectionViewData() {
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
         ArrayList<Location> lst = getAllLocations();
-        AnswerSectionViewData[] answerSectionViewData = new AnswerSectionViewData[lst.size()];
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             Location location = lst.get(i);
 
-            answerSectionViewData[i] = new AnswerSectionViewData(location.getLocationId(), location.getLocationName());
+            answerSectionViewDataLst.add(new AnswerSectionViewData(location.getLocationId(), location.getLocationName()));
         }
-        return answerSectionViewData;
+        return answerSectionViewDataLst;
     }
 
     public static ArrayList<Location> getAllLocations() {

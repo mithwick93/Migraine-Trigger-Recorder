@@ -22,12 +22,36 @@ import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordIntermediate
 
 public class AddRecordActivity
         extends BaseActivity
-        implements AddRecordBasicFragment.AddRecordBasicListener, AddRecordIntermediateFragment.AddRecordIntermediateListener, AddRecordFullFragment.AddRecordFullListener {
+        implements AddRecordBasicFragment.AddRecordBasicFragmentListener, AddRecordIntermediateFragment.AddRecordIntermediateFragmentListener, AddRecordFullFragment.AddRecordFullFragmentListener {
 
     private static final boolean DEVELOPER_MODE = true;
     private FloatingActionButton fabAdd;
     private int levelOfInformation;
     private AddRecordBasicFragment mFragment;
+
+    @Override
+    public void onAddRecordBasicRequest(int request) {
+        Log.d("AddRecordActivity", "onAddRecordBasicRequest request : " + request);
+        if (request == 0) {
+            AddRecordActivity.super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onAddRecordFullRequest(int request) {
+        Log.d("AddRecordActivity", "onAddRecordFullRequest request : " + request);
+        if (request == 0) {
+            AddRecordActivity.super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onAddRecordIntermediateRequest(int request) {
+        Log.d("AddRecordActivity", "onAddRecordIntermediateRequest request : " + request);
+        if (request == 0) {
+            AddRecordActivity.super.onBackPressed();
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -45,14 +69,6 @@ public class AddRecordActivity
                 })
                 .show();
 
-    }
-
-    @Override
-    public void onBasicRecordInteraction(int request) {
-        Log.d("AddRecordActivity", "onBasicRecordInteraction request : " + request);
-        if (request == 0) {
-            AddRecordActivity.super.onBackPressed();
-        }
     }
 
     @Override
@@ -136,22 +152,6 @@ public class AddRecordActivity
                     }
                 }
             });
-        }
-    }
-
-    @Override
-    public void onFullRecordInteraction(int request) {
-        Log.d("AddRecordActivity", "onFullRecordInteraction request : " + request);
-        if (request == 0) {
-            AddRecordActivity.super.onBackPressed();
-        }
-    }
-
-    @Override
-    public void onIntermediateRecordInteraction(int request) {
-        Log.d("AddRecordActivity", "onIntermediateRecordInteraction request : " + request);
-        if (request == 0) {
-            AddRecordActivity.super.onBackPressed();
         }
     }
 }

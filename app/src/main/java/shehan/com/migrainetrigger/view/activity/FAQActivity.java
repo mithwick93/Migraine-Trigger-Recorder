@@ -24,47 +24,9 @@ import shehan.com.migrainetrigger.view.fragment.faq.TreatmentsFragment;
 
 public class FAQActivity
         extends BaseActivity
-        implements FAQTopicsFragment.OnTopicSelectedListener {
+        implements FAQTopicsFragment.TopicSelectedListener {
 
     private static final boolean DEVELOPER_MODE = true;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        if (DEVELOPER_MODE) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectDiskReads()
-                    .detectDiskWrites()
-                    .detectNetwork()   // or .detectAll() for all detectable problems
-                    .penaltyLog()
-                    .build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                    .detectLeakedSqlLiteObjects()
-                    .detectLeakedClosableObjects()
-                    .penaltyLog()
-                    .penaltyDeath()
-                    .build());
-        }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_faq);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.faq_toolbar);
-        setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.nav_f_a_q);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-        showFAQFragment();
-    }
-
-    private void showFAQFragment() {
-        Fragment fragment = new FAQTopicsFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.faq_container, fragment);
-        fragmentTransaction.commit();
-    }
 
     /**
      * Change content of faq according to item selected
@@ -72,7 +34,7 @@ public class FAQActivity
      * @param clickPosition clicked position of f.a.q topics
      */
     @Override
-    public void onFragmentInteraction(int clickPosition) {
+    public void onTopicRawClicked(int clickPosition) {
         Fragment sectionFragment = null;
         switch (clickPosition) {
 
@@ -127,5 +89,43 @@ public class FAQActivity
             fragmentTransaction.commit();
             Log.d("FAQ-FAQSelect", "Section shown :" + fragmentManager.toString());
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        if (DEVELOPER_MODE) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+        }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_faq);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.faq_toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.nav_f_a_q);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        showFAQFragment();
+    }
+
+    private void showFAQFragment() {
+        Fragment fragment = new FAQTopicsFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.faq_container, fragment);
+        fragmentTransaction.commit();
     }
 }

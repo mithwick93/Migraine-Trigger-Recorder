@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import shehan.com.migrainetrigger.data.dao.DBSymptomDAO;
 import shehan.com.migrainetrigger.data.model.Symptom;
@@ -40,15 +41,15 @@ public class SymptomController {
         return DBSymptomDAO.deleteSymptom(id);
     }
 
-    public static AnswerSectionViewData[] getAnswerSectionViewData() {
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
         ArrayList<Symptom> lst = getAllSymptoms();
-        AnswerSectionViewData[] answerSectionViewData = new AnswerSectionViewData[lst.size()];
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             Symptom symptom = lst.get(i);
 
-            answerSectionViewData[i] = new AnswerSectionViewData(symptom.getSymptomId(), symptom.getSymptomName(), symptom.getPriority());
+            answerSectionViewDataLst.add(new AnswerSectionViewData(symptom.getSymptomId(), symptom.getSymptomName(), symptom.getPriority()));
         }
-        return answerSectionViewData;
+        return answerSectionViewDataLst;
     }
 
     public static ArrayList<Symptom> getAllSymptoms() {

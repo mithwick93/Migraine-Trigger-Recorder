@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.controller;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import shehan.com.migrainetrigger.data.dao.DBBodyAreaDAO;
 import shehan.com.migrainetrigger.data.model.BodyArea;
@@ -39,15 +40,15 @@ public class BodyAreaController {
         return DBBodyAreaDAO.deleteBodyArea(id);
     }
 
-    public static AnswerSectionViewData[] getAnswerSectionViewData() {
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
         ArrayList<BodyArea> lst = getAllBodyAreas();
-        AnswerSectionViewData[] answerSectionViewData = new AnswerSectionViewData[lst.size()];
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             BodyArea bodyArea = lst.get(i);
 
-            answerSectionViewData[i] = new AnswerSectionViewData(bodyArea.getBodyAreaId(), bodyArea.getBodyAreaName());
+            answerSectionViewDataLst.add(new AnswerSectionViewData(bodyArea.getBodyAreaId(), bodyArea.getBodyAreaName()));
         }
-        return answerSectionViewData;
+        return answerSectionViewDataLst;
     }
 
     public static ArrayList<BodyArea> getAllBodyAreas() {

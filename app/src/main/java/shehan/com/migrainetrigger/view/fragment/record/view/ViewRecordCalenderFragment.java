@@ -36,7 +36,7 @@ public class ViewRecordCalenderFragment extends Fragment {
     private CompactCalendarView calenderView;
     private Calendar currentCalender;
     private SimpleDateFormat dateFormatForMonth;
-    private RecordCalenderListener mCallback;
+    private RecordCalenderFragmentListener mCallback;
     private View mView;
     private Map<Date, List<Integer>> recordsMap;
     private TextView txtViewCalenderHeader;
@@ -52,10 +52,10 @@ public class ViewRecordCalenderFragment extends Fragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (RecordCalenderListener) context;
+            mCallback = (RecordCalenderFragmentListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement RecordCalenderListener");
+                    + " must implement RecordCalenderFragmentListener");
         }
     }
 
@@ -128,7 +128,7 @@ public class ViewRecordCalenderFragment extends Fragment {
                     }
 
                     //TODO : Show dialog to choose record on same day, for now show first record in list
-                    mCallback.onRecordCalenderCallBack(recordList.get(0));
+                    mCallback.onRecordCalenderRequest(recordList.get(0));
 
                 } else {
 
@@ -148,8 +148,8 @@ public class ViewRecordCalenderFragment extends Fragment {
     }
 
     //Parent activity must implement this interface to communicate
-    public interface RecordCalenderListener {
-        void onRecordCalenderCallBack(int recordId);
+    public interface RecordCalenderFragmentListener {
+        void onRecordCalenderRequest(int recordId);
     }
 
     /**

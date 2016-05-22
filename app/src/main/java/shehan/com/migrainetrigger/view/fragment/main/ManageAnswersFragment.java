@@ -14,7 +14,7 @@ import shehan.com.migrainetrigger.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ManageAnswersFragment.OnManageAnswersFragmentInteractionListener} interface
+ * {@link ManageAnswersFragmentListener} interface
  * to handle interaction events.
  */
 public class ManageAnswersFragment extends Fragment {
@@ -26,7 +26,7 @@ public class ManageAnswersFragment extends Fragment {
     private CardView cardViewReliefs;
     private CardView cardViewSymptoms;
     private CardView cardViewTriggers;
-    private OnManageAnswersFragmentInteractionListener mCallback;
+    private ManageAnswersFragmentListener mCallback;
 
     public ManageAnswersFragment() {
         // Required empty public constructor
@@ -35,11 +35,11 @@ public class ManageAnswersFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnManageAnswersFragmentInteractionListener) {
-            mCallback = (OnManageAnswersFragmentInteractionListener) context;
+        if (context instanceof ManageAnswersFragmentListener) {
+            mCallback = (ManageAnswersFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnManageAnswersFragmentInteractionListener");
+                    + " must implement ManageAnswersFragmentListener");
         }
     }
 
@@ -71,43 +71,43 @@ public class ManageAnswersFragment extends Fragment {
         cardViewTriggers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.OnManageAnswersInteraction("Triggers");
+                mCallback.OnAnswerRawClick("Triggers");
             }
         });
         cardViewSymptoms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.OnManageAnswersInteraction("Symptoms");
+                mCallback.OnAnswerRawClick("Symptoms");
             }
         });
         cardViewActivities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.OnManageAnswersInteraction("Activities");
+                mCallback.OnAnswerRawClick("Activities");
             }
         });
         cardViewLocations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.OnManageAnswersInteraction("Locations");
+                mCallback.OnAnswerRawClick("Locations");
             }
         });
         cardViewPainAreas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.OnManageAnswersInteraction("Pain areas");
+                mCallback.OnAnswerRawClick("Pain areas");
             }
         });
         cardViewMedicines.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.OnManageAnswersInteraction("Medicines");
+                mCallback.OnAnswerRawClick("Medicines");
             }
         });
         cardViewReliefs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.OnManageAnswersInteraction("Reliefs");
+                mCallback.OnAnswerRawClick("Reliefs");
             }
         });
     }
@@ -117,12 +117,12 @@ public class ManageAnswersFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnManageAnswersFragmentInteractionListener {
-        void OnManageAnswersInteraction(String answer);
+    public interface ManageAnswersFragmentListener {
+        void OnAnswerRawClick(String answer);
     }
 }

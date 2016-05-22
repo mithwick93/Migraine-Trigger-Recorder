@@ -69,7 +69,6 @@ public class HomeFragment extends Fragment {
         protected void onPostExecute(String status) {
             Log.d("GetStatusTask", " onPostExecute - update ui");
             mTxtStatus.setText(status);
-            //TODO : add colors
             if (status.startsWith("N")) {
                 mTxtStatus.setTextColor(Color.parseColor("#9E9E9E"));
             } else if (status.startsWith("M")) {

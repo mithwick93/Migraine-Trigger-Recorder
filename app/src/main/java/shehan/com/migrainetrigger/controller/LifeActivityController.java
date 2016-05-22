@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import shehan.com.migrainetrigger.data.dao.DBActivityDAO;
 import shehan.com.migrainetrigger.data.model.LifeActivity;
@@ -49,15 +50,15 @@ public class LifeActivityController {
         return null;
     }
 
-    public static AnswerSectionViewData[] getAnswerSectionViewData() {
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
         ArrayList<LifeActivity> lst = getAllActivities();
-        AnswerSectionViewData[] answerSectionViewData = new AnswerSectionViewData[lst.size()];
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             LifeActivity lifeActivity = lst.get(i);
 
-            answerSectionViewData[i] = new AnswerSectionViewData(lifeActivity.getActivityId(), lifeActivity.getActivityName(), lifeActivity.getPriority());
+            answerSectionViewDataLst.add(new AnswerSectionViewData(lifeActivity.getActivityId(), lifeActivity.getActivityName(), lifeActivity.getPriority()));
         }
-        return answerSectionViewData;
+        return answerSectionViewDataLst;
     }
 
     public static ArrayList<LifeActivity> getAllActivities() {

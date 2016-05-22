@@ -18,10 +18,35 @@ import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordListFragme
 
 public class ViewRecordsActivity
         extends BaseActivity
-        implements ViewRecordListFragment.RecordListListener, ViewRecordCalenderFragment.RecordCalenderListener {
+        implements ViewRecordListFragment.RecordListFragmentListener, ViewRecordCalenderFragment.RecordCalenderFragmentListener {
 
     private static final boolean DEVELOPER_MODE = true;
 
+    @Override
+    public void onRecordCalenderRequest(int recordId) {
+        showSingleRecordActivity(recordId);
+    }
+
+    private void showSingleRecordActivity(int recordId) {
+        Intent intent = new Intent(ViewRecordsActivity.this, ViewSingleRecordActivity.class);
+        intent.putExtra("recordId", recordId);
+        Log.d("ViewRecordsActivity ", "Launching view single record activity");
+        startActivity(intent);
+    }
+
+    @Override
+    public void onRecordListRequest(int request) {
+        if (request == -1) {
+            ViewRecordsActivity.super.onBackPressed();
+            return;
+        }
+        showSingleRecordActivity(request);
+    }
+
+    @Override
+    public String toString() {
+        return "View records";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,32 +110,6 @@ public class ViewRecordsActivity
             getSupportActionBar().setTitle(R.string.nav_records);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-    }
-
-    @Override
-    public void onRecordCalenderCallBack(int recordId) {
-        showSingleRecordActivity(recordId);
-    }
-
-    private void showSingleRecordActivity(int recordId) {
-        Intent intent = new Intent(ViewRecordsActivity.this, ViewSingleRecordActivity.class);
-        intent.putExtra("recordId", recordId);
-        Log.d("ViewRecordsActivity ", "Launching view single record activity");
-        startActivity(intent);
-    }
-
-    @Override
-    public void onRecordListCallBack(int request) {
-        if (request == -1) {
-            ViewRecordsActivity.super.onBackPressed();
-            return;
-        }
-        showSingleRecordActivity(request);
-    }
-
-    @Override
-    public String toString() {
-        return "View records";
     }
 
     /**

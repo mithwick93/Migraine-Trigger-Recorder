@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import shehan.com.migrainetrigger.data.dao.DBReliefDAO;
 import shehan.com.migrainetrigger.data.model.Relief;
@@ -41,15 +42,15 @@ public class ReliefController {
         return DBReliefDAO.deleteRelief(id);
     }
 
-    public static AnswerSectionViewData[] getAnswerSectionViewData() {
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
         ArrayList<Relief> lst = getAllReliefs();
-        AnswerSectionViewData[] answerSectionViewData = new AnswerSectionViewData[lst.size()];
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             Relief relief = lst.get(i);
 
-            answerSectionViewData[i] = new AnswerSectionViewData(relief.getReliefId(), relief.getReliefName(), relief.getPriority());
+            answerSectionViewDataLst.add(new AnswerSectionViewData(relief.getReliefId(), relief.getReliefName(), relief.getPriority()));
         }
-        return answerSectionViewData;
+        return answerSectionViewDataLst;
     }
 
     public static ArrayList<Relief> getAllReliefs() {

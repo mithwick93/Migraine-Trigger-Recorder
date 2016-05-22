@@ -72,7 +72,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     protected RelativeLayout viewLayoutRecordEffectiveMedicine;
     protected RelativeLayout viewLayoutRecordEffectiveRelief;
     //Callback
-    private AddRecordFullListener mCallback;
+    private AddRecordFullFragmentListener mCallback;
 
     public AddRecordFullFragment() {
         // Required empty public constructor
@@ -121,17 +121,17 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof ViewRecordSingleFragment.OnFragmentInteractionListener) {
-            Log.w("AddRecordFull-onAttach", "Context instanceof ViewRecordSingleFragment.OnFragmentInteractionListener");
+        if (context instanceof ViewRecordSingleFragment.SingleRecordViewFragmentListener) {
+            Log.w("AddRecordFull-onAttach", "Context instanceof ViewRecordSingleFragment.SingleRecordViewFragmentListener");
             return;
         }
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (AddRecordFullListener) context;
+            mCallback = (AddRecordFullFragmentListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement AddRecordFullListener");
+                    + " must implement AddRecordFullFragmentListener");
         }
     }
 
@@ -662,7 +662,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                     if (result) {
                         AppUtil.showToast(getContext(), "Record was saved successfully");
                         if (mCallback != null) {
-                            mCallback.onFullRecordInteraction(0);
+                            mCallback.onAddRecordFullRequest(0);
                         }
 
                     } else {
@@ -718,11 +718,11 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     /**
      * Parent activity must implement this interface to communicate
      */
-    public interface AddRecordFullListener {
+    public interface AddRecordFullFragmentListener {
         /**
          * Parent activity must implement this method to communicate
          */
-        void onFullRecordInteraction(int request);
+        void onAddRecordFullRequest(int request);
     }
 
 }

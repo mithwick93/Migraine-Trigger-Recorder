@@ -31,7 +31,7 @@ import shehan.com.migrainetrigger.view.fragment.main.SeverityFragment;
 
 public class MainActivity
         extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ManageAnswersFragment.OnManageAnswersFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ManageAnswersFragment.ManageAnswersFragmentListener {
 
     private static final boolean DEVELOPER_MODE = true;
 
@@ -42,7 +42,7 @@ public class MainActivity
     //region activity default
 
     @Override
-    public void OnManageAnswersInteraction(String answer) {
+    public void OnAnswerRawClick(String answer) {
         Intent intent = new Intent(MainActivity.this, ManageAnswersActivity.class);
         intent.putExtra("answerSection", answer);
         Log.d("Main-navigation", "Launching manage answers activity");
@@ -68,149 +68,6 @@ public class MainActivity
     //endregion
 
     //region interface implementations
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        if (DEVELOPER_MODE) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectDiskReads()
-                    .detectDiskWrites()
-                    .detectNetwork()   // or .detectAll() for all detectable problems
-                    .penaltyLog()
-                    .build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                    .detectLeakedSqlLiteObjects()
-                    .detectLeakedClosableObjects()
-                    .penaltyLog()
-                    .penaltyDeath()
-                    .build());
-        }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
-
-        fabSetup();
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        if (drawer != null) {
-            drawer.addDrawerListener(toggle);
-        }
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            navigationView.setNavigationItemSelectedListener(this);
-            navigationView.getMenu().getItem(0).setChecked(true);
-        }
-
-        if (savedInstanceState == null) {
-            setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
-        }
-
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
-        Log.d("Main-onCreate", "onCreate success");
-    }
-
-
-    //endregion
-
-    //region methods
-
-    /**
-     * Floating action button behaviour
-     */
-    private void fabSetup() {
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        rotateForward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
-        rotateBackward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
-
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("MainActivity-fab", "Launching information level dialog");
-
-                    new MaterialDialog.Builder(MainActivity.this)
-                            .title(R.string.levelOfInformationDialog)
-                            .items(R.array.levelOfInformationOptions)
-                            .negativeText(R.string.cancelButtonDialog)
-                            .itemsCallback(new MaterialDialog.ListCallback() {
-                                @Override
-                                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-
-                                    Intent intent = new Intent(MainActivity.this, AddRecordActivity.class);
-                                    intent.putExtra("levelOfInformation", which);
-                                    Log.d("MainActivity-fab-dialog", "Launching new record activity");
-                                    startActivity(intent);
-                                }
-                            })
-                            .show();
-
-                }
-            });
-        }
-    }
-
-    /**
-     * Change fragment in main activity
-     *
-     * @param fragment      fragment to show
-     * @param toolBarTitle  tool bar title
-     * @param fabVisibility fab visibility
-     */
-    private void setFragment(Fragment fragment,
-                             int toolBarTitle,
-                             int fabVisibility,
-                             boolean addToBackStack) {
-
-
-        Log.d("Main-setFragment", fragment.toString() + " , " + Integer.toString(toolBarTitle) + " , " + Integer.toString(fabVisibility));
-
-        String tag = getString(toolBarTitle);
-
-
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-
-        final int newBackStackLength = fragmentManager.getBackStackEntryCount() + 1;
-
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.replace(R.id.container_body, fragment, tag);
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(tag);
-        }
-        fragmentTransaction.commit();
-
-        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                int nowCount = fragmentManager.getBackStackEntryCount();
-                if (newBackStackLength != nowCount) {
-                    // we don't really care if going back or forward. we already performed the logic here.
-                    fragmentManager.removeOnBackStackChangedListener(this);
-
-                    if (newBackStackLength > nowCount) { // user pressed back
-                        fragmentManager.popBackStackImmediate();
-                    }
-                }
-            }
-        });
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(toolBarTitle);
-        }
-
-        if (fab != null) {
-            fab.setVisibility(fabVisibility);
-        }
-
-    }
 
     /**
      * Action on navigation item click
@@ -292,6 +149,149 @@ public class MainActivity
             drawer.closeDrawer(GravityCompat.START);
         }
         return true;
+    }
+
+
+    //endregion
+
+    //region methods
+
+    /**
+     * Change fragment in main activity
+     *
+     * @param fragment      fragment to show
+     * @param toolBarTitle  tool bar title
+     * @param fabVisibility fab visibility
+     */
+    private void setFragment(Fragment fragment,
+                             int toolBarTitle,
+                             int fabVisibility,
+                             boolean addToBackStack) {
+
+
+        Log.d("Main-setFragment", fragment.toString() + " , " + Integer.toString(toolBarTitle) + " , " + Integer.toString(fabVisibility));
+
+        String tag = getString(toolBarTitle);
+
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+
+        final int newBackStackLength = fragmentManager.getBackStackEntryCount() + 1;
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.replace(R.id.container_body, fragment, tag);
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(tag);
+        }
+        fragmentTransaction.commit();
+
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                int nowCount = fragmentManager.getBackStackEntryCount();
+                if (newBackStackLength != nowCount) {
+                    // we don't really care if going back or forward. we already performed the logic here.
+                    fragmentManager.removeOnBackStackChangedListener(this);
+
+                    if (newBackStackLength > nowCount) { // user pressed back
+                        fragmentManager.popBackStackImmediate();
+                    }
+                }
+            }
+        });
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(toolBarTitle);
+        }
+
+        if (fab != null) {
+            fab.setVisibility(fabVisibility);
+        }
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        if (DEVELOPER_MODE) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+        }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+
+        fabSetup();
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        if (drawer != null) {
+            drawer.addDrawerListener(toggle);
+        }
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
+
+        if (savedInstanceState == null) {
+            setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
+        }
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        Log.d("Main-onCreate", "onCreate success");
+    }
+
+    /**
+     * Floating action button behaviour
+     */
+    private void fabSetup() {
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        rotateForward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
+        rotateBackward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
+
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("MainActivity-fab", "Launching information level dialog");
+
+                    new MaterialDialog.Builder(MainActivity.this)
+                            .title(R.string.levelOfInformationDialog)
+                            .items(R.array.levelOfInformationOptions)
+                            .negativeText(R.string.cancelButtonDialog)
+                            .itemsCallback(new MaterialDialog.ListCallback() {
+                                @Override
+                                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+
+                                    Intent intent = new Intent(MainActivity.this, AddRecordActivity.class);
+                                    intent.putExtra("levelOfInformation", which);
+                                    Log.d("MainActivity-fab-dialog", "Launching new record activity");
+                                    startActivity(intent);
+                                }
+                            })
+                            .show();
+
+                }
+            });
+        }
     }
 
     private void showNotImplemented() {

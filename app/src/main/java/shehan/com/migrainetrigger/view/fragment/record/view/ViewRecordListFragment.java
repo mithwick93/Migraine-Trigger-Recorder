@@ -24,9 +24,9 @@ import shehan.com.migrainetrigger.view.model.RecordViewData;
  * A simple {@link Fragment} subclass.
  */
 public class ViewRecordListFragment extends Fragment
-        implements RecordViewAdapter.RecordListViewClickListener {
+        implements RecordViewAdapter.RecordListViewRowClickListener {
 
-    private RecordListListener mCallback;
+    private RecordListFragmentListener mCallback;
     private View mView;
 
     public ViewRecordListFragment() {
@@ -41,10 +41,10 @@ public class ViewRecordListFragment extends Fragment
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (RecordListListener) context;
+            mCallback = (RecordListFragmentListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement RecordListListener");
+                    + " must implement RecordListFragmentListener");
         }
     }
 
@@ -80,14 +80,14 @@ public class ViewRecordListFragment extends Fragment
 
 
     @Override
-    public void recordListItemClicked(int recordId) {
-        mCallback.onRecordListCallBack(recordId);
+    public void onRecordListRowClicked(int recordId) {
+        mCallback.onRecordListRequest(recordId);
     }
 
 
     //Parent activity must implement this interface to communicate
-    public interface RecordListListener {
-        void onRecordListCallBack(int request);
+    public interface RecordListFragmentListener {
+        void onRecordListRequest(int request);
     }
 
 
@@ -116,24 +116,33 @@ public class ViewRecordListFragment extends Fragment
 
             if (recordViewData.length == 0) {//Records in db
                 AppUtil.showToast(ViewRecordListFragment.this.getContext(), "No records found in database");
-                mCallback.onRecordListCallBack(-1);
+                mCallback.onRecordListRequest(-1);
                 return;
             }
 
             RecyclerView recyclerView = (RecyclerView) mView.findViewById(R.id.record_list_recycler_view);
 
+            recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
+
             // 2. set layoutManger
             recyclerView.setLayoutManager(new LinearLayoutManager(ViewRecordListFragment.this.getActivity()));
 
-            // 3. create an adapter
-            RecordViewAdapter recordViewAdapter = new RecordViewAdapter(ViewRecordListFragment.this, recordViewData);
+            if (recyclerView.getAdapter() != null) {
+                RecordViewAdapter tmpAdapter = (RecordViewAdapter) recyclerView.getAdapter();
+                if (tmpAdapter != null) {
+                    tmpAdapter.setData(recordViewData);
+                }
+            } else {
 
-            // 4. set adapter
-            recyclerView.setAdapter(recordViewAdapter);
+                // 3. create an adapter
+                RecordViewAdapter recordViewAdapter = new RecordViewAdapter(ViewRecordListFragment.this, recordViewData);
 
-            // 5. set item animator to DefaultAnimator
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
+                // 4. set adapter
+                recyclerView.setAdapter(recordViewAdapter);
 
+                // 5. set item animator to DefaultAnimator
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+            }
             AppUtil.showToast(ViewRecordListFragment.this.getContext(), "Showing newest first");
 
         }

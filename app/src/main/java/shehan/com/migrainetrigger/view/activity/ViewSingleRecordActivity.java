@@ -20,7 +20,7 @@ import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFrag
 
 public class ViewSingleRecordActivity
         extends BaseActivity
-        implements ViewRecordSingleFragment.OnFragmentInteractionListener {
+        implements ViewRecordSingleFragment.SingleRecordViewFragmentListener {
 
     private static final boolean DEVELOPER_MODE = true;
     private FloatingActionButton fabUpdate;
@@ -43,6 +43,14 @@ public class ViewSingleRecordActivity
                 })
                 .show();
 
+    }
+
+    @Override
+    public void onSingleRecordViewRequest(int request) {
+        Log.d("ViewSingleRecord", "onTopicRawClicked request : " + request);
+        if (request == 0) {
+            ViewSingleRecordActivity.super.onBackPressed();
+        }
     }
 
     @Override
@@ -112,14 +120,6 @@ public class ViewSingleRecordActivity
                     }
                 }
             });
-        }
-    }
-
-    @Override
-    public void onFragmentInteraction(int request) {
-        Log.d("ViewSingleRecord", "onFragmentInteraction request : " + request);
-        if (request == 0) {
-            ViewSingleRecordActivity.super.onBackPressed();
         }
     }
 

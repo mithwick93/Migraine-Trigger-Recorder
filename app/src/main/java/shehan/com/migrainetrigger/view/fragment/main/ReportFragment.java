@@ -38,14 +38,14 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ReportFragment.OnReportFragmentInteractionListener} interface
+ * {@link ReportFragmentListener} interface
  * to handle interaction events.
  */
 public class ReportFragment extends Fragment {
 
     private CardView cardViewReportSummery;
     private int[] fromDate;
-    private OnReportFragmentInteractionListener mCallback;
+    private ReportFragmentListener mCallback;
     private View mView;
     private int mYear, mMonth, mDay;
     private ProgressDialog nDialog;
@@ -63,11 +63,11 @@ public class ReportFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnReportFragmentInteractionListener) {
-            mCallback = (OnReportFragmentInteractionListener) context;
+        if (context instanceof ReportFragmentListener) {
+            mCallback = (ReportFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnReportFragmentInteractionListener");
+                    + " must implement ReportFragmentListener");
         }
     }
 
@@ -234,13 +234,13 @@ public class ReportFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnReportFragmentInteractionListener {
-        void onReportFragmentInteraction(int request);
+    public interface ReportFragmentListener {
+        void onReportFragmentRequest(int request);
     }
 
     /**
@@ -260,7 +260,7 @@ public class ReportFragment extends Fragment {
 
             if (integer == -1) {
                 AppUtil.showToast(getContext(), "No records found in database");
-                mCallback.onReportFragmentInteraction(0);
+                mCallback.onReportFragmentRequest(0);
             } else {
                 new LoadReportDatesTask().execute();
             }

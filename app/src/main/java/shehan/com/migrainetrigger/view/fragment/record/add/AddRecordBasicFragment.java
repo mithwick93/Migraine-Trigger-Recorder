@@ -87,7 +87,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     //Location
     private GeoLocationService geoLocationService;
     //Callback
-    private AddRecordBasicListener mCallback;
+    private AddRecordBasicFragmentListener mCallback;
 
     public AddRecordBasicFragment() {
         // Required empty public constructor
@@ -227,7 +227,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                     if (result) {
                         AppUtil.showToast(getContext(), "Record was saved successfully");
                         if (mCallback != null) {
-                            mCallback.onBasicRecordInteraction(0);
+                            mCallback.onAddRecordBasicRequest(0);
                         }
 
                     } else {
@@ -381,15 +381,15 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
 
-        if (context instanceof ViewRecordSingleFragment.OnFragmentInteractionListener) {
-            Log.w("AddRecordBasic-onAttach", "Context instanceof ViewRecordSingleFragment.OnFragmentInteractionListener");
+        if (context instanceof ViewRecordSingleFragment.SingleRecordViewFragmentListener) {
+            Log.w("AddRecordBasic-onAttach", "Context instanceof ViewRecordSingleFragment.SingleRecordViewFragmentListener");
             return;
         }
         try {
-            mCallback = (AddRecordBasicListener) context;
+            mCallback = (AddRecordBasicFragmentListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement AddRecordBasicListener");
+                    + " must implement AddRecordBasicFragmentListener");
         }
     }
 
@@ -788,13 +788,13 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     /**
      * Parent activity must implement this interface to communicate
      */
-    public interface AddRecordBasicListener {
+    public interface AddRecordBasicFragmentListener {
         /**
          * Parent activity must implement this method to communicate
          *
          * @param request inform parent about request (0 - dismiss activity)
          */
-        void onBasicRecordInteraction(int request);
+        void onAddRecordBasicRequest(int request);
     }
 
     //
