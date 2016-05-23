@@ -1,24 +1,11 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
-    <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-    <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-    <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-    <!--<item name="colorAccent">@color/colorAccent</item>-->
-    <!--<item name="android:windowDisablePreview">true</item>-->
-
-    <!--</style>-->
-
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppThemeLight" parent="Theme.AppCompat.Light">
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
         <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
         <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse</item>
-        <!--<item name="android:windowDisablePreview">true</item>-->
+        <item name="android:windowDisablePreview">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!-- some other theme configurations for actionbar, overflow menu etc. -->
@@ -29,14 +16,12 @@
         <item name="themedFAQChevron">@drawable/ic_chevron_right_black_24dp</item>
     </style>
 
-    <style name="AppTheme.Dark" parent="Theme.AppCompat">
-        <item name="colorPrimary">@color/colorPrimaryInverse</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDarkInverse</item>
-        <item name="colorAccent">@color/colorAccentInverse</item>
+    <style name="AppThemeDark" parent="Theme.AppCompat">
         <item name="android:textColorPrimary">@color/textColorPrimaryInverse</item>
         <item name="android:textColorSecondary">@color/textColorSecondaryInverse</item>
         <item name="android:textColorPrimaryInverse">@color/textColorPrimary</item>
         <item name="android:textColorSecondaryInverse">@color/textColorSecondary</item>
+        <item name="android:windowDisablePreview">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
@@ -45,6 +30,102 @@
         <item name="themedWeatherPressure">@drawable/ic_pressure_inverse</item>
         <item name="themedFAQChevron">@drawable/ic_chevron_right_white_24dp</item>
 
+    </style>
+
+    <style name="AppThemeLight.RedOnYellow" parent="AppThemeLight">
+        <item name="colorPrimary">@color/primary_red_yellow</item>
+        <item name="colorPrimaryDark">@color/primary_dark_red_yellow</item>
+        <item name="colorAccent">@color/accent_red_yellow</item>
+
+        <item name="themedNavHeaderColor">@color/primary_red_yellow</item>
+    </style>
+
+    <style name="AppThemeDark.RedOnYellow" parent="AppThemeDark">
+        <item name="colorPrimary">@color/primary_red_yellow</item>
+        <item name="colorPrimaryDark">@color/primary_dark_red_yellow</item>
+        <item name="colorAccent">@color/accent_red_yellow</item>
+
+        <item name="themedNavHeaderColor">@color/primary_red_yellow</item>
+    </style>
+
+    <style name="AppThemeLight.VioletOnPink" parent="AppThemeLight">
+        <item name="colorPrimary">@color/primary_violet_Pink</item>
+        <item name="colorPrimaryDark">@color/primary_dark_violet_Pink</item>
+        <item name="colorAccent">@color/accent_violet_Pink</item>
+
+        <item name="themedNavHeaderColor">@color/primary_violet_Pink</item>
+    </style>
+
+    <style name="AppThemeDark.VioletOnPink" parent="AppThemeDark">
+        <item name="colorPrimary">@color/primary_violet_Pink</item>
+        <item name="colorPrimaryDark">@color/primary_dark_violet_Pink</item>
+        <item name="colorAccent">@color/accent_violet_Pink</item>
+
+        <item name="themedNavHeaderColor">@color/primary_violet_Pink</item>
+    </style>
+
+    <style name="AppThemeLight.OrangeOnRed" parent="AppThemeLight">
+        <item name="colorPrimary">@color/primary_orange_red</item>
+        <item name="colorPrimaryDark">@color/primary_dark_orange_red</item>
+        <item name="colorAccent">@color/accent_orange_red</item>
+
+        <item name="themedNavHeaderColor">@color/primary_orange_red</item>
+    </style>
+
+    <style name="AppThemeDark.OrangeOnRed" parent="AppThemeDark">
+        <item name="colorPrimary">@color/primary_orange_red</item>
+        <item name="colorPrimaryDark">@color/primary_dark_orange_red</item>
+        <item name="colorAccent">@color/accent_orange_red</item>
+
+        <item name="themedNavHeaderColor">@color/primary_orange_red</item>
+    </style>
+
+    <style name="AppThemeLight.VioletOnSkyBlue" parent="AppThemeLight">
+        <item name="colorPrimary">@color/primary_violet_skyBlue</item>
+        <item name="colorPrimaryDark">@color/primary_dark_violet_skyBlue</item>
+        <item name="colorAccent">@color/accent_violet_skyBlue</item>
+
+        <item name="themedNavHeaderColor">@color/primary_violet_skyBlue</item>
+    </style>
+
+    <style name="AppThemeDark.VioletOnSkyBlue" parent="AppThemeDark">
+        <item name="colorPrimary">@color/primary_violet_skyBlue</item>
+        <item name="colorPrimaryDark">@color/primary_dark_violet_skyBlue</item>
+        <item name="colorAccent">@color/accent_violet_skyBlue</item>
+
+        <item name="themedNavHeaderColor">@color/primary_violet_skyBlue</item>
+    </style>
+
+    <style name="AppThemeLight.PinkOnTeal" parent="AppThemeLight">
+        <item name="colorPrimary">@color/primary_pink_teal</item>
+        <item name="colorPrimaryDark">@color/primary_dark_pink_teal</item>
+        <item name="colorAccent">@color/accent_pink_teal</item>
+
+        <item name="themedNavHeaderColor">@color/primary_pink_teal</item>
+    </style>
+
+    <style name="AppThemeDark.PinkOnTeal" parent="AppThemeDark">
+        <item name="colorPrimary">@color/primary_pink_teal</item>
+        <item name="colorPrimaryDark">@color/primary_dark_pink_teal</item>
+        <item name="colorAccent">@color/accent_pink_teal</item>
+
+        <item name="themedNavHeaderColor">@color/primary_pink_teal</item>
+    </style>
+
+    <style name="AppThemeLight.PinkOnViolet" parent="AppThemeLight">
+        <item name="colorPrimary">@color/primary_pink_violet</item>
+        <item name="colorPrimaryDark">@color/primary_dark_pink_violet</item>
+        <item name="colorAccent">@color/accent_pink_violet</item>
+
+        <item name="themedNavHeaderColor">@color/primary_pink_violet</item>
+    </style>
+
+    <style name="AppThemeDark.PinkOnViolet" parent="AppThemeDark">
+        <item name="colorPrimary">@color/primary_pink_violet</item>
+        <item name="colorPrimaryDark">@color/primary_dark_pink_violet</item>
+        <item name="colorAccent">@color/accent_pink_violet</item>
+
+        <item name="themedNavHeaderColor">@color/primary_pink_violet</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

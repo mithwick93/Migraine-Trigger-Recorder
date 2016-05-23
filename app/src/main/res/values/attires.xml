@@ -4,4 +4,6 @@
     <attr name="themedWeatherHumidity" format="reference"/>
     <attr name="themedWeatherPressure" format="reference"/>
     <attr name="themedFAQChevron" format="reference"/>
+    <attr name="themedNavHeaderColor" format="color"/>
+
 </resources>

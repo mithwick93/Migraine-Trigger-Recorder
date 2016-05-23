@@ -4,12 +4,20 @@
         android:key="pref_key_theme_settings"
         android:title="@string/preferences_title_theme">
         <com.afollestad.materialdialogs.prefs.MaterialListPreference
-            android:defaultValue="light_theme"
-            android:entries="@array/listArray"
-            android:entryValues="@array/listValues"
+            android:defaultValue="Light"
+            android:entries="@array/themeListArray"
+            android:entryValues="@array/themeListValues"
             android:key="pref_appTheme"
             android:summary="@string/pref_theme_summery"
             android:title="@string/pref_theme_title"/>
+
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:defaultValue="Red on yellow"
+            android:entries="@array/colorListArray"
+            android:entryValues="@array/colorListValues"
+            android:key="pref_appColor"
+            android:summary="@string/pref_color_scheme_summery"
+            android:title="@string/pref_color_scheme_title"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/preferences_title_backup">

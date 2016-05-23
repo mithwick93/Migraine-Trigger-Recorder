@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.faq.AlternativeFragment;
 import shehan.com.migrainetrigger.view.fragment.faq.CausesFragment;
@@ -27,6 +28,12 @@ public class FAQActivity
         implements FAQTopicsFragment.TopicSelectedListener {
 
     private static final boolean DEVELOPER_MODE = true;
+
+    @Override
+    public void onResume() {
+        setCustomTheme();
+        super.onResume();
+    }
 
     /**
      * Change content of faq according to item selected
@@ -127,5 +134,6 @@ public class FAQActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.faq_container, fragment);
         fragmentTransaction.commit();
+        AppUtil.showToast(this, "This feature requires an active internet connection");
     }
 }

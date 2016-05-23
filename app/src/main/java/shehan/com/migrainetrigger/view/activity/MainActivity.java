@@ -16,8 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -37,7 +35,6 @@ public class MainActivity
 
     private FloatingActionButton fab;
     private Boolean isFabOpen = false;
-    private Animation rotateForward, rotateBackward;
 
     //region activity default
 
@@ -62,6 +59,12 @@ public class MainActivity
                 super.onBackPressed();
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        setCustomTheme();
+        super.onResume();
     }
 
 
@@ -264,8 +267,6 @@ public class MainActivity
     private void fabSetup() {
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        rotateForward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
-        rotateBackward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
 
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {

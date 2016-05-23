@@ -72,6 +72,12 @@ public class AddRecordActivity
     }
 
     @Override
+    public void onResume() {
+        setCustomTheme();
+        super.onResume();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEVELOPER_MODE) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()

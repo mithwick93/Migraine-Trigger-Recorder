@@ -4,14 +4,31 @@ import android.os.Bundle;
 import android.os.StrictMode;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.main.SettingsFragment;
 
 /**
  * Created by Shehan on 12/05/2016.
  */
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends BaseActivity implements SettingsFragment.ThemeChangeListener {
     private static final boolean DEVELOPER_MODE = true;
+
+    @Override
+    public void onBackPressed() {
+        AppUtil.showToast(this, "Please click action bar back button");
+    }
+
+    @Override
+    public void onResume() {
+        setCustomTheme();
+        super.onResume();
+    }
+
+    @Override
+    public void onThemeChanged() {
+        setCustomTheme();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +57,10 @@ public class SettingsActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        SettingsFragment settingsFragment = new SettingsFragment();
+        settingsFragment.setThemeChangeListener(this);
         getFragmentManager().beginTransaction()
-                .replace(R.id.settings_container, new SettingsFragment())
+                .replace(R.id.settings_container, settingsFragment)
                 .commit();
     }
 }

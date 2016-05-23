@@ -17,6 +17,13 @@ public class ManageAnswersActivity extends BaseActivity {
     private static final boolean DEVELOPER_MODE = true;
 
     @Override
+    public void onResume() {
+        setCustomTheme();
+        super.onResume();
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEVELOPER_MODE) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()

@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="listArray">
-        <item>Light theme</item>
-        <item>Dark theme</item>
+    <string-array name="themeListArray">
+        <item>Light</item>
+        <item>Dark</item>
     </string-array>
 
-    <string-array name="listValues">
-        <item>light_theme</item>
-        <item>dark_theme</item>
+    <string-array name="themeListValues">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="colorListArray">
+        <item>Red on yellow</item>
+        <item>Violet on pink</item>
+        <item>Orange on red</item>
+        <item>Violet on sky blue</item>
+        <item>Pink on teal</item>
+        <item>Pink on violet</item>
+    </string-array>
+
+    <string-array name="colorListValues">
+        <item>Red on yellow</item>
+        <item>Violet on pink</item>
+        <item>Orange on red</item>
+        <item>Violet on sky blue</item>
+        <item>Pink on teal</item>
+        <item>Pink on violet</item>
     </string-array>
 </resources>

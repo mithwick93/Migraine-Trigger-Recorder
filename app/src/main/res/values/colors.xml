@@ -1,29 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<color name="colorPrimary">#3F51B5</color>-->
-    <!--<color name="colorPrimaryDark">#303F9F</color>-->
-    <!--<color name="colorAccent">#FF4081</color>-->
-    <!--<color name="colorSelectedCalender">#9E9E9E</color>-->
-    <!--<color name="colorWindowBackground">#000000</color>-->
-    <!--<color name="colorTextColorPrimary">#ffffff</color>-->
-    <!--<color name="colorControlBackground">#fafafa</color>-->
-    <!-- brand color: orange -->
 
-    <color name="colorPrimary">#FF9800</color>
-    <color name="colorPrimaryDark">#F57C00</color>
-    <color name="colorPrimaryLight">#FFE0B2</color>
-    <!-- accent color: red -->
-    <color name="colorAccent">#FF5252</color>
-    <!-- text color: white -->
+    <!--Theme Colors-->
+    <!---->
+    <!--Red on Yellow-->
+    <color name="primary_red_yellow">#FF9800</color>
+    <color name="primary_dark_red_yellow">#F57C00</color>
+    <color name="accent_red_yellow">#FF5252</color>
+
+    <!--Violet on Pink-->
+    <color name="primary_violet_Pink">#e91e63</color>
+    <color name="primary_dark_violet_Pink">#c2185b</color>
+    <color name="accent_violet_Pink">#7c4dff</color>
+
+    <!--Violet on Sky blue-->
+    <color name="primary_violet_skyBlue">#00bcd4</color>
+    <color name="primary_dark_violet_skyBlue">#0097a7</color>
+    <color name="accent_violet_skyBlue">#e040fb</color>
+
+    <!--Orange on Red-->
+    <color name="primary_orange_red">#e51c23</color>
+    <color name="primary_dark_orange_red">#d01716</color>
+    <color name="accent_orange_red">#ff6e40</color>
+
+    <!--Pink on Teal-->
+    <color name="primary_pink_teal">#009688</color>
+    <color name="primary_dark_pink_teal">#00796b</color>
+    <color name="accent_pink_teal">#ff4081</color>
+
+    <!--Pink on Violet-->
+    <color name="primary_pink_violet">#3f51b5</color>
+    <color name="primary_dark_pink_violet">#303f9f</color>
+    <color name="accent_pink_violet">#ff4081</color>
+
+    <!--Light Theme-->
     <color name="textColorPrimary">#DE000000</color>
     <color name="textColorSecondary">#9E9E9E</color>
-    <!-- inverse text color: 87% black -->
+
+    <!--Dark Theme-->
     <color name="textColorPrimaryInverse">#FFFFFF</color>
     <color name="textColorSecondaryInverse">#9E9E9E</color>
-    <!-- alternative color palette -->
-    <color name="colorPrimaryInverse">#FF9800</color>
-    <color name="colorPrimaryDarkInverse">#F57C00</color>
-    <color name="colorAccentInverse">#FF5252</color>
-
 
 </resources>

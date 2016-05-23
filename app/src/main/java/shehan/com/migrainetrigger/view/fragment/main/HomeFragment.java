@@ -1,11 +1,13 @@
 package shehan.com.migrainetrigger.view.fragment.main;
 
 
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,10 +74,21 @@ public class HomeFragment extends Fragment {
             if (status.startsWith("N")) {
                 mTxtStatus.setTextColor(Color.parseColor("#9E9E9E"));
             } else if (status.startsWith("M")) {
-                mTxtStatus.setTextColor(getResources().getColor(R.color.colorAccent));
+                mTxtStatus.setTextColor(fetchAccentColor());
             } else if (status.startsWith("G")) {
                 mTxtStatus.setTextColor(Color.parseColor("#009688"));
             }
+        }
+
+        private int fetchAccentColor() {
+            TypedValue typedValue = new TypedValue();
+
+            TypedArray a = HomeFragment.this.getActivity().obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent});
+            int color = a.getColor(0, 0);
+
+            a.recycle();
+
+            return color;
         }
     }
 }

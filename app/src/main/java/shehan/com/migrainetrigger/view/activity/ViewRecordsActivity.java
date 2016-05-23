@@ -44,6 +44,13 @@ public class ViewRecordsActivity
     }
 
     @Override
+    public void onResume() {
+        setCustomTheme();
+        super.onResume();
+    }
+
+
+    @Override
     public String toString() {
         return "View records";
     }

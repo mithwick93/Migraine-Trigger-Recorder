@@ -15,7 +15,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,6 +35,8 @@ public class SettingsFragment extends PreferenceFragment {
 
     public static final int PERMISSION_WRITE_EXTERNAL_STORAGE_BACKUP = 10;
     public static final int PERMISSION_WRITE_EXTERNAL_STORAGE_RESTORE = 20;
+    private static final String ARG_THEME_CHANGE_LISTENER = "themeChangeListener";
+    private ThemeChangeListener themeChangeListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,11 +46,26 @@ public class SettingsFragment extends PreferenceFragment {
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
-        ListPreference listPreference = (ListPreference) findPreference("pref_appTheme");
-        listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        ListPreference themePreference = (ListPreference) findPreference("pref_appTheme");
+        themePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Toast.makeText(getActivity(), "Relaunch application for changes to take effect ", Toast.LENGTH_LONG).show();
+                AppUtil.showToast(getActivity(), "Theme will be applied when you close the settings window");
+                if (themeChangeListener != null) {
+                    //themeChangeListener.onThemeChanged();
+                }
+                return true;
+            }
+        });
+
+        ListPreference colorSchemePreference = (ListPreference) findPreference("pref_appColor");
+        colorSchemePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                AppUtil.showToast(getActivity(), "Color scheme will be applied when you close the settings window");
+                if (themeChangeListener != null) {
+                    //themeChangeListener.onThemeChanged();
+                }
                 return true;
             }
         });
@@ -104,7 +120,6 @@ public class SettingsFragment extends PreferenceFragment {
                 })
                 .show();
     }
-
 
     public boolean isStoragePermissionGranted(final int request) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -162,6 +177,14 @@ public class SettingsFragment extends PreferenceFragment {
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    public void setThemeChangeListener(ThemeChangeListener themeChangeListener) {
+        this.themeChangeListener = themeChangeListener;
+    }
+
+    public interface ThemeChangeListener {
+        void onThemeChanged();
     }
 
     /**
@@ -370,5 +393,4 @@ public class SettingsFragment extends PreferenceFragment {
             }
         }
     }
-
 }

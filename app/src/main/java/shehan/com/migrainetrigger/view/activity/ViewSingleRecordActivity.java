@@ -46,6 +46,13 @@ public class ViewSingleRecordActivity
     }
 
     @Override
+    public void onResume() {
+        setCustomTheme();
+        super.onResume();
+    }
+
+
+    @Override
     public void onSingleRecordViewRequest(int request) {
         Log.d("ViewSingleRecord", "onTopicRawClicked request : " + request);
         if (request == 0) {
