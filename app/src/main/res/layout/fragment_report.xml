@@ -62,7 +62,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
                     android:gravity="center_vertical"
-                    android:text="▼"
+                    android:text="@string/report_down"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="18sp"/>
 
@@ -107,7 +107,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignTop="@+id/txt_report_to"
                     android:gravity="center_vertical"
-                    android:text="▼"
+                    android:text="@string/report_down"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="18sp"/>
             </RelativeLayout>

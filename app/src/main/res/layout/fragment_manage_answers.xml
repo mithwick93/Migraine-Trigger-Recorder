@@ -1,257 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
 
-    <ScrollView
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none">
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none">
+        android:orientation="vertical"
+        android:padding="3dp">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="3dp">
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_answers_triggers"
+            cardCornerRadius="5dp"
+            contentPadding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_view_answers_triggers"
-                cardCornerRadius="5dp"
-                contentPadding="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:background="?android:attr/selectableItemBackground">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="5dp">
 
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="?android:attr/selectableItemBackground">
+                <TextView
+                    android:id="@+id/txt_answers_triggers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/manage_answers_triggers"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:padding="5dp">
+            </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/txt_answers_triggers"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="24dp"
-                        android:text="@string/manage_answers_triggers"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textStyle="bold"/>
+        </android.support.v7.widget.CardView>
 
-                </RelativeLayout>
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_answers_symptoms"
+            cardCornerRadius="5dp"
+            contentPadding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
 
-            </android.support.v7.widget.CardView>
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:background="?android:attr/selectableItemBackground">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_view_answers_symptoms"
-                cardCornerRadius="5dp"
-                contentPadding="10dp"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="5dp">
 
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="?android:attr/selectableItemBackground">
+                <TextView
+                    android:id="@+id/txt_answers_symptoms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/manage_answers_symptoms"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:padding="5dp">
+            </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/txt_answers_symptoms"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="24dp"
-                        android:text="@string/manage_answers_symptoms"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textStyle="bold"/>
+        </android.support.v7.widget.CardView>
 
-                </RelativeLayout>
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_answers_activities"
+            cardCornerRadius="5dp"
+            contentPadding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
 
-            </android.support.v7.widget.CardView>
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:background="?android:attr/selectableItemBackground">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_view_answers_activities"
-                cardCornerRadius="5dp"
-                contentPadding="10dp"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="5dp">
 
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="?android:attr/selectableItemBackground">
+                <TextView
+                    android:id="@+id/txt_answers_activities"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/manage_answers_activities"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:padding="5dp">
+            </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/txt_answers_activities"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="24dp"
-                        android:text="@string/manage_answers_activities"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textStyle="bold"/>
+        </android.support.v7.widget.CardView>
 
-                </RelativeLayout>
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_answers_locations"
+            cardCornerRadius="5dp"
+            contentPadding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
 
-            </android.support.v7.widget.CardView>
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:background="?android:attr/selectableItemBackground">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_view_answers_locations"
-                cardCornerRadius="5dp"
-                contentPadding="10dp"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="5dp">
 
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="?android:attr/selectableItemBackground">
+                <TextView
+                    android:id="@+id/txt_answers_locations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/manage_answers_locations"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:padding="5dp">
+            </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/txt_answers_locations"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="24dp"
-                        android:text="@string/manage_answers_locations"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textStyle="bold"/>
+        </android.support.v7.widget.CardView>
 
-                </RelativeLayout>
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_answers_pain_areas"
+            cardCornerRadius="5dp"
+            contentPadding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
 
-            </android.support.v7.widget.CardView>
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:background="?android:attr/selectableItemBackground">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_view_answers_pain_areas"
-                cardCornerRadius="5dp"
-                contentPadding="10dp"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="5dp">
 
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="?android:attr/selectableItemBackground">
+                <TextView
+                    android:id="@+id/txt_answers_pain_areas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/manage_answers_pain_areas"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:padding="5dp">
+            </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/txt_answers_pain_areas"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="24dp"
-                        android:text="@string/manage_answers_pain_areas"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textStyle="bold"/>
+        </android.support.v7.widget.CardView>
 
-                </RelativeLayout>
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_answers_medicines"
+            cardCornerRadius="5dp"
+            contentPadding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
 
-            </android.support.v7.widget.CardView>
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:background="?android:attr/selectableItemBackground">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_view_answers_medicines"
-                cardCornerRadius="5dp"
-                contentPadding="10dp"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="5dp">
 
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="?android:attr/selectableItemBackground">
+                <TextView
+                    android:id="@+id/txt_answers_medicines"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/manage_answers_medicines"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:padding="5dp">
+            </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/txt_answers_medicines"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="24dp"
-                        android:text="@string/manage_answers_medicines"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textStyle="bold"/>
+        </android.support.v7.widget.CardView>
 
-                </RelativeLayout>
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_answers_reliefs"
+            cardCornerRadius="5dp"
+            contentPadding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
 
-            </android.support.v7.widget.CardView>
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:background="?android:attr/selectableItemBackground">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_view_answers_reliefs"
-                cardCornerRadius="5dp"
-                contentPadding="10dp"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="5dp">
 
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="?android:attr/selectableItemBackground">
+                <TextView
+                    android:id="@+id/txt_answers_reliefs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/manage_answers_reliefs"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:padding="5dp">
+            </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/txt_answers_reliefs"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="24dp"
-                        android:text="@string/manage_answers_reliefs"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textStyle="bold"/>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</ScrollView>

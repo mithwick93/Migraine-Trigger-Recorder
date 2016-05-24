@@ -18,7 +18,6 @@ import java.util.Locale;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.recyclerviewhelper.ItemTouchHelperAdapter;
-import shehan.com.migrainetrigger.utility.recyclerviewhelper.ItemTouchHelperViewHolder;
 import shehan.com.migrainetrigger.utility.recyclerviewhelper.OnStartDragListener;
 import shehan.com.migrainetrigger.view.model.AnswerSectionViewData;
 
@@ -123,7 +122,7 @@ public class PriorityAnswerSectionAdapter extends RecyclerView.Adapter<PriorityA
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements
-            ItemTouchHelperViewHolder, View.OnClickListener {
+            View.OnClickListener {
 
         public final CardView cardViewAnswerRaw;
         public final ImageView handleView;
@@ -148,14 +147,6 @@ public class PriorityAnswerSectionAdapter extends RecyclerView.Adapter<PriorityA
             } else {
                 Log.i("AnswerViewAdapter", "Click position error");
             }
-        }
-
-        @Override
-        public void onItemClear() {
-        }
-
-        @Override
-        public void onItemSelected() {
         }
     }
 }

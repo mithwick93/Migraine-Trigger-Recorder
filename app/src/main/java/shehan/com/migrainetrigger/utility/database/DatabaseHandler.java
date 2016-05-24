@@ -1,8 +1,10 @@
 package shehan.com.migrainetrigger.utility.database;
 
+import android.annotation.SuppressLint;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.util.Log;
 
 import shehan.com.migrainetrigger.utility.MigraineTriggerApplication;
@@ -74,6 +76,16 @@ public class DatabaseHandler implements DatabaseDefinition {
     public static class DataBaseHelper extends SQLiteOpenHelper {
         public DataBaseHelper() {
             super(MigraineTriggerApplication.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
+        }
+
+        @SuppressLint("NewApi")
+        @Override
+        public void onConfigure(SQLiteDatabase database) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                database.setForeignKeyConstraintsEnabled(true);
+            } else {
+                database.execSQL("PRAGMA foreign_keys=ON");
+            }
         }
 
         @Override

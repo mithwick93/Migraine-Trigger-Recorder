@@ -1,13 +1,11 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/themedNavHeaderColor"
-        android:contentDescription="Splash screen background"/>
+        android:contentDescription="@string/splash_scree_background"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Migraine Trigger"
+            android:text="@string/splash_screen_app_name"
             android:textColor="@android:color/black"
             android:textStyle="bold"/>
 
@@ -39,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="alpha 0.5"
+            android:text="@string/splash_screen_app_version"
             android:textColor="@android:color/primary_text_dark"/>
 
         <ProgressBar
@@ -51,6 +49,4 @@
             android:layout_margin="10dp"/>
 
     </LinearLayout>
-
-
-</FrameLayout>
+</merge>

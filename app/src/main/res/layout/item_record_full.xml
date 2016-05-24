@@ -1,246 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/tools"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical">
 
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view_record_full"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:layout_marginEnd="7dp"
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view_record_intermediate"
+    android:layout_marginStart="7dp"
+    android:layout_marginTop="10dp"
+    tools:cardCornrRadius="2dp">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="7dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
 
-        app:cardCornrRadius="2dp">
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:animateLayoutChanges="true"
-            android:orientation="vertical">
+            android:layout_height="70dp"
+            android:clickable="true">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:clickable="true">
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp"
+                    android:text="@string/record_lbl_location"
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:paddingEnd="5dp"
-                        android:paddingStart="5dp"
-                        android:text="@string/record_lbl_location"
-                        android:textAppearance="?android:attr/textAppearanceLarge"/>
+                <EditText
+                    android:id="@+id/txt_record_location"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:inputType="textNoSuggestions|textMultiLine"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                    <EditText
-                        android:id="@+id/txt_record_location"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:inputType="textNoSuggestions|textMultiLine"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+            </LinearLayout>
 
-                </LinearLayout>
+        </RelativeLayout>
 
-            </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:clickable="true">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:clickable="true">
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp"
+                    android:text="@string/record_lbl_pain_in"
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:paddingEnd="5dp"
-                        android:paddingStart="5dp"
-                        android:text="@string/record_lbl_pain_in"
-                        android:textAppearance="?android:attr/textAppearanceLarge"/>
+                <EditText
+                    android:id="@+id/txt_record_affected_areas"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:inputType="textNoSuggestions|textMultiLine"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                    <EditText
-                        android:id="@+id/txt_record_affected_areas"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:inputType="textNoSuggestions|textMultiLine"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+            </LinearLayout>
 
-                </LinearLayout>
+        </RelativeLayout>
 
-            </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:clickable="true">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:clickable="true">
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp"
+                    android:text="@string/record_lbl_medicine"
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:paddingEnd="5dp"
-                        android:paddingStart="5dp"
-                        android:text="@string/record_lbl_medicine"
-                        android:textAppearance="?android:attr/textAppearanceLarge"/>
+                <EditText
+                    android:id="@+id/txt_record_medicine"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:inputType="textNoSuggestions|textMultiLine"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                    <EditText
-                        android:id="@+id/txt_record_medicine"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:inputType="textNoSuggestions|textMultiLine"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+            </LinearLayout>
+        </RelativeLayout>
 
-                </LinearLayout>
-            </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/record_full_layout_effective_medicine"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:clickable="true">
 
-            <RelativeLayout
-                android:id="@+id/record_full_layout_effective_medicine"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:clickable="true">
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp"
+                    android:text="@string/record_lbl_effective_medicine"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="15sp"/>
 
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:paddingEnd="5dp"
-                        android:paddingStart="5dp"
-                        android:text="@string/record_lbl_effective_medicine"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textSize="15sp"/>
+                <EditText
+                    android:id="@+id/txt_record_effective_medicine"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:inputType="textNoSuggestions|textMultiLine"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                    <EditText
-                        android:id="@+id/txt_record_effective_medicine"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:inputType="textNoSuggestions|textMultiLine"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+            </LinearLayout>
 
-                </LinearLayout>
+        </RelativeLayout>
 
-            </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:clickable="true">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:clickable="true">
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp"
+                    android:text="@string/record_lbl_relief"
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:paddingEnd="5dp"
-                        android:paddingStart="5dp"
-                        android:text="@string/record_lbl_relief"
-                        android:textAppearance="?android:attr/textAppearanceLarge"/>
+                <EditText
+                    android:id="@+id/txt_record_relief"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:inputType="textNoSuggestions|textMultiLine"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                    <EditText
-                        android:id="@+id/txt_record_relief"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:inputType="textNoSuggestions|textMultiLine"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+            </LinearLayout>
 
-                </LinearLayout>
+        </RelativeLayout>
 
-            </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/record_full_layout_effective_relief"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:clickable="true">
 
-            <RelativeLayout
-                android:id="@+id/record_full_layout_effective_relief"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:clickable="true">
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp"
+                    android:text="@string/record_lbl_effective_reliefs"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="15sp"/>
 
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:paddingEnd="5dp"
-                        android:paddingStart="5dp"
-                        android:text="@string/record_lbl_effective_reliefs"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textSize="15sp"/>
+                <EditText
+                    android:id="@+id/txt_record_effective_reliefs"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:inputType="textNoSuggestions|textMultiLine"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                    <EditText
-                        android:id="@+id/txt_record_effective_reliefs"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:inputType="textNoSuggestions|textMultiLine"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+            </LinearLayout>
 
-                </LinearLayout>
-
-            </RelativeLayout>
+        </RelativeLayout>
 
 
-        </LinearLayout>
+    </LinearLayout>
 
-    </android.support.v7.widget.CardView>
-
-
-</LinearLayout>
+</android.support.v7.widget.CardView>

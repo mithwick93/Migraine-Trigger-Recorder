@@ -23,6 +23,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.BodyAreaController;
@@ -141,7 +142,7 @@ public class AnswerSectionFragment
 
     private void handleAdd() {
         //On add new button click, show dialog to get name, place at bottom , add to db
-        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase();
+        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
         if (answerSection.equals("Activities")) {
             content = "activity";
         }
@@ -220,7 +221,7 @@ public class AnswerSectionFragment
     }
 
     private void initiateListDelete(final List<AnswerSectionViewData> lst) {
-        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase();
+        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
         if (answerSection.equals("Activities")) {
             content = "activity";
         }
@@ -239,7 +240,7 @@ public class AnswerSectionFragment
     }
 
     private void initiateListReorder(final List<AnswerSectionViewData> lst) {
-        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase();
+        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
         if (answerSection.equals("Activities")) {
             content = "activity";
         }
@@ -299,7 +300,7 @@ public class AnswerSectionFragment
     }
 
     private void initiateUpdateAnswer(final AnswerSectionViewData answerSectionViewData, final boolean setPriority) {
-        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase();
+        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
         if (answerSection.equals("Activities")) {
             content = "activity";
         }
