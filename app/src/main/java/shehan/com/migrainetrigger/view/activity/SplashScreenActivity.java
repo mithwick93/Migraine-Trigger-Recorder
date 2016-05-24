@@ -35,7 +35,7 @@ public class SplashScreenActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Void... params) {
             //First initialization
-            DatabaseHandler.getWritableDatabase();
+            DatabaseHandler.testDatabase();
             intent = new Intent(SplashScreenActivity.this, MainActivity.class);
             try {
                 Thread.sleep(1500);

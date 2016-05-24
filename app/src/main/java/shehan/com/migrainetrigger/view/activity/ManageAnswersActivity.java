@@ -9,7 +9,7 @@ import android.util.Log;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.AppUtil;
-import shehan.com.migrainetrigger.view.fragment.answer.AnswerSectionFragment;
+import shehan.com.migrainetrigger.view.fragment.main.AnswerSectionFragment;
 
 public class ManageAnswersActivity extends BaseActivity {
 

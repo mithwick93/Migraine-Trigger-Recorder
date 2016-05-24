@@ -21,20 +21,17 @@ public class DatabaseHandler implements DatabaseDefinition {
     }
 
     /**
-     * Open database for read
-     *
-     * @return - SQLiteDatabase
-     * @throws SQLiteException
+     * Initialize or test database
      */
-    public static SQLiteDatabase getReadableDatabase() throws SQLiteException {
-        if (DBHelper == null) {
-            synchronized (DatabaseHandler.class) {
-                DBHelper = new DataBaseHelper();
-                Log.d("DatabaseHandler", "new DataBaseHelper()");
-            }
+    public static void testDatabase() {
+        Log.d("DatabaseHandler", "testing database");
+        try {
+            getWritableDatabase();
+            getReadableDatabase();
+        } catch (SQLiteException ex) {
+            Log.e("DatabaseHandler", "Database test failed");
+            ex.printStackTrace();
         }
-        Log.d("DatabaseHandler", "return getReadableDatabase");
-        return DBHelper.getReadableDatabase();
     }
 
     /**
@@ -52,6 +49,23 @@ public class DatabaseHandler implements DatabaseDefinition {
         }
         Log.d("DatabaseHandler", "return getWritableDatabase");
         return DBHelper.getWritableDatabase();
+    }
+
+    /**
+     * Open database for read
+     *
+     * @return - SQLiteDatabase
+     * @throws SQLiteException
+     */
+    public static SQLiteDatabase getReadableDatabase() throws SQLiteException {
+        if (DBHelper == null) {
+            synchronized (DatabaseHandler.class) {
+                DBHelper = new DataBaseHelper();
+                Log.d("DatabaseHandler", "new DataBaseHelper()");
+            }
+        }
+        Log.d("DatabaseHandler", "return getReadableDatabase");
+        return DBHelper.getReadableDatabase();
     }
 
     /**

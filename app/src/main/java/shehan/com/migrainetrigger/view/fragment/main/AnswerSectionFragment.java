@@ -1,4 +1,4 @@
-package shehan.com.migrainetrigger.view.fragment.answer;
+package shehan.com.migrainetrigger.view.fragment.main;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
