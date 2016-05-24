@@ -111,7 +111,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                 startTimestamp = getTimeStampDate(tmpStr);
             }
         } else {
-            //showToast(getContext(), "Showing current weather data");
             startTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
         }
         if (location != null) {
@@ -462,10 +461,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     public boolean onOptionsItemSelected(MenuItem item) {
         //override this in sub classes
         int id = item.getItemId();
-//        if (id == R.id.action_confirm) {
-//            recordAcceptAction();
-//            return true;
-//        } else
         if (id == R.id.action_refresh) {
             showWeather();
             return true;

@@ -34,10 +34,6 @@ public class LifeActivityController {
         return DBActivityDAO.addActivityRecord(activityId, recordId);
     }
 
-    public static void addNewActivity(LifeActivity activity) {
-
-    }
-
     public static long deleteActivity(int id) {
         return DBActivityDAO.deleteActivity(id);
     }
@@ -47,7 +43,7 @@ public class LifeActivityController {
     }
 
     public static LifeActivity getActivityById(int id) {
-        return null;
+        return DBActivityDAO.getActivity(id);
     }
 
     public static List<AnswerSectionViewData> getAnswerSectionViewData() {
@@ -71,10 +67,6 @@ public class LifeActivityController {
 
     public static int getLastRecordId() {
         return DBActivityDAO.getLastRecordId();
-    }
-
-    public static void reorderPriority(LifeActivity activity) {
-
     }
 
     public static long updateActivityRecord(LifeActivity lifeActivity) {

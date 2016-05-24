@@ -164,10 +164,6 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         //override this in sub classes
         int id = item.getItemId();
-//        if (id == R.id.action_confirm) {
-//            recordAcceptAction();
-//            return true;
-//        } else
         if (id == R.id.action_refresh) {
             showWeather();
             return true;
@@ -305,8 +301,11 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 AppUtil.showToast(getContext(), "Selection cleared");
-                                dialog.clearSelectedIndices();
-                                selectedBodyAreas.clear();
+
+                                if (bodyAreas.size() > 0) {
+                                    selectedBodyAreas.clear();
+                                    dialog.clearSelectedIndices();
+                                }
                                 selectedBodyIndexes = null;
                                 editTxtBodyAreas.setText("");
                             }
@@ -358,10 +357,6 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                     viewLayoutRecordEffectiveMedicine.setVisibility(View.VISIBLE);
                                 }
 
-//                                if (which.length > 0) {
-//                                    ((ScrollView) view.findViewById(R.id.full_record_scroll_view)).fullScroll(View.FOCUS_DOWN);
-//                                }
-
                                 return true; // allow selection
                             }
                         })
@@ -369,8 +364,11 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 AppUtil.showToast(getContext(), "Selection cleared");
-                                dialog.clearSelectedIndices();
-                                selectedMedicines.clear();
+
+                                if (medicines.size() > 0) {
+                                    selectedMedicines.clear();
+                                    dialog.clearSelectedIndices();
+                                }
                                 selectedMedicineIndexes = null;
                                 selectedEffectiveMedicineIndexes = null;
                                 viewLayoutRecordEffectiveMedicine.setVisibility(View.GONE);
@@ -426,10 +424,6 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                     viewLayoutRecordEffectiveRelief.setVisibility(View.VISIBLE);
                                 }
 
-//                                if (which.length > 0) {
-//                                    ((ScrollView) view.findViewById(R.id.full_record_scroll_view)).fullScroll(View.FOCUS_DOWN);
-//                                }
-
                                 return true; // allow selection
                             }
                         })
@@ -437,8 +431,11 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 AppUtil.showToast(getContext(), "Selection cleared");
-                                dialog.clearSelectedIndices();
-                                selectedReliefs.clear();
+
+                                if (reliefs.size() > 0) {
+                                    selectedReliefs.clear();
+                                    dialog.clearSelectedIndices();
+                                }
                                 selectedReliefIndexes = null;
                                 selectedEffectiveReliefIndexes = null;
                                 viewLayoutRecordEffectiveRelief.setVisibility(View.GONE);
@@ -494,9 +491,6 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
                                     editTxtMedicineEffective.setText(selectedStr);
 
-//                                    if (which.length > 0) {
-//                                        ((ScrollView) view.findViewById(R.id.full_record_scroll_view)).fullScroll(View.FOCUS_DOWN);
-//                                    }
 
                                     return true; // allow selection
                                 }
@@ -505,12 +499,13 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     AppUtil.showToast(getContext(), "Selection cleared");
-                                    dialog.clearSelectedIndices();
-
-                                    selectedMedicines.clear();
-                                    for (Integer integer : selectedMedicineIndexes) {
-                                        Medicine m = medicines.get(integer);
-                                        selectedMedicines.add(new MedicineBuilder().setMedicineId(m.getMedicineId()).setMedicineName(m.getMedicineName()).setPriority(m.getPriority()).createMedicine());
+                                    if (selectedMedicines.size() > 0) {
+                                        dialog.clearSelectedIndices();
+                                        selectedMedicines.clear();
+                                        for (Integer integer : selectedMedicineIndexes) {
+                                            Medicine m = medicines.get(integer);
+                                            selectedMedicines.add(new MedicineBuilder().setMedicineId(m.getMedicineId()).setMedicineName(m.getMedicineName()).setPriority(m.getPriority()).createMedicine());
+                                        }
                                     }
                                     selectedEffectiveMedicineIndexes = null;
                                     editTxtMedicineEffective.setText("");
@@ -571,14 +566,16 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     AppUtil.showToast(getContext(), "Selection cleared");
-                                    dialog.clearSelectedIndices();
 
-                                    selectedReliefs.clear();
-                                    for (Integer integer : selectedReliefIndexes) {
-                                        Relief r = reliefs.get(integer);
-                                        selectedReliefs.add(new ReliefBuilder().setReliefId(r.getReliefId()).setReliefName(r.getReliefName()).setPriority(r.getPriority()).createRelief());
+                                    if (selectedReliefs.size() > 0) {
+                                        dialog.clearSelectedIndices();
+
+                                        selectedReliefs.clear();
+                                        for (Integer integer : selectedReliefIndexes) {
+                                            Relief r = reliefs.get(integer);
+                                            selectedReliefs.add(new ReliefBuilder().setReliefId(r.getReliefId()).setReliefName(r.getReliefName()).setPriority(r.getPriority()).createRelief());
+                                        }
                                     }
-
                                     selectedEffectiveReliefIndexes = null;
                                     editTxtReliefEffective.setText("");
 

@@ -34,10 +34,6 @@ public class MedicineController {
         return DBMedicineDAO.addMedicine(medicine);
     }
 
-    public static void addNewMedicine(Medicine medicine) {
-
-    }
-
     public static long deleteMedicine(int id) {
         return DBMedicineDAO.deleteMedicine(id);
     }
@@ -65,15 +61,11 @@ public class MedicineController {
     }
 
     public static Medicine getMedicineById(int id) {
-        return null;
+        return DBMedicineDAO.getMedicine(id);
     }
 
     public static ArrayList<Medicine> getMedicinesForRecord(int recordId) {
         return DBMedicineDAO.getMedicinesForRecord(recordId);
-    }
-
-    public static void reorderPriority(Medicine medicine) {
-
     }
 
     public static long updateMedicineRecord(Medicine medicine) {

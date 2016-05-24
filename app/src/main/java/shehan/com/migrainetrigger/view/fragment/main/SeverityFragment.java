@@ -59,7 +59,6 @@ public class SeverityFragment extends Fragment {
         SeverityViewAdapter severityViewAdapter = new SeverityViewAdapter(severityViewData);
 
         // 4. set adapter
-//      recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(severityViewAdapter);
 
         // 5. set item animator to DefaultAnimator

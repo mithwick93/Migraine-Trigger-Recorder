@@ -22,7 +22,7 @@ public class RecordController {
 
     public static boolean addNewRecord(Record record, int recordLevel) {
         Log.d("RecordController", "addNewRecord");
-        return DBTransactionHandler.addRecordTransaction(record, recordLevel);
+        return DBTransactionHandler.addRecord(record, recordLevel);
     }
 
     public static boolean deleteRecord(int recordId) {
@@ -86,7 +86,6 @@ public class RecordController {
     }
 
     public static Record getRecordById(int id) {
-
         return DBRecordDAO.getRecord(id);
     }
 
@@ -163,7 +162,6 @@ public class RecordController {
     }
 
     public static ArrayList<Record> getAllRecordsOrderByDate() {
-
         return DBRecordDAO.getAllRecordsOrderByDate();
     }
 

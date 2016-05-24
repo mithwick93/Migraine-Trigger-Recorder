@@ -81,7 +81,6 @@ public class ViewRecordCalenderFragment extends Fragment {
             new GetRecordCalenderListTask().execute();//Load records to list view
         }
         if (calenderView != null) {
-//            new GetRecordCalenderListTask().execute();//load calender events
             calenderView.showCalendarWithAnimation();
         }
     }
@@ -111,7 +110,6 @@ public class ViewRecordCalenderFragment extends Fragment {
         currentCalender = Calendar.getInstance(Locale.getDefault());
 
         //Colors
-        //    calenderView.set(R.color.colorCalenderBackground);
 
 
         calenderView.drawSmallIndicatorForEvents(true);

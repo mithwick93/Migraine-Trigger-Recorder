@@ -61,11 +61,6 @@ public final class DBActivityDAO {
     public static long addActivityRecord(int activityId, int recordId) {
         Log.d("DBActivityDAO", "DB - addActivityRecord");
 
-//        if (activityId <= 0 || recordId <= 0) {
-//            Log.e("DAO-add", "invalid information");
-//            return -1;
-//        }
-
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
@@ -93,11 +88,6 @@ public final class DBActivityDAO {
      */
     public static long addActivityRecord(SQLiteDatabase db, int activityId, int recordId) throws SQLiteException {
         Log.d("DBActivityDAO", "DB - addActivityRecord");
-
-//        if (activityId <= 0 || recordId < 0) {
-//            Log.e("DAO-add", "invalid information");
-//            return -1;
-//        }
 
         ContentValues values = new ContentValues();
 
@@ -128,6 +118,20 @@ public final class DBActivityDAO {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    /**
+     * delete Activity
+     *
+     * @param db SQLiteDatabase
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteActivity(SQLiteDatabase db, int id) {
+        Log.d("DBActivityDAO", "deleteActivity");
+
+        long row_id = db.delete(DatabaseDefinition.ACTIVITY_TABLE, DatabaseDefinition.ACTIVITY_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+        return row_id;
     }
 
     /**

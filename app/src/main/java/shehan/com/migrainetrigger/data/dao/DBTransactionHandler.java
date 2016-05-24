@@ -3,6 +3,8 @@ package shehan.com.migrainetrigger.data.dao;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.List;
+
 import shehan.com.migrainetrigger.data.model.BodyArea;
 import shehan.com.migrainetrigger.data.model.LifeActivity;
 import shehan.com.migrainetrigger.data.model.Medicine;
@@ -11,6 +13,7 @@ import shehan.com.migrainetrigger.data.model.Relief;
 import shehan.com.migrainetrigger.data.model.Symptom;
 import shehan.com.migrainetrigger.data.model.Trigger;
 import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
+import shehan.com.migrainetrigger.view.model.AnswerSectionViewData;
 
 /**
  * Created by Shehan on 4/18/2016.
@@ -24,8 +27,8 @@ public class DBTransactionHandler {
      * @param recordLevel record level (basic - 0 ,intermediate -1 , full - 2 )
      * @return whether add is successful
      */
-    public static boolean addRecordTransaction(Record record, int recordLevel) {
-        Log.d("DBTransactionHandler", "addRecordTransaction - start transaction");
+    public static boolean addRecord(Record record, int recordLevel) {
+        Log.d("DBTransactionHandler", "addRecord - start transaction");
 
         SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
         db.beginTransaction();
@@ -34,7 +37,7 @@ public class DBTransactionHandler {
             if (recordLevel == 1 || recordLevel == 2) {
                 //Triggers
                 if (record.getTriggers() != null && record.getTriggers().size() > 0) {
-                    Log.d("DBTransactionHandler", "addRecordTransaction - Triggers");
+                    Log.d("DBTransactionHandler", "addRecord - Triggers");
                     for (Trigger trigger : record.getTriggers()) {
                         long result = DBTriggerDAO.addTriggerRecord(db, trigger.getTriggerId(), record.getRecordId());
                         if (result < 1) {
@@ -45,7 +48,7 @@ public class DBTransactionHandler {
 
                 //Symptoms
                 if (record.getSymptoms() != null && record.getSymptoms().size() > 0) {
-                    Log.d("DBTransactionHandler", "addRecordTransaction - Symptoms");
+                    Log.d("DBTransactionHandler", "addRecord - Symptoms");
                     for (Symptom symptom : record.getSymptoms()) {
                         long result = DBSymptomDAO.addSymptomRecord(db, symptom.getSymptomId(), record.getRecordId());
                         if (result < 1) {
@@ -56,7 +59,7 @@ public class DBTransactionHandler {
 
                 //Activities
                 if (record.getActivities() != null && record.getActivities().size() > 0) {
-                    Log.d("DBTransactionHandler", "addRecordTransaction - Activities");
+                    Log.d("DBTransactionHandler", "addRecord - Activities");
                     for (LifeActivity lifeActivity : record.getActivities()) {
                         long result = DBActivityDAO.addActivityRecord(db, lifeActivity.getActivityId(), record.getRecordId());
                         if (result < 1) {
@@ -69,7 +72,7 @@ public class DBTransactionHandler {
             if (recordLevel == 2) {
                 //Body areas
                 if (record.getBodyAreas() != null && record.getBodyAreas().size() > 0) {
-                    Log.d("DBTransactionHandler", "addRecordTransaction - BodyAreas");
+                    Log.d("DBTransactionHandler", "addRecord - BodyAreas");
                     for (BodyArea bodyArea : record.getBodyAreas()) {
                         long result = DBBodyAreaDAO.addBodyAreaRecord(db, bodyArea.getBodyAreaId(), record.getRecordId());
                         if (result < 1) {
@@ -80,7 +83,7 @@ public class DBTransactionHandler {
 
                 //Medicines
                 if (record.getMedicines() != null && record.getMedicines().size() > 0) {
-                    Log.d("DBTransactionHandler", "addRecordTransaction - Medicines");
+                    Log.d("DBTransactionHandler", "addRecord - Medicines");
                     for (Medicine medicine : record.getMedicines()) {
                         long result = DBMedicineDAO.addMedicineRecord(db, medicine.getMedicineId(), record.getRecordId(), medicine.isEffective());
                         if (result < 1) {
@@ -91,7 +94,7 @@ public class DBTransactionHandler {
 
                 //Reliefs
                 if (record.getReliefs() != null && record.getReliefs().size() > 0) {
-                    Log.d("DBTransactionHandler", "addRecordTransaction - Reliefs");
+                    Log.d("DBTransactionHandler", "addRecord - Reliefs");
                     for (Relief relief : record.getReliefs()) {
                         long result = DBReliefDAO.addReliefRecord(db, relief.getReliefId(), record.getRecordId(), relief.isEffective());
                         if (result < 1) {
@@ -103,7 +106,7 @@ public class DBTransactionHandler {
 
             //Weather data
             if (record.getWeatherData() != null) {
-                Log.d("DBTransactionHandler", "addRecordTransaction WeatherData");
+                Log.d("DBTransactionHandler", "addRecord WeatherData");
 
                 long result = DBWeatherDataDAO.addWeatherData(db, record.getRecordId(), record.getWeatherData());
                 if (result < 1) {
@@ -128,14 +131,97 @@ public class DBTransactionHandler {
         }
     }
 
+    /**
+     * Deete answer list
+     *
+     * @param answerSection answer type
+     * @param removeList    answer list
+     * @return whether delete as is successful
+     */
+    public static boolean deleteAnswers(String answerSection, List<AnswerSectionViewData> removeList) {
+        Log.d("DBTransactionHandler", "delete " + answerSection + " answers - start transaction");
+
+        long response = -1;
+        SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            for (AnswerSectionViewData removeItem : removeList) {
+                int id = removeItem.getId();
+                switch (answerSection) {
+                    case "Triggers": {
+                        response = DBTriggerDAO.deleteTrigger(db, id);
+                        if (response < 1) {
+                            throw new Exception("Record delete failed. code : " + response);
+                        }
+                        break;
+                    }
+                    case "Symptoms": {
+                        response = DBSymptomDAO.deleteSymptom(db, id);
+                        if (response < 1) {
+                            throw new Exception("Record delete failed. code : " + response);
+                        }
+                        break;
+                    }
+                    case "Activities": {
+                        response = DBActivityDAO.deleteActivity(db, id);
+                        if (response < 1) {
+                            throw new Exception("Record delete failed. code : " + response);
+                        }
+                        break;
+                    }
+                    case "Locations": {
+                        response = DBLocationDAO.deleteLocation(db, id);
+                        if (response < 1) {
+                            throw new Exception("Record delete failed. code : " + response);
+                        }
+                        break;
+                    }
+                    case "Pain areas": {
+                        response = DBBodyAreaDAO.deleteBodyArea(db, id);
+                        if (response < 1) {
+                            throw new Exception("Record delete failed. code : " + response);
+                        }
+                        break;
+                    }
+                    case "Medicines": {
+                        response = DBMedicineDAO.deleteMedicine(db, id);
+                        if (response < 1) {
+                            throw new Exception("Record delete failed. code : " + response);
+                        }
+                        break;
+                    }
+                    case "Reliefs": {
+                        response = DBReliefDAO.deleteRelief(db, id);
+                        if (response < 1) {
+                            throw new Exception("Record delete failed. code : " + response);
+                        }
+                        break;
+                    }
+                }
+            }
+            db.setTransactionSuccessful();
+            return response > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+    }
+
+    /**
+     * Delete a full record
+     *
+     * @param recordId record id
+     * @return whether delete is successful
+     */
     public static boolean deleteRecord(int recordId) {
         Log.d("DBTransactionHandler", "deleteRecord - start transaction");
 
         SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
         db.beginTransaction();
         try {
-
-
             //delete from record tables where record id match
             long response;
             //Triggers

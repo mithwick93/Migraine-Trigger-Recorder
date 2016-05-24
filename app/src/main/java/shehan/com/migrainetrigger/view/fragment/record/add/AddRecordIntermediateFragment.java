@@ -149,10 +149,6 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-//        if (id == R.id.action_confirm) {
-//            recordAcceptAction();
-//            return true;
-//        } else
         if (id == R.id.action_refresh) {
             showWeather();
             return true;
@@ -237,8 +233,11 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 AppUtil.showToast(getContext(), "Selection cleared");
-                                dialog.clearSelectedIndices();
-                                selectedTriggers.clear();
+
+                                if (triggers.size() > 0) {
+                                    dialog.clearSelectedIndices();
+                                    selectedTriggers.clear();
+                                }
                                 selectedTriggerIndexes = null;
                                 editTxtTriggers.setText("");
                             }
@@ -288,8 +287,11 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 AppUtil.showToast(getContext(), "Selection cleared");
-                                dialog.clearSelectedIndices();
-                                selectedSymptoms.clear();
+
+                                if (symptoms.size() > 0) {
+                                    selectedSymptoms.clear();
+                                    dialog.clearSelectedIndices();
+                                }
                                 selectedSymptomsIndexes = null;
                                 editTxtSymptoms.setText("");
                             }
@@ -339,8 +341,11 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 AppUtil.showToast(getContext(), "Selection cleared");
-                                dialog.clearSelectedIndices();
-                                selectedActivities.clear();
+
+                                if (activities.size() > 0) {
+                                    selectedActivities.clear();
+                                    dialog.clearSelectedIndices();
+                                }
                                 selectedActivityIndexes = null;
                                 editTxtActivities.setText("");
                             }

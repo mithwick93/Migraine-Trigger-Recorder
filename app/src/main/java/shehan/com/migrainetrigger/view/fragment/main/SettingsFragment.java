@@ -36,7 +36,6 @@ public class SettingsFragment extends PreferenceFragment {
     public static final int PERMISSION_WRITE_EXTERNAL_STORAGE_BACKUP = 10;
     public static final int PERMISSION_WRITE_EXTERNAL_STORAGE_RESTORE = 20;
     private static final String ARG_THEME_CHANGE_LISTENER = "themeChangeListener";
-    private ThemeChangeListener themeChangeListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,9 +50,7 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 AppUtil.showToast(getActivity(), "Theme will be applied when you close the settings window");
-                if (themeChangeListener != null) {
-                    //themeChangeListener.onThemeChanged();
-                }
+
                 return true;
             }
         });
@@ -63,9 +60,7 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 AppUtil.showToast(getActivity(), "Color scheme will be applied when you close the settings window");
-                if (themeChangeListener != null) {
-                    //themeChangeListener.onThemeChanged();
-                }
+
                 return true;
             }
         });
@@ -177,14 +172,6 @@ public class SettingsFragment extends PreferenceFragment {
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-    }
-
-    public void setThemeChangeListener(ThemeChangeListener themeChangeListener) {
-        this.themeChangeListener = themeChangeListener;
-    }
-
-    public interface ThemeChangeListener {
-        void onThemeChanged();
     }
 
     /**

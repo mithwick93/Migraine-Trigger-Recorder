@@ -181,7 +181,7 @@ public interface DatabaseDefinition {
                     "  location_id INT DEFAULT NULL,\n" +
                     "  \n" +
                     "  PRIMARY KEY (record_id),\n" +
-                    "  CONSTRAINT fk_migraine_record_location_id FOREIGN KEY (location_id) REFERENCES location(location_id)\n" +
+                    "  CONSTRAINT fk_migraine_record_location_id FOREIGN KEY (location_id) REFERENCES location(location_id) ON DELETE RESTRICT ON UPDATE RESTRICT \n" +
                     "  \n" +
                     ");";
 
@@ -232,7 +232,7 @@ public interface DatabaseDefinition {
                     "  temperature REAL DEFAULT NULL,\n" +
                     "  \n" +
                     "  PRIMARY KEY (weather_id,record_id),\n" +
-                    "  CONSTRAINT fk_weather_data_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
+                    "  CONSTRAINT fk_weather_data_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE RESTRICT ON UPDATE RESTRICT \n" +
                     "  \n" +
                     ");";
     //
@@ -245,8 +245,8 @@ public interface DatabaseDefinition {
                     "  record_id INT,  \n" +
                     "  \n" +
                     "  PRIMARY KEY (activity_id,record_id),\n" +
-                    "  CONSTRAINT fk_activity_record_activity_id FOREIGN KEY (activity_id) REFERENCES activity(activity_id),\n" +
-                    "  CONSTRAINT fk_activity_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
+                    "  CONSTRAINT fk_activity_record_activity_id FOREIGN KEY (activity_id) REFERENCES activity(activity_id) ON DELETE RESTRICT ON UPDATE RESTRICT,\n" +
+                    "  CONSTRAINT fk_activity_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE RESTRICT ON UPDATE RESTRICT \n" +
                     "  \n" +
                     ");";
 
@@ -258,8 +258,8 @@ public interface DatabaseDefinition {
                     "  record_id INT,\n" +
                     "  \n" +
                     "  PRIMARY KEY (area_id,record_id),\n" +
-                    "  CONSTRAINT fk_body_area_record_area_id FOREIGN KEY (area_id) REFERENCES body_area(area_id),\n" +
-                    "  CONSTRAINT fk_body_area_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
+                    "  CONSTRAINT fk_body_area_record_area_id FOREIGN KEY (area_id) REFERENCES body_area(area_id) ON DELETE RESTRICT ON UPDATE RESTRICT,\n" +
+                    "  CONSTRAINT fk_body_area_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE RESTRICT ON UPDATE RESTRICT \n" +
                     "  \n" +
                     ");";
 
@@ -273,8 +273,8 @@ public interface DatabaseDefinition {
                     "  effective TEXT NOT NULL DEFAULT 'f',\n" +
                     "  \n" +
                     "  PRIMARY KEY (medicine_id,record_id),\n" +
-                    "  CONSTRAINT fk_medicine_record_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicine(medicine_id),\n" +
-                    "  CONSTRAINT fk_medicine_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
+                    "  CONSTRAINT fk_medicine_record_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicine(medicine_id) ON DELETE RESTRICT ON UPDATE RESTRICT,\n" +
+                    "  CONSTRAINT fk_medicine_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE RESTRICT ON UPDATE RESTRICT \n" +
                     "  \n" +
                     ");";
 
@@ -287,8 +287,8 @@ public interface DatabaseDefinition {
                     "  effective TEXT NOT NULL DEFAULT 'f',\n" +
                     "  \n" +
                     "  PRIMARY KEY (relief_id,record_id),\n" +
-                    "  CONSTRAINT fk_relief_record_relief_id FOREIGN KEY (relief_id) REFERENCES relief(relief_id),\n" +
-                    "  CONSTRAINT fk_relief_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
+                    "  CONSTRAINT fk_relief_record_relief_id FOREIGN KEY (relief_id) REFERENCES relief(relief_id) ON DELETE RESTRICT ON UPDATE RESTRICT,\n" +
+                    "  CONSTRAINT fk_relief_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE RESTRICT ON UPDATE RESTRICT \n" +
                     "  \n" +
                     ");";
 
@@ -300,8 +300,8 @@ public interface DatabaseDefinition {
                     "  record_id INT,\n" +
                     "  \n" +
                     "  PRIMARY KEY (symptom_id,record_id),\n" +
-                    "  CONSTRAINT fk_symptom_record_symptom_id FOREIGN KEY (symptom_id) REFERENCES symptom(symptom_id),\n" +
-                    "  CONSTRAINT fk_symptom_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
+                    "  CONSTRAINT fk_symptom_record_symptom_id FOREIGN KEY (symptom_id) REFERENCES symptom(symptom_id) ON DELETE RESTRICT ON UPDATE RESTRICT,\n" +
+                    "  CONSTRAINT fk_symptom_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE RESTRICT ON UPDATE RESTRICT \n" +
                     "  \n" +
                     ");";
 
@@ -313,8 +313,8 @@ public interface DatabaseDefinition {
                     "  record_id INT,\n" +
                     "  \n" +
                     "  PRIMARY KEY (trigger_id,record_id),\n" +
-                    "  CONSTRAINT fk_trigger_record_trigger_id FOREIGN KEY (trigger_id) REFERENCES migraine_trigger(trigger_id),\n" +
-                    "  CONSTRAINT fk_trigger_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE CASCADE ON UPDATE CASCADE \n" +
+                    "  CONSTRAINT fk_trigger_record_trigger_id FOREIGN KEY (trigger_id) REFERENCES migraine_trigger(trigger_id) ON DELETE RESTRICT ON UPDATE RESTRICT,\n" +
+                    "  CONSTRAINT fk_trigger_record_record_id FOREIGN KEY (record_id) REFERENCES migraine_record(record_id) ON DELETE RESTRICT ON UPDATE RESTRICT \n" +
                     "  \n" +
                     ");";
     //endregion

@@ -59,11 +59,6 @@ public final class DBSymptomDAO {
     public static long addSymptomRecord(int symptomId, int recordId) {
         Log.d("DBSymptomDAO", "DB - addSymptomRecord");
 
-//        if (symptomId <= 0 || recordId <= 0) {
-//            Log.e("DAO-add", "invalid information");
-//            return -1;
-//        }
-
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
@@ -93,11 +88,6 @@ public final class DBSymptomDAO {
      */
     public static long addSymptomRecord(SQLiteDatabase db, int symptomId, int recordId) throws SQLiteException {
         Log.d("DBSymptomDAO", "DB - addSymptomRecord");
-//
-//        if (symptomId <= 0 || recordId <= 0) {
-//            Log.e("DAO-add", "invalid information");
-//            return -1;
-//        }
 
         ContentValues values = new ContentValues();
 
@@ -129,6 +119,22 @@ public final class DBSymptomDAO {
             return -1;
         }
     }
+
+    /**
+     * delete Symptom
+     *
+     * @param db SQLiteDatabase
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteSymptom(SQLiteDatabase db, int id) {
+        Log.d("DBSymptomDAO", "deleteSymptom");
+
+        long row_id = db.delete(DatabaseDefinition.SYMPTOM_TABLE, DatabaseDefinition.SYMPTOM_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+        return row_id;
+
+    }
+
 
     /**
      * delete Symptom Records

@@ -60,11 +60,6 @@ public final class DBTriggerDAO {
     public static long addTriggerRecord(int triggerId, int recordId) {
         Log.d("DBTriggerDAO", "DB - addTriggerRecord");
 
-//        if (triggerId <= 0 || recordId <= 0) {
-//            Log.e("DAO-add", "invalid information");
-//            return -1;
-//        }
-
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
@@ -94,11 +89,6 @@ public final class DBTriggerDAO {
      */
     public static long addTriggerRecord(SQLiteDatabase db, int triggerId, int recordId) throws SQLiteException {
         Log.d("DBTriggerDAO", "DB - addTriggerRecord");
-//
-//        if (triggerId <= 0 || recordId < 0) {
-//            Log.e("DAO-add", "invalid information");
-//            return -1;
-//        }
 
         ContentValues values = new ContentValues();
 
@@ -129,6 +119,20 @@ public final class DBTriggerDAO {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    /**
+     * delete Trigger
+     *
+     * @param db SQLiteDatabase
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteTrigger(SQLiteDatabase db, int id) {
+        Log.d("DBTriggerDAO", "deleteTrigger");
+
+        long row_id = db.delete(DatabaseDefinition.TRIGGER_TABLE, DatabaseDefinition.TRIGGER_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+        return row_id;
     }
 
     /**

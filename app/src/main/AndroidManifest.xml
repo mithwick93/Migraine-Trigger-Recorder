@@ -17,14 +17,19 @@
         android:theme="@style/AppThemeLight.RedOnYellow"
         tools:replace="android:theme">
         <activity
-            android:name=".view.activity.MainActivity"
+            android:name=".view.activity.SplashScreenActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".view.activity.AddRecordActivity"

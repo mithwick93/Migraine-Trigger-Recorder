@@ -1,6 +1,7 @@
 package shehan.com.migrainetrigger.view.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -21,7 +22,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.AppUtil;
-import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.main.AboutFragment;
 import shehan.com.migrainetrigger.view.fragment.main.HomeFragment;
 import shehan.com.migrainetrigger.view.fragment.main.ManageAnswersFragment;
@@ -31,20 +31,32 @@ public class MainActivity
         extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, ManageAnswersFragment.ManageAnswersFragmentListener {
 
-    private static final boolean DEVELOPER_MODE = true;
+    private static final boolean DEVELOPER_MODE = false;
 
     private FloatingActionButton fab;
-    private Boolean isFabOpen = false;
 
-    //region activity default
 
     @Override
-    public void OnAnswerRawClick(String answer) {
-        Intent intent = new Intent(MainActivity.this, ManageAnswersActivity.class);
-        intent.putExtra("answerSection", answer);
-        Log.d("Main-navigation", "Launching manage answers activity");
-        startActivity(intent);
+    public void OnAnswerRawClick(final String answer) {
 
+        new AsyncTask<String, Void, Boolean>() {
+            Intent intent;
+
+            @Override
+            protected Boolean doInBackground(String... params) {
+                intent = new Intent(MainActivity.this, ManageAnswersActivity.class);
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if (result) {
+                    intent.putExtra("answerSection", answer);
+                    Log.d("Main-navigation", "Launching manage answers activity");
+                    startActivity(intent);
+                }
+            }
+        }.execute();
     }
 
     @Override
@@ -68,10 +80,6 @@ public class MainActivity
     }
 
 
-    //endregion
-
-    //region interface implementations
-
     /**
      * Action on navigation item click
      *
@@ -90,7 +98,23 @@ public class MainActivity
             if (homeFragment != null && homeFragment.isVisible()) {
                 AppUtil.showToast(MainActivity.this, "Home already selected");
             } else {
-                setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
+                new AsyncTask<String, Void, Boolean>() {
+                    HomeFragment homeFragment;
+
+                    @Override
+                    protected Boolean doInBackground(String... params) {
+                        Log.d("Main activity", "Loading home fragment");
+                        homeFragment = new HomeFragment();
+                        return true;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        if (result) {
+                            setFragment(homeFragment, R.string.nav_home, View.VISIBLE, false);
+                        }
+                    }
+                }.execute();
             }
 
         } else if (id == R.id.nav_severity) {
@@ -100,7 +124,24 @@ public class MainActivity
             if (severityFragment != null && severityFragment.isVisible()) {
                 AppUtil.showToast(MainActivity.this, "Severity already selected");
             } else {
-                setFragment(new SeverityFragment(), R.string.nav_severity, View.VISIBLE, true);
+                new AsyncTask<String, Void, Boolean>() {
+                    SeverityFragment severityFragment;
+
+                    @Override
+                    protected Boolean doInBackground(String... params) {
+                        Log.d("Main activity", "Loading severity fragment");
+                        severityFragment = new SeverityFragment();
+                        return true;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        if (result) {
+                            setFragment(severityFragment, R.string.nav_severity, View.VISIBLE, true);
+                        }
+                    }
+                }.execute();
+
             }
         } else if (id == R.id.nav_answers) {
             Log.d("Main-navigation", "Answers selected");
@@ -108,41 +149,133 @@ public class MainActivity
             if (answersFragment != null && answersFragment.isVisible()) {
                 AppUtil.showToast(MainActivity.this, "Answers already selected");
             } else {
-                setFragment(new ManageAnswersFragment(), R.string.nav_answers, View.VISIBLE, true);
+                new AsyncTask<String, Void, Boolean>() {
+                    ManageAnswersFragment manageAnswersFragment;
+
+                    @Override
+                    protected Boolean doInBackground(String... params) {
+                        Log.d("Main activity", "Loading answers fragment");
+                        manageAnswersFragment = new ManageAnswersFragment();
+                        return true;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        if (result) {
+                            setFragment(manageAnswersFragment, R.string.nav_answers, View.VISIBLE, true);
+                        }
+                    }
+                }.execute();
             }
 
         } else if (id == R.id.nav_faq) {
             Log.d("Main-navigation", "F.A.Q selected");
-            Intent intent = new Intent(MainActivity.this, FAQActivity.class);
-            Log.d("Main-navigation", "Launching F.A.Q activity");
-            startActivity(intent);
+            new AsyncTask<String, Void, Boolean>() {
+                Intent intent;
+
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    Log.d("Main activity", "Loading FAQ activity");
+                    intent = new Intent(MainActivity.this, FAQActivity.class);
+                    return true;
+                }
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if (result) {
+                        Log.d("Main-navigation", "Launching F.A.Q activity");
+                        startActivity(intent);
+                    }
+                }
+            }.execute();
 
         } else if (id == R.id.nav_record) {
             Log.d("Main-navigation", "Record selected");
-            Intent intent = new Intent(MainActivity.this, ViewRecordsActivity.class);
-            Log.d("Main-navigation", "Launching view record activity");
-            startActivity(intent);
+            new AsyncTask<String, Void, Boolean>() {
+                Intent intent;
+
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    Log.d("Main activity", "Loading view records activity");
+                    intent = new Intent(MainActivity.this, ViewRecordsActivity.class);
+                    return true;
+                }
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if (result) {
+                        Log.d("Main-navigation", "Launching view record activity");
+                        startActivity(intent);
+                    }
+                }
+            }.execute();
 
         } else if (id == R.id.nav_report) {
             Log.d("Main-navigation", "Report selected");
-            Intent intent = new Intent(MainActivity.this, ReportActivity.class);
-            Log.d("Main-navigation", "Launching report activity");
-            startActivity(intent);
+            new AsyncTask<String, Void, Boolean>() {
+                Intent intent;
+
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    Log.d("Main activity", "Loading reports activity");
+                    intent = new Intent(MainActivity.this, ReportActivity.class);
+                    return true;
+                }
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if (result) {
+                        Log.d("Main-navigation", "Launching report activity");
+                        startActivity(intent);
+                    }
+                }
+            }.execute();
 
         } else if (id == R.id.nav_settings) {
             Log.d("Main-navigation", "Settings selected");
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            Log.d("Main-navigation", "Launching settings activity");
-            startActivity(intent);
+            new AsyncTask<String, Void, Boolean>() {
+                Intent intent;
+
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    Log.d("Main activity", "Loading settings activity");
+                    intent = new Intent(MainActivity.this, SettingsActivity.class);
+                    return true;
+                }
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if (result) {
+                        Log.d("Main-navigation", "Launching settings activity");
+                        startActivity(intent);
+                    }
+                }
+            }.execute();
 
         } else if (id == R.id.nav_about) {
             Log.d("Main-navigation", "About selected");
 
             AboutFragment aboutFragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.nav_about));
             if (aboutFragment != null && aboutFragment.isVisible()) {
-                AppUtil.showToast(MainActivity.this, "about already selected");
+                AppUtil.showToast(MainActivity.this, "About already selected");
             } else {
-                setFragment(new AboutFragment(), R.string.nav_about, View.VISIBLE, true);
+                new AsyncTask<String, Void, Boolean>() {
+                    AboutFragment aboutFragment;
+
+                    @Override
+                    protected Boolean doInBackground(String... params) {
+                        Log.d("Main activity", "Loading about fragment");
+                        aboutFragment = new AboutFragment();
+                        return true;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        if (result) {
+                            setFragment(aboutFragment, R.string.nav_about, View.VISIBLE, true);
+                        }
+                    }
+                }.execute();
             }
         }
 
@@ -155,10 +288,6 @@ public class MainActivity
     }
 
 
-    //endregion
-
-    //region methods
-
     /**
      * Change fragment in main activity
      *
@@ -170,9 +299,6 @@ public class MainActivity
                              int toolBarTitle,
                              int fabVisibility,
                              boolean addToBackStack) {
-
-
-        Log.d("Main-setFragment", fragment.toString() + " , " + Integer.toString(toolBarTitle) + " , " + Integer.toString(fabVisibility));
 
         String tag = getString(toolBarTitle);
 
@@ -253,7 +379,24 @@ public class MainActivity
         }
 
         if (savedInstanceState == null) {
-            setFragment(new HomeFragment(), R.string.nav_home, View.VISIBLE, false);
+            new AsyncTask<String, Void, Boolean>() {
+                HomeFragment homeFragment;
+
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    Log.d("Main activity", "Loading home fragment");
+                    homeFragment = new HomeFragment();
+                    return true;
+                }
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if (result) {
+                        setFragment(homeFragment, R.string.nav_home, View.VISIBLE, false);
+                    }
+                }
+            }.execute();
+
         }
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -294,12 +437,4 @@ public class MainActivity
             });
         }
     }
-
-    private void showNotImplemented() {
-        if (fab != null) {
-            fab.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    //endregion
 }

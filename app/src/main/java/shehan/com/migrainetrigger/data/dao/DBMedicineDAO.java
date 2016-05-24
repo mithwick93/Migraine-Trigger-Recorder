@@ -61,11 +61,6 @@ public final class DBMedicineDAO {
     public static long addMedicineRecord(int medicineId, int recordId, boolean effective) {
         Log.d("DBMedicineDAO", "DB - addMedicineRecord");
 
-//        if (medicineId <= 0 || recordId <= 0) {
-//            Log.e("DAO-add", "invalid information");
-//            return -1;
-//        }
-
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
@@ -99,11 +94,6 @@ public final class DBMedicineDAO {
     public static long addMedicineRecord(SQLiteDatabase db, int medicineId, int recordId, boolean effective) throws SQLiteException {
         Log.d("DBMedicineDAO", "DB - addMedicineRecord");
 
-//        if (medicineId <= 0 || recordId <= 0) {
-//            Log.e("DAO-add", "invalid information");
-//            return -1;
-//        }
-
         ContentValues values = new ContentValues();
 
         values.put(DatabaseDefinition.MEDICINE_RECORD_MEDICINE_ID_KEY, medicineId);
@@ -135,6 +125,20 @@ public final class DBMedicineDAO {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    /**
+     * delete Medicine
+     *
+     * @param db SQLiteDatabase
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteMedicine(SQLiteDatabase db, int id) {
+        Log.d("DBMedicineDAO", "deleteMedicine");
+
+        long row_id = db.delete(DatabaseDefinition.MEDICINE_TABLE, DatabaseDefinition.MEDICINE_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+        return row_id;
     }
 
     /**

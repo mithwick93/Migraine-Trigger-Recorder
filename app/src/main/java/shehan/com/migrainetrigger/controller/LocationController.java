@@ -28,10 +28,6 @@ public class LocationController {
         return DBLocationDAO.addLocation(location);
     }
 
-    public static void addNewLocation(Location location) {
-
-    }
-
     public static long deleteLocation(int id) {
         return DBLocationDAO.deleteLocation(id);
     }
@@ -58,10 +54,6 @@ public class LocationController {
 
     public static Location getLocationById(int id) {
         return DBLocationDAO.getLocation(id);
-    }
-
-    public static void reorderPriority(Location location) {
-
     }
 
     public static long updateLocationRecord(Location location) {

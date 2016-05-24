@@ -1,10 +1,11 @@
-package shehan.com.migrainetrigger.utility;
+package shehan.com.migrainetrigger.view.activity;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.utility.AppUtil;
 
 /**
  * Created by Shehan on 12/05/2016.

@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import shehan.com.migrainetrigger.R;
-import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordCalenderFragment;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordListFragment;
 
@@ -20,7 +19,7 @@ public class ViewRecordsActivity
         extends BaseActivity
         implements ViewRecordListFragment.RecordListFragmentListener, ViewRecordCalenderFragment.RecordCalenderFragmentListener {
 
-    private static final boolean DEVELOPER_MODE = true;
+    private static final boolean DEVELOPER_MODE = false;
 
     @Override
     public void onRecordCalenderRequest(int recordId) {

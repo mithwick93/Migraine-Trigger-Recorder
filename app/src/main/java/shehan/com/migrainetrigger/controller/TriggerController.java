@@ -15,10 +15,6 @@ import shehan.com.migrainetrigger.view.model.AnswerSectionViewData;
  */
 public class TriggerController {
 
-    public static void addNewTrigger(Trigger trigger) {
-
-    }
-
     public static long addTriggerRecord(int triggerId, int recordId) {
         Log.d("addTriggerRecord", " addTriggerRecord ");
         return DBTriggerDAO.addTriggerRecord(triggerId, recordId);
@@ -65,15 +61,11 @@ public class TriggerController {
     }
 
     public static Trigger getTriggerById(int id) {
-        return null;
+        return DBTriggerDAO.getTrigger(id);
     }
 
     public static ArrayList<Trigger> getTriggersForRecord(int recordId) {
         return DBTriggerDAO.getTriggersForRecord(recordId);
-    }
-
-    public static void reorderPriority(Trigger trigger) {
-
     }
 
     public static long updateTriggerRecord(Trigger trigger) {

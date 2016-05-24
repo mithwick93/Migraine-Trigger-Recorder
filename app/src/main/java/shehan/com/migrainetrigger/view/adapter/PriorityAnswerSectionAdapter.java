@@ -152,14 +152,10 @@ public class PriorityAnswerSectionAdapter extends RecyclerView.Adapter<PriorityA
 
         @Override
         public void onItemClear() {
-            // cardViewAnswerRaw.setBackgroundColor(0);
         }
 
         @Override
         public void onItemSelected() {
-//            final TypedValue value = new TypedValue();
-//            context.getTheme().resolveAttribute(R.attr.colorAccent, value, true);
-//            cardViewAnswerRaw.setBackgroundColor(value.data);
         }
     }
 }

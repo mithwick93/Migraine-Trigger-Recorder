@@ -80,7 +80,6 @@ public class AppUtil {
             if (temp > 0) {
                 duration -= temp * ONE_HOUR;
                 res.append(temp).append(" hour").append(temp > 1 ? "s" : "");
-//                        .append(duration >= ONE_MINUTE ? " " : "");
             }
 
             if (!res.toString().equals("") && duration >= ONE_MINUTE) {
@@ -89,18 +88,8 @@ public class AppUtil {
 
             temp = duration / ONE_MINUTE;
             if (temp > 0) {
-//                duration -= temp * ONE_MINUTE;
                 res.append(temp).append(" minute").append(temp > 1 ? "s" : "");
             }
-
-//            if (!res.toString().equals("") && duration >= ONE_SECOND) {
-//                res.append(" and ");
-//            }
-//
-//            temp = duration / ONE_SECOND;
-//            if (temp > 0) {
-//                res.append(temp).append(" second").append(temp > 1 ? "s" : "");
-//            }
             return res.toString();
         } else {
             return "0 second";
@@ -141,9 +130,6 @@ public class AppUtil {
      */
     public static String getStringWeatherDate(Timestamp timestamp) {
         Log.d("AppUtil", "getStringDate timestamp value : " + timestamp.toString());
-//        String result= timestamp.toString().replace(" ","T");
-//        result=result.substring(0,result.indexOf('T')+9);
-//        return result;
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(timestamp).replace(" ", "T");
     }
 
@@ -158,7 +144,6 @@ public class AppUtil {
         Log.d("AppUtil", "getTimeStampDate str value : " + str);
         Timestamp timestamp = null;
         try {
-            //str = str.replace("/", "-");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             Date parsedDate = dateFormat.parse(str);
             timestamp = new java.sql.Timestamp(parsedDate.getTime());

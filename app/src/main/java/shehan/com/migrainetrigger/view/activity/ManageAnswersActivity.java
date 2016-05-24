@@ -9,12 +9,11 @@ import android.util.Log;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.AppUtil;
-import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.answer.AnswerSectionFragment;
 
 public class ManageAnswersActivity extends BaseActivity {
 
-    private static final boolean DEVELOPER_MODE = true;
+    private static final boolean DEVELOPER_MODE = false;
 
     @Override
     public void onResume() {

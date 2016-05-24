@@ -15,7 +15,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.AppUtil;
-import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordBasicFragment;
 import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordFullFragment;
 import shehan.com.migrainetrigger.view.fragment.record.add.AddRecordIntermediateFragment;
@@ -24,7 +23,7 @@ public class AddRecordActivity
         extends BaseActivity
         implements AddRecordBasicFragment.AddRecordBasicFragmentListener, AddRecordIntermediateFragment.AddRecordIntermediateFragmentListener, AddRecordFullFragment.AddRecordFullFragmentListener {
 
-    private static final boolean DEVELOPER_MODE = true;
+    private static final boolean DEVELOPER_MODE = false;
     private FloatingActionButton fabAdd;
     private int levelOfInformation;
     private AddRecordBasicFragment mFragment;

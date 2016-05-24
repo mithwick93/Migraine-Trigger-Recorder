@@ -33,9 +33,6 @@ public class BodyAreaController {
         return DBBodyAreaDAO.addBodyArea(bodyArea);
     }
 
-    public static void addNewBodyArea(BodyArea bodyArea) {
-    }
-
     public static long deleteBodyArea(int id) {
         return DBBodyAreaDAO.deleteBodyArea(id);
     }
@@ -57,7 +54,7 @@ public class BodyAreaController {
     }
 
     public static BodyArea getBodyAreaById(int id) {
-        return null;
+        return DBBodyAreaDAO.getBodyArea(id);
     }
 
     public static ArrayList<BodyArea> getBodyAreasForRecord(int recordId) {
@@ -66,10 +63,6 @@ public class BodyAreaController {
 
     public static int getLastRecordId() {
         return DBBodyAreaDAO.getLastRecordId();
-    }
-
-    public static void reorderPriority(BodyArea bodyArea) {
-
     }
 
     public static long updateBodyAreaRecord(BodyArea bodyArea) {

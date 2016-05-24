@@ -15,10 +15,6 @@ import shehan.com.migrainetrigger.view.model.AnswerSectionViewData;
  */
 public class ReliefController {
 
-    public static void addNewRelief(Relief relief) {
-
-    }
-
     public static long addReliefRecord(int reliefId, int recordId, boolean effective) {
         Log.d("ReliefController", " addReliefRecord ");
         return DBReliefDAO.addReliefRecord(reliefId, recordId, effective);
@@ -65,15 +61,11 @@ public class ReliefController {
     }
 
     public static Relief getReliefById(int id) {
-        return null;
+        return DBReliefDAO.getRelief(id);
     }
 
     public static ArrayList<Relief> getReliefsForRecord(int recordId) {
         return DBReliefDAO.getReliefsForRecord(recordId);
-    }
-
-    public static void reorderPriority(Relief relief) {
-
     }
 
     public static long updateReliefRecord(Relief relief) {

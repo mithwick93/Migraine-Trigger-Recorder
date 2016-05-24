@@ -9,13 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import shehan.com.migrainetrigger.R;
-import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.main.ReportFragment;
 
 public class ReportActivity extends BaseActivity
         implements ReportFragment.ReportFragmentListener {
 
-    private static final boolean DEVELOPER_MODE = true;
+    private static final boolean DEVELOPER_MODE = false;
 
     @Override
     public void onReportFragmentRequest(int request) {

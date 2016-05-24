@@ -32,6 +32,7 @@ import shehan.com.migrainetrigger.controller.MedicineController;
 import shehan.com.migrainetrigger.controller.ReliefController;
 import shehan.com.migrainetrigger.controller.SymptomController;
 import shehan.com.migrainetrigger.controller.TriggerController;
+import shehan.com.migrainetrigger.data.dao.DBTransactionHandler;
 import shehan.com.migrainetrigger.data.model.BodyArea;
 import shehan.com.migrainetrigger.data.model.LifeActivity;
 import shehan.com.migrainetrigger.data.model.Location;
@@ -515,7 +516,7 @@ public class AnswerSectionFragment
     /**
      * Async task to remove answers
      */
-    private class DeleteAnswerListTask extends AsyncTask<Void, Void, Long> {
+    private class DeleteAnswerListTask extends AsyncTask<Void, Void, Boolean> {
         private ProgressDialog nDialog;
         private List<AnswerSectionViewData> removeList;
 
@@ -535,69 +536,10 @@ public class AnswerSectionFragment
         }
 
         @Override
-        protected Long doInBackground(Void... v) {
+        protected Boolean doInBackground(Void... v) {
             Log.d("DeleteAnswerListTask", " doInBackground - delete");
-            long response = -1;
 
-            boolean canContinue = true;
-            for (AnswerSectionViewData removeItem : removeList) {
-                if (!canContinue) {
-                    break;
-                }
-                int id = removeItem.getId();
-                switch (answerSection) {
-                    case "Triggers": {
-                        response = TriggerController.deleteTrigger(id);
-                        if (response < 0) {
-                            canContinue = false;
-                        }
-                        break;
-                    }
-                    case "Symptoms": {
-                        response = SymptomController.deleteSymptom(id);
-                        if (response < 0) {
-                            canContinue = false;
-                        }
-                        break;
-                    }
-                    case "Activities": {
-                        response = LifeActivityController.deleteActivity(id);
-                        if (response < 0) {
-                            canContinue = false;
-                        }
-                        break;
-                    }
-                    case "Locations": {
-                        response = LocationController.deleteLocation(id);
-                        if (response < 0) {
-                            canContinue = false;
-                        }
-                        break;
-                    }
-                    case "Pain areas": {
-                        response = BodyAreaController.deleteBodyArea(id);
-                        if (response < 0) {
-                            canContinue = false;
-                        }
-                        break;
-                    }
-                    case "Medicines": {
-                        response = MedicineController.deleteMedicine(id);
-                        if (response < 0) {
-                            canContinue = false;
-                        }
-                        break;
-                    }
-                    case "Reliefs": {
-                        response = ReliefController.deleteRelief(id);
-                        if (response < 0) {
-                            canContinue = false;
-                        }
-                        break;
-                    }
-                }
-
-            }
+            boolean response = DBTransactionHandler.deleteAnswers(answerSection, removeList);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -607,10 +549,10 @@ public class AnswerSectionFragment
         }
 
         @Override
-        protected void onPostExecute(Long response) {
+        protected void onPostExecute(Boolean response) {
             Log.d("DeleteAnswerListTask", " onPostExecute - show result");
 
-            if (response > 0) {
+            if (response) {
                 AppUtil.showToast(getContext(), "Answers deleted successfully");
 
                 //Reset
@@ -716,8 +658,6 @@ public class AnswerSectionFragment
                                     answerSectionViewDataLst);
 
                     // 4. set adapter
-                    //recyclerView.removeAllViews();
-                    //recyclerView.removeAllViewsInLayout();
                     recyclerView.setAdapter(nonPriorityAnswerSectionAdapter);
 
                     // 5. set item animator to DefaultAnimator
@@ -741,8 +681,6 @@ public class AnswerSectionFragment
                 } else {
                     //reorder answers
                     // 3. create an adapter
-                    //recyclerView.removeAllViews();
-                    //recyclerView.removeAllViewsInLayout();
                     PriorityAnswerSectionAdapter priorityAnswerSectionAdapter =
                             new PriorityAnswerSectionAdapter(
                                     AnswerSectionFragment.this,

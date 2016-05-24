@@ -68,6 +68,20 @@ public final class DBLocationDAO {
     }
 
     /**
+     * delete Location
+     *
+     * @param db SQLiteDatabase
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteLocation(SQLiteDatabase db, int id) {
+        Log.d("DBLocationDAO", "deleteLocation");
+
+        long row_id = db.delete(DatabaseDefinition.LOCATION_TABLE, DatabaseDefinition.LOCATION_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+        return row_id;
+    }
+
+    /**
      * get All Locations
      *
      * @return ArrayList<Location>

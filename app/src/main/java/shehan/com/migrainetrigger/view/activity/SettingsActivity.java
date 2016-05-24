@@ -5,14 +5,13 @@ import android.os.StrictMode;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.AppUtil;
-import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.main.SettingsFragment;
 
 /**
  * Created by Shehan on 12/05/2016.
  */
-public class SettingsActivity extends BaseActivity implements SettingsFragment.ThemeChangeListener {
-    private static final boolean DEVELOPER_MODE = true;
+public class SettingsActivity extends BaseActivity {
+    private static final boolean DEVELOPER_MODE = false;
 
     @Override
     public void onBackPressed() {
@@ -23,11 +22,6 @@ public class SettingsActivity extends BaseActivity implements SettingsFragment.T
     public void onResume() {
         setCustomTheme();
         super.onResume();
-    }
-
-    @Override
-    public void onThemeChanged() {
-        setCustomTheme();
     }
 
     @Override
@@ -58,7 +52,6 @@ public class SettingsActivity extends BaseActivity implements SettingsFragment.T
         }
 
         SettingsFragment settingsFragment = new SettingsFragment();
-        settingsFragment.setThemeChangeListener(this);
         getFragmentManager().beginTransaction()
                 .replace(R.id.settings_container, settingsFragment)
                 .commit();

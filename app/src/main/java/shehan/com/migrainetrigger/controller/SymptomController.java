@@ -14,9 +14,6 @@ import shehan.com.migrainetrigger.view.model.AnswerSectionViewData;
  * Created by Shehan on 4/13/2016.
  */
 public class SymptomController {
-    public static void addNewSymptom(Symptom symptom) {
-
-    }
 
     public static long addSymptomRecord(int symptomId, int recordId) {
         Log.d("SymptomController", " addSymptomRecord ");
@@ -64,15 +61,11 @@ public class SymptomController {
     }
 
     public static Symptom getSymptomById(int id) {
-        return null;
+        return DBSymptomDAO.getSymptom(id);
     }
 
     public static ArrayList<Symptom> getSymptomsForRecord(int recordId) {
         return DBSymptomDAO.getSymptomsForRecord(recordId);
-    }
-
-    public static void reorderPriority(Symptom symptom) {
-
     }
 
     public static long updateSymptomRecord(Symptom symptom) {

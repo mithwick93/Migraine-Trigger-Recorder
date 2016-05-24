@@ -60,11 +60,6 @@ public final class DBReliefDAO {
      */
     public static long addReliefRecord(int reliefId, int recordId, boolean effective) {
         Log.d("DBReliefDAO", "DB - addReliefRecord");
-//
-//        if (reliefId <= 0 || recordId <= 0) {
-//            Log.e("DAO-add", "invalid information");
-//            return -1;
-//        }
 
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
@@ -99,11 +94,6 @@ public final class DBReliefDAO {
     public static long addReliefRecord(SQLiteDatabase db, int reliefId, int recordId, boolean effective) throws SQLiteException {
         Log.d("DBReliefDAO", "DB - addReliefRecord");
 
-//        if (reliefId <= 0 || recordId <= 0) {
-//            Log.e("DAO-add", "invalid information");
-//            return -1;
-//        }
-
         ContentValues values = new ContentValues();
 
         values.put(DatabaseDefinition.RELIEF_RECORD_RELIEF_ID_KEY, reliefId);
@@ -136,6 +126,21 @@ public final class DBReliefDAO {
             return -1;
         }
     }
+
+    /**
+     * delete Relief
+     *
+     * @param db SQLiteDatabase
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteRelief(SQLiteDatabase db, int id) {
+        Log.d("DBReliefDAO", "deleteMedicine");
+
+        long row_id = db.delete(DatabaseDefinition.RELIEF_TABLE, DatabaseDefinition.RELIEF_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+        return row_id;
+    }
+
 
     /**
      * delete Relief Records

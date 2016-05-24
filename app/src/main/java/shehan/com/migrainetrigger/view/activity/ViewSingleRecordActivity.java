@@ -15,14 +15,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.AppUtil;
-import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFragment;
 
 public class ViewSingleRecordActivity
         extends BaseActivity
         implements ViewRecordSingleFragment.SingleRecordViewFragmentListener {
 
-    private static final boolean DEVELOPER_MODE = true;
+    private static final boolean DEVELOPER_MODE = false;
     private FloatingActionButton fabUpdate;
     private ViewRecordSingleFragment mViewRecordSingleFragment;
     //private int recordId;

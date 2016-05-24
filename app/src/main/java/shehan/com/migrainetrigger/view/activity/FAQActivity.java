@@ -10,7 +10,6 @@ import android.util.Log;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.AppUtil;
-import shehan.com.migrainetrigger.utility.BaseActivity;
 import shehan.com.migrainetrigger.view.fragment.faq.AlternativeFragment;
 import shehan.com.migrainetrigger.view.fragment.faq.CausesFragment;
 import shehan.com.migrainetrigger.view.fragment.faq.ComplicationsFragment;
@@ -27,7 +26,7 @@ public class FAQActivity
         extends BaseActivity
         implements FAQTopicsFragment.TopicSelectedListener {
 
-    private static final boolean DEVELOPER_MODE = true;
+    private static final boolean DEVELOPER_MODE = false;
 
     @Override
     public void onResume() {

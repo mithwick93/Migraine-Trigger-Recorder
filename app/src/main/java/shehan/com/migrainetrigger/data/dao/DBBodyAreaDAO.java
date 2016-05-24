@@ -58,11 +58,6 @@ public class DBBodyAreaDAO {
     public static long addBodyAreaRecord(int bodyAreaId, int recordId) {
         Log.d("DBBodyAreaDAO", "DB - addBodyAreaRecord");
 
-//        if (bodyAreaId <= 0 || recordId < 0) {
-//            Log.e("DAO-add", "invalid information");
-//            return -1;
-//        }
-
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();
@@ -93,11 +88,6 @@ public class DBBodyAreaDAO {
     public static long addBodyAreaRecord(SQLiteDatabase db, int bodyAreaId, int recordId) throws SQLiteException {
         Log.d("DBBodyAreaDAO", "DB - addBodyAreaRecord");
 
-//        if (bodyAreaId <= 0 || recordId <= 0) {
-//            Log.e("DAO-add", "invalid information");
-//            return -1;
-//        }
-
         ContentValues values = new ContentValues();
 
         values.put(DatabaseDefinition.BODY_AREA_RECORD_AREA_ID_KEY, bodyAreaId);
@@ -127,6 +117,20 @@ public class DBBodyAreaDAO {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    /**
+     * delete Body Area
+     *
+     * @param db SQLiteDatabase
+     * @param id id
+     * @return affected no of rows
+     */
+    public static long deleteBodyArea(SQLiteDatabase db, int id) {
+        Log.d("DBBodyAreaDAO", "deleteBodyArea");
+
+        long row_id = db.delete(DatabaseDefinition.BODY_AREA_TABLE, DatabaseDefinition.BODY_AREA_ID_KEY + " = ?", new String[]{String.valueOf(id)});
+        return row_id;
     }
 
     /**

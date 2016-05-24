@@ -66,9 +66,6 @@ public class ViewRecordListFragment extends Fragment
         if (mView != null) {
             new GetRecordListTask(mView).execute();//Load records to list view
         }
-        //        if (mView != null) {
-//            new GetRecordListTask().execute();//Load records to list view
-//        }
 
     }
 
