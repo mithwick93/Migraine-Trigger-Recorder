@@ -31,15 +31,22 @@ public class DBTransactionHandler {
         Log.d("DBTransactionHandler", "addRecord - start transaction");
 
         SQLiteDatabase db = DatabaseHandler.getWritableDatabase();
+        //db.setForeignKeyConstraintsEnabled(false);
         db.beginTransaction();
         try {
+
+            //Add record itself
+            long result = DBRecordDAO.addRecord(db, record);
+            if (result < 1) {
+                throw new Exception("Record insert failed. code : " + result);
+            }
 
             if (recordLevel == 1 || recordLevel == 2) {
                 //Triggers
                 if (record.getTriggers() != null && record.getTriggers().size() > 0) {
                     Log.d("DBTransactionHandler", "addRecord - Triggers");
                     for (Trigger trigger : record.getTriggers()) {
-                        long result = DBTriggerDAO.addTriggerRecord(db, trigger.getTriggerId(), record.getRecordId());
+                        result = DBTriggerDAO.addTriggerRecord(db, trigger.getTriggerId(), record.getRecordId());
                         if (result < 1) {
                             throw new Exception("Trigger record insert failed. code : " + result);
                         }
@@ -50,7 +57,7 @@ public class DBTransactionHandler {
                 if (record.getSymptoms() != null && record.getSymptoms().size() > 0) {
                     Log.d("DBTransactionHandler", "addRecord - Symptoms");
                     for (Symptom symptom : record.getSymptoms()) {
-                        long result = DBSymptomDAO.addSymptomRecord(db, symptom.getSymptomId(), record.getRecordId());
+                        result = DBSymptomDAO.addSymptomRecord(db, symptom.getSymptomId(), record.getRecordId());
                         if (result < 1) {
                             throw new Exception("Symptom record insert failed. code : " + result);
                         }
@@ -61,7 +68,7 @@ public class DBTransactionHandler {
                 if (record.getActivities() != null && record.getActivities().size() > 0) {
                     Log.d("DBTransactionHandler", "addRecord - Activities");
                     for (LifeActivity lifeActivity : record.getActivities()) {
-                        long result = DBActivityDAO.addActivityRecord(db, lifeActivity.getActivityId(), record.getRecordId());
+                        result = DBActivityDAO.addActivityRecord(db, lifeActivity.getActivityId(), record.getRecordId());
                         if (result < 1) {
                             throw new Exception("Activity record insert failed. code : " + result);
                         }
@@ -74,7 +81,7 @@ public class DBTransactionHandler {
                 if (record.getBodyAreas() != null && record.getBodyAreas().size() > 0) {
                     Log.d("DBTransactionHandler", "addRecord - BodyAreas");
                     for (BodyArea bodyArea : record.getBodyAreas()) {
-                        long result = DBBodyAreaDAO.addBodyAreaRecord(db, bodyArea.getBodyAreaId(), record.getRecordId());
+                        result = DBBodyAreaDAO.addBodyAreaRecord(db, bodyArea.getBodyAreaId(), record.getRecordId());
                         if (result < 1) {
                             throw new Exception("Body area record insert failed. code : " + result);
                         }
@@ -85,7 +92,7 @@ public class DBTransactionHandler {
                 if (record.getMedicines() != null && record.getMedicines().size() > 0) {
                     Log.d("DBTransactionHandler", "addRecord - Medicines");
                     for (Medicine medicine : record.getMedicines()) {
-                        long result = DBMedicineDAO.addMedicineRecord(db, medicine.getMedicineId(), record.getRecordId(), medicine.isEffective());
+                        result = DBMedicineDAO.addMedicineRecord(db, medicine.getMedicineId(), record.getRecordId(), medicine.isEffective());
                         if (result < 1) {
                             throw new Exception("Medicine record insert failed. code : " + result);
                         }
@@ -96,7 +103,7 @@ public class DBTransactionHandler {
                 if (record.getReliefs() != null && record.getReliefs().size() > 0) {
                     Log.d("DBTransactionHandler", "addRecord - Reliefs");
                     for (Relief relief : record.getReliefs()) {
-                        long result = DBReliefDAO.addReliefRecord(db, relief.getReliefId(), record.getRecordId(), relief.isEffective());
+                        result = DBReliefDAO.addReliefRecord(db, relief.getReliefId(), record.getRecordId(), relief.isEffective());
                         if (result < 1) {
                             throw new Exception("Relief record insert failed. code : " + result);
                         }
@@ -108,18 +115,14 @@ public class DBTransactionHandler {
             if (record.getWeatherData() != null) {
                 Log.d("DBTransactionHandler", "addRecord WeatherData");
 
-                long result = DBWeatherDataDAO.addWeatherData(db, record.getRecordId(), record.getWeatherData());
+                result = DBWeatherDataDAO.addWeatherData(db, record.getRecordId(), record.getWeatherData());
                 if (result < 1) {
                     throw new Exception("Weather Data insert failed. code : " + result);
                 }
 
             }
 
-            //Add record itself
-            long result = DBRecordDAO.addRecord(db, record);
-            if (result < 1) {
-                throw new Exception("Record insert failed. code : " + result);
-            }
+
             db.setTransactionSuccessful();
             return result > 0;
         } catch (Exception e) {
@@ -127,12 +130,13 @@ public class DBTransactionHandler {
             return false;
         } finally {
             db.endTransaction();
+            //db.setForeignKeyConstraintsEnabled(true);
             db.close();
         }
     }
 
     /**
-     * Deete answer list
+     * Delete answer list
      *
      * @param answerSection answer type
      * @param removeList    answer list
@@ -358,11 +362,16 @@ public class DBTransactionHandler {
             }
 
             //Add above as new
+            //Update record
+            long result = DBRecordDAO.updateRecord(db, record);
+            if (result < 0) {
+                throw new Exception("Record update failed. code : " + result);
+            }
             //Triggers
             if (record.getTriggers() != null && record.getTriggers().size() > 0) {
                 Log.d("DBTransactionHandler", "updateRecord - Triggers");
                 for (Trigger trigger : record.getTriggers()) {
-                    long result = DBTriggerDAO.addTriggerRecord(db, trigger.getTriggerId(), record.getRecordId());
+                    result = DBTriggerDAO.addTriggerRecord(db, trigger.getTriggerId(), record.getRecordId());
                     if (result < 1) {
                         throw new Exception("Trigger record update failed. code : " + result);
                     }
@@ -373,7 +382,7 @@ public class DBTransactionHandler {
             if (record.getSymptoms() != null && record.getSymptoms().size() > 0) {
                 Log.d("DBTransactionHandler", "updateRecord - Symptoms");
                 for (Symptom symptom : record.getSymptoms()) {
-                    long result = DBSymptomDAO.addSymptomRecord(db, symptom.getSymptomId(), record.getRecordId());
+                    result = DBSymptomDAO.addSymptomRecord(db, symptom.getSymptomId(), record.getRecordId());
                     if (result < 1) {
                         throw new Exception("Symptom record update failed. code : " + result);
                     }
@@ -384,7 +393,7 @@ public class DBTransactionHandler {
             if (record.getActivities() != null && record.getActivities().size() > 0) {
                 Log.d("DBTransactionHandler", "updateRecord - Activities");
                 for (LifeActivity lifeActivity : record.getActivities()) {
-                    long result = DBActivityDAO.addActivityRecord(db, lifeActivity.getActivityId(), record.getRecordId());
+                    result = DBActivityDAO.addActivityRecord(db, lifeActivity.getActivityId(), record.getRecordId());
                     if (result < 1) {
                         throw new Exception("Activity record update failed. code : " + result);
                     }
@@ -395,7 +404,7 @@ public class DBTransactionHandler {
             if (record.getBodyAreas() != null && record.getBodyAreas().size() > 0) {
                 Log.d("DBTransactionHandler", "updateRecord - BodyAreas");
                 for (BodyArea bodyArea : record.getBodyAreas()) {
-                    long result = DBBodyAreaDAO.addBodyAreaRecord(db, bodyArea.getBodyAreaId(), record.getRecordId());
+                    result = DBBodyAreaDAO.addBodyAreaRecord(db, bodyArea.getBodyAreaId(), record.getRecordId());
                     if (result < 1) {
                         throw new Exception("Body area record update failed. code : " + result);
                     }
@@ -406,7 +415,7 @@ public class DBTransactionHandler {
             if (record.getMedicines() != null && record.getMedicines().size() > 0) {
                 Log.d("DBTransactionHandler", "updateRecord - Medicines");
                 for (Medicine medicine : record.getMedicines()) {
-                    long result = DBMedicineDAO.addMedicineRecord(db, medicine.getMedicineId(), record.getRecordId(), medicine.isEffective());
+                    result = DBMedicineDAO.addMedicineRecord(db, medicine.getMedicineId(), record.getRecordId(), medicine.isEffective());
                     if (result < 1) {
                         throw new Exception("Medicine record update failed. code : " + result);
                     }
@@ -417,7 +426,7 @@ public class DBTransactionHandler {
             if (record.getReliefs() != null && record.getReliefs().size() > 0) {
                 Log.d("DBTransactionHandler", "updateRecord - Reliefs");
                 for (Relief relief : record.getReliefs()) {
-                    long result = DBReliefDAO.addReliefRecord(db, relief.getReliefId(), record.getRecordId(), relief.isEffective());
+                    result = DBReliefDAO.addReliefRecord(db, relief.getReliefId(), record.getRecordId(), relief.isEffective());
                     if (result < 1) {
                         throw new Exception("Relief record update failed. code : " + result);
                     }
@@ -428,18 +437,14 @@ public class DBTransactionHandler {
             if (record.getWeatherData() != null) {
                 Log.d("DBTransactionHandler", "updateRecord WeatherData");
 
-                long result = DBWeatherDataDAO.addWeatherData(db, record.getRecordId(), record.getWeatherData());
+                result = DBWeatherDataDAO.addWeatherData(db, record.getRecordId(), record.getWeatherData());
                 if (result < 1) {
                     throw new Exception("Weather Data update failed. code : " + result);
                 }
 
             }
 
-            //Update record
-            long result = DBRecordDAO.updateRecord(db, record);
-            if (result < 0) {
-                throw new Exception("Record update failed. code : " + result);
-            }
+
             db.setTransactionSuccessful();
             return result > 0;
         } catch (Exception e) {

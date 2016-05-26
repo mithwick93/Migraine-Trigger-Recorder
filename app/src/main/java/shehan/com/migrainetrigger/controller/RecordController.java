@@ -60,7 +60,7 @@ public class RecordController {
         Record record = DBRecordDAO.getRecord(recordId);
         if (record != null) {
 
-            if (record.getLocationId() > -1) {//set location
+            if (record.getLocationId() > 0) {//set location
                 record.setLocation(LocationController.getLocationById(record.getLocationId()));
             }
 

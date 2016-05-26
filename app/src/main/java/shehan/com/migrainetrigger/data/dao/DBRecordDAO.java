@@ -59,7 +59,8 @@ public final class DBRecordDAO {
             if (record.getLocation() != null) {
                 values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, record.getLocation().getLocationId());
             } else {
-                values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, -1);
+                //A sign nil to location
+                values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, 0);
             }
 
             // Inserting Row
@@ -109,7 +110,8 @@ public final class DBRecordDAO {
         if (record.getLocation() != null) {
             values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, record.getLocation().getLocationId());
         } else {
-            values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, -1);
+            //A sign nil to location
+            values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, 0);
         }
 
         // Inserting Row
@@ -668,7 +670,7 @@ public final class DBRecordDAO {
         if (record.getLocation() != null) {
             values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, record.getLocation().getLocationId());
         } else {
-            values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, -1);
+            values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, 0);
         }
 
         // Inserting Row

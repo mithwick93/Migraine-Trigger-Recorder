@@ -360,6 +360,7 @@ public interface DatabaseDefinition {
     //Insert LOCATION_TABLE
     String LOCATION_INSERT =
             "INSERT INTO location VALUES \n" +
+                    "(0,'nil'),\n" +
                     "(1,'Out'),\n" +
                     "(2,'Home'),\n" +
                     "(3,'Bed'),\n" +

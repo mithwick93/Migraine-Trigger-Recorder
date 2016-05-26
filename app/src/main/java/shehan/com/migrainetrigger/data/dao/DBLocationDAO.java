@@ -57,7 +57,10 @@ public final class DBLocationDAO {
     public static long deleteLocation(int id) {
         Log.d("DBLocationDAO", "deleteLocation");
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
+            if (id == 0) {
+                Log.e("DBLocationDAO", "attempting to delete readonly nil value");
+                return -1;
+            }
             long row_id = db.delete(DatabaseDefinition.LOCATION_TABLE, DatabaseDefinition.LOCATION_ID_KEY + " = ?", new String[]{String.valueOf(id)});
             return row_id;
         } catch (SQLiteException e) {
@@ -76,6 +79,11 @@ public final class DBLocationDAO {
      */
     public static long deleteLocation(SQLiteDatabase db, int id) {
         Log.d("DBLocationDAO", "deleteLocation");
+
+        if (id == 0) {
+            Log.e("DBLocationDAO", "attempting to delete readonly nil value");
+            return -1;
+        }
 
         long row_id = db.delete(DatabaseDefinition.LOCATION_TABLE, DatabaseDefinition.LOCATION_ID_KEY + " = ?", new String[]{String.valueOf(id)});
         return row_id;
@@ -114,6 +122,9 @@ public final class DBLocationDAO {
             if (db != null) {
                 db.close();
             }
+        }
+        if (locationArrayList.size() > 0) {
+            locationArrayList.remove(0);
         }
         return locationArrayList;
     }
@@ -159,11 +170,14 @@ public final class DBLocationDAO {
             }
 
         }
+        if (recordId < 0) {
+            recordId = 0;
+        }
         return recordId;
     }
 
     /**
-     * ge tLocation
+     * get Location
      *
      * @param id id
      * @return Location
@@ -172,6 +186,10 @@ public final class DBLocationDAO {
     public static Location getLocation(int id) {
         Log.d("DBLocationDAO", "getLocation");
 
+        if (id == 0) {
+            Log.e("DBLocationDAO", "Trying to get nil value");
+            return null;
+        }
         SQLiteDatabase db = null;
         Cursor cursor = null;
         try {
@@ -240,7 +258,7 @@ public final class DBLocationDAO {
             String joinQuery =
                     "SELECT " + topic + ", COUNT(" + topicId + ") as topCount " +
                             "FROM " + leftTable + " NATURAL JOIN " + rightTable +
-                            " WHERE " + rightTable + "." + filter + " BETWEEN ? AND ? " +
+                            " WHERE location.location_id != 0 AND " + rightTable + "." + filter + " BETWEEN ? AND ? " +
                             "GROUP BY " + topic + " ORDER BY topCount DESC LIMIT " + String.valueOf(limit);
 
             String[] selectionArgs = {getStringDate(from), getStringDate(to)};
@@ -264,6 +282,7 @@ public final class DBLocationDAO {
             }
         }
 
+
         return top;
     }
 
@@ -275,6 +294,16 @@ public final class DBLocationDAO {
      */
     public static long updateLocationRecord(Location location) {
         Log.d("DBLocationDAO", "DB - updateLocationRecord");
+
+        if (location == null) {
+            Log.e("DBLocationDAO", "null location");
+            return -1;
+        }
+        if (location.getLocationId() == 0) {
+            Log.e("DBLocationDAO", "Trying to update nil value");
+            return -1;
+        }
+
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
             ContentValues values = new ContentValues();

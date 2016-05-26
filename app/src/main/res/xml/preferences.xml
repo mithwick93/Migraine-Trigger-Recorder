@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
+        android:key="pref_key_general_settings"
+        android:title="General">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_suggestions"
+            android:summary="@string/pref_suggestions_summery"
+            android:title="@string/pref_suggestions_title"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_send"
+            android:summary="@string/pref_send_summery"
+            android:title="@string/pref_send_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory
         android:key="pref_key_theme_settings"
         android:title="@string/preferences_title_theme">
         <com.afollestad.materialdialogs.prefs.MaterialListPreference

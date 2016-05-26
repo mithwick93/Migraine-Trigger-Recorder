@@ -689,6 +689,8 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
             Log.d("AddFullFragment", "getFullRecordBuilder - location");
             recordBuilder = recordBuilder.setLocation(location);
             recordBuilder = recordBuilder.setLocationId(location.getLocationId());
+        } else {
+            recordBuilder = recordBuilder.setLocationId(0);
         }
 
         if (selectedBodyAreas.size() > 0) {

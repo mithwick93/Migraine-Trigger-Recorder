@@ -30,9 +30,26 @@ public class AppUtilTest {
     }
 
     @Test
+    public void testGetFormattedTimeAMBoundary() throws Exception {
+        String expected = "00:15 am";
+        String result = AppUtil.getFormattedTime(0, 15);
+
+        assertEquals(expected, result);
+
+    }
+
+    @Test
     public void testGetFormattedTimePM() throws Exception {
         String expected = "03:15 pm";
         String result = AppUtil.getFormattedTime(15, 15);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testGetFormattedTimePMBoundary() throws Exception {
+        String expected = "12:35 pm";
+        String result = AppUtil.getFormattedTime(12, 35);
 
         assertEquals(expected, result);
     }
