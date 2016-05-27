@@ -22,4 +22,9 @@ public class DatabaseHandlerTest {
     public void getWritableDBTest() {
         assertTrue(DatabaseHandler.getWritableDatabase() != null);
     }
+
+    @Test
+    public void testDatabaseTest() {
+        DatabaseHandler.testDatabase();
+    }
 }

@@ -33,40 +33,44 @@ public class AboutFragmentTest {
     @Rule
     public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class);
 
-    @Test
-    public void testGenerated() {
-        // Used to provide time delays between actions, see details at http://droidtestlab.com/delay.html
-        IdlingResource idlingResource;
-
-        idlingResource = startTiming(3900);
-        // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar
-        onView(nthChildOf(withId(R.id.main_toolbar), 1)).perform(click());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(1800);
-        // Click at NavigationMenuItemView with child index 10 of parent with id R.id.design_navigation_view
-        onView(withId(R.id.design_navigation_view)).perform(scrollToPosition(10));
-        onView(nthChildOf(withId(R.id.design_navigation_view), 10)).perform(click());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(1800);
-        // Click at AppCompatTextView with id R.id.txt_about_licenses
-        onView(withId(R.id.txt_about_licenses)).perform(scrollTo());
-        onView(withId(R.id.txt_about_licenses)).perform(click());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(2600);
-        // Click at MDButton with id R.id.buttonDefaultPositive
-        onView(withId(R.id.buttonDefaultPositive)).perform(click());
-        stopTiming(idlingResource);
-
-    }
-
     // See details at http://droidtestlab.com/delay.html
     public IdlingResource startTiming(long time) {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(time);
         Espresso.registerIdlingResources(idlingResource);
         return idlingResource;
+    }
+
+    public void stopTiming(IdlingResource idlingResource) {
+        Espresso.unregisterIdlingResources(idlingResource);
+    }
+
+    @Test
+    public void testGenerated() {
+        // Used to provide time delays between actions, see details at http://droidtestlab.com/delay.html
+        IdlingResource idlingResource;
+
+        //idlingResource = startTiming(3900);
+        // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar
+        onView(nthChildOf(withId(R.id.main_toolbar), 1)).perform(click());
+        //stopTiming(idlingResource);
+
+        // idlingResource = startTiming(1800);
+        // Click at NavigationMenuItemView with child index 10 of parent with id R.id.design_navigation_view
+        onView(withId(R.id.design_navigation_view)).perform(scrollToPosition(10));
+        onView(nthChildOf(withId(R.id.design_navigation_view), 10)).perform(click());
+        //stopTiming(idlingResource);
+
+        //idlingResource = startTiming(1800);
+        // Click at AppCompatTextView with id R.id.txt_about_licenses
+        onView(withId(R.id.txt_about_licenses)).perform(scrollTo());
+        onView(withId(R.id.txt_about_licenses)).perform(click());
+        //stopTiming(idlingResource);
+
+        //idlingResource = startTiming(2600);
+        // Click at MDButton with id R.id.buttonDefaultPositive
+        onView(withId(R.id.buttonDefaultPositive)).perform(click());
+        //stopTiming(idlingResource);
+
     }
 
     public static Matcher<View> nthChildOf(final Matcher<View> parentMatcher, final int childPosition) {
@@ -84,10 +88,6 @@ public class AboutFragmentTest {
                 return parentMatcher.matches(group) && view.equals(group.getChildAt(childPosition));
             }
         };
-    }
-
-    public void stopTiming(IdlingResource idlingResource) {
-        Espresso.unregisterIdlingResources(idlingResource);
     }
 
     public static ViewAction scrollToPosition(final int pos) {

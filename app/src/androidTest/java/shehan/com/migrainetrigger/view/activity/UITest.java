@@ -1,4 +1,4 @@
-package shehan.com.migrainetrigger.utility;
+package shehan.com.migrainetrigger.view.activity;
 
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;

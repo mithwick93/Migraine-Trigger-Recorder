@@ -35,37 +35,6 @@ public class ViewRecordsListTest {
     @Rule
     public ActivityTestRule activityRule = new ActivityTestRule<>(ViewRecordsActivity.class);
 
-    @Test
-    public void testGenerated() {
-        // Used to provide time delays between actions, see details at http://droidtestlab.com/delay.html
-        IdlingResource idlingResource;
-
-        idlingResource = startTiming(2000);
-        // Swipe up at RecyclerView with id R.id.record_list_recycler_view
-        onView(withId(R.id.record_list_recycler_view)).perform(swipeUp());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(2000);
-        // Swipe down at RecyclerView with id R.id.record_list_recycler_view
-        onView(withId(R.id.record_list_recycler_view)).perform(swipeDown());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(1000);
-        // Click at LinearLayout with child index 0 of parent with id R.id.record_list_recycler_view
-        onView(withId(R.id.record_list_recycler_view)).perform(scrollToPosition(0));
-        onView(nthChildOf(withId(R.id.record_list_recycler_view), 0)).perform(click());
-        stopTiming(idlingResource);
-
-        pressBack();
-
-        idlingResource = startTiming(3900);
-        // Click at MDButton with id R.id.buttonDefaultPositive
-        onView(withId(R.id.buttonDefaultPositive)).perform(click());
-        stopTiming(idlingResource);
-
-
-    }
-
     // See details at http://droidtestlab.com/delay.html
     public IdlingResource startTiming(long time) {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(time);
@@ -75,6 +44,30 @@ public class ViewRecordsListTest {
 
     public void stopTiming(IdlingResource idlingResource) {
         Espresso.unregisterIdlingResources(idlingResource);
+    }
+
+    @Test
+    public void testGenerated() {
+        // Used to provide time delays between actions, see details at http://droidtestlab.com/delay.html
+        IdlingResource idlingResource;
+
+
+        // Swipe up at RecyclerView with id R.id.record_list_recycler_view
+        onView(withId(R.id.record_list_recycler_view)).perform(swipeUp());
+
+        // Swipe down at RecyclerView with id R.id.record_list_recycler_view
+        onView(withId(R.id.record_list_recycler_view)).perform(swipeDown());
+
+        // Click at LinearLayout with child index 0 of parent with id R.id.record_list_recycler_view
+        onView(withId(R.id.record_list_recycler_view)).perform(scrollToPosition(0));
+        onView(nthChildOf(withId(R.id.record_list_recycler_view), 0)).perform(click());
+
+        pressBack();
+
+        // Click at MDButton with id R.id.buttonDefaultPositive
+        onView(withId(R.id.buttonDefaultPositive)).perform(click());
+
+
     }
 
     public static ViewAction scrollToPosition(final int pos) {

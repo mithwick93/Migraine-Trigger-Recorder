@@ -29,65 +29,6 @@ public class InfoLevelChooseTest {
     @Rule
     public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class);
 
-    @Test
-    public void testGenerated() {
-        // Used to provide time delays between actions, see details at http://droidtestlab.com/delay.html
-        IdlingResource idlingResource;
-
-        idlingResource = startTiming(3000);
-        // Click at FloatingActionButton with id R.id.fab
-        onView(withId(R.id.fab)).perform(click());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(1700);
-        // Click at item with value 'Basic' in ListView
-        onData(allOf(is(instanceOf(java.lang.String.class)), is("Basic"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-        stopTiming(idlingResource);
-
-        pressBack();
-
-        idlingResource = startTiming(3000);
-        // Click at MDButton with id R.id.buttonDefaultPositive
-        onView(withId(R.id.buttonDefaultPositive)).perform(click());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(1300);
-        // Click at FloatingActionButton with id R.id.fab
-        onView(withId(R.id.fab)).perform(click());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(1400);
-        // Click at item with value 'Intermediate' in ListView
-        onData(allOf(is(instanceOf(java.lang.String.class)), is("Intermediate"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-        stopTiming(idlingResource);
-
-        pressBack();
-
-        idlingResource = startTiming(3000);
-        // Click at MDButton with id R.id.buttonDefaultPositive
-        onView(withId(R.id.buttonDefaultPositive)).perform(click());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(1100);
-        // Click at FloatingActionButton with id R.id.fab
-        onView(withId(R.id.fab)).perform(click());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(1200);
-        // Click at item with value 'Full' in ListView
-        onData(allOf(is(instanceOf(java.lang.String.class)), is("Full"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-        stopTiming(idlingResource);
-
-        pressBack();
-
-        idlingResource = startTiming(2600);
-        // Click at MDButton with id R.id.buttonDefaultPositive
-        onView(withId(R.id.buttonDefaultPositive)).perform(click());
-        stopTiming(idlingResource);
-
-    }
-
-
     // See details at http://droidtestlab.com/delay.html
     public IdlingResource startTiming(long time) {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(time);
@@ -97,6 +38,51 @@ public class InfoLevelChooseTest {
 
     public void stopTiming(IdlingResource idlingResource) {
         Espresso.unregisterIdlingResources(idlingResource);
+    }
+
+    @Test
+    public void testGenerated() {
+        // Used to provide time delays between actions, see details at http://droidtestlab.com/delay.html
+        IdlingResource idlingResource;
+
+
+        // Click at FloatingActionButton with id R.id.fab
+        onView(withId(R.id.fab)).perform(click());
+
+
+        // Click at item with value 'Basic' in ListView
+        onData(allOf(is(instanceOf(java.lang.String.class)), is("Basic"))).inAdapterView(withId(R.id.contentListView)).perform(click());
+
+        pressBack();
+
+
+        // Click at MDButton with id R.id.buttonDefaultPositive
+        onView(withId(R.id.buttonDefaultPositive)).perform(click());
+
+        // Click at FloatingActionButton with id R.id.fab
+        onView(withId(R.id.fab)).perform(click());
+
+
+        // Click at item with value 'Intermediate' in ListView
+        onData(allOf(is(instanceOf(java.lang.String.class)), is("Intermediate"))).inAdapterView(withId(R.id.contentListView)).perform(click());
+
+
+        pressBack();
+
+        // Click at MDButton with id R.id.buttonDefaultPositive
+        onView(withId(R.id.buttonDefaultPositive)).perform(click());
+
+
+        // Click at FloatingActionButton with id R.id.fab
+        onView(withId(R.id.fab)).perform(click());
+
+        // Click at item with value 'Full' in ListView
+        onData(allOf(is(instanceOf(java.lang.String.class)), is("Full"))).inAdapterView(withId(R.id.contentListView)).perform(click());
+        pressBack();
+
+        // Click at MDButton with id R.id.buttonDefaultPositive
+        onView(withId(R.id.buttonDefaultPositive)).perform(click());
+
     }
 
     public class ElapsedTimeIdlingResource implements IdlingResource {

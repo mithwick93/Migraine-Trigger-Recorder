@@ -44,6 +44,14 @@ dependencies {
     androidTestCompile('com.android.support.test:rules:0.5') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
+
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.0') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
+
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
     //
     //
@@ -60,5 +68,6 @@ dependencies {
     compile 'com.github.johnhiott:DarkSkyApi:v0.1.4'
     compile 'com.github.sundeepk:compact-calendar-view:1.8.3'
     compile 'org.jetbrains:annotations-java5:15.0'
+    compile 'com.github.yesidlazaro:GmailBackground:1.1'
     compile files('C:/Users/Shehan/.AndroidStudio2.1/config/plugins/AndroidTestsRecorder/lib/AndroidTestsRecorder.jar')
 }

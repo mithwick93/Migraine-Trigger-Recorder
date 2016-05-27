@@ -76,11 +76,13 @@ public class DatabaseHandler implements DatabaseDefinition {
     public static class DataBaseHelper extends SQLiteOpenHelper {
         public DataBaseHelper() {
             super(MigraineTriggerApplication.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
+            Log.d("DataBaseHelper", "constructor called");
         }
 
         @SuppressLint("NewApi")
         @Override
         public void onConfigure(SQLiteDatabase database) {
+            Log.d("DataBaseHelper", "onConfigure");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 database.setForeignKeyConstraintsEnabled(true);
             } else {
@@ -90,6 +92,7 @@ public class DatabaseHandler implements DatabaseDefinition {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
+            Log.d("DataBaseHelper", "onCreate");
             try {
                 //Create the tables on the first run
                 db.execSQL(RECORD_CREATE);

@@ -1,5 +1,6 @@
 package shehan.com.migrainetrigger.view.activity;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
@@ -19,29 +20,19 @@ import org.junit.runner.RunWith;
 import shehan.com.migrainetrigger.R;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class NavigationDrawerTest {
+public class AnswersTest {
 
     @Rule
-    public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class);
-
-    // See details at http://droidtestlab.com/delay.html
-    public IdlingResource startTiming(long time) {
-//        IdlingResource idlingResource = new ElapsedTimeIdlingResource(time);
-//        Espresso.registerIdlingResources(idlingResource);
-//        return idlingResource;
-        return null;
-    }
-
-    public void stopTiming(IdlingResource idlingResource) {
-        //Espresso.unregisterIdlingResources(idlingResource);
-    }
+    public ActivityTestRule activityRule = new ActivityTestRule<>(SplashScreenActivity.class);
 
     @Test
     public void testGenerated() {
@@ -52,65 +43,78 @@ public class NavigationDrawerTest {
         // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar
         onView(nthChildOf(withId(R.id.main_toolbar), 1)).perform(click());
 
-        // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar
-        onView(nthChildOf(withId(R.id.main_toolbar), 1)).perform(click());
-
-
-        // Click at NavigationMenuItemView with child index 1 of parent with id R.id.design_navigation_view
-        onView(withId(R.id.design_navigation_view)).perform(scrollToPosition(1));
-        onView(nthChildOf(withId(R.id.design_navigation_view), 1)).perform(click());
-
-
-        // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar
-        onView(nthChildOf(withId(R.id.main_toolbar), 1)).perform(click());
-
-
-        // Click at NavigationMenuItemView with child index 2 of parent with id R.id.design_navigation_view
-        onView(withId(R.id.design_navigation_view)).perform(scrollToPosition(2));
-        onView(nthChildOf(withId(R.id.design_navigation_view), 2)).perform(click());
-
-
-        // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar
-        onView(nthChildOf(withId(R.id.main_toolbar), 1)).perform(click());
-
-
         // Click at NavigationMenuItemView with child index 3 of parent with id R.id.design_navigation_view
         onView(withId(R.id.design_navigation_view)).perform(scrollToPosition(3));
         onView(nthChildOf(withId(R.id.design_navigation_view), 3)).perform(click());
 
 
-        // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar
-        onView(nthChildOf(withId(R.id.main_toolbar), 1)).perform(click());
+        // Click at CardView with id R.id.card_view_answers_triggers
+        onView(withId(R.id.card_view_answers_triggers)).perform(scrollTo());
+        onView(withId(R.id.card_view_answers_triggers)).perform(click());
+
+        idlingResource = startTiming(2000);
+        // Press on the back button
+        pressBack();
+        stopTiming(idlingResource);
+
+        // Click at CardView with id R.id.card_view_answers_symptoms
+        onView(withId(R.id.card_view_answers_symptoms)).perform(scrollTo());
+        onView(withId(R.id.card_view_answers_symptoms)).perform(click());
+
+        idlingResource = startTiming(2000);
+        // Press on the back button
+        pressBack();
+        stopTiming(idlingResource);
+
+        // Click at CardView with id R.id.card_view_answers_activities
+        onView(withId(R.id.card_view_answers_activities)).perform(scrollTo());
+        onView(withId(R.id.card_view_answers_activities)).perform(click());
+
+        idlingResource = startTiming(2000);
+        // Press on the back button
+        pressBack();
+        stopTiming(idlingResource);
 
 
-        // Click at NavigationMenuItemView with child index 9 of parent with id R.id.design_navigation_view
-        onView(withId(R.id.design_navigation_view)).perform(scrollToPosition(9));
-        onView(nthChildOf(withId(R.id.design_navigation_view), 9)).perform(click());
+        // Click at CardView with id R.id.card_view_answers_locations
+        onView(withId(R.id.card_view_answers_locations)).perform(scrollTo());
+        onView(withId(R.id.card_view_answers_locations)).perform(click());
+
+        idlingResource = startTiming(2000);
+        // Press on the back button
+        pressBack();
+        stopTiming(idlingResource);
 
 
-        // Click at ImageButton with child index 1 of parent with id R.id.settings_toolbar
-        onView(nthChildOf(withId(R.id.settings_toolbar), 1)).perform(click());
+        // Click at CardView with id R.id.card_view_answers_pain_areas
+        onView(withId(R.id.card_view_answers_pain_areas)).perform(scrollTo());
+        onView(withId(R.id.card_view_answers_pain_areas)).perform(click());
 
+        idlingResource = startTiming(2000);
+        // Press on the back button
+        pressBack();
+        stopTiming(idlingResource);
 
-        // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar
-        onView(nthChildOf(withId(R.id.main_toolbar), 1)).perform(click());
+        // Click at CardView with id R.id.card_view_answers_medicines
+        onView(withId(R.id.card_view_answers_medicines)).perform(scrollTo());
+        onView(withId(R.id.card_view_answers_medicines)).perform(click());
 
+        idlingResource = startTiming(2000);
+        // Press on the back button
+        pressBack();
+        stopTiming(idlingResource);
 
-        // Click at NavigationMenuItemView with child index 10 of parent with id R.id.design_navigation_view
-        onView(withId(R.id.design_navigation_view)).perform(scrollToPosition(10));
-        onView(nthChildOf(withId(R.id.design_navigation_view), 10)).perform(click());
+        // Click at CardView with id R.id.card_view_answers_reliefs
+        onView(withId(R.id.card_view_answers_reliefs)).perform(scrollTo());
+        onView(withId(R.id.card_view_answers_reliefs)).perform(click());
 
-
-        // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar
-        onView(nthChildOf(withId(R.id.main_toolbar), 1)).perform(click());
-
-
-        // Click at NavigationMenuItemView with child index 1 of parent with id R.id.design_navigation_view
-        onView(withId(R.id.design_navigation_view)).perform(scrollToPosition(1));
-        onView(nthChildOf(withId(R.id.design_navigation_view), 1)).perform(click());
-
+        idlingResource = startTiming(2000);
+        // Press on the back button
+        pressBack();
+        stopTiming(idlingResource);
 
     }
+
 
     public static Matcher<View> nthChildOf(final Matcher<View> parentMatcher, final int childPosition) {
         return new TypeSafeMatcher<View>() {
@@ -129,6 +133,7 @@ public class NavigationDrawerTest {
         };
     }
 
+
     public static ViewAction scrollToPosition(final int pos) {
         return new ViewAction() {
             @Override
@@ -146,6 +151,17 @@ public class NavigationDrawerTest {
                 ((android.support.v7.widget.RecyclerView) view).scrollToPosition(pos);
             }
         };
+    }
+
+    // See details at http://droidtestlab.com/delay.html
+    public IdlingResource startTiming(long time) {
+        IdlingResource idlingResource = new ElapsedTimeIdlingResource(time);
+        Espresso.registerIdlingResources(idlingResource);
+        return idlingResource;
+    }
+
+    public void stopTiming(IdlingResource idlingResource) {
+        Espresso.unregisterIdlingResources(idlingResource);
     }
 
     public class ElapsedTimeIdlingResource implements IdlingResource {
