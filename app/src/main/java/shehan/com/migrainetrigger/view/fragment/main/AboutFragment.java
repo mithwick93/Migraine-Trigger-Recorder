@@ -46,11 +46,11 @@ public class AboutFragment extends Fragment {
     }
 
     private void displayLicensesAlertDialog() {
-        WebView view = (WebView) LayoutInflater.from(getContext()).inflate(R.layout.dialog_licenses, null);
-        view.loadUrl("file:///android_asset/open_source_licenses.html");
+        WebView webView = (WebView) LayoutInflater.from(getContext()).inflate(R.layout.dialog_licenses, null);
+        webView.loadUrl("file:///android_asset/open_source_licenses.html");
         MaterialDialog dialog = new MaterialDialog.Builder(getContext())
                 .title("Open source licenses")
-                .customView(view, true)
+                .customView(webView, true)
                 .positiveText("Ok")
                 .show();
     }

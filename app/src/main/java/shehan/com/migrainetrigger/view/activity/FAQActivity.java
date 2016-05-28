@@ -10,17 +10,8 @@ import android.util.Log;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.AppUtil;
-import shehan.com.migrainetrigger.view.fragment.faq.AlternativeFragment;
-import shehan.com.migrainetrigger.view.fragment.faq.CausesFragment;
-import shehan.com.migrainetrigger.view.fragment.faq.ComplicationsFragment;
-import shehan.com.migrainetrigger.view.fragment.faq.DefinitionFragment;
-import shehan.com.migrainetrigger.view.fragment.faq.DiagnosisFragment;
 import shehan.com.migrainetrigger.view.fragment.faq.FAQTopicsFragment;
-import shehan.com.migrainetrigger.view.fragment.faq.PreventionFragment;
-import shehan.com.migrainetrigger.view.fragment.faq.RemediesFragment;
-import shehan.com.migrainetrigger.view.fragment.faq.RiskFragment;
-import shehan.com.migrainetrigger.view.fragment.faq.SymptomsFragment;
-import shehan.com.migrainetrigger.view.fragment.faq.TreatmentsFragment;
+import shehan.com.migrainetrigger.view.fragment.faq.WebViewFragment;
 
 public class FAQActivity
         extends BaseActivity
@@ -41,59 +32,59 @@ public class FAQActivity
      */
     @Override
     public void onTopicRawClicked(int clickPosition) {
-        Fragment sectionFragment = null;
+        WebViewFragment webViewFragment = null;
         switch (clickPosition) {
 
             case 0:
-                sectionFragment = new DefinitionFragment();
-                Log.d("FAQ-FAQSelect", "DefinitionFragment");
+                webViewFragment = WebViewFragment.newInstance("Definition");
+                Log.d("FAQ-FAQSelect", "Definition");
                 break;
             case 1:
-                sectionFragment = new SymptomsFragment();
-                Log.d("FAQ-FAQSelect", "SymptomsFragment");
+                webViewFragment = WebViewFragment.newInstance("Symptoms");
+                Log.d("FAQ-FAQSelect", "Symptoms");
                 break;
             case 2:
-                sectionFragment = new CausesFragment();
-                Log.d("FAQ-FAQSelect", "CausesFragment");
+                webViewFragment = WebViewFragment.newInstance("Causes");
+                Log.d("FAQ-FAQSelect", "Causes");
                 break;
             case 3:
-                sectionFragment = new RiskFragment();
-                Log.d("FAQ-FAQSelect", "RiskFragment");
+                webViewFragment = WebViewFragment.newInstance("Risk");
+                Log.d("FAQ-FAQSelect", "Risk");
                 break;
             case 4:
-                sectionFragment = new ComplicationsFragment();
-                Log.d("FAQ-FAQSelect", "ComplicationsFragment");
+                webViewFragment = WebViewFragment.newInstance("Complications");
+                Log.d("FAQ-FAQSelect", "Complications");
                 break;
             case 5:
-                sectionFragment = new DiagnosisFragment();
-                Log.d("FAQ-FAQSelect", "DiagnosisFragment");
+                webViewFragment = WebViewFragment.newInstance("Diagnosis");
+                Log.d("FAQ-FAQSelect", "Diagnosis");
                 break;
             case 6:
-                sectionFragment = new TreatmentsFragment();
-                Log.d("FAQ-FAQSelect", "TreatmentsFragment");
+                webViewFragment = WebViewFragment.newInstance("Treatments");
+                Log.d("FAQ-FAQSelect", "Treatments");
                 break;
             case 7:
-                sectionFragment = new RemediesFragment();
-                Log.d("FAQ-FAQSelect", "RemediesFragment");
+                webViewFragment = WebViewFragment.newInstance("Remedies");
+                Log.d("FAQ-FAQSelect", "Remedies");
                 break;
             case 8:
-                sectionFragment = new AlternativeFragment();
-                Log.d("FAQ-FAQSelect", "AlternativeFragment");
+                webViewFragment = WebViewFragment.newInstance("Alternative");
+                Log.d("FAQ-FAQSelect", "Alternative");
                 break;
             case 9:
-                sectionFragment = new PreventionFragment();
-                Log.d("FAQ-FAQSelect", "PreventionFragment");
+                webViewFragment = WebViewFragment.newInstance("Prevention");
+                Log.d("FAQ-FAQSelect", "Prevention");
                 break;
         }
 
-        if (sectionFragment != null) {
+        if (webViewFragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-            fragmentTransaction.replace(R.id.faq_container, sectionFragment);
+            fragmentTransaction.replace(R.id.faq_container, webViewFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
-            Log.d("FAQ-FAQSelect", "Section shown :" + fragmentManager.toString());
+            Log.d("FAQ-FAQSelect", "Section shown : " + fragmentManager.toString());
         }
     }
 

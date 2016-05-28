@@ -19,9 +19,9 @@
     <color name="accent_violet_skyBlue">#e040fb</color>
 
     <!--Orange on Red-->
-    <color name="primary_orange_red">#e51c23</color>
-    <color name="primary_dark_orange_red">#d01716</color>
-    <color name="accent_orange_red">#ff6e40</color>
+    <color name="primary_orange_red">#F44336</color>
+    <color name="primary_dark_orange_red">#D32F2F</color>
+    <color name="accent_orange_red">#FF5722</color>
 
     <!--Pink on Teal-->
     <color name="primary_pink_teal">#009688</color>
