@@ -20,13 +20,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Set custom theme
      */
-    /**
-     * <item>Red on yellow</item>
-     * <item>Light green on pink</item>
-     * <item>Dark yellow on red</item>
-     * <item>Violet on sky blue</item>
-     * <item>Dark yellow on teal</item>
-     */
     protected void setCustomTheme() {
         String theme = PreferenceManager.getDefaultSharedPreferences(this).getString("pref_appTheme", "Light");
         String colorScheme = PreferenceManager.getDefaultSharedPreferences(this).getString("pref_appColor", "Red on yellow");
