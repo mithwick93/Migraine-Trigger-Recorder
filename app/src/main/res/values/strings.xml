@@ -184,7 +184,7 @@
     <string name="new_record_sync">Sync</string>
     <string name="pref_suggestions_summery">"Reorder answer list to show most used answers first "</string>
     <string name="pref_suggestions_title">"Answer suggestions "</string>
-    <string name="pref_send_summery">"Send migraine records anonymously via email "</string>
-    <string name="pref_send_title">"Send anonymous statistics "</string>
+    <string name="pref_send_summery">"Send migraine records via email "</string>
+    <string name="pref_send_title">"Send statistics "</string>
 
 </resources>

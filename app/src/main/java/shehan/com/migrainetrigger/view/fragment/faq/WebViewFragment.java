@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -105,8 +106,34 @@ public class WebViewFragment extends Fragment {
                     return true;
                 }
 
+                public void onReceivedError(WebView view, int errorCode,
+                                            String description, String failingUrl) {
+                    String content = "<html>\n" +
+                            "<head>\n" +
+                            "</head>\n" +
+                            "<body>\n" +
+                            "<h1 style=\"text-align:center;color:#F44336;padding:15px;\">Something Went Wrong</h1>\n" +
+                            "<p style=\"text-align:center;color:#F44336;\">Could not load " + faqSection + " page &#9785;</p>\n" +
+                            "</body>\n" +
+                            "</html>";
+                    webView.loadData(content, "text/html", "utf-8");
+                }
+
                 @Override
                 public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                    String content = "<html>\n" +
+                            "<head>\n" +
+                            "</head>\n" +
+                            "<body>\n" +
+                            "<h1 style=\"text-align:center;color:#F44336;padding:15px;\">Something Went Wrong</h1>\n" +
+                            "<p style=\"text-align:center;color:#F44336;\">Could not load " + faqSection + " page &#9785;</p>\n" +
+                            "</body>\n" +
+                            "</html>";
+                    webView.loadData(content, "text/html", "utf-8");
+                }
+
+                public void onReceivedHttpError(
+                        WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                     String content = "<html>\n" +
                             "<head>\n" +
                             "</head>\n" +

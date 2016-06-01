@@ -192,8 +192,12 @@ public class AppUtil {
         Timestamp toTimestamp = getTimeStampDate((String.format(Locale.getDefault(), "%02d-%02d-%d 00:00:00", eYear, eMonth, eDay)));
 
         switch (type) {
+            case "BodyArea":
+                return ReportController.getTopBodyAreas(fromTimestamp, toTimestamp, 3);
             case "LifeActivity":
                 return ReportController.getTopActivities(fromTimestamp, toTimestamp, 3);
+            case "Location":
+                return ReportController.getTopLocations(fromTimestamp, toTimestamp, 3);
             case "Medicine":
                 return ReportController.getTopMedicines(fromTimestamp, toTimestamp, 3);
             case "Relief":

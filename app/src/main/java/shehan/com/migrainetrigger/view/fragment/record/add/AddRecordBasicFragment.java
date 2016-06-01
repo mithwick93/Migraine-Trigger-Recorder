@@ -46,6 +46,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
+import shehan.com.migrainetrigger.controller.WeatherDataController;
 import shehan.com.migrainetrigger.data.builders.RecordBuilder;
 import shehan.com.migrainetrigger.data.builders.WeatherDataBuilder;
 import shehan.com.migrainetrigger.data.model.WeatherData;
@@ -892,7 +893,9 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                     break;
                 }
             }
-
+            if (!cancelTask) {
+                tmpWeatherData.setWeatherDataId(WeatherDataController.getLastRecordId() + 1);
+            }
             return tmpWeatherData;
         }
 

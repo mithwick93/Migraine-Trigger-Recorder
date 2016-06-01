@@ -43,6 +43,10 @@ public final class DBWeatherDataDAO {
 
         values.put(DatabaseDefinition.WEATHER_DATA_RECORD_ID_KEY, recordId);
 
+        if (weatherData.getWeatherDataId() > -1) {
+            values.put(DatabaseDefinition.WEATHER_DATA_ID_KEY, weatherData.getWeatherDataId());
+        }
+
         long row_id = db.insert(DatabaseDefinition.WEATHER_DATA_TABLE, null, values);
 
         return row_id;
@@ -62,6 +66,50 @@ public final class DBWeatherDataDAO {
 
         long row_id = db.delete(DatabaseDefinition.WEATHER_DATA_TABLE, DatabaseDefinition.WEATHER_DATA_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
         return row_id;
+    }
+
+    /**
+     * get Last Weather Record Id
+     *
+     * @return last record id
+     */
+    public static int getLastRecordId() {
+        Log.d("DBWeatherDataDAO", "getLastRecordId");
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        int recordId = -1;
+        try {
+            String[] projection = {DatabaseDefinition.WEATHER_DATA_ID_KEY};
+            db = DatabaseHandler.getReadableDatabase();
+            cursor = db.query(
+                    DatabaseDefinition.WEATHER_DATA_TABLE,
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    DatabaseDefinition.WEATHER_DATA_ID_KEY + " DESC",
+                    "1");
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                recordId = Integer.valueOf(cursor.getString(0));
+                Log.d("getLastRecordId ", "Value: " + String.valueOf(recordId));
+            } else {
+                Log.d("getLastRecordId ", "Empty");
+            }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+
+        }
+        return recordId;
     }
 
     /**

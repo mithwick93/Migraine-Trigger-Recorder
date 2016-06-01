@@ -9,9 +9,8 @@
             android:summary="@string/pref_suggestions_summery"
             android:title="@string/pref_suggestions_title"/>
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="pref_send"
+        <Preference
+            android:key="pref_send_email"
             android:summary="@string/pref_send_summery"
             android:title="@string/pref_send_title"/>
     </PreferenceCategory>

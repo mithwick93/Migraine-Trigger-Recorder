@@ -1,6 +1,5 @@
 package shehan.com.migrainetrigger.view.activity;
 
-import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
@@ -95,10 +94,6 @@ public class FAQActivityTest {
         // Swipe up at ScrollView with id R.id.full_record_scroll_view
         onView(withId(R.id.topics_recycler_view)).perform(swipeUp());
 
-
-        idlingResource = startTiming(3000);
-        stopTiming(idlingResource);
-
         // Click at RelativeLayout with child index 8 of parent with id R.id.topics_recycler_view
         onView(withId(R.id.topics_recycler_view)).perform(scrollToPosition(8));
         onView(withId(R.id.topics_recycler_view)).perform(
@@ -111,8 +106,6 @@ public class FAQActivityTest {
         onView(withId(R.id.topics_recycler_view)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(9, click()));
 
-
-        pressBack();
 
 
     }
@@ -153,45 +146,4 @@ public class FAQActivityTest {
         };
     }
 
-    // See details at http://droidtestlab.com/delay.html
-    public IdlingResource startTiming(long time) {
-        IdlingResource idlingResource = new ElapsedTimeIdlingResource(time);
-        Espresso.registerIdlingResources(idlingResource);
-        return idlingResource;
-    }
-
-    public void stopTiming(IdlingResource idlingResource) {
-        Espresso.unregisterIdlingResources(idlingResource);
-    }
-
-    public class ElapsedTimeIdlingResource implements IdlingResource {
-        private final long waitingTime;
-        private ResourceCallback resourceCallback;
-        private long startTime;
-
-        public ElapsedTimeIdlingResource(long waitingTime) {
-            this.startTime = System.currentTimeMillis();
-            this.waitingTime = waitingTime;
-        }
-
-        @Override
-        public String getName() {
-            return ElapsedTimeIdlingResource.class.getName() + ":" + waitingTime;
-        }
-
-        @Override
-        public boolean isIdleNow() {
-            long elapsed = System.currentTimeMillis() - startTime;
-            boolean idle = (elapsed >= waitingTime);
-            if (idle) {
-                resourceCallback.onTransitionToIdle();
-            }
-            return idle;
-        }
-
-        @Override
-        public void registerIdleTransitionCallback(ResourceCallback resourceCallback) {
-            this.resourceCallback = resourceCallback;
-        }
-    }
 }
