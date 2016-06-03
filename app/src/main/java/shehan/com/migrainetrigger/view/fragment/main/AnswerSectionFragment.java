@@ -105,7 +105,7 @@ public class AnswerSectionFragment
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_answer_section, container, false);
 
-        AppUtil.showToast(getContext(), answerSection);
+        //AppUtil.showToast(getContext(), answerSection);
         setHasOptionsMenu(true);
         init();
         return mView;

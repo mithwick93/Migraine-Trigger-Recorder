@@ -186,5 +186,6 @@
     <string name="pref_suggestions_title">"Answer suggestions "</string>
     <string name="pref_send_summery">"Send migraine records via email "</string>
     <string name="pref_send_title">"Send statistics "</string>
+    <string name="answers_filter">Filter</string>
 
 </resources>

@@ -217,7 +217,7 @@ public final class DBRecordDAO {
         try {
             db = DatabaseHandler.getReadableDatabase();
 
-            cursor = db.query(DatabaseDefinition.RECORD_TABLE, null, null, null, null, null, DatabaseDefinition.RECORD_ID_KEY + " DESC");
+            cursor = db.query(DatabaseDefinition.RECORD_TABLE, null, null, null, null, null, DatabaseDefinition.RECORD_START_TIME_KEY + " DESC");
             if (cursor != null && cursor.moveToFirst()) {// If records are found process them
                 do {
 

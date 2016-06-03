@@ -1,8 +1,11 @@
 package shehan.com.migrainetrigger.controller;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.format.DateUtils;
 import android.util.Log;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -10,7 +13,14 @@ import java.util.ArrayList;
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.data.dao.DBRecordDAO;
 import shehan.com.migrainetrigger.data.dao.DBTransactionHandler;
+import shehan.com.migrainetrigger.data.model.BodyArea;
+import shehan.com.migrainetrigger.data.model.LifeActivity;
+import shehan.com.migrainetrigger.data.model.Location;
+import shehan.com.migrainetrigger.data.model.Medicine;
 import shehan.com.migrainetrigger.data.model.Record;
+import shehan.com.migrainetrigger.data.model.Relief;
+import shehan.com.migrainetrigger.data.model.Symptom;
+import shehan.com.migrainetrigger.data.model.Trigger;
 import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.model.RecordViewData;
 
@@ -48,49 +58,23 @@ public class RecordController {
         return DBRecordDAO.getLastRecordId();
     }
 
-    /**
-     * Get all record detail when record id is known
-     *
-     * @param recordId relevant record ID
-     * @return Record
-     */
-    @Nullable
-    public static Record getRecordAll(int recordId) {
-        Log.d("RecordController", "getRecordAll");
-        Record record = DBRecordDAO.getRecord(recordId);
-        if (record != null) {
-
-            if (record.getLocationId() > 0) {//set location
-                record.setLocation(LocationController.getLocationById(record.getLocationId()));
-            }
-
-            record.setWeatherData(WeatherDataController.getWeatherDataByRecordId(recordId));//set weather data
-
-            record.setActivities(LifeActivityController.getActivitiesForRecord(recordId));//set activities
-
-            record.setBodyAreas(BodyAreaController.getBodyAreasForRecord(recordId));//set body areas
-
-            record.setMedicines(MedicineController.getMedicinesForRecord(recordId));//Set medicine
-
-            record.setReliefs(ReliefController.getReliefsForRecord(recordId));//Set reliefs
-
-            record.setSymptoms(SymptomController.getSymptomsForRecord(recordId));//Set symptoms
-
-            record.setTriggers(TriggerController.getTriggersForRecord(recordId));//Set triggers
-
-            return record;
-        }
-        Log.e("RecordController", "getRecordAll -No such record");
-
-        return null;
-    }
-
     public static Record getRecordById(int id) {
         return DBRecordDAO.getRecord(id);
     }
 
     public static RecordViewData[] getRecordViewData() {
-        ArrayList<Record> recordArrayList = getAllRecordsOrderByDate();
+        return getRecordViewData(getAllRecordsOrderByDate());
+
+    }
+
+    /**
+     * Convert arrayList to RecordViewData array
+     *
+     * @param recordArrayList recordArrayList
+     * @return RecordViewData[]
+     */
+    private static RecordViewData[] getRecordViewData(@NonNull ArrayList<Record> recordArrayList) {
+
         RecordViewData recordViewData[] = new RecordViewData[recordArrayList.size()];
 
         //Load data to recordViewData[]  from recordArrayList
@@ -163,6 +147,184 @@ public class RecordController {
 
     public static ArrayList<Record> getAllRecordsOrderByDate() {
         return DBRecordDAO.getAllRecordsOrderByDate();
+    }
+
+    public static RecordViewData[] getRecordViewDataFiltered(@NotNull ArrayList<ArrayList<String>> filterList) {
+        Log.d("RecordController", "getRecordViewDataFiltered");
+        if (filterList.size() == 7) {
+
+            ArrayList<Record> fullDetailRecordList = new ArrayList<>();//get full detailed record list
+            {
+                ArrayList<Record> recordArrayList = getAllRecordsOrderByDate();
+                if (recordArrayList.size() < 1) return null; //check if no of records are 0
+
+                for (Record record : recordArrayList) {
+                    fullDetailRecordList.add(getRecordAll(record.getRecordId()));
+                }
+            }
+            if (fullDetailRecordList.size() < 1) return null; //check if no of records are 0
+
+            ArrayList<Record> filteredRecordList = getFilteredRecords(filterList, fullDetailRecordList);
+
+            if (filteredRecordList.size() < 1) return null; //check if no of records are 0
+
+            return getRecordViewData(filteredRecordList);
+
+        } else {
+            Log.e("RecordController", "Incorrect no of filters , must be 7");
+        }
+        return null;
+
+    }
+
+    /**
+     * Get all record detail when record id is known
+     *
+     * @param recordId relevant record ID
+     * @return Record
+     */
+    @Nullable
+    public static Record getRecordAll(int recordId) {
+        Log.d("RecordController", "getRecordAll");
+        Record record = DBRecordDAO.getRecord(recordId);
+        if (record != null) {
+
+            if (record.getLocationId() > 0) {//set location
+                record.setLocation(LocationController.getLocationById(record.getLocationId()));
+            }
+
+            record.setWeatherData(WeatherDataController.getWeatherDataByRecordId(recordId));//set weather data
+
+            record.setActivities(LifeActivityController.getActivitiesForRecord(recordId));//set activities
+
+            record.setBodyAreas(BodyAreaController.getBodyAreasForRecord(recordId));//set body areas
+
+            record.setMedicines(MedicineController.getMedicinesForRecord(recordId));//Set medicine
+
+            record.setReliefs(ReliefController.getReliefsForRecord(recordId));//Set reliefs
+
+            record.setSymptoms(SymptomController.getSymptomsForRecord(recordId));//Set symptoms
+
+            record.setTriggers(TriggerController.getTriggersForRecord(recordId));//Set triggers
+
+            return record;
+        }
+        Log.e("RecordController", "getRecordAll -No such record");
+
+        return null;
+    }
+
+    private static ArrayList<Record> getFilteredRecords(@NotNull ArrayList<ArrayList<String>> filterList, @NotNull ArrayList<Record> fullDetailRecordList) {
+        ArrayList<Record> filteredRecordList = new ArrayList<>();//get filtered record list
+
+        //Filtering process
+        recordLoop:
+        for (Record record : fullDetailRecordList) {
+            {
+                //Body areas filter
+                ArrayList<String> bodyAreaFilters = filterList.get(0);
+                ArrayList<BodyArea> bodyAreas = record.getBodyAreas();
+                if (bodyAreas != null && bodyAreas.size() > 0) {
+                    for (BodyArea bodyArea : bodyAreas) {
+                        if (bodyAreaFilters.contains(bodyArea.getBodyAreaName())) {
+                            //This record matches filter, add to filteredRecordList, no need to add again , continue
+                            filteredRecordList.add(record);
+                            continue recordLoop;
+                        }
+                    }
+                }
+            }
+
+            {
+                //Life lifeActivities filter
+                ArrayList<String> activityFilters = filterList.get(1);
+                ArrayList<LifeActivity> lifeActivities = record.getActivities();
+                if (lifeActivities != null && lifeActivities.size() > 0) {
+                    for (LifeActivity lifeActivity : lifeActivities) {
+                        if (activityFilters.contains(lifeActivity.getActivityName())) {
+                            //This record matches filter, add to filteredRecordList, no need to add again , continue
+                            filteredRecordList.add(record);
+                            continue recordLoop;
+                        }
+                    }
+                }
+            }
+
+            {
+                //Location  filter
+                ArrayList<String> locationFilters = filterList.get(2);
+                Location location = record.getLocation();
+                if (location != null) {
+                    if (locationFilters.contains(location.getLocationName())) {
+                        //This record matches filter, add to filteredRecordList, no need to add again , continue
+                        filteredRecordList.add(record);
+                        continue;
+                    }
+                }
+            }
+
+            {
+                //Medicine filter
+                ArrayList<String> medicineFilters = filterList.get(3);
+                ArrayList<Medicine> medicines = record.getMedicines();
+                if (medicines != null && medicines.size() > 0) {
+                    for (Medicine medicine : medicines) {
+                        if (medicineFilters.contains(medicine.getMedicineName())) {
+                            //This record matches filter, add to filteredRecordList, no need to add again , continue
+                            filteredRecordList.add(record);
+                            continue recordLoop;
+                        }
+                    }
+                }
+            }
+
+            {
+                //Relief filter
+                ArrayList<String> reliefFilters = filterList.get(4);
+                ArrayList<Relief> reliefs = record.getReliefs();
+                if (reliefs != null && reliefs.size() > 0) {
+                    for (Relief relief : reliefs) {
+                        if (reliefFilters.contains(relief.getReliefName())) {
+                            //This record matches filter, add to filteredRecordList, no need to add again , continue
+                            filteredRecordList.add(record);
+                            continue recordLoop;
+                        }
+                    }
+                }
+            }
+
+            {
+                //Symptom filter
+                ArrayList<String> symptomFilters = filterList.get(5);
+                ArrayList<Symptom> symptoms = record.getSymptoms();
+                if (symptoms != null && symptoms.size() > 0) {
+                    for (Symptom symptom : symptoms) {
+                        if (symptomFilters.contains(symptom.getSymptomName())) {
+                            //This record matches filter, add to filteredRecordList, no need to add again , continue
+                            filteredRecordList.add(record);
+                            continue recordLoop;
+                        }
+                    }
+                }
+            }
+
+            {
+                //Trigger filter
+                ArrayList<String> triggerFilters = filterList.get(6);
+                ArrayList<Trigger> triggers = record.getTriggers();
+                if (triggers != null && triggers.size() > 0) {
+                    for (Trigger trigger : triggers) {
+                        if (triggerFilters.contains(trigger.getTriggerName())) {
+                            //This record matches filter, add to filteredRecordList, no need to add again , continue
+                            filteredRecordList.add(record);
+                            continue recordLoop;
+                        }
+                    }
+                }
+            }
+        }
+
+        return filteredRecordList;
     }
 
     /**
