@@ -20,7 +20,11 @@ public class RecordViewAdapter extends RecyclerView.Adapter<RecordViewAdapter.Vi
     private static RecordViewData[] recordViewData;
 
     public RecordViewAdapter(RecordListViewRowClickListener itemListener, RecordViewData[] recordViewData) {
-        RecordViewAdapter.recordViewData = recordViewData;
+        if (recordViewData != null && recordViewData.length > 0) {
+            RecordViewAdapter.recordViewData = recordViewData;
+        } else {
+            RecordViewAdapter.recordViewData = new RecordViewData[0];
+        }
         RecordViewAdapter.itemListener = itemListener;
     }
 
@@ -34,8 +38,7 @@ public class RecordViewAdapter extends RecyclerView.Adapter<RecordViewAdapter.Vi
 
         // create ViewHolder
 
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -63,7 +66,11 @@ public class RecordViewAdapter extends RecyclerView.Adapter<RecordViewAdapter.Vi
     }
 
     public void setData(RecordViewData[] recordViewData) {
-        RecordViewAdapter.recordViewData = recordViewData;
+        if (recordViewData != null && recordViewData.length > 0) {
+            RecordViewAdapter.recordViewData = recordViewData;
+        } else {
+            RecordViewAdapter.recordViewData = new RecordViewData[0];
+        }
         notifyDataSetChanged();
     }
 

@@ -36,7 +36,7 @@ public class ViewSingleRecordActivity
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        AppUtil.showToast(ViewSingleRecordActivity.this, "Record discarded");
+                        //AppUtil.showToast(ViewSingleRecordActivity.this, "Record discarded");
                         ViewSingleRecordActivity.super.onBackPressed();
                     }
                 })
@@ -56,6 +56,7 @@ public class ViewSingleRecordActivity
         Log.d("ViewSingleRecord", "onTopicRawClicked request : " + request);
         if (request == 0) {
             ViewSingleRecordActivity.super.onBackPressed();
+            //notify view records activity that delete happened , so update view
         }
     }
 

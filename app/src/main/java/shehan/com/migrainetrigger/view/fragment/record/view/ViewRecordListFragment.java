@@ -18,13 +18,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.controller.BodyAreaController;
+import shehan.com.migrainetrigger.controller.LifeActivityController;
+import shehan.com.migrainetrigger.controller.LocationController;
+import shehan.com.migrainetrigger.controller.MedicineController;
 import shehan.com.migrainetrigger.controller.RecordController;
+import shehan.com.migrainetrigger.controller.ReliefController;
+import shehan.com.migrainetrigger.controller.SymptomController;
+import shehan.com.migrainetrigger.controller.TriggerController;
+import shehan.com.migrainetrigger.data.model.BodyArea;
+import shehan.com.migrainetrigger.data.model.LifeActivity;
+import shehan.com.migrainetrigger.data.model.Location;
+import shehan.com.migrainetrigger.data.model.Medicine;
+import shehan.com.migrainetrigger.data.model.Relief;
+import shehan.com.migrainetrigger.data.model.Symptom;
+import shehan.com.migrainetrigger.data.model.Trigger;
 import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.adapter.RecordViewAdapter;
+import shehan.com.migrainetrigger.view.fragment.filter.FilterDialogFragment;
 import shehan.com.migrainetrigger.view.model.RecordViewData;
 
 
@@ -35,11 +51,29 @@ public class ViewRecordListFragment extends Fragment
         implements RecordViewAdapter.RecordListViewRowClickListener {
 
     private RecordListFragmentListener mCallback;
-    private volatile Menu mMenu;
     private View mView;
+    private ArrayList<ArrayList<String>> selectedFilters;
+
 
     public ViewRecordListFragment() {
         // Required empty public constructor
+    }
+
+    /**
+     * Called by hosting activity when it relieves filter list via filter dialog
+     *
+     * @param filterTags Filter list
+     */
+    public void filterRecords(@Nullable ArrayList<ArrayList<String>> filterTags) {
+        Log.d("ViewRecordListFragment", "filterRecords");
+
+        selectedFilters = filterTags;
+        if (filterTags != null && filterTags.size() == 7) {
+            new GetRecordFilteredListTask(filterTags).execute();
+        } else if (filterTags == null) {
+            Log.d("ViewRecordListFragment", "filterRecords - filterTags null or size!=7 , resetting");
+            new GetRecordListTask().execute();//Load records to list view,clear filter action
+        }
     }
 
     @Override
@@ -62,9 +96,9 @@ public class ViewRecordListFragment extends Fragment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_view_record_list, container, false);
+        selectedFilters = null;
         setHasOptionsMenu(true);
-
-        new GetRecordListTask(mView).execute();//Load records to list view
+        new GetRecordListTask().execute();//Load records to list view
         return mView;
     }
 
@@ -73,8 +107,18 @@ public class ViewRecordListFragment extends Fragment
         Log.d("ViewRecordListFragment", "onResume");
         super.onResume();
         //update
+        refreshRecordList();
+    }
+
+    //Called when a record delete is detected
+    public void refreshRecordList() {
         if (mView != null) {
-            new GetRecordListTask(mView).execute();//Load records to list view
+            //update
+            if (selectedFilters != null && selectedFilters.size() == 7) {
+                new GetRecordFilteredListTask(selectedFilters).execute();//record deleted when filter applied , apply again
+            } else {
+                new GetRecordListTask().execute();//Load records to list view
+            }
         }
 
     }
@@ -88,11 +132,7 @@ public class ViewRecordListFragment extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //Show add new answer on toolbar
-        mMenu = menu;
         inflater.inflate(R.menu.view_record_list_menu, menu);
-        if (mMenu != null) {
-            mMenu.findItem(R.id.action_filter).setVisible(true);
-        }
     }
 
     @Override
@@ -108,15 +148,8 @@ public class ViewRecordListFragment extends Fragment
 
     private void initiateFiltering() {
         Log.d("ViewRecordListFragment", "initiateFiltering");
-        /*
-        1 Show filter dialog
-        2 Section wise selectable separately
-        3 Sections collapsible
-        4 On ok return array list of string array list of size 7
-        5 Start async task with this filter list
+        new GetRecordFilterListTask().execute();
 
-
-         */
     }
 
     @Override
@@ -128,6 +161,81 @@ public class ViewRecordListFragment extends Fragment
     //Parent activity must implement this interface to communicate
     public interface RecordListFragmentListener {
         void onRecordListRequest(int request);
+    }
+
+    /**
+     * Async task to get filters
+     */
+    private class GetRecordFilterListTask extends AsyncTask<Void, Void, ArrayList<ArrayList<String>>> {
+
+        @Override
+        protected ArrayList<ArrayList<String>> doInBackground(Void... v) {
+            Log.d("GetRecordFilterListTask", " doInBackground - query filters");
+
+            ArrayList<ArrayList<String>> filterList = new ArrayList<>();
+
+            ArrayList<BodyArea> bodyAreas = BodyAreaController.getAllBodyAreas();
+            ArrayList<LifeActivity> activities = LifeActivityController.getAllActivities();
+            ArrayList<Location> locations = LocationController.getAllLocations();
+            ArrayList<Medicine> medicines = MedicineController.getAllMedicines();
+            ArrayList<Relief> reliefs = ReliefController.getAllReliefs();
+            ArrayList<Symptom> symptoms = SymptomController.getAllSymptoms();
+            ArrayList<Trigger> triggers = TriggerController.getAllTriggers();
+
+
+            ArrayList<String> bodyAreaFilters = new ArrayList<>();
+            ArrayList<String> activityFilters = new ArrayList<>();
+            ArrayList<String> locationFilters = new ArrayList<>();
+            ArrayList<String> medicineFilters = new ArrayList<>();
+            ArrayList<String> reliefFilters = new ArrayList<>();
+            ArrayList<String> symptomFilters = new ArrayList<>();
+            ArrayList<String> triggerFilters = new ArrayList<>();
+
+            for (BodyArea bodyArea : bodyAreas) {
+                bodyAreaFilters.add(bodyArea.getBodyAreaName());
+            }
+            for (LifeActivity lifeActivity : activities) {
+                activityFilters.add(lifeActivity.getActivityName());
+            }
+            for (Location location : locations) {
+                locationFilters.add(location.getLocationName());
+            }
+            for (Medicine medicine : medicines) {
+                medicineFilters.add(medicine.getMedicineName());
+            }
+            for (Relief relief : reliefs) {
+                reliefFilters.add(relief.getReliefName());
+            }
+            for (Symptom symptom : symptoms) {
+                symptomFilters.add(symptom.getSymptomName());
+            }
+            for (Trigger trigger : triggers) {
+                triggerFilters.add(trigger.getTriggerName());
+            }
+
+            filterList.add(bodyAreaFilters);
+            filterList.add(activityFilters);
+            filterList.add(locationFilters);
+            filterList.add(medicineFilters);
+            filterList.add(reliefFilters);
+            filterList.add(symptomFilters);
+            filterList.add(triggerFilters);
+
+            return filterList;
+        }
+
+
+        @Override
+        protected void onPostExecute(ArrayList<ArrayList<String>> filterList) {
+            Log.d("GetRecordFilterListTask", " onPostExecute - update ui");
+
+            FilterDialogFragment filterDialogFragment = new FilterDialogFragment();
+            filterDialogFragment.setFilters(filterList);
+            if (selectedFilters != null && selectedFilters.size() == 7) {//set selection
+                filterDialogFragment.setPreviousSelection(selectedFilters);
+            }
+            filterDialogFragment.show(getFragmentManager(), "filterDialogFragment");
+        }
     }
 
     /**
@@ -167,7 +275,7 @@ public class ViewRecordListFragment extends Fragment
                 nDialog.dismiss();
             }
 
-            if (recordViewData.length == 0) {//Records in db
+            if (recordViewData == null || recordViewData.length == 0) {//Records in db
                 AppUtil.showToast(ViewRecordListFragment.this.getContext(), "No records found for the search");
             }
 
@@ -203,13 +311,6 @@ public class ViewRecordListFragment extends Fragment
      * Async task to initialize query db to get records
      */
     private class GetRecordListTask extends AsyncTask<String, Void, RecordViewData[]> {
-
-        private View mView;
-
-        GetRecordListTask(View mView) {
-            this.mView = mView;
-        }
-
 
         @Override
         protected RecordViewData[] doInBackground(String... params) {

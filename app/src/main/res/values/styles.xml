@@ -38,6 +38,7 @@
         <item name="colorAccent">@color/accent_red_yellow</item>
 
         <item name="themedNavHeaderColor">@color/primary_red_yellow</item>
+        <item name="filterDialogSeparatorColor">@color/primary_red_yellow</item>
     </style>
 
     <style name="AppThemeDark.RedOnYellow" parent="AppThemeDark">
@@ -46,6 +47,7 @@
         <item name="colorAccent">@color/accent_red_yellow</item>
 
         <item name="themedNavHeaderColor">@color/primary_red_yellow</item>
+        <item name="filterDialogSeparatorColor">@color/primary_red_yellow</item>
     </style>
 
     <style name="AppThemeLight.VioletOnPink" parent="AppThemeLight">
@@ -54,6 +56,7 @@
         <item name="colorAccent">@color/accent_violet_Pink</item>
 
         <item name="themedNavHeaderColor">@color/primary_violet_Pink</item>
+        <item name="filterDialogSeparatorColor">@color/primary_violet_Pink</item>
     </style>
 
     <style name="AppThemeDark.VioletOnPink" parent="AppThemeDark">
@@ -62,6 +65,7 @@
         <item name="colorAccent">@color/accent_violet_Pink</item>
 
         <item name="themedNavHeaderColor">@color/primary_violet_Pink</item>
+        <item name="filterDialogSeparatorColor">@color/primary_violet_Pink</item>
     </style>
 
     <style name="AppThemeLight.OrangeOnRed" parent="AppThemeLight">
@@ -70,6 +74,7 @@
         <item name="colorAccent">@color/accent_orange_red</item>
 
         <item name="themedNavHeaderColor">@color/primary_orange_red</item>
+        <item name="filterDialogSeparatorColor">@color/primary_orange_red</item>
     </style>
 
     <style name="AppThemeDark.OrangeOnRed" parent="AppThemeDark">
@@ -78,6 +83,7 @@
         <item name="colorAccent">@color/accent_orange_red</item>
 
         <item name="themedNavHeaderColor">@color/primary_orange_red</item>
+        <item name="filterDialogSeparatorColor">@color/primary_orange_red</item>
     </style>
 
     <style name="AppThemeLight.VioletOnSkyBlue" parent="AppThemeLight">
@@ -86,6 +92,7 @@
         <item name="colorAccent">@color/accent_violet_skyBlue</item>
 
         <item name="themedNavHeaderColor">@color/primary_violet_skyBlue</item>
+        <item name="filterDialogSeparatorColor">@color/primary_violet_skyBlue</item>
     </style>
 
     <style name="AppThemeDark.VioletOnSkyBlue" parent="AppThemeDark">
@@ -94,6 +101,7 @@
         <item name="colorAccent">@color/accent_violet_skyBlue</item>
 
         <item name="themedNavHeaderColor">@color/primary_violet_skyBlue</item>
+        <item name="filterDialogSeparatorColor">@color/primary_violet_skyBlue</item>
     </style>
 
     <style name="AppThemeLight.PinkOnTeal" parent="AppThemeLight">
@@ -102,6 +110,7 @@
         <item name="colorAccent">@color/accent_pink_teal</item>
 
         <item name="themedNavHeaderColor">@color/primary_pink_teal</item>
+        <item name="filterDialogSeparatorColor">@color/primary_pink_teal</item>
     </style>
 
     <style name="AppThemeDark.PinkOnTeal" parent="AppThemeDark">
@@ -110,6 +119,7 @@
         <item name="colorAccent">@color/accent_pink_teal</item>
 
         <item name="themedNavHeaderColor">@color/primary_pink_teal</item>
+        <item name="filterDialogSeparatorColor">@color/primary_pink_teal</item>
     </style>
 
     <style name="AppThemeLight.PinkOnViolet" parent="AppThemeLight">
@@ -118,6 +128,7 @@
         <item name="colorAccent">@color/accent_pink_violet</item>
 
         <item name="themedNavHeaderColor">@color/primary_pink_violet</item>
+        <item name="filterDialogSeparatorColor">@color/primary_pink_violet</item>
     </style>
 
     <style name="AppThemeDark.PinkOnViolet" parent="AppThemeDark">
@@ -126,6 +137,7 @@
         <item name="colorAccent">@color/accent_pink_violet</item>
 
         <item name="themedNavHeaderColor">@color/primary_pink_violet</item>
+        <item name="filterDialogSeparatorColor">@color/primary_pink_violet</item>
     </style>
 
     <style name="AppTheme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">

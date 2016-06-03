@@ -11,15 +11,21 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.view.fragment.filter.FilterDialogFragment;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordCalenderFragment;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordListFragment;
 
 public class ViewRecordsActivity
         extends BaseActivity
-        implements ViewRecordListFragment.RecordListFragmentListener, ViewRecordCalenderFragment.RecordCalenderFragmentListener {
+        implements ViewRecordListFragment.RecordListFragmentListener, ViewRecordCalenderFragment.RecordCalenderFragmentListener
+        , FilterDialogFragment.FilterUpdateListener {
 
     private static final boolean DEVELOPER_MODE = false;
+
+    private PagerAdapter pagerAdapter;
 
     @Override
     public void onRecordCalenderRequest(int recordId) {
@@ -48,6 +54,15 @@ public class ViewRecordsActivity
         super.onResume();
     }
 
+    @Override
+    public void onUpdateFilter(ArrayList<ArrayList<String>> arrayList) {
+        Log.d("ViewRecordsActivity ", "onUpdateFilter");
+        if (pagerAdapter != null && pagerAdapter.getItem(0) != null) {
+            ((ViewRecordListFragment) pagerAdapter.getItem(0)).filterRecords(arrayList);//arrayList can be null
+        } else {
+            Log.e("ViewRecordsActivity ", "pagerAdapter null");
+        }
+    }
 
     @Override
     public String toString() {
@@ -86,12 +101,9 @@ public class ViewRecordsActivity
 
         //initialize tab layout
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter;
-
-        adapter = new PagerAdapter
-                (getSupportFragmentManager(), tabLayout.getTabCount());
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         if (viewPager != null) {
-            viewPager.setAdapter(adapter);
+            viewPager.setAdapter(pagerAdapter);
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
@@ -119,7 +131,7 @@ public class ViewRecordsActivity
     }
 
     /**
-     * private static adapter class to host tabs
+     * private static pagerAdapter class to host tabs
      */
     public static class PagerAdapter extends FragmentStatePagerAdapter {
         int mNumOfTabs;
