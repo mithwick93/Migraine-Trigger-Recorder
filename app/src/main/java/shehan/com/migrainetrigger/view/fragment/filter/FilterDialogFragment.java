@@ -53,6 +53,8 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         ViewGroup insertPoint = (ViewGroup) view.findViewById(R.id.filterDialogLayout);
 
         filterDetailsTextView = (TextView) view.findViewById(R.id.textView_currentFilterDetails);
+        filterDetailsTextView.setText(R.string.record_filter_title);
+        updateFilterSelection();
 
         if (selectedFilters.size() != 7) {
             selectedFilters.clear();
@@ -105,6 +107,48 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         return view;
     }
 
+    /**
+     * Show summery of selected filter tags
+     */
+    private void updateFilterSelection() {
+
+        String strFilter;
+
+        if (selectedFilters.size() == 7) {
+            strFilter = "Filters :";
+        } else {
+            filterDetailsTextView.setText(R.string.record_filter_title);
+            return;
+        }
+
+        //Triggers 6
+        strFilter = prepareFilterString(strFilter, "Triggers", 6);
+
+        //Symptoms 5
+        strFilter = prepareFilterString(strFilter, "Symptoms", 5);
+
+        //Activities 1
+        strFilter = prepareFilterString(strFilter, "Activities", 1);
+
+        //Locations 2
+        strFilter = prepareFilterString(strFilter, "Locations", 2);
+
+        //Pain areas 0
+        strFilter = prepareFilterString(strFilter, "Pain areas", 0);
+
+        //Medicines 3
+        strFilter = prepareFilterString(strFilter, "Medicines", 3);
+
+        //Reliefs 4
+        strFilter = prepareFilterString(strFilter, "Reliefs", 4);
+
+        if (strFilter.equals("Filters :")) {
+            filterDetailsTextView.setText(R.string.record_filter_title);
+        } else {
+            filterDetailsTextView.setText(strFilter);
+        }
+    }
+
     private View addTagTypeGroup(LayoutInflater inflater, String category, int tagTypeKey) {
 
         @SuppressLint("InflateParams") LinearLayout tagTypeGroup = (LinearLayout) inflater.inflate(R.layout.container_record_filter, null);
@@ -135,6 +179,26 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
             tagTypeContainer.addView(tagCheckboxLayout);
         }
         return tagTypeGroup;
+    }
+
+    /**
+     * Builder to add filter tags for each category
+     *
+     * @param strFilter  editing filter string
+     * @param category   category of filter
+     * @param arrayIndex index of selectedFilters arrayList to access
+     * @return built filter string
+     */
+    private String prepareFilterString(String strFilter, String category, int arrayIndex) {
+        ArrayList<String> lst = selectedFilters.get(arrayIndex);
+        if (lst.size() > 0) {
+            strFilter += "\n\t" + category + " :";
+            for (String str : lst) {
+                strFilter += " " + str + ",";
+            }
+            strFilter = strFilter.substring(0, strFilter.length() - 1);
+        }
+        return strFilter;
     }
 
     @Override
@@ -210,9 +274,8 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
             } else if (FilterDialogFragment.this.selectedFilters.get(tagTypeKey).contains(filterTag)) {
                 (FilterDialogFragment.this.selectedFilters.get(tagTypeKey)).remove(filterTag);
             }
-            //FilterDialogFragment.this.updateFilterDetails();
+            FilterDialogFragment.this.updateFilterSelection();
         }
     }
-
 
 }
