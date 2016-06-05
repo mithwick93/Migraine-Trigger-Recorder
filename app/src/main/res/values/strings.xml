@@ -17,7 +17,7 @@
 
     <string name="app_icon">app icon</string>
     <string name="dev_name">M.S. Wickramarathne</string>
-    <string name="app_version">0.5 alpha</string>
+    <string name="app_version">v 1.0 - beta</string>
 
     <string name="title_activity_add_record">AddRecordActivity</string>
     <string name="title_view_records">MigraineViewRecordsActivity</string>
@@ -174,7 +174,6 @@
     <string name="pref_color_scheme_title">Application colors</string>
     <string name="splash_scree_background">Splash screen background</string>
     <string name="splash_screen_app_name">Migraine Trigger</string>
-    <string name="splash_screen_app_version">alpha 0.5</string>
     <string name="about_opens_source_licenses">Open source licenses</string>
     <string name="report_down">▼</string>
     <string name="answers_drag_handler">drag handler</string>

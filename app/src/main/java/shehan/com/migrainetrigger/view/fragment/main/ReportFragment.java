@@ -346,7 +346,7 @@ public class ReportFragment extends Fragment {
             //Triggers
             {
                 ArrayList<String> topTriggers = statisticsList.get(triggers);
-                ReportViewData triggerReportViewData = new ReportViewData("Top triggers");
+                ReportViewData triggerReportViewData = new ReportViewData("Most common Triggers");
 
                 for (int i = 0; i < topTriggers.size(); i++) {
                     if (i == 0) {
@@ -363,7 +363,7 @@ public class ReportFragment extends Fragment {
             //Symptoms
             {
                 ArrayList<String> topSymptoms = statisticsList.get(symptoms);
-                ReportViewData symptomReportViewData = new ReportViewData("Top symptoms");
+                ReportViewData symptomReportViewData = new ReportViewData("Most common symptoms");
 
                 for (int i = 0; i < topSymptoms.size(); i++) {
                     if (i == 0) {
@@ -380,7 +380,7 @@ public class ReportFragment extends Fragment {
             //Activities
             {
                 ArrayList<String> topActivities = statisticsList.get(activities);
-                ReportViewData activityReportViewData = new ReportViewData("Top activities");
+                ReportViewData activityReportViewData = new ReportViewData("Top activities you missed");
 
                 for (int i = 0; i < topActivities.size(); i++) {
                     if (i == 0) {
@@ -397,7 +397,7 @@ public class ReportFragment extends Fragment {
             //Location
             {
                 ArrayList<String> topLocations = statisticsList.get(location);
-                ReportViewData locationReportViewData = new ReportViewData("Top locations");
+                ReportViewData locationReportViewData = new ReportViewData("Most likely locations");
 
                 for (int i = 0; i < topLocations.size(); i++) {
                     if (i == 0) {
@@ -431,7 +431,7 @@ public class ReportFragment extends Fragment {
             //Medicine
             {
                 ArrayList<String> topMedicines = statisticsList.get(medicine);
-                ReportViewData medicineReportViewData = new ReportViewData("Top medicine");
+                ReportViewData medicineReportViewData = new ReportViewData("Most taken medicines");
 
                 for (int i = 0; i < topMedicines.size(); i++) {
                     if (i == 0) {
@@ -448,7 +448,7 @@ public class ReportFragment extends Fragment {
             //Effective medicine
             {
                 ArrayList<String> topEffectiveMedicines = statisticsList.get(effectiveMedicine);
-                ReportViewData effectiveMedicineReportViewData = new ReportViewData("Top effective medicine");
+                ReportViewData effectiveMedicineReportViewData = new ReportViewData("Most effective medicines");
 
                 for (int i = 0; i < topEffectiveMedicines.size(); i++) {
                     if (i == 0) {
@@ -465,7 +465,7 @@ public class ReportFragment extends Fragment {
             //Relief
             {
                 ArrayList<String> topReliefs = statisticsList.get(reliefs);
-                ReportViewData reliefReportViewData = new ReportViewData("Top reliefs");
+                ReportViewData reliefReportViewData = new ReportViewData("Most taken reliefs");
 
                 for (int i = 0; i < topReliefs.size(); i++) {
                     if (i == 0) {
@@ -482,7 +482,7 @@ public class ReportFragment extends Fragment {
             //Effective Relief
             {
                 ArrayList<String> topEffectiveReliefs = statisticsList.get(effectiveReliefs);
-                ReportViewData effectiveReliefReportViewData = new ReportViewData("Top effective reliefs");
+                ReportViewData effectiveReliefReportViewData = new ReportViewData("Most effective reliefs");
 
                 for (int i = 0; i < topEffectiveReliefs.size(); i++) {
                     if (i == 0) {

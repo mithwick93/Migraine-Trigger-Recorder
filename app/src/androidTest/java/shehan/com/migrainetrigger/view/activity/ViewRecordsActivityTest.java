@@ -80,35 +80,6 @@ public class ViewRecordsActivityTest {
         onView(withId(R.id.calender_view)).perform(swipeLeft());
         stopTiming(idlingResource);
 
-        idlingResource = startTiming(400);
-        // Swipe left at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeLeft());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(300);
-        // Swipe left at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeLeft());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(600);
-        // Swipe left at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeLeft());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(700);
-        // Swipe left at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeLeft());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(400);
-        // Swipe left at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeLeft());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(800);
-        // Swipe left at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeLeft());
-        stopTiming(idlingResource);
 
         idlingResource = startTiming(700);
         // Swipe right at CompactCalendarView with id R.id.calender_view
@@ -118,96 +89,6 @@ public class ViewRecordsActivityTest {
         idlingResource = startTiming(300);
         // Swipe right at CompactCalendarView with id R.id.calender_view
         onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(300);
-        // Swipe right at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(300);
-        // Swipe right at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(300);
-        // Swipe right at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(300);
-        // Swipe right at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(300);
-        // Swipe right at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(300);
-        // Swipe right at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(300);
-        // Swipe right at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(300);
-        // Swipe right at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(400);
-        // Swipe right at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(300);
-        // Swipe right at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(400);
-        // Swipe right at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(600);
-        // Swipe right at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeRight());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(1000);
-        // Swipe left at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeLeft());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(400);
-        // Swipe left at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeLeft());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(300);
-        // Swipe left at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeLeft());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(400);
-        // Swipe left at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeLeft());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(700);
-        // Swipe left at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeLeft());
-        stopTiming(idlingResource);
-
-        idlingResource = startTiming(500);
-        // Swipe left at CompactCalendarView with id R.id.calender_view
-        onView(withId(R.id.calender_view)).perform(swipeLeft());
         stopTiming(idlingResource);
 
     }
