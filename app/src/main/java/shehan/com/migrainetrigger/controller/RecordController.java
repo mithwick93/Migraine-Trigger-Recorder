@@ -348,7 +348,13 @@ public class RecordController {
 
                 status = "Migraine free for\n " + duration;
             } else {
-                status = "Get well soon ";
+                Timestamp startTime = lastRecord.getStartTime();
+                Timestamp currentTime = new Timestamp(new java.util.Date().getTime());
+
+                long difference = currentTime.getTime() - startTime.getTime();
+                long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
+                String duration = AppUtil.getFriendlyDuration(differenceInSeconds);
+                status = "Suffering from migraine for " + duration;
             }
         } else {
             status = "No migraine records yet.";

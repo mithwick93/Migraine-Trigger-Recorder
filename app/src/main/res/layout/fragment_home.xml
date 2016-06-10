@@ -6,24 +6,34 @@
 
 
     <TextView
-        android:id="@+id/label"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
-        android:gravity="center_horizontal"
-        android:text="@string/home_welcome"
-        android:textSize="60sp"
-        android:textStyle="bold"/>
-
-    <TextView
         android:id="@+id/txt_home_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/label"
+        android:layout_alignEnd="@+id/txt_home_help"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:gravity="center_vertical|center_horizontal"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30sp"/>
+
+    <TextView
+        android:id="@+id/txt_home_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txt_home_status"
+        android:layout_marginTop="50dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="17sp"/>
+
+    <ImageView
+        android:id="@+id/img_view_emoji"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="91dp"
+        android:contentDescription="@string/home_emoji"/>
 </RelativeLayout>

@@ -45,6 +45,7 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
  */
 public class ViewRecordSingleFragment extends AddRecordFullFragment {
     private static final String ARG_RECORD_ID = "recordId";
+    private boolean hasWeatherData;
     private SingleRecordViewFragmentListener mCallback;
     private int recordId;
 
@@ -126,7 +127,22 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
             deleteRecord();
             return true;
         } else if (id == R.id.action_refresh) {
-            showWeather();
+            if (weatherDataLoaded) {
+                new MaterialDialog.Builder(getContext())
+                        .content("Update will erase current weather data.")
+                        .positiveText("Update")
+                        .negativeText("Cancel")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                showWeather();
+                            }
+                        })
+                        .show();
+            } else {
+                showWeather();
+            }
+
             return true;
         }
 
@@ -348,8 +364,9 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
                 txtViewWeatherHumidity.setText(String.format(Locale.getDefault(), "%.2f %%", weatherData.getHumidity()));
                 txtViewWeatherPressure.setText(String.format(Locale.getDefault(), "%.2f KPa", weatherData.getPressure()));
                 weatherDataLoaded = true;
-
                 layoutWeather.setVisibility(View.VISIBLE);
+            } else {
+                weatherDataLoaded = false;
             }
         }
 

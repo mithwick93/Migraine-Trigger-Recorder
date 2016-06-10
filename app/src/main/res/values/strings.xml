@@ -191,5 +191,7 @@
     <string name="record_filter_btn_clear">Clear</string>
     <string name="record_filter_btn_filter">Filter</string>
     <string name="weather_title">Weather average</string>
+    <string name="home_help_no_data">Start by adding records, press + button</string>
+    <string name="home_emoji">emoji</string>
 
 </resources>
