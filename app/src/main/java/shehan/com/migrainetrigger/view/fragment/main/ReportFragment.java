@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,6 +31,7 @@ import java.util.Locale;
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.controller.ReportController;
+import shehan.com.migrainetrigger.data.model.WeatherData;
 import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.adapter.ReportViewAdapter;
 import shehan.com.migrainetrigger.view.model.ReportViewData;
@@ -44,6 +47,7 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
 public class ReportFragment extends Fragment {
 
     private CardView cardViewReportSummery;
+    private CardView cardViewWeatherAvg;
     private int[] fromDate;
     private ReportFragmentListener mCallback;
     private View mView;
@@ -52,9 +56,13 @@ public class ReportFragment extends Fragment {
     private int[] toDate;
     private TextView txtViewAverage;
     private TextView txtViewFrom;
+    private TextView txtViewHumidity;
     private TextView txtViewIntensity;
+    private TextView txtViewPressure;
+    private TextView txtViewTemp;
     private TextView txtViewTo;
     private TextView txtViewTotal;
+    private TextView txtViewWeather;
 
     public ReportFragment() {
         // Required empty public constructor
@@ -132,8 +140,9 @@ public class ReportFragment extends Fragment {
 
 
         if (toTimestamp != null) {
+
             if (toTimestamp.after(c.getTime())) {
-                AppUtil.showMsg(getContext(), "End Date is past current time");
+                AppUtil.showMsg(getContext(), "End Date is past current time !");
                 return;
             }
         }
@@ -141,12 +150,16 @@ public class ReportFragment extends Fragment {
         //validate times
         if ((toTimestamp != null && fromTimestamp.before(toTimestamp)) || toTimestamp == null) {
 
-            nDialog = new ProgressDialog(getActivity()); //Here I get an error: The constructor ProgressDialog(PFragment) is undefined
-            nDialog.setMessage("Refreshing report...");
-            nDialog.setTitle("Processing");
-            nDialog.setIndeterminate(false);
-            nDialog.setCancelable(false);
-            nDialog.show();
+            try {
+                nDialog = new ProgressDialog(getActivity()); //Here I get an error: The constructor ProgressDialog(PFragment) is undefined
+                nDialog.setMessage("Refreshing report...");
+                nDialog.setTitle("Processing");
+                nDialog.setIndeterminate(false);
+                nDialog.setCancelable(false);
+                nDialog.show();
+            } catch (Exception ignored) {
+            }
+
 
             new LoadReportSummeryTask(fromTimestamp, toTimestamp).execute();
             new LoadReportStatisticsTask(mView, fromTimestamp, toTimestamp).execute();
@@ -167,8 +180,16 @@ public class ReportFragment extends Fragment {
         txtViewIntensity = (TextView) view.findViewById(R.id.txt_report_intensity);
         txtViewAverage = (TextView) view.findViewById(R.id.txt_report_average);
         cardViewReportSummery = (CardView) view.findViewById(R.id.card_report_summery);
+        cardViewWeatherAvg = (CardView) view.findViewById(R.id.card_weather);
+
+        txtViewTemp = (TextView) view.findViewById(R.id.txt_weather_temp);
+        txtViewHumidity = (TextView) view.findViewById(R.id.txt_weather_humidity);
+        txtViewPressure = (TextView) view.findViewById(R.id.txt_weather_pressure);
+        txtViewWeather = (TextView) view.findViewById(R.id.lbl_weather);
+        txtViewWeather.setText(R.string.weather_title);
 
         cardViewReportSummery.setVisibility(View.GONE);
+        cardViewWeatherAvg.setVisibility(View.GONE);
 
         fromDate = new int[3];
         toDate = new int[3];
@@ -608,6 +629,13 @@ public class ReportFragment extends Fragment {
             txtViewAverage.setText(average);
         }
 
+        private void setWhetherAvg(@NotNull WeatherData whetherAvg) {
+            txtViewTemp.setText(String.format(Locale.getDefault(), "%.2f °C", whetherAvg.getTemperature()));
+            txtViewHumidity.setText(String.format(Locale.getDefault(), "%.2f %%", whetherAvg.getHumidity()));
+            txtViewPressure.setText(String.format(Locale.getDefault(), "%.2f KPa", whetherAvg.getPressure()));
+            cardViewWeatherAvg.setVisibility(View.VISIBLE);
+        }
+
         @Override
         protected ArrayList<Object> doInBackground(String... params) {
             Log.d("LoadReportSummeryTask", "doInBackground ");
@@ -615,13 +643,14 @@ public class ReportFragment extends Fragment {
             summeryList.add(ReportController.getTotalRecords(from, to));
             summeryList.add(ReportController.getIntensity(from, to));
             summeryList.add(ReportController.getAverage(from, to));
+            summeryList.add(ReportController.getWeatherDataAverage(from, to));
 
             return summeryList;
         }
 
         @Override
         protected void onPostExecute(ArrayList<Object> summeryList) {
-            Log.d("LoadReportSummeryTask", "onPostExecute ");
+            Log.d("LoadReportSummeryTask", "onPostExecute");
 
             if (summeryList.size() > 0) {
                 setTotal((int) summeryList.get(0));
@@ -632,8 +661,17 @@ public class ReportFragment extends Fragment {
                 setIntensity((double) summeryList.get(1));
             }
 
-            if (summeryList.size() == 3) {
+            if (summeryList.size() > 2) {
                 setAverage((String) summeryList.get(2));
+            }
+
+            cardViewWeatherAvg.setVisibility(View.GONE);
+            if (summeryList.size() > 3) {
+                Object o = summeryList.get(3);
+                if (o != null) {
+                    setWhetherAvg((WeatherData) o);
+                }
+
             }
 
         }

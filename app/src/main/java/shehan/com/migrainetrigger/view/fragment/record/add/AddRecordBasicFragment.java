@@ -490,7 +490,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         viewTxtIntensity = (TextView) view.findViewById(R.id.txt_record_intensity);
         viewLayoutIntensity = (RelativeLayout) view.findViewById(R.id.layout_intensity);
 
-        layoutWeather = (CardView) view.findViewById(R.id.linear_weather_layout);
+        layoutWeather = (CardView) view.findViewById(R.id.card_weather);
         txtViewWeatherTemp = (TextView) view.findViewById(R.id.txt_weather_temp);
         txtViewWeatherHumidity = (TextView) view.findViewById(R.id.txt_weather_humidity);
         txtViewWeatherPressure = (TextView) view.findViewById(R.id.txt_weather_pressure);

@@ -249,6 +249,10 @@
 
     </android.support.v7.widget.CardView>
 
+    <include
+        android:id="@+id/weather_layout"
+        layout="@layout/item_record_weather"/>
+
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
                                             android:id="@+id/report_recycler_view"
                                             android:layout_width="match_parent"

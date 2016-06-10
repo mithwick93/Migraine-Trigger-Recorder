@@ -190,5 +190,6 @@
     <string name="record_filter_btn_cancel">Cancel</string>
     <string name="record_filter_btn_clear">Clear</string>
     <string name="record_filter_btn_filter">Filter</string>
+    <string name="weather_title">Weather average</string>
 
 </resources>

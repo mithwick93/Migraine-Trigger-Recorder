@@ -13,7 +13,9 @@ import shehan.com.migrainetrigger.data.dao.DBRecordDAO;
 import shehan.com.migrainetrigger.data.dao.DBReliefDAO;
 import shehan.com.migrainetrigger.data.dao.DBSymptomDAO;
 import shehan.com.migrainetrigger.data.dao.DBTriggerDAO;
+import shehan.com.migrainetrigger.data.dao.DBWeatherDataDAO;
 import shehan.com.migrainetrigger.data.model.Record;
+import shehan.com.migrainetrigger.data.model.WeatherData;
 import shehan.com.migrainetrigger.utility.AppUtil;
 
 /**
@@ -114,5 +116,9 @@ public class ReportController {
 
     public static int getTotalRecords(Timestamp from, Timestamp to) {
         return DBRecordDAO.getTotalRecords(from, to);
+    }
+
+    public static WeatherData getWeatherDataAverage(Timestamp from, Timestamp to) {
+        return DBWeatherDataDAO.getWeatherAvg(from, to);
     }
 }

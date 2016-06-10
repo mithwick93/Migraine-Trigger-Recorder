@@ -6,10 +6,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import org.jetbrains.annotations.Nullable;
+
+import java.sql.Timestamp;
+
 import shehan.com.migrainetrigger.data.builders.WeatherDataBuilder;
 import shehan.com.migrainetrigger.data.model.WeatherData;
 import shehan.com.migrainetrigger.utility.database.DatabaseDefinition;
 import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
+
+import static shehan.com.migrainetrigger.utility.AppUtil.getStringDate;
 
 /**
  * Created by Shehan on 4/13/2016.
@@ -113,11 +119,64 @@ public final class DBWeatherDataDAO {
     }
 
     /**
+     * weather data averages
+     *
+     * @param from from time stamp
+     * @param to   ending time stamp
+     * @return WeatherData with average figures
+     */
+    @Nullable
+    public static WeatherData getWeatherAvg(Timestamp from, Timestamp to) {
+        Log.d("DBWeatherDataDAO", "getWeatherAvg");
+
+        WeatherData weatherData = null;
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+            String selection =
+                    "AVG(" + DatabaseDefinition.WEATHER_DATA_HUMIDITY_KEY + ")," +
+                            "AVG(" + DatabaseDefinition.WEATHER_DATA_PRESSURE_KEY + ")," +
+                            "AVG(" + DatabaseDefinition.WEATHER_DATA_TEMPERATURE_KEY + ")";
+
+            String joinQuery =
+                    "SELECT " + selection + " " +
+                            "FROM " + DatabaseDefinition.WEATHER_DATA_TABLE + " , " + DatabaseDefinition.RECORD_TABLE + " " +
+                            "WHERE " + DatabaseDefinition.WEATHER_DATA_TABLE + "." + DatabaseDefinition.WEATHER_DATA_RECORD_ID_KEY + "=" + DatabaseDefinition.RECORD_TABLE + "." + DatabaseDefinition.RECORD_ID_KEY + " AND " + DatabaseDefinition.RECORD_TABLE + "." + DatabaseDefinition.RECORD_START_TIME_KEY + " BETWEEN ? AND ? ";
+
+            String[] selectionArgs = {getStringDate(from), getStringDate(to)};
+            cursor = db.rawQuery(joinQuery, selectionArgs);
+
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+
+                double humidity = Double.valueOf(cursor.getString(0));
+                double pressure = Double.valueOf(cursor.getString(1));
+                double temp = Double.valueOf(cursor.getString(2));
+
+                weatherData = new WeatherDataBuilder().setHumidity(humidity).setPressure(pressure).setTemperature(temp).createWeatherData();
+
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return weatherData;
+    }
+
+    /**
      * get Weather Data By RecordId
      *
      * @param recordId recordId
      * @return WeatherData
      */
+    @Nullable
     public static WeatherData getWeatherDataByRecordId(int recordId) {
         Log.d("DBWeatherDataDAO", "getWeatherDataById");
 
