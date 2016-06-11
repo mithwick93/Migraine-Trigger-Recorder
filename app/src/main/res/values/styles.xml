@@ -14,6 +14,8 @@
         <item name="themedWeatherHumidity">@drawable/ic_humidity</item>
         <item name="themedWeatherPressure">@drawable/ic_pressure</item>
         <item name="themedFAQChevron">@drawable/ic_chevron_right_black_24dp</item>
+        <item name="themedFilterUp">@drawable/ic_action_arrow_up</item>
+        <item name="themedFilterDown">@drawable/ic_action_arrow_down</item>
     </style>
 
     <style name="AppThemeDark" parent="Theme.AppCompat">
@@ -29,6 +31,8 @@
         <item name="themedWeatherHumidity">@drawable/ic_humidity_inverse</item>
         <item name="themedWeatherPressure">@drawable/ic_pressure_inverse</item>
         <item name="themedFAQChevron">@drawable/ic_chevron_right_white_24dp</item>
+        <item name="themedFilterUp">@drawable/ic_action_arrow_up_inverse</item>
+        <item name="themedFilterDown">@drawable/ic_action_arrow_down_inverse</item>
 
     </style>
 

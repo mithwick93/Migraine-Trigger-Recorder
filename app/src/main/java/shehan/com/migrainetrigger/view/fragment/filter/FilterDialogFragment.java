@@ -4,6 +4,7 @@ package shehan.com.migrainetrigger.view.fragment.filter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
 
     private static final String ARG_FILTERS = "param1";
     private static TextView filterDetailsTextView;
+    private String appTheme;
     private ArrayList<ArrayList<String>> filterList;
     private FilterUpdateListener mCallback;
     private ArrayList<ArrayList<String>> selectedFilters;
@@ -54,6 +56,9 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
 
         filterDetailsTextView = (TextView) view.findViewById(R.id.textView_currentFilterDetails);
         filterDetailsTextView.setText(R.string.record_filter_title);
+
+        appTheme = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("pref_appTheme", "Light");
+
         updateFilterSelection();
 
         if (selectedFilters.size() != 7) {
@@ -241,14 +246,25 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
     private class CategoryClickListener implements View.OnClickListener {
         @SuppressWarnings("deprecation")
         public void onClick(View view) {
+
             if (view.isActivated()) {
                 view.setActivated(false);
-                ((TextView) view).setCompoundDrawablesWithIntrinsicBounds(null, null, FilterDialogFragment.this.getActivity().getResources().getDrawable(R.drawable.ic_action_arrow_down), null);
+                if (appTheme.equals("Dark")) {
+                    ((TextView) view).setCompoundDrawablesWithIntrinsicBounds(null, null, FilterDialogFragment.this.getActivity().getResources().getDrawable(R.drawable.ic_action_arrow_down_inverse), null);
+                } else {
+                    ((TextView) view).setCompoundDrawablesWithIntrinsicBounds(null, null, FilterDialogFragment.this.getActivity().getResources().getDrawable(R.drawable.ic_action_arrow_down), null);
+
+                }
                 ((View) view.getParent()).findViewById(R.id.linearLayout_tagTypeContainer).setVisibility(View.GONE);
                 return;
             }
             view.setActivated(true);
-            ((TextView) view).setCompoundDrawablesWithIntrinsicBounds(null, null, FilterDialogFragment.this.getActivity().getResources().getDrawable(R.drawable.ic_action_arrow_up), null);
+            if (appTheme.equals("Dark")) {
+                ((TextView) view).setCompoundDrawablesWithIntrinsicBounds(null, null, FilterDialogFragment.this.getActivity().getResources().getDrawable(R.drawable.ic_action_arrow_up_inverse), null);
+            } else {
+                ((TextView) view).setCompoundDrawablesWithIntrinsicBounds(null, null, FilterDialogFragment.this.getActivity().getResources().getDrawable(R.drawable.ic_action_arrow_up), null);
+            }
+
             ((View) view.getParent()).findViewById(R.id.linearLayout_tagTypeContainer).setVisibility(View.VISIBLE);
         }
     }
