@@ -24,10 +24,10 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_alignParentTop="true"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:contentDescription="@string/app_icon"
                 android:scaleType="fitXY"
                 android:src="@mipmap/ic_launcher"/>

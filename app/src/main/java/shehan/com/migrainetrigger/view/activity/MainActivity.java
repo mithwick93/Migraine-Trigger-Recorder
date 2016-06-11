@@ -21,6 +21,7 @@ import android.view.View;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.fragment.main.AboutFragment;
 import shehan.com.migrainetrigger.view.fragment.main.HomeFragment;
@@ -34,6 +35,8 @@ public class MainActivity
     private static final boolean DEVELOPER_MODE = false;
 
     private FloatingActionButton fab;
+
+    private boolean isRecordsAvailable;
 
 
     @Override
@@ -76,6 +79,7 @@ public class MainActivity
     @Override
     public void onResume() {
         setCustomTheme();
+        new CheckRecordsTask().execute();
         super.onResume();
     }
 
@@ -191,45 +195,53 @@ public class MainActivity
 
         } else if (id == R.id.nav_record) {
             Log.d("Main-navigation", "Record selected");
-            new AsyncTask<String, Void, Boolean>() {
-                Intent intent;
+            if (isRecordsAvailable) {
+                new AsyncTask<String, Void, Boolean>() {
+                    Intent intent;
 
-                @Override
-                protected Boolean doInBackground(String... params) {
-                    Log.d("Main activity", "Loading view records activity");
-                    intent = new Intent(MainActivity.this, ViewRecordsActivity.class);
-                    return true;
-                }
-
-                @Override
-                protected void onPostExecute(Boolean result) {
-                    if (result) {
-                        Log.d("Main-navigation", "Launching view record activity");
-                        startActivity(intent);
+                    @Override
+                    protected Boolean doInBackground(String... params) {
+                        Log.d("Main activity", "Loading view records activity");
+                        intent = new Intent(MainActivity.this, ViewRecordsActivity.class);
+                        return true;
                     }
-                }
-            }.execute();
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        if (result) {
+                            Log.d("Main-navigation", "Launching view record activity");
+                            startActivity(intent);
+                        }
+                    }
+                }.execute();
+            } else {
+                AppUtil.showToast(this, "No records found");
+            }
 
         } else if (id == R.id.nav_report) {
             Log.d("Main-navigation", "Report selected");
-            new AsyncTask<String, Void, Boolean>() {
-                Intent intent;
+            if (isRecordsAvailable) {
+                new AsyncTask<String, Void, Boolean>() {
+                    Intent intent;
 
-                @Override
-                protected Boolean doInBackground(String... params) {
-                    Log.d("Main activity", "Loading reports activity");
-                    intent = new Intent(MainActivity.this, ReportActivity.class);
-                    return true;
-                }
-
-                @Override
-                protected void onPostExecute(Boolean result) {
-                    if (result) {
-                        Log.d("Main-navigation", "Launching report activity");
-                        startActivity(intent);
+                    @Override
+                    protected Boolean doInBackground(String... params) {
+                        Log.d("Main activity", "Loading reports activity");
+                        intent = new Intent(MainActivity.this, ReportActivity.class);
+                        return true;
                     }
-                }
-            }.execute();
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        if (result) {
+                            Log.d("Main-navigation", "Launching report activity");
+                            startActivity(intent);
+                        }
+                    }
+                }.execute();
+            } else {
+                AppUtil.showToast(this, "Not enough records found");
+            }
 
         } else if (id == R.id.nav_settings) {
             Log.d("Main-navigation", "Settings selected");
@@ -435,6 +447,26 @@ public class MainActivity
 
                 }
             });
+        }
+    }
+
+    /**
+     * Async task to check if reports can be generated
+     */
+    private class CheckRecordsTask extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            Log.d("CheckRecordsTask", "doInBackground ");
+            return RecordController.getLastId();
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            Log.d("CheckRecordsTask", "onPostExecute ");
+
+            isRecordsAvailable = integer != -1;
+
         }
     }
 }

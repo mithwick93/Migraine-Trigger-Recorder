@@ -21,62 +21,58 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_column="0"
-
             android:layout_row="0"
             android:clickable="true">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
-                    android:paddingEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:paddingEnd="15dp"
                     android:paddingStart="5dp"
                     android:paddingTop="10dp"
                     android:text="@string/record_lbl_start"
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_gravity="end"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
+                    <EditText
+                        android:id="@+id/txt_record_start_date"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="@string/record_txt_start_date_hint"
+                        android:inputType="textMultiLine"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="15sp"/>
 
-                        <EditText
-                            android:id="@+id/txt_record_start_date"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:focusable="false"
-                            android:hint="@string/record_txt_start_date_hint"
-                            android:inputType="textMultiLine"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textSize="15sp"/>
-
-                        <EditText
-                            android:id="@+id/txt_record_start_time"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:focusable="false"
-                            android:hint="@string/record_txt_start_time_hint"
-                            android:inputType="textMultiLine"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textSize="15sp"/>
-                    </LinearLayout>
+                    <EditText
+                        android:id="@+id/txt_record_start_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="@string/record_txt_start_time_hint"
+                        android:inputType="textMultiLine"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="15sp"/>
                 </LinearLayout>
 
 
@@ -87,60 +83,58 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="1"
             android:clickable="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="10dp"
                     android:text="@string/record_lbl_end"
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_gravity="end"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
+                    <EditText
+                        android:id="@+id/txt_record_end_date"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="@string/record_txt_end_date_hint"
+                        android:inputType="textMultiLine"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="15sp"/>
 
-                        <EditText
-                            android:id="@+id/txt_record_end_date"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:focusable="false"
-                            android:hint="@string/record_txt_end_date_hint"
-                            android:inputType="textMultiLine"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textSize="15sp"/>
-
-                        <EditText
-                            android:id="@+id/txt_record_end_time"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:focusable="false"
-                            android:hint="@string/record_txt_end_time_hint"
-                            android:inputType="textMultiLine"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textSize="15sp"/>
-                    </LinearLayout>
+                    <EditText
+                        android:id="@+id/txt_record_end_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="@string/record_txt_end_time_hint"
+                        android:inputType="textMultiLine"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="15sp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -149,21 +143,24 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="2"
             android:clickable="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="150dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
@@ -172,8 +169,9 @@
 
                 <RelativeLayout
                     android:id="@+id/layout_intensity"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="2"
                     android:background="?android:attr/selectableItemBackground"
                     android:clickable="true">
 

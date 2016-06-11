@@ -51,7 +51,7 @@
         <item>10- Worst ever</item>
     </string-array>
 
-    <string name="record_lbl_start">Start</string>
+    <string name="record_lbl_start">Start (required)</string>
     <string name="record_lbl_end">End</string>
     <string name="record_lbl_intensity">Intensity</string>
     <string name="record_txt_intensity_hint">click to set</string>

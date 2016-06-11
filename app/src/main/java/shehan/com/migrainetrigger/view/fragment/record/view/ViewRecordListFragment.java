@@ -312,11 +312,29 @@ public class ViewRecordListFragment extends Fragment
      */
     private class GetRecordListTask extends AsyncTask<String, Void, RecordViewData[]> {
 
+        private ProgressDialog nDialog;
+
         @Override
         protected RecordViewData[] doInBackground(String... params) {
             Log.d("GetRecordList", " doInBackground - query records");
+            RecordViewData[] recordViewData = RecordController.getRecordViewData();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return recordViewData;
+        }
 
-            return RecordController.getRecordViewData();
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            nDialog = new ProgressDialog(getActivity());
+            nDialog.setMessage("Loading records...");
+            nDialog.setTitle("Processing");
+            nDialog.setIndeterminate(false);
+            nDialog.setCancelable(false);
+            nDialog.show();
         }
 
         @Override
@@ -354,6 +372,9 @@ public class ViewRecordListFragment extends Fragment
             }
             AppUtil.showToast(ViewRecordListFragment.this.getContext(), "Showing newest first");
 
+            if (nDialog != null) {
+                nDialog.dismiss();
+            }
         }
     }
 }
