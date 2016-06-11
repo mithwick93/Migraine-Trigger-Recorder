@@ -1,4 +1,5 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
 
@@ -40,13 +41,15 @@
             android:text="@string/app_version"
             android:textColor="@android:color/primary_text_dark"/>
 
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/loadingIndicator"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"/>
+            android:layout_margin="25dp"
+            android:visibility="visible"
+            app:indicator="BallSpinFadeLoader"
+            />
 
     </LinearLayout>
 </merge>

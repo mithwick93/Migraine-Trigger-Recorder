@@ -193,5 +193,8 @@
     <string name="weather_title">Weather average</string>
     <string name="home_help_no_data">Start by adding records, press + button</string>
     <string name="home_emoji">emoji</string>
+    <string name="new_fab_basic">Basic</string>
+    <string name="new_fab_inter">Intermediate</string>
+    <string name="new_fab_full">Full</string>
 
 </resources>

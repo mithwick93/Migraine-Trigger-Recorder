@@ -1,11 +1,11 @@
 package shehan.com.migrainetrigger.view.activity;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,14 +15,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.gordonwong.materialsheetfab.MaterialSheetFab;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.utility.AppUtil;
+import shehan.com.migrainetrigger.utility.customView.SheetFab;
 import shehan.com.migrainetrigger.view.fragment.main.AboutFragment;
 import shehan.com.migrainetrigger.view.fragment.main.HomeFragment;
 import shehan.com.migrainetrigger.view.fragment.main.ManageAnswersFragment;
@@ -30,14 +33,13 @@ import shehan.com.migrainetrigger.view.fragment.main.SeverityFragment;
 
 public class MainActivity
         extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ManageAnswersFragment.ManageAnswersFragmentListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ManageAnswersFragment.ManageAnswersFragmentListener, View.OnClickListener {
 
     private static final boolean DEVELOPER_MODE = false;
 
-    private FloatingActionButton fab;
-
+    private SheetFab fab;
     private boolean isRecordsAvailable;
-
+    private MaterialSheetFab materialSheetFab;
 
     @Override
     public void OnAnswerRawClick(final String answer) {
@@ -66,14 +68,14 @@ public class MainActivity
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-
-        if (drawer != null) {
-            if (drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.closeDrawer(GravityCompat.START);
-            } else {
-                super.onBackPressed();
-            }
+        if (materialSheetFab != null && materialSheetFab.isSheetVisible()) {
+            materialSheetFab.hideSheet();
+        } else if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
+
     }
 
     @Override
@@ -83,6 +85,26 @@ public class MainActivity
         super.onResume();
     }
 
+    @Override
+    public void onClick(View v) {
+        //Toast.makeText(this, R.string.sheet_item_pressed, Toast.LENGTH_SHORT).show();
+        materialSheetFab.hideSheet();
+
+        TextView textView = (TextView) v;
+        int which = 0;
+        if (textView.getText().equals("Basic")) {
+            which = 0;
+        } else if (textView.getText().equals("Intermediate")) {
+            which = 1;
+        } else if (textView.getText().equals("Full")) {
+            which = 2;
+        }
+
+        Intent intent = new Intent(MainActivity.this, AddRecordActivity.class);
+        intent.putExtra("levelOfInformation", which);
+        Log.d("MainActivity-fab-dialog", "Launching new record activity");
+        startActivity(intent);
+    }
 
     /**
      * Action on navigation item click
@@ -346,9 +368,9 @@ public class MainActivity
             getSupportActionBar().setTitle(toolBarTitle);
         }
 
-        if (fab != null) {
-            fab.setVisibility(fabVisibility);
-        }
+//        if (fab != null) {
+//            fab.setVisibility(fabVisibility);
+//        }
 
     }
 
@@ -421,34 +443,46 @@ public class MainActivity
      */
     private void fabSetup() {
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        SheetFab fab = (SheetFab) findViewById(R.id.fab);
+        View sheetView = findViewById(R.id.fab_sheet);
+        View overlay = findViewById(R.id.overlay);
 
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("MainActivity-fab", "Launching information level dialog");
+        int sheetColor = fetchResourceColor(1);
+        int fabColor = fetchResourceColor(0);
 
-                    new MaterialDialog.Builder(MainActivity.this)
-                            .title(R.string.levelOfInformationDialog)
-                            .items(R.array.levelOfInformationOptions)
-                            .negativeText(R.string.cancelButtonDialog)
-                            .itemsCallback(new MaterialDialog.ListCallback() {
-                                @Override
-                                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+        // Create material sheet FAB
+        assert fab != null;
+        assert sheetView != null;
+        assert overlay != null;
+        materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay, sheetColor, fabColor);
 
-                                    Intent intent = new Intent(MainActivity.this, AddRecordActivity.class);
-                                    intent.putExtra("levelOfInformation", which);
-                                    Log.d("MainActivity-fab-dialog", "Launching new record activity");
-                                    startActivity(intent);
-                                }
-                            })
-                            .show();
+        // Set material sheet item click listeners
+        View txtBasic = findViewById(R.id.fab_sheet_item_basic);
+        assert txtBasic != null;
+        txtBasic.setOnClickListener(this);
 
-                }
-            });
-        }
+        View txtInter = findViewById(R.id.fab_sheet_item_intermediate);
+        assert txtInter != null;
+        txtInter.setOnClickListener(this);
+
+        View txtFull = findViewById(R.id.fab_sheet_item_full);
+        assert txtFull != null;
+        txtFull.setOnClickListener(this);
+
+
     }
+
+    private int fetchResourceColor(int index) {
+        TypedValue typedValue = new TypedValue();
+
+        TypedArray a = this.obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent, android.R.attr.colorBackground});
+        int color = a.getColor(index, 0);
+
+        a.recycle();
+
+        return color;
+    }
+
 
     /**
      * Async task to check if reports can be generated
