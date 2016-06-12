@@ -13,6 +13,11 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+
+        //To build this project, you will need to apply for your own api key from https://developer.forecast.io/ .  A basic plan is free.
+        // When you receive your API key from forecast.io, add the following attribute to your gradle.properties file in the following form
+        // FORECAST_API_KEY = "your api key goes here"
+        buildConfigField("String", "FORECAST_API_KEY", FORECAST_API_KEY)
     }
     buildTypes {
         release {
