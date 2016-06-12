@@ -14,7 +14,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.transition.Slide;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -397,8 +396,6 @@ public class MainActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        //setupWindowAnimations();
-
         fabSetup();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -486,15 +483,6 @@ public class MainActivity
         return color;
     }
 
-    private void setupWindowAnimations() {
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            Slide slide = new Slide();
-            slide.setDuration(1000);
-            getWindow().setExitTransition(slide);
-        }
-
-    }
 
     /**
      * Async task to check if reports can be generated
