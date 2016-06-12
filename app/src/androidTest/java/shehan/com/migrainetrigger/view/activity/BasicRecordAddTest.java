@@ -35,8 +35,8 @@ public class BasicRecordAddTest {
         // Click at FloatingActionButton with id R.id.fab
         onView(withId(R.id.fab)).perform(click());
 
-        // Click at item with value 'Basic' in ListView
-        onData(allOf(is(instanceOf(java.lang.String.class)), is("Basic"))).inAdapterView(withId(R.id.contentListView)).perform(click());
+        // Click at AppCompatTextView with id R.id.fab_sheet_item_basic
+        onView(withId(R.id.fab_sheet_item_basic)).perform(click());
 
         // Click at AppCompatEditText with id R.id.txt_record_start_date
         onView(withId(R.id.txt_record_start_date)).perform(scrollTo());

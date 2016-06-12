@@ -36,8 +36,8 @@ public class InterRecordAddTest {
         // Click at FloatingActionButton with id R.id.fab
         onView(withId(R.id.fab)).perform(click());
 
-        // Click at item with value 'Intermediate' in ListView
-        onData(allOf(is(instanceOf(java.lang.String.class)), is("Intermediate"))).inAdapterView(withId(R.id.contentListView)).perform(click());
+        // Click at AppCompatTextView with id R.id.fab_sheet_item_intermediate
+        onView(withId(R.id.fab_sheet_item_intermediate)).perform(click());
 
         // Click at AppCompatEditText with id R.id.txt_record_start_date
         onView(withId(R.id.txt_record_start_date)).perform(scrollTo());

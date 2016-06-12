@@ -12,14 +12,10 @@ import org.junit.runner.RunWith;
 
 import shehan.com.migrainetrigger.R;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -42,42 +38,34 @@ public class InfoLevelChooseTest {
 
     @Test
     public void testGenerated() {
-        // Used to provide time delays between actions, see details at http://droidtestlab.com/delay.html
-        IdlingResource idlingResource;
-
-
-        // Click at FloatingActionButton with id R.id.fab
+        // Click at SheetFab with id R.id.fab
         onView(withId(R.id.fab)).perform(click());
 
-
-        // Click at item with value 'Basic' in ListView
-        onData(allOf(is(instanceOf(java.lang.String.class)), is("Basic"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        pressBack();
-
-
-        // Click at MDButton with id R.id.buttonDefaultPositive
-        onView(withId(R.id.buttonDefaultPositive)).perform(click());
-
-        // Click at FloatingActionButton with id R.id.fab
-        onView(withId(R.id.fab)).perform(click());
-
-
-        // Click at item with value 'Intermediate' in ListView
-        onData(allOf(is(instanceOf(java.lang.String.class)), is("Intermediate"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
+        // Click at AppCompatTextView with id R.id.fab_sheet_item_basic
+        onView(withId(R.id.fab_sheet_item_basic)).perform(click());
 
         pressBack();
 
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
 
-
-        // Click at FloatingActionButton with id R.id.fab
+        // Click at SheetFab with id R.id.fab
         onView(withId(R.id.fab)).perform(click());
 
-        // Click at item with value 'Full' in ListView
-        onData(allOf(is(instanceOf(java.lang.String.class)), is("Full"))).inAdapterView(withId(R.id.contentListView)).perform(click());
+        // Click at AppCompatTextView with id R.id.fab_sheet_item_intermediate
+        onView(withId(R.id.fab_sheet_item_intermediate)).perform(click());
+
+        pressBack();
+
+        // Click at MDButton with id R.id.buttonDefaultPositive
+        onView(withId(R.id.buttonDefaultPositive)).perform(click());
+
+        // Click at SheetFab with id R.id.fab
+        onView(withId(R.id.fab)).perform(click());
+
+        // Click at AppCompatTextView with id R.id.fab_sheet_item_full
+        onView(withId(R.id.fab_sheet_item_full)).perform(click());
+
         pressBack();
 
         // Click at MDButton with id R.id.buttonDefaultPositive

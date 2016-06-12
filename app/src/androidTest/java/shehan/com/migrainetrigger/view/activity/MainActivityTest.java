@@ -39,8 +39,6 @@ public class MainActivityTest {
         // Click at FloatingActionButton with id R.id.fab
         onView(withId(R.id.fab)).perform(click());
 
-        // Click at MDButton with id R.id.buttonDefaultNegative
-        onView(withId(R.id.buttonDefaultNegative)).perform(click());
 
         // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar
         onView(nthChildOf(withId(R.id.main_toolbar), 1)).perform(click());

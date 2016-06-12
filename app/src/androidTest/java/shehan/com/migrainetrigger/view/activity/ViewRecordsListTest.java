@@ -59,15 +59,35 @@ public class ViewRecordsListTest {
         onView(withId(R.id.record_list_recycler_view)).perform(swipeDown());
 
         // Click at LinearLayout with child index 0 of parent with id R.id.record_list_recycler_view
-        onView(withId(R.id.record_list_recycler_view)).perform(scrollToPosition(0));
-        onView(nthChildOf(withId(R.id.record_list_recycler_view), 0)).perform(click());
 
-        pressBack();
+        if (onView(nthChildOf(withId(R.id.record_list_recycler_view), 0)) != null) {
+            onView(withId(R.id.record_list_recycler_view)).perform(scrollToPosition(0));
+            onView(nthChildOf(withId(R.id.record_list_recycler_view), 0)).perform(click());
 
-        // Click at MDButton with id R.id.buttonDefaultPositive
-        onView(withId(R.id.buttonDefaultPositive)).perform(click());
+            pressBack();
+
+            // Click at MDButton with id R.id.buttonDefaultPositive
+            onView(withId(R.id.buttonDefaultPositive)).perform(click());
+        }
 
 
+    }
+
+    public static Matcher<View> nthChildOf(final Matcher<View> parentMatcher, final int childPosition) {
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                if (!(view.getParent() instanceof ViewGroup)) {
+                    return false;
+                }
+                ViewGroup group = (ViewGroup) view.getParent();
+                return parentMatcher.matches(group) && view.equals(group.getChildAt(childPosition));
+            }
+        };
     }
 
     public static ViewAction scrollToPosition(final int pos) {
@@ -85,23 +105,6 @@ public class ViewRecordsListTest {
             @Override
             public void perform(UiController uiController, View view) {
                 ((android.support.v7.widget.RecyclerView) view).scrollToPosition(pos);
-            }
-        };
-    }
-
-    public static Matcher<View> nthChildOf(final Matcher<View> parentMatcher, final int childPosition) {
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                if (!(view.getParent() instanceof ViewGroup)) {
-                    return false;
-                }
-                ViewGroup group = (ViewGroup) view.getParent();
-                return parentMatcher.matches(group) && view.equals(group.getChildAt(childPosition));
             }
         };
     }
