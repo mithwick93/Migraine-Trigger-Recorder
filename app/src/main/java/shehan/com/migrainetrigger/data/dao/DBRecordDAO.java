@@ -64,9 +64,8 @@ public final class DBRecordDAO {
             }
 
             // Inserting Row
-            long row_id = db.insert(DatabaseDefinition.RECORD_TABLE, null, values);
 
-            return row_id;
+            return db.insert(DatabaseDefinition.RECORD_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -115,9 +114,8 @@ public final class DBRecordDAO {
         }
 
         // Inserting Row
-        long row_id = db.insert(DatabaseDefinition.RECORD_TABLE, null, values);
 
-        return row_id;
+        return db.insert(DatabaseDefinition.RECORD_TABLE, null, values);
     }
 
     /**
@@ -130,8 +128,7 @@ public final class DBRecordDAO {
     public static long deleteRecord(SQLiteDatabase db, int recordId) {
         Log.d("DBRecordDAO", "deleteRecord");
 
-        long row_id = db.delete(DatabaseDefinition.RECORD_TABLE, DatabaseDefinition.RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.RECORD_TABLE, DatabaseDefinition.RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
     }
 
     /**
@@ -674,8 +671,7 @@ public final class DBRecordDAO {
         }
 
         // Inserting Row
-        long row_id = db.update(DatabaseDefinition.RECORD_TABLE, values, DatabaseDefinition.RECORD_ID_KEY + " = ?", new String[]{String.valueOf(record.getRecordId())});
 
-        return row_id;
+        return (long) db.update(DatabaseDefinition.RECORD_TABLE, values, DatabaseDefinition.RECORD_ID_KEY + " = ?", new String[]{String.valueOf(record.getRecordId())});
     }
 }

@@ -31,22 +31,10 @@ public class NavigationDrawerTest {
     @Rule
     public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class);
 
-    // See details at http://droidtestlab.com/delay.html
-    public IdlingResource startTiming(long time) {
-//        IdlingResource idlingResource = new ElapsedTimeIdlingResource(time);
-//        Espresso.registerIdlingResources(idlingResource);
-//        return idlingResource;
-        return null;
-    }
-
-    public void stopTiming(IdlingResource idlingResource) {
-        //Espresso.unregisterIdlingResources(idlingResource);
-    }
 
     @Test
     public void testGenerated() {
         // Used to provide time delays between actions, see details at http://droidtestlab.com/delay.html
-        IdlingResource idlingResource;
 
 
         // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar

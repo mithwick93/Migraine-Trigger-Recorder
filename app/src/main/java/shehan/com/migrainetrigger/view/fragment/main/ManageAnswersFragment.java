@@ -19,13 +19,6 @@ import shehan.com.migrainetrigger.R;
  */
 public class ManageAnswersFragment extends Fragment {
 
-    private CardView cardViewActivities;
-    private CardView cardViewLocations;
-    private CardView cardViewMedicines;
-    private CardView cardViewPainAreas;
-    private CardView cardViewReliefs;
-    private CardView cardViewSymptoms;
-    private CardView cardViewTriggers;
     private ManageAnswersFragmentListener mCallback;
 
     public ManageAnswersFragment() {
@@ -60,13 +53,13 @@ public class ManageAnswersFragment extends Fragment {
 
 
     private void init(View view) {
-        cardViewTriggers = (CardView) view.findViewById(R.id.card_view_answers_triggers);
-        cardViewSymptoms = (CardView) view.findViewById(R.id.card_view_answers_symptoms);
-        cardViewActivities = (CardView) view.findViewById(R.id.card_view_answers_activities);
-        cardViewLocations = (CardView) view.findViewById(R.id.card_view_answers_locations);
-        cardViewPainAreas = (CardView) view.findViewById(R.id.card_view_answers_pain_areas);
-        cardViewMedicines = (CardView) view.findViewById(R.id.card_view_answers_medicines);
-        cardViewReliefs = (CardView) view.findViewById(R.id.card_view_answers_reliefs);
+        CardView cardViewTriggers = (CardView) view.findViewById(R.id.card_view_answers_triggers);
+        CardView cardViewSymptoms = (CardView) view.findViewById(R.id.card_view_answers_symptoms);
+        CardView cardViewActivities = (CardView) view.findViewById(R.id.card_view_answers_activities);
+        CardView cardViewLocations = (CardView) view.findViewById(R.id.card_view_answers_locations);
+        CardView cardViewPainAreas = (CardView) view.findViewById(R.id.card_view_answers_pain_areas);
+        CardView cardViewMedicines = (CardView) view.findViewById(R.id.card_view_answers_medicines);
+        CardView cardViewReliefs = (CardView) view.findViewById(R.id.card_view_answers_reliefs);
 
         cardViewTriggers.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +110,7 @@ public class ManageAnswersFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

@@ -41,9 +41,7 @@ public final class DBActivityDAO {
 
             values.put(DatabaseDefinition.ACTIVITY_PRIORITY_KEY, lifeActivity.getPriority());
 
-            long row_id = db.insert(DatabaseDefinition.ACTIVITY_TABLE, null, values);
-
-            return row_id;
+            return db.insert(DatabaseDefinition.ACTIVITY_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -69,9 +67,7 @@ public final class DBActivityDAO {
 
             values.put(DatabaseDefinition.ACTIVITY_RECORD_RECORD_ID_KEY, recordId);
 
-            long row_id = db.insert(DatabaseDefinition.ACTIVITY_RECORD_TABLE, null, values);
-
-            return row_id;
+            return db.insert(DatabaseDefinition.ACTIVITY_RECORD_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -95,9 +91,7 @@ public final class DBActivityDAO {
 
         values.put(DatabaseDefinition.ACTIVITY_RECORD_RECORD_ID_KEY, recordId);
 
-        long row_id = db.insert(DatabaseDefinition.ACTIVITY_RECORD_TABLE, null, values);
-
-        return row_id;
+        return db.insert(DatabaseDefinition.ACTIVITY_RECORD_TABLE, null, values);
 
     }
 
@@ -111,8 +105,7 @@ public final class DBActivityDAO {
         Log.d("DBActivityDAO", "deleteActivity");
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
-            long row_id = db.delete(DatabaseDefinition.ACTIVITY_TABLE, DatabaseDefinition.ACTIVITY_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-            return row_id;
+            return (long) db.delete(DatabaseDefinition.ACTIVITY_TABLE, DatabaseDefinition.ACTIVITY_ID_KEY + " = ?", new String[]{String.valueOf(id)});
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -130,8 +123,7 @@ public final class DBActivityDAO {
     public static long deleteActivity(SQLiteDatabase db, int id) {
         Log.d("DBActivityDAO", "deleteActivity");
 
-        long row_id = db.delete(DatabaseDefinition.ACTIVITY_TABLE, DatabaseDefinition.ACTIVITY_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.ACTIVITY_TABLE, DatabaseDefinition.ACTIVITY_ID_KEY + " = ?", new String[]{String.valueOf(id)});
     }
 
     /**
@@ -144,8 +136,7 @@ public final class DBActivityDAO {
     public static long deleteActivityRecords(SQLiteDatabase db, int recordId) {
         Log.d("DBActivityDAO", "DB - deleteActivityRecords");
 
-        long row_id = db.delete(DatabaseDefinition.ACTIVITY_RECORD_TABLE, DatabaseDefinition.ACTIVITY_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.ACTIVITY_RECORD_TABLE, DatabaseDefinition.ACTIVITY_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
     }
 
     /**
@@ -428,14 +419,12 @@ public final class DBActivityDAO {
             }
 
 
-            long result = db.update(
+            return (long) db.update(
                     DatabaseDefinition.ACTIVITY_TABLE,
                     values,
                     DatabaseDefinition.ACTIVITY_ID_KEY + " = ?",
                     new String[]{String.valueOf(lifeActivity.getActivityId())}
             );
-
-            return result;
         } catch (SQLiteException e) {
 
             e.printStackTrace();

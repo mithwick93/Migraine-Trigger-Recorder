@@ -62,7 +62,6 @@ public class ReportFragment extends Fragment {
     private TextView txtViewTemp;
     private TextView txtViewTo;
     private TextView txtViewTotal;
-    private TextView txtViewWeather;
 
     public ReportFragment() {
         // Required empty public constructor
@@ -86,7 +85,7 @@ public class ReportFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_report, container, false);
 
         initReport(view);
-        loadRecordData(view);
+        loadRecordData();
 
         setHasOptionsMenu(true);
         return view;
@@ -185,7 +184,7 @@ public class ReportFragment extends Fragment {
         txtViewTemp = (TextView) view.findViewById(R.id.txt_weather_temp);
         txtViewHumidity = (TextView) view.findViewById(R.id.txt_weather_humidity);
         txtViewPressure = (TextView) view.findViewById(R.id.txt_weather_pressure);
-        txtViewWeather = (TextView) view.findViewById(R.id.lbl_weather);
+        TextView txtViewWeather = (TextView) view.findViewById(R.id.lbl_weather);
         txtViewWeather.setText(R.string.weather_title);
 
         cardViewReportSummery.setVisibility(View.GONE);
@@ -244,7 +243,7 @@ public class ReportFragment extends Fragment {
 
     }
 
-    private void loadRecordData(View view) {
+    private void loadRecordData() {
         //Load all data
         new CheckRecordsTask().execute();
     }
@@ -254,7 +253,7 @@ public class ReportFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

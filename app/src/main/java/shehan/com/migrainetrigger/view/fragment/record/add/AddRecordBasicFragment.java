@@ -82,8 +82,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     protected TextView txtViewWeatherHumidity;
     protected TextView txtViewWeatherPressure;
     protected TextView txtViewWeatherTemp;
-    protected RelativeLayout viewLayoutIntensity;
-    protected TextView viewTxtIntensity;
     //Data storage
     protected WeatherData weatherData;
     protected boolean weatherDataLoaded;
@@ -91,13 +89,14 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     private GeoLocationService geoLocationService;
     //Callback
     private AddRecordBasicFragmentListener mCallback;
+    private TextView viewTxtIntensity;
 
     public AddRecordBasicFragment() {
         // Required empty public constructor
     }
 
     /**
-     * Called whebn location is recieved
+     * Called when location is recieved
      *
      * @param location location object
      */
@@ -306,7 +305,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         return recordBuilder;
     }
 
-    public boolean isLocationPermissionGranted() {
+    private boolean isLocationPermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 Log.v("AddRecordBasic", "Permission is granted");
@@ -490,7 +489,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         editTxtEndDate = (EditText) view.findViewById(R.id.txt_record_end_date);
         editTxtEndTime = (EditText) view.findViewById(R.id.txt_record_end_time);
         viewTxtIntensity = (TextView) view.findViewById(R.id.txt_record_intensity);
-        viewLayoutIntensity = (RelativeLayout) view.findViewById(R.id.layout_intensity);
+        RelativeLayout viewLayoutIntensity = (RelativeLayout) view.findViewById(R.id.layout_intensity);
 
         layoutWeather = (CardView) view.findViewById(R.id.card_weather);
         txtViewWeatherTemp = (TextView) view.findViewById(R.id.txt_weather_temp);

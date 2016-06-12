@@ -38,9 +38,7 @@ public class DBBodyAreaDAO {
 
             values.put(DatabaseDefinition.BODY_AREA_NAME_KEY, bodyArea.getBodyAreaName());
 
-            long row_id = db.insert(DatabaseDefinition.BODY_AREA_TABLE, null, values);
-
-            return row_id;
+            return db.insert(DatabaseDefinition.BODY_AREA_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -66,9 +64,7 @@ public class DBBodyAreaDAO {
 
             values.put(DatabaseDefinition.BODY_AREA_RECORD_RECORD_ID_KEY, recordId);
 
-            long row_id = db.insert(DatabaseDefinition.BODY_AREA_RECORD_TABLE, null, values); //Add new account to database
-
-            return row_id;
+            return db.insert(DatabaseDefinition.BODY_AREA_RECORD_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -94,9 +90,7 @@ public class DBBodyAreaDAO {
 
         values.put(DatabaseDefinition.BODY_AREA_RECORD_RECORD_ID_KEY, recordId);
 
-        long row_id = db.insert(DatabaseDefinition.BODY_AREA_RECORD_TABLE, null, values);
-
-        return row_id;
+        return db.insert(DatabaseDefinition.BODY_AREA_RECORD_TABLE, null, values);
 
     }
 
@@ -110,8 +104,7 @@ public class DBBodyAreaDAO {
         Log.d("DBBodyAreaDAO", "deleteBodyArea");
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
-            long row_id = db.delete(DatabaseDefinition.BODY_AREA_TABLE, DatabaseDefinition.BODY_AREA_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-            return row_id;
+            return (long) db.delete(DatabaseDefinition.BODY_AREA_TABLE, DatabaseDefinition.BODY_AREA_ID_KEY + " = ?", new String[]{String.valueOf(id)});
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -129,8 +122,7 @@ public class DBBodyAreaDAO {
     public static long deleteBodyArea(SQLiteDatabase db, int id) {
         Log.d("DBBodyAreaDAO", "deleteBodyArea");
 
-        long row_id = db.delete(DatabaseDefinition.BODY_AREA_TABLE, DatabaseDefinition.BODY_AREA_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.BODY_AREA_TABLE, DatabaseDefinition.BODY_AREA_ID_KEY + " = ?", new String[]{String.valueOf(id)});
     }
 
     /**
@@ -143,8 +135,7 @@ public class DBBodyAreaDAO {
     public static long deleteBodyAreaRecords(SQLiteDatabase db, int recordId) {
         Log.d("DBBodyAreaDAO", "DB - deleteBodyAreaRecords");
 
-        long row_id = db.delete(DatabaseDefinition.BODY_AREA_RECORD_TABLE, DatabaseDefinition.BODY_AREA_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.BODY_AREA_RECORD_TABLE, DatabaseDefinition.BODY_AREA_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
     }
 
     /**
@@ -409,14 +400,12 @@ public class DBBodyAreaDAO {
             }
 
 
-            long result = db.update(
+            return (long) db.update(
                     DatabaseDefinition.BODY_AREA_TABLE,
                     values,
                     DatabaseDefinition.BODY_AREA_ID_KEY + " = ?",
                     new String[]{String.valueOf(bodyArea.getBodyAreaId())}
             );
-
-            return result;
         } catch (SQLiteException e) {
 
             e.printStackTrace();

@@ -38,9 +38,7 @@ public final class DBLocationDAO {
 
             values.put(DatabaseDefinition.LOCATION_NAME_KEY, location.getLocationName());
 
-            long row_id = db.insert(DatabaseDefinition.LOCATION_TABLE, null, values);
-
-            return row_id;
+            return db.insert(DatabaseDefinition.LOCATION_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -61,8 +59,7 @@ public final class DBLocationDAO {
                 Log.e("DBLocationDAO", "attempting to delete readonly nil value");
                 return -1;
             }
-            long row_id = db.delete(DatabaseDefinition.LOCATION_TABLE, DatabaseDefinition.LOCATION_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-            return row_id;
+            return (long) db.delete(DatabaseDefinition.LOCATION_TABLE, DatabaseDefinition.LOCATION_ID_KEY + " = ?", new String[]{String.valueOf(id)});
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -85,8 +82,7 @@ public final class DBLocationDAO {
             return -1;
         }
 
-        long row_id = db.delete(DatabaseDefinition.LOCATION_TABLE, DatabaseDefinition.LOCATION_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.LOCATION_TABLE, DatabaseDefinition.LOCATION_ID_KEY + " = ?", new String[]{String.valueOf(id)});
     }
 
     /**
@@ -251,7 +247,6 @@ public final class DBLocationDAO {
             String rightTable = DatabaseDefinition.RECORD_TABLE;
             String leftTable = DatabaseDefinition.LOCATION_TABLE;//Dynamic
 
-            String rightId = DatabaseDefinition.RECORD_ID_KEY;
 
             String filter = DatabaseDefinition.RECORD_START_TIME_KEY;
 
@@ -315,14 +310,12 @@ public final class DBLocationDAO {
             }
 
 
-            long result = db.update(
+            return (long) db.update(
                     DatabaseDefinition.LOCATION_TABLE,
                     values,
                     DatabaseDefinition.LOCATION_ID_KEY + " = ?",
                     new String[]{String.valueOf(location.getLocationId())}
             );
-
-            return result;
         } catch (SQLiteException e) {
 
             e.printStackTrace();

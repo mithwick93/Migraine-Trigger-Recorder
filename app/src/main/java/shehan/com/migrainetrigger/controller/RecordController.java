@@ -145,7 +145,7 @@ public class RecordController {
         return recordViewData;
     }
 
-    public static ArrayList<Record> getAllRecordsOrderByDate() {
+    private static ArrayList<Record> getAllRecordsOrderByDate() {
         return DBRecordDAO.getAllRecordsOrderByDate();
     }
 

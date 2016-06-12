@@ -111,7 +111,7 @@ public class ViewRecordListFragment extends Fragment
     }
 
     //Called when a record delete is detected
-    public void refreshRecordList() {
+    private void refreshRecordList() {
         if (mView != null) {
             //update
             if (selectedFilters != null && selectedFilters.size() == 7) {

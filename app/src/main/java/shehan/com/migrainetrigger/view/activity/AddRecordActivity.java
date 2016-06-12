@@ -24,8 +24,6 @@ public class AddRecordActivity
         implements AddRecordBasicFragment.AddRecordBasicFragmentListener, AddRecordIntermediateFragment.AddRecordIntermediateFragmentListener, AddRecordFullFragment.AddRecordFullFragmentListener {
 
     private static final boolean DEVELOPER_MODE = false;
-    private FloatingActionButton fabAdd;
-    private int levelOfInformation;
     private AddRecordBasicFragment mFragment;
 
     @Override
@@ -108,7 +106,7 @@ public class AddRecordActivity
      * Setup record add activity
      */
     private void initialSetup() {
-        levelOfInformation = getIntent().getIntExtra("levelOfInformation", 1);
+        int levelOfInformation = getIntent().getIntExtra("levelOfInformation", 1);
         Log.d("AddRecordAct-init", "levelOfInformation : " + levelOfInformation);
 
         mFragment = null;
@@ -145,7 +143,7 @@ public class AddRecordActivity
      */
     private void fabSetup() {
 
-        fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
+        FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
 
         if (fabAdd != null) {
             fabAdd.setOnClickListener(new View.OnClickListener() {

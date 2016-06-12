@@ -53,7 +53,7 @@
                     android:paddingEnd="3dp"
                     android:paddingStart="10dp"
                     android:paddingTop="10dp"
-                    android:text="Powered by Forecast"
+                    android:text="@string/weather_credit_text"
                     android:textAppearance="?android:attr/textAppearanceSmallPopupMenu"
                     android:textColor="#00bcd4"
                     android:textSize="12sp"

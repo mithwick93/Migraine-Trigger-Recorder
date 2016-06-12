@@ -49,7 +49,6 @@ public class ViewRecordsListTest {
     @Test
     public void testGenerated() {
         // Used to provide time delays between actions, see details at http://droidtestlab.com/delay.html
-        IdlingResource idlingResource;
 
 
         // Swipe up at RecyclerView with id R.id.record_list_recycler_view

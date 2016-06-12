@@ -1,6 +1,5 @@
 package shehan.com.migrainetrigger.view.fragment.faq;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -99,24 +98,9 @@ public class WebViewFragment extends Fragment {
             webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
             //webView.setBackgroundColor(0);
 
-
-            final Activity activity = getActivity();
             webView.setWebViewClient(new WebViewClient() {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
                     return true;
-                }
-
-                public void onReceivedError(WebView view, int errorCode,
-                                            String description, String failingUrl) {
-                    String content = "<html>\n" +
-                            "<head>\n" +
-                            "</head>\n" +
-                            "<body>\n" +
-                            "<h1 style=\"text-align:center;color:#F44336;padding:15px;\">Something Went Wrong</h1>\n" +
-                            "<p style=\"text-align:center;color:#F44336;\">Could not load " + faqSection + " page &#9785;</p>\n" +
-                            "</body>\n" +
-                            "</html>";
-                    webView.loadData(content, "text/html", "utf-8");
                 }
 
                 @Override

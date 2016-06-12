@@ -40,9 +40,7 @@ public final class DBReliefDAO {
 
             values.put(DatabaseDefinition.RELIEF_PRIORITY_KEY, relief.getPriority());
 
-            long row_id = db.insert(DatabaseDefinition.RELIEF_TABLE, null, values);
-
-            return row_id;
+            return db.insert(DatabaseDefinition.RELIEF_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -71,9 +69,7 @@ public final class DBReliefDAO {
 
             values.put(DatabaseDefinition.RELIEF_RECORD_EFFECTIVE_KEY, effective ? "t" : "f");
 
-            long row_id = db.insert(DatabaseDefinition.RELIEF_RECORD_TABLE, null, values);
-
-            return row_id;
+            return db.insert(DatabaseDefinition.RELIEF_RECORD_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -102,9 +98,7 @@ public final class DBReliefDAO {
 
         values.put(DatabaseDefinition.RELIEF_RECORD_EFFECTIVE_KEY, effective ? "t" : "f");
 
-        long row_id = db.insert(DatabaseDefinition.RELIEF_RECORD_TABLE, null, values);
-
-        return row_id;
+        return db.insert(DatabaseDefinition.RELIEF_RECORD_TABLE, null, values);
 
     }
 
@@ -118,8 +112,7 @@ public final class DBReliefDAO {
         Log.d("DBReliefDAO", "deleteMedicine");
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
-            long row_id = db.delete(DatabaseDefinition.RELIEF_TABLE, DatabaseDefinition.RELIEF_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-            return row_id;
+            return (long) db.delete(DatabaseDefinition.RELIEF_TABLE, DatabaseDefinition.RELIEF_ID_KEY + " = ?", new String[]{String.valueOf(id)});
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -137,8 +130,7 @@ public final class DBReliefDAO {
     public static long deleteRelief(SQLiteDatabase db, int id) {
         Log.d("DBReliefDAO", "deleteMedicine");
 
-        long row_id = db.delete(DatabaseDefinition.RELIEF_TABLE, DatabaseDefinition.RELIEF_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.RELIEF_TABLE, DatabaseDefinition.RELIEF_ID_KEY + " = ?", new String[]{String.valueOf(id)});
     }
 
 
@@ -152,8 +144,7 @@ public final class DBReliefDAO {
     public static long deleteReliefRecords(SQLiteDatabase db, int recordId) {
         Log.d("DBReliefDAO", "DB - deleteReliefRecords");
 
-        long row_id = db.delete(DatabaseDefinition.RELIEF_RECORD_TABLE, DatabaseDefinition.RELIEF_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.RELIEF_RECORD_TABLE, DatabaseDefinition.RELIEF_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
     }
 
     /**
@@ -503,14 +494,12 @@ public final class DBReliefDAO {
             }
 
 
-            long result = db.update(
+            return (long) db.update(
                     DatabaseDefinition.RELIEF_TABLE,
                     values,
                     DatabaseDefinition.RELIEF_ID_KEY + " = ?",
                     new String[]{String.valueOf(relief.getReliefId())}
             );
-
-            return result;
         } catch (SQLiteException e) {
 
             e.printStackTrace();

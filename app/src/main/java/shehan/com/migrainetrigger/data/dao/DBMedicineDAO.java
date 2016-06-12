@@ -40,9 +40,7 @@ public final class DBMedicineDAO {
 
             values.put(DatabaseDefinition.MEDICINE_PRIORITY_KEY, medicine.getPriority());
 
-            long row_id = db.insert(DatabaseDefinition.MEDICINE_TABLE, null, values);
-
-            return row_id;
+            return db.insert(DatabaseDefinition.MEDICINE_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -71,9 +69,7 @@ public final class DBMedicineDAO {
 
             values.put(DatabaseDefinition.MEDICINE_RECORD_EFFECTIVE_KEY, effective ? "t" : "f");
 
-            long row_id = db.insert(DatabaseDefinition.MEDICINE_RECORD_TABLE, null, values);
-
-            return row_id;
+            return db.insert(DatabaseDefinition.MEDICINE_RECORD_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -102,9 +98,7 @@ public final class DBMedicineDAO {
 
         values.put(DatabaseDefinition.MEDICINE_RECORD_EFFECTIVE_KEY, effective ? "t" : "f");
 
-        long row_id = db.insert(DatabaseDefinition.MEDICINE_RECORD_TABLE, null, values);
-
-        return row_id;
+        return db.insert(DatabaseDefinition.MEDICINE_RECORD_TABLE, null, values);
 
     }
 
@@ -118,8 +112,7 @@ public final class DBMedicineDAO {
         Log.d("DBMedicineDAO", "deleteMedicine");
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
-            long row_id = db.delete(DatabaseDefinition.MEDICINE_TABLE, DatabaseDefinition.MEDICINE_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-            return row_id;
+            return (long) db.delete(DatabaseDefinition.MEDICINE_TABLE, DatabaseDefinition.MEDICINE_ID_KEY + " = ?", new String[]{String.valueOf(id)});
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -137,8 +130,7 @@ public final class DBMedicineDAO {
     public static long deleteMedicine(SQLiteDatabase db, int id) {
         Log.d("DBMedicineDAO", "deleteMedicine");
 
-        long row_id = db.delete(DatabaseDefinition.MEDICINE_TABLE, DatabaseDefinition.MEDICINE_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.MEDICINE_TABLE, DatabaseDefinition.MEDICINE_ID_KEY + " = ?", new String[]{String.valueOf(id)});
     }
 
     /**
@@ -151,8 +143,7 @@ public final class DBMedicineDAO {
     public static long deleteMedicineRecords(SQLiteDatabase db, int recordId) {
         Log.d("DBMedicineDAO", "DB - deleteMedicineRecords");
 
-        long row_id = db.delete(DatabaseDefinition.MEDICINE_RECORD_TABLE, DatabaseDefinition.MEDICINE_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.MEDICINE_RECORD_TABLE, DatabaseDefinition.MEDICINE_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
     }
 
     /**
@@ -502,14 +493,12 @@ public final class DBMedicineDAO {
             }
 
 
-            long result = db.update(
+            return (long) db.update(
                     DatabaseDefinition.MEDICINE_TABLE,
                     values,
                     DatabaseDefinition.MEDICINE_ID_KEY + " = ?",
                     new String[]{String.valueOf(medicine.getMedicineId())}
             );
-
-            return result;
         } catch (SQLiteException e) {
 
             e.printStackTrace();

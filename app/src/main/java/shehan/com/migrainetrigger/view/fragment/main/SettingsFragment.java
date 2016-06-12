@@ -138,7 +138,7 @@ public class SettingsFragment extends PreferenceFragment {
                 .show();
     }
 
-    public boolean isStoragePermissionGranted(final int request) {
+    private boolean isStoragePermissionGranted(final int request) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 Log.v("SettingsFragment", "Permission is granted");

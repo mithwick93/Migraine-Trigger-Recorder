@@ -40,9 +40,7 @@ public final class DBSymptomDAO {
 
             values.put(DatabaseDefinition.SYMPTOM_PRIORITY_KEY, symptom.getPriority());
 
-            long row_id = db.insert(DatabaseDefinition.SYMPTOM_TABLE, null, values);
-
-            return row_id;
+            return db.insert(DatabaseDefinition.SYMPTOM_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -67,9 +65,7 @@ public final class DBSymptomDAO {
 
             values.put(DatabaseDefinition.SYMPTOM_RECORD_RECORD_ID_KEY, recordId);
 
-            long row_id = db.insert(DatabaseDefinition.SYMPTOM_RECORD_TABLE, null, values);
-
-            return row_id;
+            return db.insert(DatabaseDefinition.SYMPTOM_RECORD_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -95,9 +91,7 @@ public final class DBSymptomDAO {
 
         values.put(DatabaseDefinition.SYMPTOM_RECORD_RECORD_ID_KEY, recordId);
 
-        long row_id = db.insert(DatabaseDefinition.SYMPTOM_RECORD_TABLE, null, values);
-
-        return row_id;
+        return db.insert(DatabaseDefinition.SYMPTOM_RECORD_TABLE, null, values);
 
     }
 
@@ -111,8 +105,7 @@ public final class DBSymptomDAO {
         Log.d("DBSymptomDAO", "deleteSymptom");
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
-            long row_id = db.delete(DatabaseDefinition.SYMPTOM_TABLE, DatabaseDefinition.SYMPTOM_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-            return row_id;
+            return (long) db.delete(DatabaseDefinition.SYMPTOM_TABLE, DatabaseDefinition.SYMPTOM_ID_KEY + " = ?", new String[]{String.valueOf(id)});
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -130,8 +123,7 @@ public final class DBSymptomDAO {
     public static long deleteSymptom(SQLiteDatabase db, int id) {
         Log.d("DBSymptomDAO", "deleteSymptom");
 
-        long row_id = db.delete(DatabaseDefinition.SYMPTOM_TABLE, DatabaseDefinition.SYMPTOM_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.SYMPTOM_TABLE, DatabaseDefinition.SYMPTOM_ID_KEY + " = ?", new String[]{String.valueOf(id)});
 
     }
 
@@ -146,8 +138,7 @@ public final class DBSymptomDAO {
     public static long deleteSymptomRecords(SQLiteDatabase db, int recordId) {
         Log.d("DBSymptomDAO", "DB - deleteSymptomRecords");
 
-        long row_id = db.delete(DatabaseDefinition.SYMPTOM_RECORD_TABLE, DatabaseDefinition.SYMPTOM_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.SYMPTOM_RECORD_TABLE, DatabaseDefinition.SYMPTOM_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
     }
 
     /**
@@ -430,14 +421,12 @@ public final class DBSymptomDAO {
             }
 
 
-            long result = db.update(
+            return (long) db.update(
                     DatabaseDefinition.SYMPTOM_TABLE,
                     values,
                     DatabaseDefinition.SYMPTOM_ID_KEY + " = ?",
                     new String[]{String.valueOf(symptom.getSymptomId())}
             );
-
-            return result;
         } catch (SQLiteException e) {
 
             e.printStackTrace();

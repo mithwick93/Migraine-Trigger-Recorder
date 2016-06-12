@@ -40,9 +40,7 @@ public final class DBTriggerDAO {
 
             values.put(DatabaseDefinition.TRIGGER_PRIORITY_KEY, trigger.getPriority());
 
-            long row_id = db.insert(DatabaseDefinition.TRIGGER_TABLE, null, values);
-
-            return row_id;
+            return db.insert(DatabaseDefinition.TRIGGER_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -68,9 +66,7 @@ public final class DBTriggerDAO {
 
             values.put(DatabaseDefinition.TRIGGER_RECORD_RECORD_ID_KEY, recordId);
 
-            long row_id = db.insert(DatabaseDefinition.TRIGGER_RECORD_TABLE, null, values);
-
-            return row_id;
+            return db.insert(DatabaseDefinition.TRIGGER_RECORD_TABLE, null, values);
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -96,9 +92,7 @@ public final class DBTriggerDAO {
 
         values.put(DatabaseDefinition.TRIGGER_RECORD_RECORD_ID_KEY, recordId);
 
-        long row_id = db.insert(DatabaseDefinition.TRIGGER_RECORD_TABLE, null, values);
-
-        return row_id;
+        return db.insert(DatabaseDefinition.TRIGGER_RECORD_TABLE, null, values);
 
     }
 
@@ -112,8 +106,7 @@ public final class DBTriggerDAO {
         Log.d("DBTriggerDAO", "deleteTrigger");
         try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
 
-            long row_id = db.delete(DatabaseDefinition.TRIGGER_TABLE, DatabaseDefinition.TRIGGER_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-            return row_id;
+            return (long) db.delete(DatabaseDefinition.TRIGGER_TABLE, DatabaseDefinition.TRIGGER_ID_KEY + " = ?", new String[]{String.valueOf(id)});
         } catch (SQLiteException e) {
 
             e.printStackTrace();
@@ -131,8 +124,7 @@ public final class DBTriggerDAO {
     public static long deleteTrigger(SQLiteDatabase db, int id) {
         Log.d("DBTriggerDAO", "deleteTrigger");
 
-        long row_id = db.delete(DatabaseDefinition.TRIGGER_TABLE, DatabaseDefinition.TRIGGER_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.TRIGGER_TABLE, DatabaseDefinition.TRIGGER_ID_KEY + " = ?", new String[]{String.valueOf(id)});
     }
 
     /**
@@ -145,8 +137,7 @@ public final class DBTriggerDAO {
     public static long deleteTriggerRecords(SQLiteDatabase db, int recordId) {
         Log.d("DBTriggerDAO", "DB - deleteTriggerRecords");
 
-        long row_id = db.delete(DatabaseDefinition.TRIGGER_RECORD_TABLE, DatabaseDefinition.TRIGGER_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
-        return row_id;
+        return (long) db.delete(DatabaseDefinition.TRIGGER_RECORD_TABLE, DatabaseDefinition.TRIGGER_RECORD_RECORD_ID_KEY + " = ?", new String[]{String.valueOf(recordId)});
     }
 
     /**
@@ -429,14 +420,12 @@ public final class DBTriggerDAO {
             }
 
 
-            long result = db.update(
+            return (long) db.update(
                     DatabaseDefinition.TRIGGER_TABLE,
                     values,
                     DatabaseDefinition.TRIGGER_ID_KEY + " = ?",
                     new String[]{String.valueOf(trigger.getTriggerId())}
             );
-
-            return result;
         } catch (SQLiteException e) {
 
             e.printStackTrace();

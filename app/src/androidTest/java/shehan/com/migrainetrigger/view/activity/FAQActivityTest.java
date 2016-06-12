@@ -1,6 +1,5 @@
 package shehan.com.migrainetrigger.view.activity;
 
-import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.contrib.RecyclerViewActions;
@@ -37,7 +36,6 @@ public class FAQActivityTest {
     @Test
     public void testGenerated() {
         // Used to provide time delays between actions, see details at http://droidtestlab.com/delay.html
-        IdlingResource idlingResource;
 
 
         // Click at RelativeLayout with child index 0 of parent with id R.id.topics_recycler_view

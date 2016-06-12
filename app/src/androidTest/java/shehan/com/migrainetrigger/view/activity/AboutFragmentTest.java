@@ -47,7 +47,6 @@ public class AboutFragmentTest {
     @Test
     public void testGenerated() {
         // Used to provide time delays between actions, see details at http://droidtestlab.com/delay.html
-        IdlingResource idlingResource;
 
         //idlingResource = startTiming(3900);
         // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar

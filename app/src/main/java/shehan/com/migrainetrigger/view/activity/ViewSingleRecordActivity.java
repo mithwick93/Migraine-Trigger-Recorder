@@ -22,7 +22,6 @@ public class ViewSingleRecordActivity
         implements ViewRecordSingleFragment.SingleRecordViewFragmentListener {
 
     private static final boolean DEVELOPER_MODE = false;
-    private FloatingActionButton fabUpdate;
     private ViewRecordSingleFragment mViewRecordSingleFragment;
     //private int recordId;
 
@@ -115,7 +114,7 @@ public class ViewSingleRecordActivity
      */
     private void fabSetup() {
 
-        fabUpdate = (FloatingActionButton) findViewById(R.id.fab_update);
+        FloatingActionButton fabUpdate = (FloatingActionButton) findViewById(R.id.fab_update);
 
         if (fabUpdate != null) {
             fabUpdate.setOnClickListener(new View.OnClickListener() {

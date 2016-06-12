@@ -152,7 +152,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     /**
      * delete record
      */
-    public void deleteRecord() {
+    private void deleteRecord() {
         Log.d("ViewRecordSingle", "deleteRecord");
 
 
@@ -285,7 +285,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -299,7 +299,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     //
 
     /**
-     * Asynk task to load record from db and show in UI
+     * Async task to load record from db and show in UI
      */
     private class LoadRecordTask extends AsyncTask<String, Void, Record> {
 

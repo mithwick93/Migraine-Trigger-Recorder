@@ -129,5 +129,6 @@
     <string name="new_fab_basic">Basic</string>
     <string name="new_fab_inter">Intermediate</string>
     <string name="new_fab_full">Full</string>
+    <string name="weather_credit_text">Powered by Forecast</string>
 
 </resources>

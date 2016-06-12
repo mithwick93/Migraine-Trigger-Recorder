@@ -59,8 +59,7 @@ public class PriorityAnswerSectionAdapter extends RecyclerView.Adapter<PriorityA
 
         // create ViewHolder
 
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
     @Override

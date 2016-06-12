@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="4"
+                    android:layout_weight="3.5"
                     android:ems="10"
                     android:focusable="false"
                     android:inputType="textNoSuggestions|textLongMessage|textMultiLine"

@@ -24,16 +24,13 @@ import shehan.com.migrainetrigger.controller.ReportController;
  */
 public class AppUtil {
 
-    public final static long ONE_SECOND = 1000;
     public final static long SECONDS = 60;
-
-    public final static long ONE_MINUTE = ONE_SECOND * 60;
     public final static long MINUTES = 60;
-
-    public final static long ONE_HOUR = ONE_MINUTE * 60;
     public final static long HOURS = 24;
-
-    public final static long ONE_DAY = ONE_HOUR * 24;
+    private final static long ONE_SECOND = 1000;
+    private final static long ONE_MINUTE = ONE_SECOND * 60;
+    private final static long ONE_HOUR = ONE_MINUTE * 60;
+    private final static long ONE_DAY = ONE_HOUR * 24;
 
     private static Toast mToast;
 
@@ -70,8 +67,6 @@ public class AppUtil {
         duration *= 1000;
 
         Log.d("AppUtil", "getFriendlyDuration seconds value : " + duration);
-        int hours = (int) duration / 3600;
-        int minutes = (int) (duration % 3600) / 60;
 
         StringBuilder res = new StringBuilder();
 

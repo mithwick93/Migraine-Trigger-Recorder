@@ -18,7 +18,6 @@ public class FAQTopicsViewAdapter
         extends RecyclerView.Adapter<FAQTopicsViewAdapter.ViewHolder> {
 
     private static FAQTopicsRowClickListener itemListener;
-    private Context context;
     private FAQViewData[] faqViewDatas;
 
     public FAQTopicsViewAdapter(
@@ -26,7 +25,6 @@ public class FAQTopicsViewAdapter
             FAQTopicsRowClickListener itemListener,
             FAQViewData[] faqViewDatas) {
 
-        this.context = context;
         FAQTopicsViewAdapter.itemListener = itemListener;
         this.faqViewDatas = faqViewDatas;
     }
@@ -40,8 +38,7 @@ public class FAQTopicsViewAdapter
 
         // create ViewHolder
 
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
