@@ -174,13 +174,13 @@ public class ViewRecordListFragment extends Fragment
 
             ArrayList<ArrayList<String>> filterList = new ArrayList<>();
 
-            ArrayList<BodyArea> bodyAreas = BodyAreaController.getAllBodyAreas();
-            ArrayList<LifeActivity> activities = LifeActivityController.getAllActivities();
-            ArrayList<Location> locations = LocationController.getAllLocations();
-            ArrayList<Medicine> medicines = MedicineController.getAllMedicines();
-            ArrayList<Relief> reliefs = ReliefController.getAllReliefs();
-            ArrayList<Symptom> symptoms = SymptomController.getAllSymptoms();
-            ArrayList<Trigger> triggers = TriggerController.getAllTriggers();
+            ArrayList<BodyArea> bodyAreas = BodyAreaController.getAllBodyAreas(true);
+            ArrayList<LifeActivity> activities = LifeActivityController.getAllActivities(true);
+            ArrayList<Location> locations = LocationController.getAllLocations(true);
+            ArrayList<Medicine> medicines = MedicineController.getAllMedicines(true);
+            ArrayList<Relief> reliefs = ReliefController.getAllReliefs(true);
+            ArrayList<Symptom> symptoms = SymptomController.getAllSymptoms(true);
+            ArrayList<Trigger> triggers = TriggerController.getAllTriggers(true);
 
 
             ArrayList<String> bodyAreaFilters = new ArrayList<>();

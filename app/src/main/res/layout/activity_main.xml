@@ -40,7 +40,7 @@
         </android.support.design.widget.CoordinatorLayout>
 
         <!-- Your FAB implementation -->
-        <shehan.com.migrainetrigger.utility.customView.SheetFab
+        <shehan.com.migrainetrigger.utility.customview.SheetFab
             android:id="@+id/fab"
             style="@style/Widget.MaterialSheetFab.Fab"
             android:layout_alignParentBottom="true"

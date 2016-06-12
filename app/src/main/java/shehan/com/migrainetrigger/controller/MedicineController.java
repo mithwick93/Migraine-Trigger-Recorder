@@ -42,7 +42,7 @@ public class MedicineController {
     }
 
     public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<Medicine> lst = getAllMedicines();
+        ArrayList<Medicine> lst = getAllMedicines(false);
         List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             Medicine medicine = lst.get(i);
@@ -52,16 +52,18 @@ public class MedicineController {
         return answerSectionViewDataLst;
     }
 
-    public static ArrayList<Medicine> getAllMedicines() {
+    public static ArrayList<Medicine> getAllMedicines(boolean applySuggestions) {
         Log.d("MedicineController", " getAllMedicines ");
         ArrayList<Medicine> lst = DBMedicineDAO.getAllMedicines();
 
         Collections.sort(lst);
 
-        //enable suggestions
-        boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
-        if (lst.size() > 0 && suggestions) {
-            return getReOrderedLst(lst);
+        if (applySuggestions) {
+            //enable suggestions
+            boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
+            if (lst.size() > 0 && suggestions) {
+                return getReOrderedLst(lst);
+            }
         }
 
         return lst;

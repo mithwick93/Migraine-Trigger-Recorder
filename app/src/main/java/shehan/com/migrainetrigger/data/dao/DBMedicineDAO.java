@@ -216,7 +216,7 @@ public final class DBMedicineDAO {
                     DatabaseDefinition.MEDICINE_ID_KEY + " DESC",
                     "1");
 
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+            if (cursor != null && cursor.moveToFirst() && cursor.getString(0) != null) {// If records are found process them
                 recordId = Integer.valueOf(cursor.getString(0));
                 Log.d("getLastRecordId ", "Value: " + String.valueOf(recordId));
             } else {

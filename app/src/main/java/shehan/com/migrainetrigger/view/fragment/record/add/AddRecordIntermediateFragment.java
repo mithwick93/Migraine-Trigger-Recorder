@@ -178,9 +178,9 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
-                activities = LifeActivityController.getAllActivities();
-                triggers = TriggerController.getAllTriggers();
-                symptoms = SymptomController.getAllSymptoms();
+                activities = LifeActivityController.getAllActivities(true);
+                triggers = TriggerController.getAllTriggers(true);
+                symptoms = SymptomController.getAllSymptoms(true);
                 return "";
             }
         }.execute();

@@ -1,4 +1,4 @@
-package shehan.com.migrainetrigger.utility.customView;
+package shehan.com.migrainetrigger.utility.customview;
 
 /**
  * Created by Shehan on 11/06/2016.

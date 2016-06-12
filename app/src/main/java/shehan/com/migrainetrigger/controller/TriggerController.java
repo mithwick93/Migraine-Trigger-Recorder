@@ -42,7 +42,7 @@ public class TriggerController {
     }
 
     public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<Trigger> lst = getAllTriggers();
+        ArrayList<Trigger> lst = getAllTriggers(false);
         List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             Trigger trigger = lst.get(i);
@@ -52,16 +52,18 @@ public class TriggerController {
         return answerSectionViewDataLst;
     }
 
-    public static ArrayList<Trigger> getAllTriggers() {
+    public static ArrayList<Trigger> getAllTriggers(boolean applySuggestions) {
         Log.d("TriggerController", " getAllTriggers ");
         ArrayList<Trigger> lst = DBTriggerDAO.getAllTriggers();
 
         Collections.sort(lst);
 
-        //enable suggestions
-        boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
-        if (lst.size() > 0 && suggestions) {
-            return getReOrderedLst(lst);
+        if (applySuggestions) {
+            //enable suggestions
+            boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
+            if (lst.size() > 0 && suggestions) {
+                return getReOrderedLst(lst);
+            }
         }
 
         return lst;

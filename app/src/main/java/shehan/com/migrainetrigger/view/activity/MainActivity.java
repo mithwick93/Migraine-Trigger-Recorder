@@ -14,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -25,7 +26,7 @@ import com.gordonwong.materialsheetfab.MaterialSheetFab;
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.utility.AppUtil;
-import shehan.com.migrainetrigger.utility.customView.SheetFab;
+import shehan.com.migrainetrigger.utility.customview.SheetFab;
 import shehan.com.migrainetrigger.view.fragment.main.AboutFragment;
 import shehan.com.migrainetrigger.view.fragment.main.HomeFragment;
 import shehan.com.migrainetrigger.view.fragment.main.ManageAnswersFragment;
@@ -396,6 +397,8 @@ public class MainActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
+        //setupWindowAnimations();
+
         fabSetup();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -483,6 +486,15 @@ public class MainActivity
         return color;
     }
 
+    private void setupWindowAnimations() {
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Slide slide = new Slide();
+            slide.setDuration(1000);
+            getWindow().setExitTransition(slide);
+        }
+
+    }
 
     /**
      * Async task to check if reports can be generated

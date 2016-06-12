@@ -48,7 +48,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="25dp"
             android:visibility="visible"
-            app:indicator="BallSpinFadeLoader"
+            app:indicator="BallPulse"
             />
 
     </LinearLayout>

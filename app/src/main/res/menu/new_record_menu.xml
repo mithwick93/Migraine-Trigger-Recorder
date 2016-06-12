@@ -3,6 +3,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_refresh"
+        android:background="?android:attr/selectableItemBackground"
         android:icon="@drawable/ic_cloud_download_white_24dp"
         android:orderInCategory="3"
         android:title="@string/new_record_sync"

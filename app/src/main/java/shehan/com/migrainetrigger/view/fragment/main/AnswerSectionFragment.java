@@ -389,7 +389,7 @@ public class AnswerSectionFragment
                 case "Triggers": {
                     int priority = -1;
                     id = TriggerController.getLastRecordId() + 1;
-                    ArrayList<Trigger> tmpLst = TriggerController.getAllTriggers();
+                    ArrayList<Trigger> tmpLst = TriggerController.getAllTriggers(false);
                     if (tmpLst.size() > 0) {
                         Trigger trigger = tmpLst.get(tmpLst.size() - 1);
                         if (trigger != null) {
@@ -403,7 +403,7 @@ public class AnswerSectionFragment
                 case "Symptoms": {
                     int priority = -1;
                     id = SymptomController.getLastRecordId() + 1;
-                    ArrayList<Symptom> tmpLst = SymptomController.getAllSymptoms();
+                    ArrayList<Symptom> tmpLst = SymptomController.getAllSymptoms(false);
                     if (tmpLst.size() > 0) {
                         Symptom symptom = tmpLst.get(tmpLst.size() - 1);
                         if (symptom != null) {
@@ -417,7 +417,7 @@ public class AnswerSectionFragment
                 case "Activities": {
                     int priority = -1;
                     id = LifeActivityController.getLastRecordId() + 1;
-                    ArrayList<LifeActivity> tmpLst = LifeActivityController.getAllActivities();
+                    ArrayList<LifeActivity> tmpLst = LifeActivityController.getAllActivities(false);
                     if (tmpLst.size() > 0) {
                         LifeActivity lifeActivity = tmpLst.get(tmpLst.size() - 1);
                         if (lifeActivity != null) {
@@ -441,7 +441,7 @@ public class AnswerSectionFragment
                 case "Medicines": {
                     int priority = -1;
                     id = MedicineController.getLastRecordId() + 1;
-                    ArrayList<Medicine> tmpLst = MedicineController.getAllMedicines();
+                    ArrayList<Medicine> tmpLst = MedicineController.getAllMedicines(false);
                     if (tmpLst.size() > 0) {
                         Medicine medicine = tmpLst.get(tmpLst.size() - 1);
                         if (medicine != null) {
@@ -455,7 +455,7 @@ public class AnswerSectionFragment
                 case "Reliefs": {
                     int priority = -1;
                     id = ReliefController.getLastRecordId() + 1;
-                    ArrayList<Relief> tmpLst = ReliefController.getAllReliefs();
+                    ArrayList<Relief> tmpLst = ReliefController.getAllReliefs(false);
                     if (tmpLst.size() > 0) {
                         Relief relief = tmpLst.get(tmpLst.size() - 1);
                         if (relief != null) {
@@ -569,7 +569,7 @@ public class AnswerSectionFragment
                 //Load answers to list
                 new GetAnswerListTask().execute();
             } else {
-                AppUtil.showToast(getContext(), "Answer delete failed");
+                AppUtil.showToast(getContext(), "Answer delete failed, make sure answers are not already used in records");
             }
             if (nDialog != null) {
                 nDialog.dismiss();

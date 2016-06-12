@@ -42,7 +42,7 @@ public class SymptomController {
     }
 
     public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<Symptom> lst = getAllSymptoms();
+        ArrayList<Symptom> lst = getAllSymptoms(false);
         List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             Symptom symptom = lst.get(i);
@@ -52,16 +52,18 @@ public class SymptomController {
         return answerSectionViewDataLst;
     }
 
-    public static ArrayList<Symptom> getAllSymptoms() {
+    public static ArrayList<Symptom> getAllSymptoms(boolean applySuggestions) {
         Log.d("SymptomController", " getAllSymptoms ");
         ArrayList<Symptom> lst = DBSymptomDAO.getAllSymptoms();
 
         Collections.sort(lst);
 
-        //enable suggestions
-        boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
-        if (lst.size() > 0 && suggestions) {
-            return getReOrderedLst(lst);
+        if (applySuggestions) {
+            //enable suggestions
+            boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
+            if (lst.size() > 0 && suggestions) {
+                return getReOrderedLst(lst);
+            }
         }
 
         return lst;

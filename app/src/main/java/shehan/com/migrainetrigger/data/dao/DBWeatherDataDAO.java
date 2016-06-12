@@ -97,7 +97,7 @@ public final class DBWeatherDataDAO {
                     DatabaseDefinition.WEATHER_DATA_ID_KEY + " DESC",
                     "1");
 
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+            if (cursor != null && cursor.moveToFirst() && cursor.getString(0) != null) {// If records are found process them
                 recordId = Integer.valueOf(cursor.getString(0));
                 Log.d("getLastRecordId ", "Value: " + String.valueOf(recordId));
             } else {
@@ -147,14 +147,16 @@ public final class DBWeatherDataDAO {
             String[] selectionArgs = {getStringDate(from), getStringDate(to)};
             cursor = db.rawQuery(joinQuery, selectionArgs);
 
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+            if (cursor != null && cursor.moveToFirst() && cursor.getString(0) != null && cursor.getString(1) != null && cursor.getString(2) != null) {// If records are found process them
+                try {
+                    double humidity = Double.valueOf(cursor.getString(0));
+                    double pressure = Double.valueOf(cursor.getString(1));
+                    double temp = Double.valueOf(cursor.getString(2));
 
-                double humidity = Double.valueOf(cursor.getString(0));
-                double pressure = Double.valueOf(cursor.getString(1));
-                double temp = Double.valueOf(cursor.getString(2));
-
-                weatherData = new WeatherDataBuilder().setHumidity(humidity).setPressure(pressure).setTemperature(temp).createWeatherData();
-
+                    weatherData = new WeatherDataBuilder().setHumidity(humidity).setPressure(pressure).setTemperature(temp).createWeatherData();
+                } catch (NumberFormatException ex) {
+                    ex.printStackTrace();
+                }
             }
         } catch (SQLiteException e) {
             e.printStackTrace();

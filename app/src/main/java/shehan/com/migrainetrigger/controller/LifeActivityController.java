@@ -50,7 +50,7 @@ public class LifeActivityController {
     }
 
     public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<LifeActivity> lst = getAllActivities();
+        ArrayList<LifeActivity> lst = getAllActivities(false);
         List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             LifeActivity lifeActivity = lst.get(i);
@@ -60,17 +60,19 @@ public class LifeActivityController {
         return answerSectionViewDataLst;
     }
 
-    public static ArrayList<LifeActivity> getAllActivities() {
+    public static ArrayList<LifeActivity> getAllActivities(boolean applySuggestions) {
         Log.d("LifeActivityController", "getAllActivities ");
 
         ArrayList<LifeActivity> lst = DBActivityDAO.getAllActivities();
 
         Collections.sort(lst);
 
-        //enable suggestions
-        boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
-        if (lst.size() > 0 && suggestions) {
-            return getReOrderedLst(lst);
+        if (applySuggestions) {
+            //enable suggestions
+            boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
+            if (lst.size() > 0 && suggestions) {
+                return getReOrderedLst(lst);
+            }
         }
 
         return lst;

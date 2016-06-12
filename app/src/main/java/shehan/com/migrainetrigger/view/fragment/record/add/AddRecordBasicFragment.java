@@ -37,6 +37,8 @@ import com.johnhiott.darkskyandroidlib.RequestBuilder;
 import com.johnhiott.darkskyandroidlib.models.Request;
 import com.johnhiott.darkskyandroidlib.models.WeatherResponse;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Locale;
@@ -835,11 +837,26 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                         @Override
                         public void success(WeatherResponse weatherResponse, Response response) {
                             try {
-                                tmpWeatherData = new WeatherDataBuilder()
-                                        .setHumidity(Double.valueOf(weatherResponse.getCurrently().getHumidity()) * 100)
-                                        .setPressure(Double.valueOf(weatherResponse.getCurrently().getPressure()) / 10)
-                                        .setTemperature(weatherResponse.getCurrently().getTemperature())
-                                        .createWeatherData();//Pressure given as hecto pascal
+                                @Nullable
+                                String humidity = weatherResponse.getCurrently().getHumidity();
+                                @Nullable
+                                String pressure = weatherResponse.getCurrently().getPressure();
+                                double temp = weatherResponse.getCurrently().getTemperature();
+
+                                WeatherDataBuilder weatherDataBuilder = new WeatherDataBuilder();
+
+                                if (humidity == null) {
+                                    throw new Exception("Humidity null");
+                                }
+                                if (pressure == null) {
+                                    throw new Exception("Pressure null");
+                                }
+                                weatherDataBuilder = weatherDataBuilder.setHumidity(Double.valueOf(humidity.trim()) * 100);
+                                weatherDataBuilder = weatherDataBuilder.setPressure(Double.valueOf(pressure.trim()) / 10);
+                                weatherDataBuilder = weatherDataBuilder.setTemperature(temp);
+
+                                tmpWeatherData = weatherDataBuilder.createWeatherData();
+
                             } catch (Exception e) {
                                 Log.e("getWeatherData", "fatal error");
                                 e.printStackTrace();

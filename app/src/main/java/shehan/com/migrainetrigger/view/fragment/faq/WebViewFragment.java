@@ -97,7 +97,7 @@ public class WebViewFragment extends Fragment {
         if (!strUrl.equals("NULL")) {
             webView.setClickable(false);
             webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-            webView.setBackgroundColor(0);
+            //webView.setBackgroundColor(0);
 
 
             final Activity activity = getActivity();

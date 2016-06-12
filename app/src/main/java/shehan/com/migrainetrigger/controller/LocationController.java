@@ -37,7 +37,7 @@ public class LocationController {
     }
 
     public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<Location> lst = getAllLocations();
+        ArrayList<Location> lst = getAllLocations(false);
         List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             Location location = lst.get(i);
@@ -47,15 +47,18 @@ public class LocationController {
         return answerSectionViewDataLst;
     }
 
-    public static ArrayList<Location> getAllLocations() {
+    public static ArrayList<Location> getAllLocations(boolean applySuggestions) {
         Log.d("LocationController", " getAllLocations ");
         ArrayList<Location> lst = DBLocationDAO.getAllLocations();
 
-        //enable suggestions
-        boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
-        if (lst.size() > 0 && suggestions) {
-            return getReOrderedLst(lst);
+        if (applySuggestions) {
+            //enable suggestions
+            boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
+            if (lst.size() > 0 && suggestions) {
+                return getReOrderedLst(lst);
+            }
         }
+
         return lst;
     }
 

@@ -1,4 +1,4 @@
-package shehan.com.migrainetrigger.utility.customView;
+package shehan.com.migrainetrigger.utility.customview;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

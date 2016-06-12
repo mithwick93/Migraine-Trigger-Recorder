@@ -389,7 +389,7 @@ public class SettingsFragment extends PreferenceFragment {
         protected void onPreExecute() {
             super.onPreExecute();
             nDialog = new ProgressDialog(getActivity());
-            nDialog.setMessage("Retrieving records ...");
+            nDialog.setMessage("Preparing records ...");
             nDialog.setTitle("Processing");
             nDialog.setIndeterminate(false);
             nDialog.setCancelable(false);

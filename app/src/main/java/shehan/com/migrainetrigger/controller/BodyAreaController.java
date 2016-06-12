@@ -42,7 +42,7 @@ public class BodyAreaController {
     }
 
     public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<BodyArea> lst = getAllBodyAreas();
+        ArrayList<BodyArea> lst = getAllBodyAreas(false);
         List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             BodyArea bodyArea = lst.get(i);
@@ -52,15 +52,18 @@ public class BodyAreaController {
         return answerSectionViewDataLst;
     }
 
-    public static ArrayList<BodyArea> getAllBodyAreas() {
+    public static ArrayList<BodyArea> getAllBodyAreas(boolean applySuggestions) {
         Log.d("BodyAreaController", " getAllBodyAreas ");
         ArrayList<BodyArea> lst = DBBodyAreaDAO.getAllBodyAreas();
 
-        //enable suggestions
-        boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
-        if (lst.size() > 0 && suggestions) {
-            return getReOrderedLst(lst);
+        if (applySuggestions) {
+            //enable suggestions
+            boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
+            if (lst.size() > 0 && suggestions) {
+                return getReOrderedLst(lst);
+            }
         }
+
         return lst;
     }
 

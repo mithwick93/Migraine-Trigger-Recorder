@@ -42,7 +42,7 @@ public class ReliefController {
     }
 
     public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<Relief> lst = getAllReliefs();
+        ArrayList<Relief> lst = getAllReliefs(false);
         List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
         for (int i = 0; i < lst.size(); i++) {
             Relief relief = lst.get(i);
@@ -52,16 +52,18 @@ public class ReliefController {
         return answerSectionViewDataLst;
     }
 
-    public static ArrayList<Relief> getAllReliefs() {
+    public static ArrayList<Relief> getAllReliefs(boolean applySuggestions) {
         Log.d("ReliefController", " getAllReliefs ");
         ArrayList<Relief> lst = DBReliefDAO.getAllReliefs();
 
         Collections.sort(lst);
 
-        //enable suggestions
-        boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
-        if (lst.size() > 0 && suggestions) {
-            return getReOrderedLst(lst);
+        if (applySuggestions) {
+            //enable suggestions
+            boolean suggestions = PreferenceManager.getDefaultSharedPreferences(MigraineTriggerApplication.getAppContext()).getBoolean("pref_suggestions", false);
+            if (lst.size() > 0 && suggestions) {
+                return getReOrderedLst(lst);
+            }
         }
 
         return lst;

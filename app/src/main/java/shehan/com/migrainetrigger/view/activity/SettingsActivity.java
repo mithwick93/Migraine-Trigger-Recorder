@@ -2,6 +2,7 @@ package shehan.com.migrainetrigger.view.activity;
 
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.transition.Fade;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.AppUtil;
@@ -45,7 +46,7 @@ public class SettingsActivity extends BaseActivity {
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.settings_toolbar);
         setSupportActionBar(toolbar);
-
+        //setupWindowAnimations();
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Settings");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -55,5 +56,13 @@ public class SettingsActivity extends BaseActivity {
         getFragmentManager().beginTransaction()
                 .replace(R.id.settings_container, settingsFragment)
                 .commit();
+    }
+
+    private void setupWindowAnimations() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Fade fade = new Fade();
+            fade.setDuration(1000);
+            getWindow().setEnterTransition(fade);
+        }
     }
 }

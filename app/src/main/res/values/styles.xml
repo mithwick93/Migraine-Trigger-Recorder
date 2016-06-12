@@ -5,7 +5,7 @@
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
         <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
         <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse</item>
-        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowDisablePreview">false</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!-- some other theme configurations for actionbar, overflow menu etc. -->
@@ -23,7 +23,7 @@
         <item name="android:textColorSecondary">@color/textColorSecondaryInverse</item>
         <item name="android:textColorPrimaryInverse">@color/textColorPrimary</item>
         <item name="android:textColorSecondaryInverse">@color/textColorSecondary</item>
-        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowDisablePreview">false</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
@@ -149,7 +149,7 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowDisablePreview">false</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
 

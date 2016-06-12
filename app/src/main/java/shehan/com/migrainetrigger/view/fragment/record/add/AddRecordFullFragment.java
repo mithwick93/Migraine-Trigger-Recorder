@@ -196,10 +196,10 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
-                locations = LocationController.getAllLocations();
-                bodyAreas = BodyAreaController.getAllBodyAreas();
-                medicines = MedicineController.getAllMedicines();
-                reliefs = ReliefController.getAllReliefs();
+                locations = LocationController.getAllLocations(true);
+                bodyAreas = BodyAreaController.getAllBodyAreas(true);
+                medicines = MedicineController.getAllMedicines(true);
+                reliefs = ReliefController.getAllReliefs(true);
                 return "";
             }
         }.execute();
