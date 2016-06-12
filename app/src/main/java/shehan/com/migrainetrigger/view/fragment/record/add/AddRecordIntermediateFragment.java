@@ -33,6 +33,7 @@ import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFragment;
 
 import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
+import static shehan.com.migrainetrigger.utility.AppUtil.showToast;
 
 
 /**
@@ -205,46 +206,50 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                 when unchecked remove from list
                 Show the names in edit text
                  */
-
-                new MaterialDialog.Builder(getContext())
-                        .title("Select triggers")
-                        .items(triggers)
-                        .itemsCallbackMultiChoice(selectedTriggerIndexes, new MaterialDialog.ListCallbackMultiChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                String selectedStr = "";
-                                selectedTriggers.clear();
-                                selectedTriggerIndexes = which;
-
-                                for (Integer integer : which) {
-                                    String name = triggers.get(integer).toString();
-                                    selectedStr = selectedStr + ", " + name;
-                                    selectedTriggers.add(triggers.get(integer));
-                                }
-                                if (selectedStr.contains(",")) {
-                                    selectedStr = selectedStr.replaceFirst(",", "");
-                                }
-
-                                editTxtTriggers.setText(selectedStr);
-                                return true; // allow selection
-                            }
-                        })
-                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                AppUtil.showToast(getContext(), "Selection cleared");
-
-                                if (triggers.size() > 0) {
-                                    dialog.clearSelectedIndices();
+                if (triggers.size() > 0) {
+                    new MaterialDialog.Builder(getContext())
+                            .title("Select triggers")
+                            .items(triggers)
+                            .itemsCallbackMultiChoice(selectedTriggerIndexes, new MaterialDialog.ListCallbackMultiChoice() {
+                                @Override
+                                public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                    String selectedStr = "";
                                     selectedTriggers.clear();
+                                    selectedTriggerIndexes = which;
+
+                                    for (Integer integer : which) {
+                                        String name = triggers.get(integer).toString();
+                                        selectedStr = selectedStr + ", " + name;
+                                        selectedTriggers.add(triggers.get(integer));
+                                    }
+                                    if (selectedStr.contains(",")) {
+                                        selectedStr = selectedStr.replaceFirst(",", "");
+                                    }
+
+                                    editTxtTriggers.setText(selectedStr);
+                                    return true; // allow selection
                                 }
-                                selectedTriggerIndexes = null;
-                                editTxtTriggers.setText("");
-                            }
-                        })
-                        .positiveText(R.string.confirmButtonDialog)
-                        .neutralText(R.string.clear_selection)
-                        .show();
+                            })
+                            .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    AppUtil.showToast(getContext(), "Selection cleared");
+
+                                    if (triggers.size() > 0) {
+                                        dialog.clearSelectedIndices();
+                                        selectedTriggers.clear();
+                                    }
+                                    selectedTriggerIndexes = null;
+                                    editTxtTriggers.setText("");
+                                }
+                            })
+                            .positiveText(R.string.confirmButtonDialog)
+                            .neutralText(R.string.clear_selection)
+                            .show();
+                } else {
+                    showToast(getContext(), "Triggers not defined. Add them in answers");
+                }
+
             }
         });
 
@@ -260,45 +265,50 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                 when unchecked remove from list
                 Show the names in edit text
                  */
-                new MaterialDialog.Builder(getContext())
-                        .title("Select Symptoms")
-                        .items(symptoms)
-                        .itemsCallbackMultiChoice(selectedSymptomsIndexes, new MaterialDialog.ListCallbackMultiChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                String selectedStr = "";
-                                selectedSymptoms.clear();
-                                selectedSymptomsIndexes = which;
-
-                                for (Integer integer : which) {
-                                    String name = symptoms.get(integer).toString();
-                                    selectedStr = selectedStr + ", " + name;
-                                    selectedSymptoms.add(symptoms.get(integer));
-                                }
-                                if (selectedStr.contains(",")) {
-                                    selectedStr = selectedStr.replaceFirst(",", "");
-                                }
-
-                                editTxtSymptoms.setText(selectedStr);
-                                return true; // allow selection
-                            }
-                        })
-                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                AppUtil.showToast(getContext(), "Selection cleared");
-
-                                if (symptoms.size() > 0) {
+                if (symptoms.size() > 0) {
+                    new MaterialDialog.Builder(getContext())
+                            .title("Select Symptoms")
+                            .items(symptoms)
+                            .itemsCallbackMultiChoice(selectedSymptomsIndexes, new MaterialDialog.ListCallbackMultiChoice() {
+                                @Override
+                                public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                    String selectedStr = "";
                                     selectedSymptoms.clear();
-                                    dialog.clearSelectedIndices();
+                                    selectedSymptomsIndexes = which;
+
+                                    for (Integer integer : which) {
+                                        String name = symptoms.get(integer).toString();
+                                        selectedStr = selectedStr + ", " + name;
+                                        selectedSymptoms.add(symptoms.get(integer));
+                                    }
+                                    if (selectedStr.contains(",")) {
+                                        selectedStr = selectedStr.replaceFirst(",", "");
+                                    }
+
+                                    editTxtSymptoms.setText(selectedStr);
+                                    return true; // allow selection
                                 }
-                                selectedSymptomsIndexes = null;
-                                editTxtSymptoms.setText("");
-                            }
-                        })
-                        .positiveText(R.string.confirmButtonDialog)
-                        .neutralText(R.string.clear_selection)
-                        .show();
+                            })
+                            .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    AppUtil.showToast(getContext(), "Selection cleared");
+
+                                    if (symptoms.size() > 0) {
+                                        selectedSymptoms.clear();
+                                        dialog.clearSelectedIndices();
+                                    }
+                                    selectedSymptomsIndexes = null;
+                                    editTxtSymptoms.setText("");
+                                }
+                            })
+                            .positiveText(R.string.confirmButtonDialog)
+                            .neutralText(R.string.clear_selection)
+                            .show();
+                } else {
+                    showToast(getContext(), "Symptoms not defined. Add them in answers");
+                }
+
             }
         });
 
@@ -314,45 +324,50 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                 when unchecked remove from list
                 Show the names in edit text
                  */
-                new MaterialDialog.Builder(getContext())
-                        .title("Select Activities")
-                        .items(activities)
-                        .itemsCallbackMultiChoice(selectedActivityIndexes, new MaterialDialog.ListCallbackMultiChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                String selectedStr = "";
-                                selectedActivities.clear();
-                                selectedActivityIndexes = which;
-
-                                for (Integer integer : which) {
-                                    String name = activities.get(integer).toString();
-                                    selectedStr = selectedStr + ", " + name;
-                                    selectedActivities.add(activities.get(integer));
-                                }
-                                if (selectedStr.contains(",")) {
-                                    selectedStr = selectedStr.replaceFirst(",", "");
-                                }
-
-                                editTxtActivities.setText(selectedStr);
-                                return true; // allow selection
-                            }
-                        })
-                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                AppUtil.showToast(getContext(), "Selection cleared");
-
-                                if (activities.size() > 0) {
+                if (activities.size() > 0) {
+                    new MaterialDialog.Builder(getContext())
+                            .title("Select Activities")
+                            .items(activities)
+                            .itemsCallbackMultiChoice(selectedActivityIndexes, new MaterialDialog.ListCallbackMultiChoice() {
+                                @Override
+                                public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                    String selectedStr = "";
                                     selectedActivities.clear();
-                                    dialog.clearSelectedIndices();
+                                    selectedActivityIndexes = which;
+
+                                    for (Integer integer : which) {
+                                        String name = activities.get(integer).toString();
+                                        selectedStr = selectedStr + ", " + name;
+                                        selectedActivities.add(activities.get(integer));
+                                    }
+                                    if (selectedStr.contains(",")) {
+                                        selectedStr = selectedStr.replaceFirst(",", "");
+                                    }
+
+                                    editTxtActivities.setText(selectedStr);
+                                    return true; // allow selection
                                 }
-                                selectedActivityIndexes = null;
-                                editTxtActivities.setText("");
-                            }
-                        })
-                        .positiveText(R.string.confirmButtonDialog)
-                        .neutralText(R.string.clear_selection)
-                        .show();
+                            })
+                            .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    AppUtil.showToast(getContext(), "Selection cleared");
+
+                                    if (activities.size() > 0) {
+                                        selectedActivities.clear();
+                                        dialog.clearSelectedIndices();
+                                    }
+                                    selectedActivityIndexes = null;
+                                    editTxtActivities.setText("");
+                                }
+                            })
+                            .positiveText(R.string.confirmButtonDialog)
+                            .neutralText(R.string.clear_selection)
+                            .show();
+                } else {
+                    showToast(getContext(), "Activities not defined. Add them in answers");
+                }
+
             }
         });
     }
