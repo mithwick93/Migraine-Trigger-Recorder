@@ -11,9 +11,6 @@
     <string name="nav_report">Report</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_about">About</string>
-    <string name="dev_email">mithwick93@gmail.com</string>
-
-    <string name="home_welcome">Welcome</string>
 
     <string name="app_icon">app icon</string>
     <string name="dev_name">M.S. Wickramarathne</string>
@@ -24,18 +21,10 @@
     <string name="title_faq">MigraineFAQActivity</string>
 
     <string name="cancelButtonGeneral">Cancel</string>
-    <string name="confirmButtonGeneral">OK</string>
     <string name="clear_selection">clear</string>
 
     <string name="cancelButtonDialog">Dismiss</string>
     <string name="confirmButtonDialog">Confirm</string>
-
-    <string name="levelOfInformationDialog">Choose information level</string>
-    <string-array name="levelOfInformationOptions">
-        <item>Basic</item>
-        <item>Intermediate</item>
-        <item>Full</item>
-    </string-array>
 
     <string name="migraineIntensityLevelDialog">Choose intensity</string>
     <string-array name="migraineIntensityLevel">
@@ -68,22 +57,16 @@
     <string name="record_lbl_triggers">Triggers</string>
     <string name="record_lbl_symptoms">Symptoms</string>
     <string name="record_lbl_activities">Activities</string>
-    <string name="record_txt_temp">temperature</string>
     <string name="record_txt_humidity">humidity</string>
     <string name="record_txt_pressure">pressure</string>
     <string name="record_lbl_weather">Weather</string>
-    <string name="record_view_txt_date">Date</string>
-    <string name="record_view_txt_duration">Duration</string>
-    <string name="record_view_txt_intensity">Intensity</string>
 
-    <string name="config_date_log_pattern">dd-MM-yyyy</string>
     <string name="record_view_date">Start Time</string>
     <string name="record_view_duration">Duration</string>
     <string name="title_view_record">View record</string>
     <string name="title_view_report">View report</string>
     <string name="title_manage_answers">Manage answers</string>
     <string name="title_settings">Settings</string>
-    <string name="title_activity_main2">Main2Activity</string>
     <string name="content_desc_pressure">Pressure</string>
     <string name="content_desc_humidity">Humidity</string>
     <string name="content_desc_temperature">Temperature</string>
@@ -96,65 +79,15 @@
     <string name="update_delete">Delete</string>
     <string name="update_sync">Sync</string>
     <string name="report_refresh">Refresh</string>
-    <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
 
     <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
 
     <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
 
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
     <string name="manage_answers_triggers">Triggers</string>
     <string name="manage_answers_symptoms">Symptoms</string>
     <string name="manage_answers_activities">Activities</string>
