@@ -56,7 +56,7 @@ public class AppUtilTest {
 
     @Test
     public void testGetFriendlyDuration() throws Exception {
-        String expected = "2 days, 21 hours and 26 minutes";
+        String expected = "2 days, 21 hours, 26 minutes and 40 seconds";
         String result = AppUtil.getFriendlyDuration(250000);
 
         assertEquals(expected, result);
