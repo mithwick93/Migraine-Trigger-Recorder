@@ -431,8 +431,9 @@ public class MainActivity
 
     /**
      * Change fragment in main activity
-     *  @param fragment      fragment to show
-     * @param toolBarTitle  tool bar title
+     *
+     * @param fragment     fragment to show
+     * @param toolBarTitle tool bar title
      */
     private void setFragment(Fragment fragment,
                              int toolBarTitle,

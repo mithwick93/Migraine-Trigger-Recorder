@@ -671,13 +671,13 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                 startTimestamp = getTimeStampDate(tmpStr);
             }
         } else {
-            AppUtil.showMsg(getContext(), "Record must have start time","Validation error");
+            AppUtil.showMsg(getContext(), "Record must have start time", "Validation error");
             return;
         }
 
         Calendar c = Calendar.getInstance();
         if (startTimestamp.after(c.getTime())) {
-            AppUtil.showMsg(getContext(), "Start Date is past current time","Validation error");
+            AppUtil.showMsg(getContext(), "Start Date is past current time", "Validation error");
             return;
         }
 
@@ -698,7 +698,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
         if (endTimestamp != null) {
             if (endTimestamp.after(c.getTime())) {
-                AppUtil.showMsg(getContext(), "End Date is past current time","Validation error");
+                AppUtil.showMsg(getContext(), "End Date is past current time", "Validation error");
                 return;
             }
         }
@@ -727,7 +727,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
             }.execute();
 
         } else {
-            AppUtil.showMsg(getContext(), "Start time is greater than the end time","Validation error");
+            AppUtil.showMsg(getContext(), "Start time is greater than the end time", "Validation error");
         }
     }
     //

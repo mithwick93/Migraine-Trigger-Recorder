@@ -193,7 +193,7 @@ public class ReportFragment extends Fragment {
 
         Calendar c = Calendar.getInstance();
         if (fromTimestamp.after(c.getTime())) {
-            AppUtil.showMsg(getContext(), "Start Date is past current time","Validation error");
+            AppUtil.showMsg(getContext(), "Start Date is past current time", "Validation error");
             return;
         }
 
@@ -207,7 +207,7 @@ public class ReportFragment extends Fragment {
         if (toTimestamp != null) {
 
             if (toTimestamp.after(c.getTime())) {
-                AppUtil.showMsg(getContext(), "End Date is past current time !","Validation error");
+                AppUtil.showMsg(getContext(), "End Date is past current time !", "Validation error");
                 return;
             }
         }
@@ -229,7 +229,7 @@ public class ReportFragment extends Fragment {
             new LoadReportSummeryTask(fromTimestamp, toTimestamp).execute();
             new LoadReportStatisticsTask(mView, fromTimestamp, toTimestamp).execute();
         } else {
-            AppUtil.showMsg(getContext(), "Start time is greater than the end time","Validation error");
+            AppUtil.showMsg(getContext(), "Start time is greater than the end time", "Validation error");
         }
 
     }
