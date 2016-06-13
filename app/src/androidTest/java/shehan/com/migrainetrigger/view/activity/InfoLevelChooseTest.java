@@ -25,13 +25,6 @@ public class InfoLevelChooseTest {
     @Rule
     public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class);
 
-    // See details at http://droidtestlab.com/delay.html
-    public IdlingResource startTiming(long time) {
-        IdlingResource idlingResource = new ElapsedTimeIdlingResource(time);
-        Espresso.registerIdlingResources(idlingResource);
-        return idlingResource;
-    }
-
     public void stopTiming(IdlingResource idlingResource) {
         Espresso.unregisterIdlingResources(idlingResource);
     }
@@ -71,36 +64,5 @@ public class InfoLevelChooseTest {
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
 
-    }
-
-    public class ElapsedTimeIdlingResource implements IdlingResource {
-        private final long waitingTime;
-        private ResourceCallback resourceCallback;
-        private long startTime;
-
-        public ElapsedTimeIdlingResource(long waitingTime) {
-            this.startTime = System.currentTimeMillis();
-            this.waitingTime = waitingTime;
-        }
-
-        @Override
-        public String getName() {
-            return ElapsedTimeIdlingResource.class.getName() + ":" + waitingTime;
-        }
-
-        @Override
-        public boolean isIdleNow() {
-            long elapsed = System.currentTimeMillis() - startTime;
-            boolean idle = (elapsed >= waitingTime);
-            if (idle) {
-                resourceCallback.onTransitionToIdle();
-            }
-            return idle;
-        }
-
-        @Override
-        public void registerIdleTransitionCallback(ResourceCallback resourceCallback) {
-            this.resourceCallback = resourceCallback;
-        }
     }
 }

@@ -145,6 +145,26 @@ public class AppUtil {
 
     /**
      * Convert String object value to timestamp
+     * string format : yyyy-MM-dd HH:mm:ss
+     *
+     * @param str string to convert to timestamp
+     * @return timestamp object with time .nullable
+     */
+    public static Timestamp getTimeStampDate(String str) {
+        Log.d("AppUtil", "getTimeStampDate str value : " + str);
+        Timestamp timestamp = null;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            Date parsedDate = dateFormat.parse(str);
+            timestamp = new java.sql.Timestamp(parsedDate.getTime());
+        } catch (Exception e) {//this generic but you can control another types of exception
+            e.printStackTrace();
+        }
+        return timestamp;
+    }
+
+    /**
+     * Convert String object value to timestamp
      * string format : dd/MM/yyyy
      *
      * @param str string to convert to timestamp
@@ -211,39 +231,6 @@ public class AppUtil {
             default:
                 return null;
         }
-    }
-
-    /**
-     * Convert String object value to timestamp
-     * string format : yyyy-MM-dd HH:mm:ss
-     *
-     * @param str string to convert to timestamp
-     * @return timestamp object with time .nullable
-     */
-    public static Timestamp getTimeStampDate(String str) {
-        Log.d("AppUtil", "getTimeStampDate str value : " + str);
-        Timestamp timestamp = null;
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            Date parsedDate = dateFormat.parse(str);
-            timestamp = new java.sql.Timestamp(parsedDate.getTime());
-        } catch (Exception e) {//this generic but you can control another types of exception
-            e.printStackTrace();
-        }
-        return timestamp;
-    }
-
-    /**
-     * Show dialog box msg
-     *
-     * @param context context to show text
-     * @param msg     string msg
-     */
-    public static void showMsg(Context context, String msg) {
-        new MaterialDialog.Builder(context)
-                .content(msg)
-                .negativeText(R.string.cancelButtonDialog)
-                .show();
     }
 
     /**

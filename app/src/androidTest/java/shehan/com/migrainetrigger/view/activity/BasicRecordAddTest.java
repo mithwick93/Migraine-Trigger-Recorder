@@ -53,14 +53,6 @@ public class BasicRecordAddTest {
         onView(withId(R.id.txt_record_start_time)).perform(scrollTo());
         onView(withId(R.id.txt_record_start_time)).perform(click());
 
-        // Click at AppCompatCheckedTextView with id android.R.id.pm_label
-        onView(withText("PM")).perform(click());
-
-        // Click at AppCompatCheckedTextView with id android.R.id.am_label
-        onView(withText("AM")).perform(click());
-
-        // Click at AppCompatCheckedTextView with id android.R.id.pm_label
-        onView(withText("PM")).perform(click());
 
         // Click at AppCompatTextView with id android.R.id.hours
         //onView(withId(android.R.id.hours)).perform(click());
