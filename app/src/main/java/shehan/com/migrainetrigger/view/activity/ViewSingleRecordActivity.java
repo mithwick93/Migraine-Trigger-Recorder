@@ -23,7 +23,6 @@ public class ViewSingleRecordActivity
 
     private static final boolean DEVELOPER_MODE = false;
     private ViewRecordSingleFragment mViewRecordSingleFragment;
-    //private int recordId;
 
     @Override
     public void onBackPressed() {

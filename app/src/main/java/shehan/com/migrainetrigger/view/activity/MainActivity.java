@@ -37,7 +37,6 @@ public class MainActivity
 
     private static final boolean DEVELOPER_MODE = false;
 
-    private SheetFab fab;
     private boolean isRecordsAvailable;
     private MaterialSheetFab materialSheetFab;
 
@@ -473,9 +472,6 @@ public class MainActivity
             getSupportActionBar().setTitle(toolBarTitle);
         }
 
-//        if (fab != null) {
-//            fab.setVisibility(fabVisibility);
-//        }
 
     }
 

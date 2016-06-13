@@ -63,6 +63,7 @@ public class ManageAnswersActivity extends BaseActivity {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(answerSection);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
     }

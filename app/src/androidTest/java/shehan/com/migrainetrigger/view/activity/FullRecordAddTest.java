@@ -99,29 +99,17 @@ public class FullRecordAddTest {
         // Click at item with value 'Weather' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Weather"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        // onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Headache' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Headache"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Caffeine' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Caffeine"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Swipe down at ListView with id R.id.contentListView
         onView(withId(R.id.contentListView)).perform(swipeDown());
 
         // Click at item with value 'Bright light' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Bright light"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
@@ -136,17 +124,11 @@ public class FullRecordAddTest {
         // Click at item with value 'Sensitive to light' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Sensitive to light"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Swipe up at ListView with id R.id.contentListView
         onView(withId(R.id.contentListView)).perform(swipeUp());
 
         // Click at item with value 'Vomiting' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Vomiting"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Swipe down at ListView with id R.id.contentListView
         onView(withId(R.id.contentListView)).perform(swipeDown());
@@ -164,32 +146,17 @@ public class FullRecordAddTest {
         // Click at item with value 'Could not use device' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Could not use device"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Missed social activity' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Missed social activity"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Missed social activity' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Missed social activity"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Uncheck AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Click at item with value 'Could not use device' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Could not use device"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Uncheck AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Slow to work' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Slow to work"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
@@ -222,20 +189,11 @@ public class FullRecordAddTest {
         // Click at item with value 'Left eye' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Left eye"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Right eye' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Right eye"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Between eyes' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Between eyes"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
@@ -253,14 +211,8 @@ public class FullRecordAddTest {
         // Click at item with value 'Paracetamol' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Paracetamol"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Tylenol' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Tylenol"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
@@ -281,14 +233,8 @@ public class FullRecordAddTest {
         // Click at item with value 'Tylenol' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Tylenol"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Paracetamol' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Paracetamol"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
@@ -303,20 +249,11 @@ public class FullRecordAddTest {
         // Click at item with value 'Caffeine' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Caffeine"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Drink water' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Drink water"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Dark room rest' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Dark room rest"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
@@ -337,27 +274,14 @@ public class FullRecordAddTest {
         // Click at item with value 'Dark room rest' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Dark room rest"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Sleep' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Drink water"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        // onView(withId(R.id.control)).perform(click());
 
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
 
         onView(withId(R.id.txt_record_effective_reliefs)).perform(replaceText(" Drink water, Dark room rest"));
         onView(withId(R.id.txt_record_effective_reliefs)).perform(scrollTo());
-
-        // Click at ActionMenuItemView with id R.id.action_refresh
-        //onView(withId(R.id.action_refresh)).perform(click());
-
-
-        // Click at FloatingActionButton with id R.id.fab_add
-        //onView(withId(R.id.fab_add)).perform(click());
 
     }
 

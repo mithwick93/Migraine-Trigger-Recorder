@@ -1,7 +1,5 @@
 package shehan.com.migrainetrigger.view.activity;
 
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.rule.ActivityTestRule;
@@ -20,7 +18,9 @@ import org.junit.runner.RunWith;
 import shehan.com.migrainetrigger.R;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -28,39 +28,30 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class AboutFragmentTest {
+public class ViewSingleRecordTest {
 
     @Rule
     public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class);
 
-
     @Test
     public void testGenerated() {
-        // Used to provide time delays between actions, see details at http://droidtestlab.com/delay.html
 
-        //idlingResource = startTiming(3900);
         // Click at ImageButton with child index 1 of parent with id R.id.main_toolbar
         onView(nthChildOf(withId(R.id.main_toolbar), 1)).perform(click());
-        //stopTiming(idlingResource);
 
-        // idlingResource = startTiming(1800);
-        // Click at NavigationMenuItemView with child index 10 of parent with id R.id.design_navigation_view
-        onView(withId(R.id.design_navigation_view)).perform(scrollToPosition(10));
-        onView(nthChildOf(withId(R.id.design_navigation_view), 10)).perform(click());
-        //stopTiming(idlingResource);
+        // Click at NavigationMenuItemView with child index 6 of parent with id R.id.design_navigation_view
+        onView(withId(R.id.design_navigation_view)).perform(scrollToPosition(6));
+        onView(nthChildOf(withId(R.id.design_navigation_view), 6)).perform(click());
 
-        //idlingResource = startTiming(1800);
-        // Click at AppCompatTextView with id R.id.txt_about_licenses
-        onView(withId(R.id.txt_about_licenses)).perform(scrollTo());
-        onView(withId(R.id.txt_about_licenses)).perform(click());
-        //stopTiming(idlingResource);
+        // Click at LinearLayout with child index 0 of parent with id R.id.record_list_recycler_view
+        onView(withId(R.id.record_list_recycler_view)).perform(scrollToPosition(0));
+        onView(nthChildOf(withId(R.id.record_list_recycler_view), 0)).perform(click());
 
-        //idlingResource = startTiming(2600);
-        // Click at MDButton with id R.id.buttonDefaultPositive
-        onView(withId(R.id.buttonDefaultPositive)).perform(click());
-        //stopTiming(idlingResource);
+        // Press on the back button
+        pressBack();
 
     }
+
 
     public static Matcher<View> nthChildOf(final Matcher<View> parentMatcher, final int childPosition) {
         return new TypeSafeMatcher<View>() {
@@ -79,6 +70,7 @@ public class AboutFragmentTest {
         };
     }
 
+
     public static ViewAction scrollToPosition(final int pos) {
         return new ViewAction() {
             @Override
@@ -94,6 +86,25 @@ public class AboutFragmentTest {
             @Override
             public void perform(UiController uiController, View view) {
                 ((android.support.v7.widget.RecyclerView) view).scrollToPosition(pos);
+            }
+        };
+    }
+
+    public static ViewAction selectViewPagerPage(final int pos) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(android.support.v4.view.ViewPager.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "select page in ViewPager";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                ((android.support.v4.view.ViewPager) view).setCurrentItem(pos);
             }
         };
     }

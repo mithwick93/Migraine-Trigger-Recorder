@@ -31,13 +31,13 @@
         <item>1 - Hurts a bit</item>
         <item>2 - Hurts a little</item>
         <item>3 - Hurts little more</item>
-        <item>4- Mild</item>
+        <item>4 - Mild</item>
         <item>5 - Hurts more</item>
         <item>6 - Moderate</item>
         <item>7 - Hurts a lot</item>
         <item>8 - Severe</item>
         <item>9 - Hurts the most</item>
-        <item>10- Worst ever</item>
+        <item>10 - Worst ever</item>
     </string-array>
 
     <string name="record_lbl_start">Start (required)</string>
@@ -79,14 +79,6 @@
     <string name="update_delete">Delete</string>
     <string name="update_sync">Sync</string>
     <string name="report_refresh">Refresh</string>
-
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-
-    <!-- Example settings for Data & Sync -->
-
-    <!-- Example settings for Notifications -->
 
     <string name="manage_answers_triggers">Triggers</string>
     <string name="manage_answers_symptoms">Symptoms</string>

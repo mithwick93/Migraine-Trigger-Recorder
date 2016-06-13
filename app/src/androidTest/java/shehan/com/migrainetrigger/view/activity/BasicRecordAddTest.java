@@ -53,10 +53,6 @@ public class BasicRecordAddTest {
         onView(withId(R.id.txt_record_start_time)).perform(scrollTo());
         onView(withId(R.id.txt_record_start_time)).perform(click());
 
-
-        // Click at AppCompatTextView with id android.R.id.hours
-        //onView(withId(android.R.id.hours)).perform(click());
-
         // Click at AppCompatButton with id android.R.id.button1
         onView(withId(android.R.id.button1)).perform(click());
 
@@ -95,9 +91,6 @@ public class BasicRecordAddTest {
 
         // Click at ActionMenuItemView with id R.id.action_refresh
         onView(withId(R.id.action_refresh)).perform(click());
-
-        // Click at FloatingActionButton with id R.id.fab_add
-        //onView(withId(R.id.fab_add)).perform(click());
 
     }
 

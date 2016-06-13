@@ -88,7 +88,7 @@ public class InterRecordAddTest {
         onView(withId(R.id.txt_record_intensity)).perform(click());
 
         // Click at item with value '4- Mild' in ListView
-        onData(allOf(is(instanceOf(java.lang.String.class)), is("4- Mild"))).inAdapterView(withId(R.id.contentListView)).perform(click());
+        onData(allOf(is(instanceOf(java.lang.String.class)), is("4 - Mild"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
         // Click at AppCompatEditText with id R.id.txt_record_triggers
         onView(withId(R.id.txt_record_triggers)).perform(scrollTo());
@@ -97,20 +97,11 @@ public class InterRecordAddTest {
         // Click at item with value 'Allergy' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Allergy"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Weather' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Weather"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Odd smell' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Odd smell"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
@@ -125,26 +116,14 @@ public class InterRecordAddTest {
         // Click at item with value 'Blurred vision' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Blurred vision"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Sensitive to smell' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Sensitive to smell"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Click at item with value 'Sensitive to noise' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Sensitive to noise"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Sensitive to light' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Sensitive to light"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //nView(withId(R.id.control)).perform(click());
 
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
@@ -159,20 +138,11 @@ public class InterRecordAddTest {
         // Click at item with value 'Slow to work' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Slow to work"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Could not fall asleep' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Could not fall asleep"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Missed social activity' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Missed social activity"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
@@ -198,14 +168,8 @@ public class InterRecordAddTest {
         // Click at item with value 'Irregular sleep' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Irregular sleep"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at item with value 'Odd smell' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Odd smell"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Check AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
 
         // Swipe up at ListView with id R.id.contentListView
         onView(withId(R.id.contentListView)).perform(swipeUp());
@@ -236,17 +200,12 @@ public class InterRecordAddTest {
         // Click at item with value 'Missed social activity' in ListView
         onData(allOf(is(instanceOf(java.lang.String.class)), is("Missed social activity"))).inAdapterView(withId(R.id.contentListView)).perform(click());
 
-        // Uncheck AppCompatCheckBox with id R.id.control
-        //onView(withId(R.id.control)).perform(click());
-
         // Click at MDButton with id R.id.buttonDefaultPositive
         onView(withId(R.id.buttonDefaultPositive)).perform(click());
 
         onView(withId(R.id.txt_record_activities)).perform(scrollTo());
         onView(withId(R.id.txt_record_activities)).perform(replaceText(" Could not fall asleep, Slow to work"));
 
-        // Click at ActionMenuItemView with id R.id.action_refresh
-        onView(withId(R.id.action_refresh)).perform(click());
 
 
     }
