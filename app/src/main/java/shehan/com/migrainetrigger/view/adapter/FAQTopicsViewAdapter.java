@@ -21,7 +21,6 @@ public class FAQTopicsViewAdapter
     private FAQViewData[] faqViewDatas;
 
     public FAQTopicsViewAdapter(
-            Context context,
             FAQTopicsRowClickListener itemListener,
             FAQViewData[] faqViewDatas) {
 

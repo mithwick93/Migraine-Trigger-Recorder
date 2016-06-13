@@ -1,6 +1,7 @@
 package shehan.com.migrainetrigger.view.fragment.main;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -44,7 +45,7 @@ public class AboutFragment extends Fragment {
     }
 
     private void displayLicensesAlertDialog() {
-        WebView webView = (WebView) LayoutInflater.from(getContext()).inflate(R.layout.dialog_licenses, null);
+        @SuppressLint("InflateParams") WebView webView = (WebView) LayoutInflater.from(getContext()).inflate(R.layout.dialog_licenses, null);
         webView.loadUrl("file:///android_asset/open_source_licenses.html");
         new MaterialDialog.Builder(getContext())
                 .title("Open source licenses")

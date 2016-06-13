@@ -103,6 +103,26 @@ public class AddRecordActivity
     }
 
     /**
+     * Floating action button behaviour
+     */
+    private void fabSetup() {
+
+        FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
+
+        if (fabAdd != null) {
+            fabAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("AddRecordActivity", "sending accept action");
+                    if (mFragment != null) {
+                        mFragment.recordAcceptAction();
+                    }
+                }
+            });
+        }
+    }
+
+    /**
      * Setup record add activity
      */
     private void initialSetup() {
@@ -136,25 +156,5 @@ public class AddRecordActivity
         }
 
         fabSetup();
-    }
-
-    /**
-     * Floating action button behaviour
-     */
-    private void fabSetup() {
-
-        FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
-
-        if (fabAdd != null) {
-            fabAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("AddRecordActivity", "sending accept action");
-                    if (mFragment != null) {
-                        mFragment.recordAcceptAction();
-                    }
-                }
-            });
-        }
     }
 }

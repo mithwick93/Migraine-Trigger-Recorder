@@ -18,6 +18,10 @@ import shehan.com.migrainetrigger.view.model.AnswerSectionViewData;
  */
 public class BodyAreaController {
 
+    public static long addBodyArea(BodyArea bodyArea) {
+        return DBBodyAreaDAO.addBodyArea(bodyArea);
+    }
+
     public static long addBodyAreaRecord(int bodyAreaId, int recordId) {
         Log.d("BodyAreaController", " addBodyAreaRecord ");
         return DBBodyAreaDAO.addBodyAreaRecord(bodyAreaId, recordId);
@@ -33,23 +37,8 @@ public class BodyAreaController {
         return lst.size();
     }
 
-    public static long addBodyArea(BodyArea bodyArea) {
-        return DBBodyAreaDAO.addBodyArea(bodyArea);
-    }
-
     public static long deleteBodyArea(int id) {
         return DBBodyAreaDAO.deleteBodyArea(id);
-    }
-
-    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<BodyArea> lst = getAllBodyAreas(false);
-        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
-        for (int i = 0; i < lst.size(); i++) {
-            BodyArea bodyArea = lst.get(i);
-
-            answerSectionViewDataLst.add(new AnswerSectionViewData(bodyArea.getBodyAreaId(), bodyArea.getBodyAreaName()));
-        }
-        return answerSectionViewDataLst;
     }
 
     public static ArrayList<BodyArea> getAllBodyAreas(boolean applySuggestions) {
@@ -65,6 +54,29 @@ public class BodyAreaController {
         }
 
         return lst;
+    }
+
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
+        ArrayList<BodyArea> lst = getAllBodyAreas(false);
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
+        for (int i = 0; i < lst.size(); i++) {
+            BodyArea bodyArea = lst.get(i);
+
+            answerSectionViewDataLst.add(new AnswerSectionViewData(bodyArea.getBodyAreaId(), bodyArea.getBodyAreaName()));
+        }
+        return answerSectionViewDataLst;
+    }
+
+    public static BodyArea getBodyAreaById(int id) {
+        return DBBodyAreaDAO.getBodyArea(id);
+    }
+
+    public static ArrayList<BodyArea> getBodyAreasForRecord(int recordId) {
+        return DBBodyAreaDAO.getBodyAreasForRecord(recordId);
+    }
+
+    public static int getLastRecordId() {
+        return DBBodyAreaDAO.getLastRecordId();
     }
 
     private static ArrayList<BodyArea> getReOrderedLst(ArrayList<BodyArea> lst) {
@@ -103,18 +115,6 @@ public class BodyAreaController {
             Log.e("BodyAreaController", "reorderLst - top lst item not found at index " + 0);
         }
         return lst;
-    }
-
-    public static BodyArea getBodyAreaById(int id) {
-        return DBBodyAreaDAO.getBodyArea(id);
-    }
-
-    public static ArrayList<BodyArea> getBodyAreasForRecord(int recordId) {
-        return DBBodyAreaDAO.getBodyAreasForRecord(recordId);
-    }
-
-    public static int getLastRecordId() {
-        return DBBodyAreaDAO.getLastRecordId();
     }
 
     public static long updateBodyAreaRecord(BodyArea bodyArea) {

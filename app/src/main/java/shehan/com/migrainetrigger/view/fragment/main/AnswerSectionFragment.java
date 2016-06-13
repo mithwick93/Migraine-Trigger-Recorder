@@ -140,136 +140,6 @@ public class AnswerSectionFragment
         return super.onOptionsItemSelected(item);
     }
 
-    private void handleAdd() {
-        //On add new button click, show dialog to get name, place at bottom , add to db
-        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
-        if (answerSection.equals("Activities")) {
-            content = "activity";
-        }
-        new MaterialDialog.Builder(this.getContext())
-                .title("Add new answer")
-                .content("Enter new " + content)
-                .inputType(InputType.TYPE_CLASS_TEXT |
-                        InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
-                .inputRange(1, 64)
-                .positiveText("Submit")
-                .negativeText("Cancel")
-                .input("New answer", "", false, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        new AddNewAnswerTask().execute(input.toString());
-                    }
-                }).show();
-    }
-
-    private void handleSave() {
-
-        if (!reOrder) {//normal
-            //Delete operation
-            if (removedNonPriorityItemList != null) {
-                initiateListDelete(removedNonPriorityItemList);
-            } else {
-                AppUtil.showToast(getContext(), "Nothing to save");
-            }
-        } else {
-            if (reorderedList == null && removedPriorityItemList == null) {
-                AppUtil.showToast(getContext(), "Nothing to save");
-            } else {
-                if (reorderedList != null && removedPriorityItemList != null) {//choose
-
-                    new MaterialDialog.Builder(this.getContext())
-                            .title("Multiple actions")
-                            .content("Multiple actions selected. Please choose one")
-                            .positiveText("Reorder")
-                            .negativeText("Delete")
-                            .neutralText("Cancel")
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    new ReorderAnswerListTask(reorderedList, true).execute();
-                                }
-                            })
-                            .onNegative(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    new DeleteAnswerListTask(removedPriorityItemList).execute();
-                                }
-                            }).show();
-                } else if (reorderedList != null && removedPriorityItemList == null) {//reorder
-                    initiateListReorder(reorderedList);
-                } else if (reorderedList == null && removedPriorityItemList != null) {//delete
-                    initiateListDelete(removedPriorityItemList);
-                }
-            }
-        }
-
-    }
-
-    private void handleCancel() {
-        reorderedList = null;
-        removedPriorityItemList = null;
-        removedNonPriorityItemList = null;
-        //Show add button only
-        if (mMenu != null) {
-            mMenu.findItem(R.id.action_add).setVisible(true);
-            mMenu.findItem(R.id.action_save).setVisible(false);
-            mMenu.findItem(R.id.action_cancel).setVisible(false);
-        }
-        //Load answers to list
-        new GetAnswerListTask().execute();
-        AppUtil.showToast(getContext(), "Task canceled");
-    }
-
-    private void initiateListDelete(final List<AnswerSectionViewData> lst) {
-        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
-        if (answerSection.equals("Activities")) {
-            content = "activity";
-        }
-        new MaterialDialog.Builder(this.getContext())
-                .title("Delete answers")
-                .content("Permanently delete answer(s) from " + content)
-
-                .positiveText("Confirm")
-                .negativeText("Cancel")
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        new DeleteAnswerListTask(lst).execute();
-                    }
-                }).show();
-    }
-
-    private void initiateListReorder(final List<AnswerSectionViewData> lst) {
-        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
-        if (answerSection.equals("Activities")) {
-            content = "activity";
-        }
-        new MaterialDialog.Builder(this.getContext())
-                .title("Reorder answers")
-                .content("Permanently reorder answer(s) from " + content)
-
-                .positiveText("Confirm")
-                .negativeText("Cancel")
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        new ReorderAnswerListTask(lst, true).execute();
-                    }
-                }).show();
-    }
-
-    private void init() {
-
-        //set weather to enable reorder
-        reOrder = !(answerSection.equals("Locations") || answerSection.equals("Pain areas"));
-        reorderedList = null;
-        removedPriorityItemList = null;
-        removedNonPriorityItemList = null;
-
-        //Load answers to list
-        new GetAnswerListTask().execute();
-    }
-
     @Override
     public void onDataReordered(List<AnswerSectionViewData> answerList) {
         Log.d("AnswerSectionFragment", "onDataReordered called");
@@ -297,32 +167,6 @@ public class AnswerSectionFragment
     public void onNonPriorityAnswerRowClicked(AnswerSectionViewData answerSectionViewData) {
         //on item click show dialog to rename for basic answer
         initiateUpdateAnswer(answerSectionViewData, false);
-    }
-
-    private void initiateUpdateAnswer(final AnswerSectionViewData answerSectionViewData, final boolean setPriority) {
-        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
-        if (answerSection.equals("Activities")) {
-            content = "activity";
-        }
-        String contentStr = "Edit " + content;
-        if (reOrder) {
-            contentStr = "Edit " + content + ". WARNING: unsaved ordering will be lost ";
-        }
-        new MaterialDialog.Builder(this.getContext())
-                .title("Update answer")
-                .content(contentStr)
-                .inputType(InputType.TYPE_CLASS_TEXT |
-                        InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
-                .inputRange(1, 64)
-                .positiveText("Submit")
-                .negativeText("Cancel")
-                .input("Update answer", answerSectionViewData.getName(), false, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        answerSectionViewData.setName(input.toString());
-                        new UpdateAnswerTask(setPriority).execute(answerSectionViewData);
-                    }
-                }).show();
     }
 
     @Override
@@ -369,6 +213,162 @@ public class AnswerSectionFragment
         if (mItemTouchHelper != null) {
             mItemTouchHelper.startDrag(viewHolder);
         }
+    }
+
+    private void handleAdd() {
+        //On add new button click, show dialog to get name, place at bottom , add to db
+        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
+        if (answerSection.equals("Activities")) {
+            content = "activity";
+        }
+        new MaterialDialog.Builder(this.getContext())
+                .title("Add new answer")
+                .content("Enter new " + content)
+                .inputType(InputType.TYPE_CLASS_TEXT |
+                        InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
+                .inputRange(1, 64)
+                .positiveText("Submit")
+                .negativeText("Cancel")
+                .input("New answer", "", false, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        new AddNewAnswerTask().execute(input.toString());
+                    }
+                }).show();
+    }
+
+    private void handleCancel() {
+        reorderedList = null;
+        removedPriorityItemList = null;
+        removedNonPriorityItemList = null;
+        //Show add button only
+        if (mMenu != null) {
+            mMenu.findItem(R.id.action_add).setVisible(true);
+            mMenu.findItem(R.id.action_save).setVisible(false);
+            mMenu.findItem(R.id.action_cancel).setVisible(false);
+        }
+        //Load answers to list
+        new GetAnswerListTask().execute();
+        AppUtil.showToast(getContext(), "Task canceled");
+    }
+
+    private void handleSave() {
+
+        if (!reOrder) {//normal
+            //Delete operation
+            if (removedNonPriorityItemList != null) {
+                initiateListDelete(removedNonPriorityItemList);
+            } else {
+                AppUtil.showToast(getContext(), "Nothing to save");
+            }
+        } else {
+            if (reorderedList == null && removedPriorityItemList == null) {
+                AppUtil.showToast(getContext(), "Nothing to save");
+            } else {
+                if (reorderedList != null && removedPriorityItemList != null) {//choose
+
+                    new MaterialDialog.Builder(this.getContext())
+                            .title("Multiple actions")
+                            .content("Multiple actions selected. Please choose one")
+                            .positiveText("Reorder")
+                            .negativeText("Delete")
+                            .neutralText("Cancel")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    new ReorderAnswerListTask(reorderedList, true).execute();
+                                }
+                            })
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    new DeleteAnswerListTask(removedPriorityItemList).execute();
+                                }
+                            }).show();
+                } else if (reorderedList != null && removedPriorityItemList == null) {//reorder
+                    initiateListReorder(reorderedList);
+                } else if (reorderedList == null && removedPriorityItemList != null) {//delete
+                    initiateListDelete(removedPriorityItemList);
+                }
+            }
+        }
+
+    }
+
+    private void init() {
+
+        //set weather to enable reorder
+        reOrder = !(answerSection.equals("Locations") || answerSection.equals("Pain areas"));
+        reorderedList = null;
+        removedPriorityItemList = null;
+        removedNonPriorityItemList = null;
+
+        //Load answers to list
+        new GetAnswerListTask().execute();
+    }
+
+    private void initiateListDelete(final List<AnswerSectionViewData> lst) {
+        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
+        if (answerSection.equals("Activities")) {
+            content = "activity";
+        }
+        new MaterialDialog.Builder(this.getContext())
+                .title("Delete answers")
+                .content("Permanently delete answer(s) from " + content)
+
+                .positiveText("Confirm")
+                .negativeText("Cancel")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        new DeleteAnswerListTask(lst).execute();
+                    }
+                }).show();
+    }
+
+    private void initiateListReorder(final List<AnswerSectionViewData> lst) {
+        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
+        if (answerSection.equals("Activities")) {
+            content = "activity";
+        }
+        new MaterialDialog.Builder(this.getContext())
+                .title("Reorder answers")
+                .content("Permanently reorder answer(s) from " + content)
+
+                .positiveText("Confirm")
+                .negativeText("Cancel")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        new ReorderAnswerListTask(lst, true).execute();
+                    }
+                }).show();
+    }
+
+    private void initiateUpdateAnswer(final AnswerSectionViewData answerSectionViewData, final boolean setPriority) {
+        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
+        if (answerSection.equals("Activities")) {
+            content = "activity";
+        }
+        String contentStr = "Edit " + content;
+        if (reOrder) {
+            contentStr = "Edit " + content + ". WARNING: unsaved ordering will be lost ";
+        }
+        new MaterialDialog.Builder(this.getContext())
+                .title("Update answer")
+                .content(contentStr)
+                .inputType(InputType.TYPE_CLASS_TEXT |
+                        InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
+                .inputRange(1, 64)
+                .positiveText("Submit")
+                .negativeText("Cancel")
+                .input("Update answer", answerSectionViewData.getName(), false, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        answerSectionViewData.setName(input.toString());
+                        new UpdateAnswerTask(setPriority).execute(answerSectionViewData);
+                    }
+                }).show();
     }
 
     /**

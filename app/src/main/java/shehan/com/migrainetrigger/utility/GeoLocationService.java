@@ -39,6 +39,14 @@ public class GeoLocationService implements GoogleApiClient.ConnectionCallbacks, 
         }
     }
 
+    public void disconnect() {
+        if (googleApiClient != null && googleApiClient.isConnected()) {
+            googleApiClient.stopAutoManage(activity);
+            googleApiClient.disconnect();
+            Log.d("GeoLocationService", "googleApiClient.disconnect");
+        }
+    }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.i("GeoLocationService", "Connected to Google Play Services!");
@@ -61,14 +69,6 @@ public class GeoLocationService implements GoogleApiClient.ConnectionCallbacks, 
 
     @Override
     public void onConnectionSuspended(int i) {
-    }
-
-    public void disconnect() {
-        if (googleApiClient != null && googleApiClient.isConnected()) {
-            googleApiClient.stopAutoManage(activity);
-            googleApiClient.disconnect();
-            Log.d("GeoLocationService", "googleApiClient.disconnect");
-        }
     }
 
     @Override

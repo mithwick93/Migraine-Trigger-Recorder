@@ -49,17 +49,6 @@ public class LifeActivityController {
         return DBActivityDAO.getActivity(id);
     }
 
-    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<LifeActivity> lst = getAllActivities(false);
-        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
-        for (int i = 0; i < lst.size(); i++) {
-            LifeActivity lifeActivity = lst.get(i);
-
-            answerSectionViewDataLst.add(new AnswerSectionViewData(lifeActivity.getActivityId(), lifeActivity.getActivityName(), lifeActivity.getPriority()));
-        }
-        return answerSectionViewDataLst;
-    }
-
     public static ArrayList<LifeActivity> getAllActivities(boolean applySuggestions) {
         Log.d("LifeActivityController", "getAllActivities ");
 
@@ -76,6 +65,21 @@ public class LifeActivityController {
         }
 
         return lst;
+    }
+
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
+        ArrayList<LifeActivity> lst = getAllActivities(false);
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
+        for (int i = 0; i < lst.size(); i++) {
+            LifeActivity lifeActivity = lst.get(i);
+
+            answerSectionViewDataLst.add(new AnswerSectionViewData(lifeActivity.getActivityId(), lifeActivity.getActivityName(), lifeActivity.getPriority()));
+        }
+        return answerSectionViewDataLst;
+    }
+
+    public static int getLastRecordId() {
+        return DBActivityDAO.getLastRecordId();
     }
 
     private static ArrayList<LifeActivity> getReOrderedLst(ArrayList<LifeActivity> lst) {
@@ -114,11 +118,6 @@ public class LifeActivityController {
             Log.e("LifeActivityController", "reorderLst - top lst item not found at index " + 0);
         }
         return lst;
-    }
-
-
-    public static int getLastRecordId() {
-        return DBActivityDAO.getLastRecordId();
     }
 
     public static long updateActivityRecord(LifeActivity lifeActivity) {

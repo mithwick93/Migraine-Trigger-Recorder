@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <TextView
         android:id="@+id/calender_header"
@@ -17,16 +17,16 @@
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/textColorSecondaryInverse"
-        android:textSize="30sp"/>
+        android:textSize="30sp" />
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                                 android:id="@+id/calender_view"
-                                                                 android:layout_width="fill_parent"
-                                                                 android:layout_height="250dp"
-                                                                 android:layout_below="@+id/calender_header"
-                                                                 android:layout_marginBottom="5dp"
-                                                                 app:compactCalendarTargetHeight="250dp"
-                                                                 app:compactCalendarTextSize="12sp"/>
+        android:id="@+id/calender_view"
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        android:layout_below="@+id/calender_header"
+        android:layout_marginBottom="5dp"
+        app:compactCalendarTargetHeight="250dp"
+        app:compactCalendarTextSize="12sp" />
 
     <TextSwitcher
         android:id="@+id/textSwitcher"
@@ -35,7 +35,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/calender_view"
         android:layout_marginStart="84dp"
-        android:layout_marginTop="76dp"/>
+        android:layout_marginTop="76dp" />
 
 
 </RelativeLayout>

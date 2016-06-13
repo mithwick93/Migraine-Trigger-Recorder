@@ -159,6 +159,36 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     }
 
     /**
+     * Get basic data of record
+     * Does not check constraints
+     *
+     * @return record builder with intermediate data saved
+     */
+    protected RecordBuilder getIntermediateRecordBuilder() {
+        Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder");
+
+        //Call parent method to get basic info
+        RecordBuilder recordBuilder = getBasicRecordBuilder();
+
+        if (selectedActivities.size() > 0) {
+            Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder - selectedActivities");
+            recordBuilder = recordBuilder.setActivities(selectedActivities);
+        }
+
+        if (selectedTriggers.size() > 0) {
+            Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder - selectedTriggers");
+            recordBuilder = recordBuilder.setTriggers(selectedTriggers);
+        }
+
+        if (selectedSymptoms.size() > 0) {
+            Log.d("AddRecordInterFragment", " - selectedSymptoms");
+            recordBuilder = recordBuilder.setSymptoms(selectedSymptoms);
+        }
+
+        return recordBuilder;
+    }
+
+    /**
      * initiate intermediate controls
      * call this in sub classes onCreate
      *
@@ -395,13 +425,13 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                 startTimestamp = getTimeStampDate(tmpStr);
             }
         } else {
-            AppUtil.showMsg(getContext(), "Record must have start time");
+            AppUtil.showMsg(getContext(), "Record must have start time","Validation error");
             return;
         }
 
         Calendar c = Calendar.getInstance();
         if (startTimestamp.after(c.getTime())) {
-            AppUtil.showMsg(getContext(), "Start Date is past current time");
+            AppUtil.showMsg(getContext(), "Start Date is past current time","Validation error");
             return;
         }
 
@@ -422,7 +452,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
 
         if (endTimestamp != null) {
             if (endTimestamp.after(c.getTime())) {
-                AppUtil.showMsg(getContext(), "End Date is past current time");
+                AppUtil.showMsg(getContext(), "End Date is past current time","Validation error");
                 return;
             }
         }
@@ -449,38 +479,8 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                 }
             }.execute();
         } else {
-            AppUtil.showMsg(getContext(), "Start time is greater than the end time");
+            AppUtil.showMsg(getContext(), "Start time is greater than the end time","Validation error");
         }
-    }
-
-    /**
-     * Get basic data of record
-     * Does not check constraints
-     *
-     * @return record builder with intermediate data saved
-     */
-    protected RecordBuilder getIntermediateRecordBuilder() {
-        Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder");
-
-        //Call parent method to get basic info
-        RecordBuilder recordBuilder = getBasicRecordBuilder();
-
-        if (selectedActivities.size() > 0) {
-            Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder - selectedActivities");
-            recordBuilder = recordBuilder.setActivities(selectedActivities);
-        }
-
-        if (selectedTriggers.size() > 0) {
-            Log.d("AddRecordInterFragment", "getIntermediateRecordBuilder - selectedTriggers");
-            recordBuilder = recordBuilder.setTriggers(selectedTriggers);
-        }
-
-        if (selectedSymptoms.size() > 0) {
-            Log.d("AddRecordInterFragment", " - selectedSymptoms");
-            recordBuilder = recordBuilder.setSymptoms(selectedSymptoms);
-        }
-
-        return recordBuilder;
     }
 
     //

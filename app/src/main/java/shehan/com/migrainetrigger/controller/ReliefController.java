@@ -18,6 +18,10 @@ import shehan.com.migrainetrigger.view.model.AnswerSectionViewData;
  */
 public class ReliefController {
 
+    public static long addRelief(Relief relief) {
+        return DBReliefDAO.addRelief(relief);
+    }
+
     public static long addReliefRecord(int reliefId, int recordId, boolean effective) {
         Log.d("ReliefController", " addReliefRecord ");
         return DBReliefDAO.addReliefRecord(reliefId, recordId, effective);
@@ -33,23 +37,8 @@ public class ReliefController {
         return lst.size();
     }
 
-    public static long addRelief(Relief relief) {
-        return DBReliefDAO.addRelief(relief);
-    }
-
     public static long deleteRelief(int id) {
         return DBReliefDAO.deleteRelief(id);
-    }
-
-    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<Relief> lst = getAllReliefs(false);
-        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
-        for (int i = 0; i < lst.size(); i++) {
-            Relief relief = lst.get(i);
-
-            answerSectionViewDataLst.add(new AnswerSectionViewData(relief.getReliefId(), relief.getReliefName(), relief.getPriority()));
-        }
-        return answerSectionViewDataLst;
     }
 
     public static ArrayList<Relief> getAllReliefs(boolean applySuggestions) {
@@ -67,6 +56,21 @@ public class ReliefController {
         }
 
         return lst;
+    }
+
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
+        ArrayList<Relief> lst = getAllReliefs(false);
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
+        for (int i = 0; i < lst.size(); i++) {
+            Relief relief = lst.get(i);
+
+            answerSectionViewDataLst.add(new AnswerSectionViewData(relief.getReliefId(), relief.getReliefName(), relief.getPriority()));
+        }
+        return answerSectionViewDataLst;
+    }
+
+    public static int getLastRecordId() {
+        return DBReliefDAO.getLastRecordId();
     }
 
     private static ArrayList<Relief> getReOrderedLst(ArrayList<Relief> lst) {
@@ -89,6 +93,13 @@ public class ReliefController {
         return lst;
     }
 
+    public static Relief getReliefById(int id) {
+        return DBReliefDAO.getRelief(id);
+    }
+
+    public static ArrayList<Relief> getReliefsForRecord(int recordId) {
+        return DBReliefDAO.getReliefsForRecord(recordId);
+    }
 
     private static ArrayList<Relief> reorderLst(ArrayList<Relief> lst, String match) {
         Log.d("ReliefController", "reorderLst ");
@@ -106,18 +117,6 @@ public class ReliefController {
             Log.e("ReliefController", "reorderLst - top lst item not found at index " + 0);
         }
         return lst;
-    }
-
-    public static int getLastRecordId() {
-        return DBReliefDAO.getLastRecordId();
-    }
-
-    public static Relief getReliefById(int id) {
-        return DBReliefDAO.getRelief(id);
-    }
-
-    public static ArrayList<Relief> getReliefsForRecord(int recordId) {
-        return DBReliefDAO.getReliefsForRecord(recordId);
     }
 
     public static long updateReliefRecord(Relief relief) {

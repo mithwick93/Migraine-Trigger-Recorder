@@ -18,6 +18,10 @@ import shehan.com.migrainetrigger.view.model.AnswerSectionViewData;
  */
 public class TriggerController {
 
+    public static long addTrigger(Trigger trigger) {
+        return DBTriggerDAO.addTrigger(trigger);
+    }
+
     public static long addTriggerRecord(int triggerId, int recordId) {
         Log.d("TriggerController", " addTriggerRecord ");
         return DBTriggerDAO.addTriggerRecord(triggerId, recordId);
@@ -33,23 +37,8 @@ public class TriggerController {
         return lst.size();
     }
 
-    public static long addTrigger(Trigger trigger) {
-        return DBTriggerDAO.addTrigger(trigger);
-    }
-
     public static long deleteTrigger(int id) {
         return DBTriggerDAO.deleteTrigger(id);
-    }
-
-    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<Trigger> lst = getAllTriggers(false);
-        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
-        for (int i = 0; i < lst.size(); i++) {
-            Trigger trigger = lst.get(i);
-
-            answerSectionViewDataLst.add(new AnswerSectionViewData(trigger.getTriggerId(), trigger.getTriggerName(), trigger.getPriority()));
-        }
-        return answerSectionViewDataLst;
     }
 
     public static ArrayList<Trigger> getAllTriggers(boolean applySuggestions) {
@@ -67,6 +56,21 @@ public class TriggerController {
         }
 
         return lst;
+    }
+
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
+        ArrayList<Trigger> lst = getAllTriggers(false);
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
+        for (int i = 0; i < lst.size(); i++) {
+            Trigger trigger = lst.get(i);
+
+            answerSectionViewDataLst.add(new AnswerSectionViewData(trigger.getTriggerId(), trigger.getTriggerName(), trigger.getPriority()));
+        }
+        return answerSectionViewDataLst;
+    }
+
+    public static int getLastRecordId() {
+        return DBTriggerDAO.getLastRecordId();
     }
 
     private static ArrayList<Trigger> getReOrderedLst(ArrayList<Trigger> lst) {
@@ -89,6 +93,14 @@ public class TriggerController {
         return lst;
     }
 
+    public static Trigger getTriggerById(int id) {
+        return DBTriggerDAO.getTrigger(id);
+    }
+
+    public static ArrayList<Trigger> getTriggersForRecord(int recordId) {
+        return DBTriggerDAO.getTriggersForRecord(recordId);
+    }
+
     private static ArrayList<Trigger> reorderLst(ArrayList<Trigger> lst, String match) {
         Log.d("TriggerController", "reorderLst ");
         int pos = -1;
@@ -105,18 +117,6 @@ public class TriggerController {
             Log.e("TriggerController", "reorderLst - top lst item not found at index " + 0);
         }
         return lst;
-    }
-
-    public static int getLastRecordId() {
-        return DBTriggerDAO.getLastRecordId();
-    }
-
-    public static Trigger getTriggerById(int id) {
-        return DBTriggerDAO.getTrigger(id);
-    }
-
-    public static ArrayList<Trigger> getTriggersForRecord(int recordId) {
-        return DBTriggerDAO.getTriggersForRecord(recordId);
     }
 
     public static long updateTriggerRecord(Trigger trigger) {

@@ -112,46 +112,36 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         return view;
     }
 
-    /**
-     * Show summery of selected filter tags
-     */
-    private void updateFilterSelection() {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_dialog_cancel_filter_change:
+                dismiss();
+                break;
+            case R.id.button_dialog_clear_filter:
+                selectedFilters = null;
+                mCallback.onUpdateFilter(null);
+                dismiss();
+                break;
+            case R.id.button_dialog_filter:
+                mCallback.onUpdateFilter(selectedFilters);
+                dismiss();
+                break;
+            default:
+        }
+    }
 
-        String strFilter;
+    public void setFilters(ArrayList<ArrayList<String>> filterList) {
+        this.filterList = filterList;
+    }
 
-        if (selectedFilters.size() == 7) {
-            strFilter = "Filters :";
+    public void setPreviousSelection(ArrayList<ArrayList<String>> previousSelectList) {
+        if (previousSelectList != null && previousSelectList.size() == 7) {
+            this.selectedFilters = previousSelectList;
         } else {
-            filterDetailsTextView.setText(R.string.record_filter_title);
-            return;
+            Log.e("FilterTagClickListener", "Trying to set null on incompatible list to selectedFilters");
         }
 
-        //Triggers 6
-        strFilter = prepareFilterString(strFilter, "Triggers", 6);
-
-        //Symptoms 5
-        strFilter = prepareFilterString(strFilter, "Symptoms", 5);
-
-        //Activities 1
-        strFilter = prepareFilterString(strFilter, "Activities", 1);
-
-        //Locations 2
-        strFilter = prepareFilterString(strFilter, "Locations", 2);
-
-        //Pain areas 0
-        strFilter = prepareFilterString(strFilter, "Pain areas", 0);
-
-        //Medicines 3
-        strFilter = prepareFilterString(strFilter, "Medicines", 3);
-
-        //Reliefs 4
-        strFilter = prepareFilterString(strFilter, "Reliefs", 4);
-
-        if (strFilter.equals("Filters :")) {
-            filterDetailsTextView.setText(R.string.record_filter_title);
-        } else {
-            filterDetailsTextView.setText(strFilter);
-        }
     }
 
     private View addTagTypeGroup(LayoutInflater inflater, String category, int tagTypeKey) {
@@ -206,36 +196,46 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         return strFilter;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_dialog_cancel_filter_change:
-                dismiss();
-                break;
-            case R.id.button_dialog_clear_filter:
-                selectedFilters = null;
-                mCallback.onUpdateFilter(null);
-                dismiss();
-                break;
-            case R.id.button_dialog_filter:
-                mCallback.onUpdateFilter(selectedFilters);
-                dismiss();
-                break;
-            default:
-        }
-    }
+    /**
+     * Show summery of selected filter tags
+     */
+    private void updateFilterSelection() {
 
-    public void setFilters(ArrayList<ArrayList<String>> filterList) {
-        this.filterList = filterList;
-    }
+        String strFilter;
 
-    public void setPreviousSelection(ArrayList<ArrayList<String>> previousSelectList) {
-        if (previousSelectList != null && previousSelectList.size() == 7) {
-            this.selectedFilters = previousSelectList;
+        if (selectedFilters.size() == 7) {
+            strFilter = "Filters :";
         } else {
-            Log.e("FilterTagClickListener", "Trying to set null on incompatible list to selectedFilters");
+            filterDetailsTextView.setText(R.string.record_filter_title);
+            return;
         }
 
+        //Triggers 6
+        strFilter = prepareFilterString(strFilter, "Triggers", 6);
+
+        //Symptoms 5
+        strFilter = prepareFilterString(strFilter, "Symptoms", 5);
+
+        //Activities 1
+        strFilter = prepareFilterString(strFilter, "Activities", 1);
+
+        //Locations 2
+        strFilter = prepareFilterString(strFilter, "Locations", 2);
+
+        //Pain areas 0
+        strFilter = prepareFilterString(strFilter, "Pain areas", 0);
+
+        //Medicines 3
+        strFilter = prepareFilterString(strFilter, "Medicines", 3);
+
+        //Reliefs 4
+        strFilter = prepareFilterString(strFilter, "Reliefs", 4);
+
+        if (strFilter.equals("Filters :")) {
+            filterDetailsTextView.setText(R.string.record_filter_title);
+        } else {
+            filterDetailsTextView.setText(strFilter);
+        }
     }
 
     public interface FilterUpdateListener {

@@ -49,7 +49,6 @@ public class ViewSingleRecordActivity
         super.onResume();
     }
 
-
     @Override
     public void onSingleRecordViewRequest(int request) {
         Log.d("ViewSingleRecord", "onTopicRawClicked request : " + request);
@@ -89,6 +88,26 @@ public class ViewSingleRecordActivity
     }
 
     /**
+     * Floating action button behaviour
+     */
+    private void fabSetup() {
+
+        FloatingActionButton fabUpdate = (FloatingActionButton) findViewById(R.id.fab_update);
+
+        if (fabUpdate != null) {
+            fabUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("ViewSingleRecord", "sending Update action");
+                    if (mViewRecordSingleFragment != null) {
+                        mViewRecordSingleFragment.updateRecord();
+                    }
+                }
+            });
+        }
+    }
+
+    /**
      * Setup record view UI
      */
     private void initialSetup() {
@@ -107,26 +126,6 @@ public class ViewSingleRecordActivity
 
         fabSetup();
 
-    }
-
-    /**
-     * Floating action button behaviour
-     */
-    private void fabSetup() {
-
-        FloatingActionButton fabUpdate = (FloatingActionButton) findViewById(R.id.fab_update);
-
-        if (fabUpdate != null) {
-            fabUpdate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("ViewSingleRecord", "sending Update action");
-                    if (mViewRecordSingleFragment != null) {
-                        mViewRecordSingleFragment.updateRecord();
-                    }
-                }
-            });
-        }
     }
 
 }

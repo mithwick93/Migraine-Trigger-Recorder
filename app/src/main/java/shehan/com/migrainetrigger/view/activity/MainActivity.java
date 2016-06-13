@@ -137,7 +137,7 @@ public class MainActivity
                     @Override
                     protected void onPostExecute(Boolean result) {
                         if (result) {
-                            setFragment(homeFragment, R.string.nav_home, View.VISIBLE, false);
+                            setFragment(homeFragment, R.string.nav_home, false);
                         }
                     }
                 }.execute();
@@ -163,7 +163,7 @@ public class MainActivity
                     @Override
                     protected void onPostExecute(Boolean result) {
                         if (result) {
-                            setFragment(severityFragment, R.string.nav_severity, View.VISIBLE, true);
+                            setFragment(severityFragment, R.string.nav_severity, true);
                         }
                     }
                 }.execute();
@@ -188,7 +188,7 @@ public class MainActivity
                     @Override
                     protected void onPostExecute(Boolean result) {
                         if (result) {
-                            setFragment(manageAnswersFragment, R.string.nav_answers, View.VISIBLE, true);
+                            setFragment(manageAnswersFragment, R.string.nav_answers, true);
                         }
                     }
                 }.execute();
@@ -306,7 +306,7 @@ public class MainActivity
                     @Override
                     protected void onPostExecute(Boolean result) {
                         if (result) {
-                            setFragment(aboutFragment, R.string.nav_about, View.VISIBLE, true);
+                            setFragment(aboutFragment, R.string.nav_about, true);
                         }
                     }
                 }.execute();
@@ -319,59 +319,6 @@ public class MainActivity
             drawer.closeDrawer(GravityCompat.START);
         }
         return true;
-    }
-
-
-    /**
-     * Change fragment in main activity
-     *
-     * @param fragment      fragment to show
-     * @param toolBarTitle  tool bar title
-     * @param fabVisibility fab visibility
-     */
-    private void setFragment(Fragment fragment,
-                             int toolBarTitle,
-                             int fabVisibility,
-                             boolean addToBackStack) {
-
-        String tag = getString(toolBarTitle);
-
-
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-
-        final int newBackStackLength = fragmentManager.getBackStackEntryCount() + 1;
-
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.replace(R.id.container_body, fragment, tag);
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(tag);
-        }
-        fragmentTransaction.commit();
-
-        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                int nowCount = fragmentManager.getBackStackEntryCount();
-                if (newBackStackLength != nowCount) {
-                    // we don't really care if going back or forward. we already performed the logic here.
-                    fragmentManager.removeOnBackStackChangedListener(this);
-
-                    if (newBackStackLength > nowCount) { // user pressed back
-                        fragmentManager.popBackStackImmediate();
-                    }
-                }
-            }
-        });
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(toolBarTitle);
-        }
-
-//        if (fab != null) {
-//            fab.setVisibility(fabVisibility);
-//        }
-
     }
 
     @Override
@@ -426,7 +373,7 @@ public class MainActivity
                 @Override
                 protected void onPostExecute(Boolean result) {
                     if (result) {
-                        setFragment(homeFragment, R.string.nav_home, View.VISIBLE, false);
+                        setFragment(homeFragment, R.string.nav_home, false);
                     }
                 }
             }.execute();
@@ -483,6 +430,54 @@ public class MainActivity
         return color;
     }
 
+    /**
+     * Change fragment in main activity
+     *  @param fragment      fragment to show
+     * @param toolBarTitle  tool bar title
+     */
+    private void setFragment(Fragment fragment,
+                             int toolBarTitle,
+                             boolean addToBackStack) {
+
+        String tag = getString(toolBarTitle);
+
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+
+        final int newBackStackLength = fragmentManager.getBackStackEntryCount() + 1;
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.replace(R.id.container_body, fragment, tag);
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(tag);
+        }
+        fragmentTransaction.commit();
+
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                int nowCount = fragmentManager.getBackStackEntryCount();
+                if (newBackStackLength != nowCount) {
+                    // we don't really care if going back or forward. we already performed the logic here.
+                    fragmentManager.removeOnBackStackChangedListener(this);
+
+                    if (newBackStackLength > nowCount) { // user pressed back
+                        fragmentManager.popBackStackImmediate();
+                    }
+                }
+            }
+        });
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(toolBarTitle);
+        }
+
+//        if (fab != null) {
+//            fab.setVisibility(fabVisibility);
+//        }
+
+    }
 
     /**
      * Async task to check if reports can be generated

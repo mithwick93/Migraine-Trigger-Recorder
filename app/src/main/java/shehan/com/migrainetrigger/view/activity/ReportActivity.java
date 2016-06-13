@@ -30,7 +30,6 @@ public class ReportActivity extends BaseActivity
         super.onResume();
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEVELOPER_MODE) {

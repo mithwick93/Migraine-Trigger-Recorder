@@ -57,7 +57,6 @@ public class WebViewFragment extends Fragment {
         return view;
     }
 
-
     private void loadPage(View view) {
         final WebView webView = (WebView) view.findViewById(R.id.webView);
         String strUrl = "NULL";

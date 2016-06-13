@@ -115,59 +115,6 @@ public class ReportFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void refreshSummery() {
-
-        Timestamp fromTimestamp;
-
-        //Check for start date
-
-        String tmpFrom = String.valueOf(fromDate[0]) + "-" + String.valueOf(fromDate[1]) + "-" + String.valueOf(fromDate[2]) + " 00:00:00";
-        fromTimestamp = getTimeStampDate(tmpFrom);
-
-
-        Calendar c = Calendar.getInstance();
-        if (fromTimestamp.after(c.getTime())) {
-            AppUtil.showMsg(getContext(), "Start Date is past current time");
-            return;
-        }
-
-        //Check for end date
-        Timestamp toTimestamp;
-
-        String tmpTo = String.valueOf(toDate[0]) + "-" + String.valueOf(toDate[1]) + "-" + String.valueOf(toDate[2]) + " 00:00:00";
-        toTimestamp = getTimeStampDate(tmpTo);
-
-
-        if (toTimestamp != null) {
-
-            if (toTimestamp.after(c.getTime())) {
-                AppUtil.showMsg(getContext(), "End Date is past current time !");
-                return;
-            }
-        }
-
-        //validate times
-        if ((toTimestamp != null && fromTimestamp.before(toTimestamp)) || toTimestamp == null) {
-
-            try {
-                nDialog = new ProgressDialog(getActivity()); //Here I get an error: The constructor ProgressDialog(PFragment) is undefined
-                nDialog.setMessage("Refreshing report...");
-                nDialog.setTitle("Processing");
-                nDialog.setIndeterminate(false);
-                nDialog.setCancelable(false);
-                nDialog.show();
-            } catch (Exception ignored) {
-            }
-
-
-            new LoadReportSummeryTask(fromTimestamp, toTimestamp).execute();
-            new LoadReportStatisticsTask(mView, fromTimestamp, toTimestamp).execute();
-        } else {
-            AppUtil.showMsg(getContext(), "Start time is greater than the end time");
-        }
-
-    }
-
     private void initReport(View view) {
         //Load ui
 
@@ -202,42 +149,28 @@ public class ReportFragment extends Fragment {
         txtViewFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-
-                                txtViewFrom.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
-                                mYear = fromDate[0] = year;
-                                mMonth = fromDate[1] = monthOfYear + 1;
-                                mDay = fromDate[2] = dayOfMonth;
-                                AppUtil.showToast(getContext(), "Please refresh report");
-                            }
-                        }, mYear, mMonth - 1, mDay);
-                datePickerDialog.show();
+                setFrom();
             }
-
-
         });
 
         txtViewTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
+                setTo();
+            }
+        });
 
-                                txtViewTo.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
-                                mYear = toDate[0] = year;
-                                mMonth = toDate[1] = monthOfYear + 1;
-                                mDay = toDate[2] = dayOfMonth;
-                                AppUtil.showToast(getContext(), "Please refresh report");
-                            }
-                        }, mYear, mMonth - 1, mDay);
-                datePickerDialog.show();
+        view.findViewById(R.id.arrow_from).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFrom();
+            }
+        });
+
+        view.findViewById(R.id.arrow_to).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTo();
             }
         });
 
@@ -246,6 +179,93 @@ public class ReportFragment extends Fragment {
     private void loadRecordData() {
         //Load all data
         new CheckRecordsTask().execute();
+    }
+
+    private void refreshSummery() {
+
+        Timestamp fromTimestamp;
+
+        //Check for start date
+
+        String tmpFrom = String.valueOf(fromDate[0]) + "-" + String.valueOf(fromDate[1]) + "-" + String.valueOf(fromDate[2]) + " 00:00:00";
+        fromTimestamp = getTimeStampDate(tmpFrom);
+
+
+        Calendar c = Calendar.getInstance();
+        if (fromTimestamp.after(c.getTime())) {
+            AppUtil.showMsg(getContext(), "Start Date is past current time","Validation error");
+            return;
+        }
+
+        //Check for end date
+        Timestamp toTimestamp;
+
+        String tmpTo = String.valueOf(toDate[0]) + "-" + String.valueOf(toDate[1]) + "-" + String.valueOf(toDate[2]) + " 00:00:00";
+        toTimestamp = getTimeStampDate(tmpTo);
+
+
+        if (toTimestamp != null) {
+
+            if (toTimestamp.after(c.getTime())) {
+                AppUtil.showMsg(getContext(), "End Date is past current time !","Validation error");
+                return;
+            }
+        }
+
+        //validate times
+        if ((toTimestamp != null && fromTimestamp.before(toTimestamp)) || toTimestamp == null) {
+
+            try {
+                nDialog = new ProgressDialog(getActivity()); //Here I get an error: The constructor ProgressDialog(PFragment) is undefined
+                nDialog.setMessage("Refreshing report...");
+                nDialog.setTitle("Processing");
+                nDialog.setIndeterminate(false);
+                nDialog.setCancelable(false);
+                nDialog.show();
+            } catch (Exception ignored) {
+            }
+
+
+            new LoadReportSummeryTask(fromTimestamp, toTimestamp).execute();
+            new LoadReportStatisticsTask(mView, fromTimestamp, toTimestamp).execute();
+        } else {
+            AppUtil.showMsg(getContext(), "Start time is greater than the end time","Validation error");
+        }
+
+    }
+
+    private void setFrom() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        txtViewFrom.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
+                        mYear = fromDate[0] = year;
+                        mMonth = fromDate[1] = monthOfYear + 1;
+                        mDay = fromDate[2] = dayOfMonth;
+                        AppUtil.showToast(getContext(), "Please refresh report");
+                    }
+                }, mYear, mMonth - 1, mDay);
+        datePickerDialog.show();
+    }
+
+    private void setTo() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        txtViewTo.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
+                        mYear = toDate[0] = year;
+                        mMonth = toDate[1] = monthOfYear + 1;
+                        mDay = toDate[2] = dayOfMonth;
+                        AppUtil.showToast(getContext(), "Please refresh report");
+                    }
+                }, mYear, mMonth - 1, mDay);
+        datePickerDialog.show();
     }
 
     /**
@@ -598,17 +618,8 @@ public class ReportFragment extends Fragment {
             this.to = to;
         }
 
-        private void setTotal(int total) {
-            txtViewTotal.setText(String.valueOf(total));
-            if (total <= 3) {
-                txtViewTotal.setTextColor(Color.parseColor("#46cf9a"));
-            } else if (total <= 7) {
-                txtViewTotal.setTextColor(Color.parseColor("#adcb48"));
-            } else if (total <= 10) {
-                txtViewTotal.setTextColor(Color.parseColor("#dbb842"));
-            } else {
-                txtViewTotal.setTextColor(Color.parseColor("#f44336"));
-            }
+        private void setAverage(String average) {
+            txtViewAverage.setText(average);
         }
 
         private void setIntensity(double intensity) {
@@ -624,8 +635,17 @@ public class ReportFragment extends Fragment {
             }
         }
 
-        private void setAverage(String average) {
-            txtViewAverage.setText(average);
+        private void setTotal(int total) {
+            txtViewTotal.setText(String.valueOf(total));
+            if (total <= 3) {
+                txtViewTotal.setTextColor(Color.parseColor("#46cf9a"));
+            } else if (total <= 7) {
+                txtViewTotal.setTextColor(Color.parseColor("#adcb48"));
+            } else if (total <= 10) {
+                txtViewTotal.setTextColor(Color.parseColor("#dbb842"));
+            } else {
+                txtViewTotal.setTextColor(Color.parseColor("#f44336"));
+            }
         }
 
         private void setWhetherAvg(@NotNull WeatherData whetherAvg) {

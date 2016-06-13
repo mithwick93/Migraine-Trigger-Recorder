@@ -18,6 +18,10 @@ import shehan.com.migrainetrigger.view.model.AnswerSectionViewData;
  */
 public class LocationController {
 
+    public static long addLocation(Location location) {
+        return DBLocationDAO.addLocation(location);
+    }
+
     public static long addLocations(ArrayList<Location> lst) {
         for (Location itm : lst) {
             long result = addLocation(itm);
@@ -28,23 +32,8 @@ public class LocationController {
         return lst.size();
     }
 
-    public static long addLocation(Location location) {
-        return DBLocationDAO.addLocation(location);
-    }
-
     public static long deleteLocation(int id) {
         return DBLocationDAO.deleteLocation(id);
-    }
-
-    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<Location> lst = getAllLocations(false);
-        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
-        for (int i = 0; i < lst.size(); i++) {
-            Location location = lst.get(i);
-
-            answerSectionViewDataLst.add(new AnswerSectionViewData(location.getLocationId(), location.getLocationName()));
-        }
-        return answerSectionViewDataLst;
     }
 
     public static ArrayList<Location> getAllLocations(boolean applySuggestions) {
@@ -62,6 +51,24 @@ public class LocationController {
         return lst;
     }
 
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
+        ArrayList<Location> lst = getAllLocations(false);
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
+        for (int i = 0; i < lst.size(); i++) {
+            Location location = lst.get(i);
+
+            answerSectionViewDataLst.add(new AnswerSectionViewData(location.getLocationId(), location.getLocationName()));
+        }
+        return answerSectionViewDataLst;
+    }
+
+    public static int getLastRecordId() {
+        return DBLocationDAO.getLastRecordId();
+    }
+
+    public static Location getLocationById(int id) {
+        return DBLocationDAO.getLocation(id);
+    }
 
     private static ArrayList<Location> getReOrderedLst(ArrayList<Location> lst) {
         Log.d("LocationController", "getReOrderedLst ");
@@ -99,14 +106,6 @@ public class LocationController {
             Log.e("LocationController", "reorderLst - top lst item not found at index " + 0);
         }
         return lst;
-    }
-
-    public static int getLastRecordId() {
-        return DBLocationDAO.getLastRecordId();
-    }
-
-    public static Location getLocationById(int id) {
-        return DBLocationDAO.getLocation(id);
     }
 
     public static long updateLocationRecord(Location location) {

@@ -7,12 +7,12 @@
             android:defaultValue="true"
             android:key="pref_suggestions"
             android:summary="@string/pref_suggestions_summery"
-            android:title="@string/pref_suggestions_title"/>
+            android:title="@string/pref_suggestions_title" />
 
         <Preference
             android:key="pref_send_email"
             android:summary="@string/pref_send_summery"
-            android:title="@string/pref_send_title"/>
+            android:title="@string/pref_send_title" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="pref_key_theme_settings"
@@ -23,7 +23,7 @@
             android:entryValues="@array/themeListValues"
             android:key="pref_appTheme"
             android:summary="@string/pref_theme_summery"
-            android:title="@string/pref_theme_title"/>
+            android:title="@string/pref_theme_title" />
 
         <com.afollestad.materialdialogs.prefs.MaterialListPreference
             android:defaultValue="Red on yellow"
@@ -31,10 +31,9 @@
             android:entryValues="@array/colorListValues"
             android:key="pref_appColor"
             android:summary="@string/pref_color_scheme_summery"
-            android:title="@string/pref_color_scheme_title"/>
+            android:title="@string/pref_color_scheme_title" />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:title="@string/preferences_title_backup">
+    <PreferenceCategory android:title="@string/preferences_title_backup">
         <Preference
             android:key="pref_key_backup"
             android:summary="@string/pref_backup_summery"

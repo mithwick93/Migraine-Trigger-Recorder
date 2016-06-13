@@ -44,174 +44,8 @@ public class RecordController {
         return DBRecordDAO.getAllRecords();
     }
 
-    public static Timestamp getFirstRecordStartTimestamp() {
-        Record firstRecord = DBRecordDAO.getFirstRecord();
-        if (firstRecord != null && firstRecord.getStartTime() != null) {
-            return firstRecord.getStartTime();
-        } else {
-            Log.d("RecordController", "No first record found, creating default");
-            return AppUtil.getTimeStampDay("01/01/2016");
-        }
-    }
-
-    public static int getLastId() {
-        return DBRecordDAO.getLastRecordId();
-    }
-
-    public static Record getRecordById(int id) {
-        return DBRecordDAO.getRecord(id);
-    }
-
-    public static RecordViewData[] getRecordViewData() {
-        return getRecordViewData(getAllRecordsOrderByDate());
-
-    }
-
-    /**
-     * Convert arrayList to RecordViewData array
-     *
-     * @param recordArrayList recordArrayList
-     * @return RecordViewData[]
-     */
-    private static RecordViewData[] getRecordViewData(@NonNull ArrayList<Record> recordArrayList) {
-
-        RecordViewData recordViewData[] = new RecordViewData[recordArrayList.size()];
-
-        //Load data to recordViewData[]  from recordArrayList
-        for (int i = 0; i < recordArrayList.size(); i++) {
-            Record record = recordArrayList.get(i);
-            int recordId = record.getRecordId();
-            String start = "-";
-            String duration = "-";
-            int intensity;
-
-            if (record.getStartTime() != null) {
-                start = AppUtil.getFriendlyStringDate(record.getStartTime());
-
-                if (record.getEndTime() != null) {
-                    Timestamp startTime = record.getStartTime();
-                    Timestamp endTime = record.getEndTime();
-
-                    if (startTime != null) {
-                        if (endTime != null) {
-                            long difference = endTime.getTime() - startTime.getTime();
-                            long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
-                            duration = AppUtil.getFriendlyDuration(differenceInSeconds);
-                        }
-                    }
-                }
-            }
-
-
-            switch (record.getIntensity()) {//Set intensity pic
-                case 1:
-                    intensity = R.drawable.num_1;
-                    break;
-                case 2:
-                    intensity = R.drawable.num_2;
-                    break;
-                case 3:
-                    intensity = R.drawable.num_3;
-                    break;
-                case 4:
-                    intensity = R.drawable.num_4;
-                    break;
-                case 5:
-                    intensity = R.drawable.num_5;
-                    break;
-                case 6:
-                    intensity = R.drawable.num_6;
-                    break;
-                case 7:
-                    intensity = R.drawable.num_7;
-                    break;
-                case 8:
-                    intensity = R.drawable.num_8;
-                    break;
-                case 9:
-                    intensity = R.drawable.num_9;
-                    break;
-                case 10:
-                    intensity = R.drawable.num_10;
-                    break;
-                default:
-                    intensity = 0;
-                    break;
-            }
-
-            recordViewData[i] = new RecordViewData(recordId, start, duration, intensity);
-        }
-
-        return recordViewData;
-    }
-
     private static ArrayList<Record> getAllRecordsOrderByDate() {
         return DBRecordDAO.getAllRecordsOrderByDate();
-    }
-
-    public static RecordViewData[] getRecordViewDataFiltered(@NotNull ArrayList<ArrayList<String>> filterList) {
-        Log.d("RecordController", "getRecordViewDataFiltered");
-        if (filterList.size() == 7) {
-
-            ArrayList<Record> fullDetailRecordList = new ArrayList<>();//get full detailed record list
-            {
-                ArrayList<Record> recordArrayList = getAllRecordsOrderByDate();
-                if (recordArrayList.size() < 1) return null; //check if no of records are 0
-
-                for (Record record : recordArrayList) {
-                    fullDetailRecordList.add(getRecordAll(record.getRecordId()));
-                }
-            }
-            if (fullDetailRecordList.size() < 1) return null; //check if no of records are 0
-
-            ArrayList<Record> filteredRecordList = getFilteredRecords(filterList, fullDetailRecordList);
-
-            if (filteredRecordList.size() < 1) return null; //check if no of records are 0
-
-            return getRecordViewData(filteredRecordList);
-
-        } else {
-            Log.e("RecordController", "Incorrect no of filters , must be 7");
-        }
-        return null;
-
-    }
-
-    /**
-     * Get all record detail when record id is known
-     *
-     * @param recordId relevant record ID
-     * @return Record
-     */
-    @Nullable
-    public static Record getRecordAll(int recordId) {
-        Log.d("RecordController", "getRecordAll");
-        Record record = DBRecordDAO.getRecord(recordId);
-        if (record != null) {
-
-            if (record.getLocationId() > 0) {//set location
-                record.setLocation(LocationController.getLocationById(record.getLocationId()));
-            }
-
-            record.setWeatherData(WeatherDataController.getWeatherDataByRecordId(recordId));//set weather data
-
-            record.setActivities(LifeActivityController.getActivitiesForRecord(recordId));//set activities
-
-            record.setBodyAreas(BodyAreaController.getBodyAreasForRecord(recordId));//set body areas
-
-            record.setMedicines(MedicineController.getMedicinesForRecord(recordId));//Set medicine
-
-            record.setReliefs(ReliefController.getReliefsForRecord(recordId));//Set reliefs
-
-            record.setSymptoms(SymptomController.getSymptomsForRecord(recordId));//Set symptoms
-
-            record.setTriggers(TriggerController.getTriggersForRecord(recordId));//Set triggers
-
-            return record;
-        }
-        Log.e("RecordController", "getRecordAll -No such record");
-
-        return null;
     }
 
     private static ArrayList<Record> getFilteredRecords(@NotNull ArrayList<ArrayList<String>> filterList, @NotNull ArrayList<Record> fullDetailRecordList) {
@@ -325,6 +159,172 @@ public class RecordController {
         }
 
         return filteredRecordList;
+    }
+
+    public static Timestamp getFirstRecordStartTimestamp() {
+        Record firstRecord = DBRecordDAO.getFirstRecord();
+        if (firstRecord != null && firstRecord.getStartTime() != null) {
+            return firstRecord.getStartTime();
+        } else {
+            Log.d("RecordController", "No first record found, creating default");
+            return AppUtil.getTimeStampDay("01/01/2016");
+        }
+    }
+
+    public static int getLastId() {
+        return DBRecordDAO.getLastRecordId();
+    }
+
+    /**
+     * Get all record detail when record id is known
+     *
+     * @param recordId relevant record ID
+     * @return Record
+     */
+    @Nullable
+    public static Record getRecordAll(int recordId) {
+        Log.d("RecordController", "getRecordAll");
+        Record record = DBRecordDAO.getRecord(recordId);
+        if (record != null) {
+
+            if (record.getLocationId() > 0) {//set location
+                record.setLocation(LocationController.getLocationById(record.getLocationId()));
+            }
+
+            record.setWeatherData(WeatherDataController.getWeatherDataByRecordId(recordId));//set weather data
+
+            record.setActivities(LifeActivityController.getActivitiesForRecord(recordId));//set activities
+
+            record.setBodyAreas(BodyAreaController.getBodyAreasForRecord(recordId));//set body areas
+
+            record.setMedicines(MedicineController.getMedicinesForRecord(recordId));//Set medicine
+
+            record.setReliefs(ReliefController.getReliefsForRecord(recordId));//Set reliefs
+
+            record.setSymptoms(SymptomController.getSymptomsForRecord(recordId));//Set symptoms
+
+            record.setTriggers(TriggerController.getTriggersForRecord(recordId));//Set triggers
+
+            return record;
+        }
+        Log.e("RecordController", "getRecordAll -No such record");
+
+        return null;
+    }
+
+    public static Record getRecordById(int id) {
+        return DBRecordDAO.getRecord(id);
+    }
+
+    public static RecordViewData[] getRecordViewData() {
+        return getRecordViewData(getAllRecordsOrderByDate());
+
+    }
+
+    /**
+     * Convert arrayList to RecordViewData array
+     *
+     * @param recordArrayList recordArrayList
+     * @return RecordViewData[]
+     */
+    private static RecordViewData[] getRecordViewData(@NonNull ArrayList<Record> recordArrayList) {
+
+        RecordViewData recordViewData[] = new RecordViewData[recordArrayList.size()];
+
+        //Load data to recordViewData[]  from recordArrayList
+        for (int i = 0; i < recordArrayList.size(); i++) {
+            Record record = recordArrayList.get(i);
+            int recordId = record.getRecordId();
+            String start = "-";
+            String duration = "-";
+            int intensity;
+
+            if (record.getStartTime() != null) {
+                start = AppUtil.getFriendlyStringDate(record.getStartTime());
+
+                if (record.getEndTime() != null) {
+                    Timestamp startTime = record.getStartTime();
+                    Timestamp endTime = record.getEndTime();
+
+                    if (startTime != null) {
+                        if (endTime != null) {
+                            long difference = endTime.getTime() - startTime.getTime();
+                            long differenceInSeconds = difference / DateUtils.SECOND_IN_MILLIS;
+                            duration = AppUtil.getFriendlyDuration(differenceInSeconds);
+                        }
+                    }
+                }
+            }
+
+
+            switch (record.getIntensity()) {//Set intensity pic
+                case 1:
+                    intensity = R.drawable.num_1;
+                    break;
+                case 2:
+                    intensity = R.drawable.num_2;
+                    break;
+                case 3:
+                    intensity = R.drawable.num_3;
+                    break;
+                case 4:
+                    intensity = R.drawable.num_4;
+                    break;
+                case 5:
+                    intensity = R.drawable.num_5;
+                    break;
+                case 6:
+                    intensity = R.drawable.num_6;
+                    break;
+                case 7:
+                    intensity = R.drawable.num_7;
+                    break;
+                case 8:
+                    intensity = R.drawable.num_8;
+                    break;
+                case 9:
+                    intensity = R.drawable.num_9;
+                    break;
+                case 10:
+                    intensity = R.drawable.num_10;
+                    break;
+                default:
+                    intensity = 0;
+                    break;
+            }
+
+            recordViewData[i] = new RecordViewData(recordId, start, duration, intensity);
+        }
+
+        return recordViewData;
+    }
+
+    public static RecordViewData[] getRecordViewDataFiltered(@NotNull ArrayList<ArrayList<String>> filterList) {
+        Log.d("RecordController", "getRecordViewDataFiltered");
+        if (filterList.size() == 7) {
+
+            ArrayList<Record> fullDetailRecordList = new ArrayList<>();//get full detailed record list
+            {
+                ArrayList<Record> recordArrayList = getAllRecordsOrderByDate();
+                if (recordArrayList.size() < 1) return null; //check if no of records are 0
+
+                for (Record record : recordArrayList) {
+                    fullDetailRecordList.add(getRecordAll(record.getRecordId()));
+                }
+            }
+            if (fullDetailRecordList.size() < 1) return null; //check if no of records are 0
+
+            ArrayList<Record> filteredRecordList = getFilteredRecords(filterList, fullDetailRecordList);
+
+            if (filteredRecordList.size() < 1) return null; //check if no of records are 0
+
+            return getRecordViewData(filteredRecordList);
+
+        } else {
+            Log.e("RecordController", "Incorrect no of filters , must be 7");
+        }
+        return null;
+
     }
 
     /**

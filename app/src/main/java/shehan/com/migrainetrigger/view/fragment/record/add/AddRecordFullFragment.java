@@ -173,6 +173,44 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Get basic data of record
+     * Does not check constraints
+     *
+     * @return record builder with full data saved
+     */
+    protected RecordBuilder getFullRecordBuilder() {
+        Log.d("AddFullFragment", "getFullRecordBuilder");
+
+        //Call parent method to get intermediate info
+        RecordBuilder recordBuilder = getIntermediateRecordBuilder();
+
+        if (location != null) {
+            Log.d("AddFullFragment", "getFullRecordBuilder - location");
+            recordBuilder = recordBuilder.setLocation(location);
+            recordBuilder = recordBuilder.setLocationId(location.getLocationId());
+        } else {
+            recordBuilder = recordBuilder.setLocationId(0);
+        }
+
+        if (selectedBodyAreas.size() > 0) {
+            Log.d("AddFullFragment", "getFullRecordBuilder - selectedBodyAreas");
+            recordBuilder = recordBuilder.setBodyAreas(selectedBodyAreas);
+        }
+
+        if (selectedMedicines.size() > 0) {
+            Log.d("AddFullFragment", " - selectedMedicines");
+            recordBuilder = recordBuilder.setMedicines(selectedMedicines);
+        }
+
+        if (selectedReliefs.size() > 0) {
+            Log.d("AddFullFragment", " - selectedReliefs");
+            recordBuilder = recordBuilder.setReliefs(selectedReliefs);
+        }
+
+        return recordBuilder;
+    }
+
     //
     //
     protected void initFullControls(final View view) {
@@ -633,13 +671,13 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
                 startTimestamp = getTimeStampDate(tmpStr);
             }
         } else {
-            AppUtil.showMsg(getContext(), "Record must have start time");
+            AppUtil.showMsg(getContext(), "Record must have start time","Validation error");
             return;
         }
 
         Calendar c = Calendar.getInstance();
         if (startTimestamp.after(c.getTime())) {
-            AppUtil.showMsg(getContext(), "Start Date is past current time");
+            AppUtil.showMsg(getContext(), "Start Date is past current time","Validation error");
             return;
         }
 
@@ -660,7 +698,7 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
 
         if (endTimestamp != null) {
             if (endTimestamp.after(c.getTime())) {
-                AppUtil.showMsg(getContext(), "End Date is past current time");
+                AppUtil.showMsg(getContext(), "End Date is past current time","Validation error");
                 return;
             }
         }
@@ -689,46 +727,8 @@ public class AddRecordFullFragment extends AddRecordIntermediateFragment {
             }.execute();
 
         } else {
-            AppUtil.showMsg(getContext(), "Start time is greater than the end time");
+            AppUtil.showMsg(getContext(), "Start time is greater than the end time","Validation error");
         }
-    }
-
-    /**
-     * Get basic data of record
-     * Does not check constraints
-     *
-     * @return record builder with full data saved
-     */
-    protected RecordBuilder getFullRecordBuilder() {
-        Log.d("AddFullFragment", "getFullRecordBuilder");
-
-        //Call parent method to get intermediate info
-        RecordBuilder recordBuilder = getIntermediateRecordBuilder();
-
-        if (location != null) {
-            Log.d("AddFullFragment", "getFullRecordBuilder - location");
-            recordBuilder = recordBuilder.setLocation(location);
-            recordBuilder = recordBuilder.setLocationId(location.getLocationId());
-        } else {
-            recordBuilder = recordBuilder.setLocationId(0);
-        }
-
-        if (selectedBodyAreas.size() > 0) {
-            Log.d("AddFullFragment", "getFullRecordBuilder - selectedBodyAreas");
-            recordBuilder = recordBuilder.setBodyAreas(selectedBodyAreas);
-        }
-
-        if (selectedMedicines.size() > 0) {
-            Log.d("AddFullFragment", " - selectedMedicines");
-            recordBuilder = recordBuilder.setMedicines(selectedMedicines);
-        }
-
-        if (selectedReliefs.size() > 0) {
-            Log.d("AddFullFragment", " - selectedReliefs");
-            recordBuilder = recordBuilder.setReliefs(selectedReliefs);
-        }
-
-        return recordBuilder;
     }
     //
     //

@@ -1,12 +1,12 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/themedNavHeaderColor"
-        android:contentDescription="@string/splash_scree_background"/>
+        android:contentDescription="@string/splash_scree_background" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/app_icon"
             android:scaleType="fitXY"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Display1"
@@ -30,7 +30,7 @@
             android:gravity="center"
             android:text="@string/splash_screen_app_name"
             android:textColor="@android:color/black"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Title"
@@ -39,7 +39,7 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="@string/app_version"
-            android:textColor="@android:color/primary_text_dark"/>
+            android:textColor="@android:color/primary_text_dark" />
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/loadingIndicator"
@@ -48,8 +48,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="25dp"
             android:visibility="visible"
-            app:indicator="BallPulse"
-            />
+            app:indicator="BallPulse" />
 
     </LinearLayout>
 </merge>

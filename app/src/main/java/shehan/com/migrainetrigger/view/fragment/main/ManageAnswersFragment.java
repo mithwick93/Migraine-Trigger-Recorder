@@ -51,7 +51,6 @@ public class ManageAnswersFragment extends Fragment {
         mCallback = null;
     }
 
-
     private void init(View view) {
         CardView cardViewTriggers = (CardView) view.findViewById(R.id.card_view_answers_triggers);
         CardView cardViewSymptoms = (CardView) view.findViewById(R.id.card_view_answers_symptoms);

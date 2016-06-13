@@ -178,6 +178,18 @@ public class ViewRecordCalenderFragment extends Fragment {
             return RecordController.getAllRecords();
         }
 
+        /**
+         * Set all map key dates time to midnight
+         *
+         * @param calendar calender to change
+         */
+        private void setToMidnight(Calendar calendar) {
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+        }
+
         @Override
         protected void onPostExecute(ArrayList<Record> recordArrayList) {
             Log.d("GetRecordCalenderList", " onPostExecute - update ui");
@@ -255,17 +267,7 @@ public class ViewRecordCalenderFragment extends Fragment {
             calenderView.addEvents(calendarDayEvents);
         }
 
-        /**
-         * Set all map key dates time to midnight
-         *
-         * @param calendar calender to change
-         */
-        private void setToMidnight(Calendar calendar) {
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
-        }
+
     }
 
     /**

@@ -18,6 +18,10 @@ import shehan.com.migrainetrigger.view.model.AnswerSectionViewData;
  */
 public class MedicineController {
 
+    public static long addMedicine(Medicine medicine) {
+        return DBMedicineDAO.addMedicine(medicine);
+    }
+
     public static long addMedicineRecord(int medicineId, int recordId, boolean effective) {
         Log.d("MedicineController", " addMedicineRecord ");
         return DBMedicineDAO.addMedicineRecord(medicineId, recordId, effective);
@@ -33,23 +37,8 @@ public class MedicineController {
         return lst.size();
     }
 
-    public static long addMedicine(Medicine medicine) {
-        return DBMedicineDAO.addMedicine(medicine);
-    }
-
     public static long deleteMedicine(int id) {
         return DBMedicineDAO.deleteMedicine(id);
-    }
-
-    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
-        ArrayList<Medicine> lst = getAllMedicines(false);
-        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
-        for (int i = 0; i < lst.size(); i++) {
-            Medicine medicine = lst.get(i);
-
-            answerSectionViewDataLst.add(new AnswerSectionViewData(medicine.getMedicineId(), medicine.getMedicineName(), medicine.getPriority()));
-        }
-        return answerSectionViewDataLst;
     }
 
     public static ArrayList<Medicine> getAllMedicines(boolean applySuggestions) {
@@ -67,6 +56,29 @@ public class MedicineController {
         }
 
         return lst;
+    }
+
+    public static List<AnswerSectionViewData> getAnswerSectionViewData() {
+        ArrayList<Medicine> lst = getAllMedicines(false);
+        List<AnswerSectionViewData> answerSectionViewDataLst = new ArrayList<>();
+        for (int i = 0; i < lst.size(); i++) {
+            Medicine medicine = lst.get(i);
+
+            answerSectionViewDataLst.add(new AnswerSectionViewData(medicine.getMedicineId(), medicine.getMedicineName(), medicine.getPriority()));
+        }
+        return answerSectionViewDataLst;
+    }
+
+    public static int getLastRecordId() {
+        return DBMedicineDAO.getLastRecordId();
+    }
+
+    public static Medicine getMedicineById(int id) {
+        return DBMedicineDAO.getMedicine(id);
+    }
+
+    public static ArrayList<Medicine> getMedicinesForRecord(int recordId) {
+        return DBMedicineDAO.getMedicinesForRecord(recordId);
     }
 
     private static ArrayList<Medicine> getReOrderedLst(ArrayList<Medicine> lst) {
@@ -105,18 +117,6 @@ public class MedicineController {
             Log.e("MedicineController", "reorderLst - top lst item not found at index " + 0);
         }
         return lst;
-    }
-
-    public static int getLastRecordId() {
-        return DBMedicineDAO.getLastRecordId();
-    }
-
-    public static Medicine getMedicineById(int id) {
-        return DBMedicineDAO.getMedicine(id);
-    }
-
-    public static ArrayList<Medicine> getMedicinesForRecord(int recordId) {
-        return DBMedicineDAO.getMedicinesForRecord(recordId);
     }
 
     public static long updateMedicineRecord(Medicine medicine) {

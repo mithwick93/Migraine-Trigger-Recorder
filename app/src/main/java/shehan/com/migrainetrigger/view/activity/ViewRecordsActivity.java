@@ -32,13 +32,6 @@ public class ViewRecordsActivity
         showSingleRecordActivity(recordId);
     }
 
-    private void showSingleRecordActivity(int recordId) {
-        Intent intent = new Intent(ViewRecordsActivity.this, ViewSingleRecordActivity.class);
-        intent.putExtra("recordId", recordId);
-        Log.d("ViewRecordsActivity ", "Launching view single record activity");
-        startActivity(intent);
-    }
-
     @Override
     public void onRecordListRequest(int request) {
         if (request == -1) {
@@ -128,6 +121,13 @@ public class ViewRecordsActivity
             getSupportActionBar().setTitle(R.string.nav_records);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private void showSingleRecordActivity(int recordId) {
+        Intent intent = new Intent(ViewRecordsActivity.this, ViewSingleRecordActivity.class);
+        intent.putExtra("recordId", recordId);
+        Log.d("ViewRecordsActivity ", "Launching view single record activity");
+        startActivity(intent);
     }
 
     /**

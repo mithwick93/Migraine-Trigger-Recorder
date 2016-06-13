@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:animateLayoutChanges="true"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView_currentFilterDetails"
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:text="@string/record_filter_title"
-        android:textAppearance="@android:style/TextAppearance.DialogWindowTitle"/>
+        android:textAppearance="@android:style/TextAppearance.DialogWindowTitle" />
 
     <View
         android:id="@id/viewDivider"
@@ -19,7 +19,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
-        android:background="?attr/filterDialogSeparatorColor"/>
+        android:background="?attr/filterDialogSeparatorColor" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -48,7 +48,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
-        android:background="?attr/filterDialogSeparatorColor"/>
+        android:background="?attr/filterDialogSeparatorColor" />
 
     <LinearLayout
 
@@ -67,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
-            android:text="@string/record_filter_btn_cancel"/>
+            android:text="@string/record_filter_btn_cancel" />
 
         <Button
             android:id="@+id/button_dialog_clear_filter"
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
             android:padding="1dp"
-            android:text="@string/record_filter_btn_clear"/>
+            android:text="@string/record_filter_btn_clear" />
 
         <Button
             android:id="@+id/button_dialog_filter"
@@ -84,6 +84,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
-            android:text="@string/record_filter_btn_filter"/>
+            android:text="@string/record_filter_btn_filter" />
     </LinearLayout>
 </LinearLayout>

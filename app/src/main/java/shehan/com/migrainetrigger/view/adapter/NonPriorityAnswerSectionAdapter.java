@@ -75,13 +75,13 @@ public class NonPriorityAnswerSectionAdapter
         notifyDataSetChanged();
     }
 
+    public interface NonPriorityDataItemRemoveListener {
+        void onNonPriorityDataItemRemoved(AnswerSectionViewData answerItem);
+    }
+
     //Listener interface to sent recycler click to containing fragment or activity
     public interface NonPriorityRowClickListener {
         void onNonPriorityAnswerRowClicked(AnswerSectionViewData answerSectionViewData);
-    }
-
-    public interface NonPriorityDataItemRemoveListener {
-        void onNonPriorityDataItemRemoved(AnswerSectionViewData answerItem);
     }
 
     // inner class to hold a reference to each item of RecyclerView

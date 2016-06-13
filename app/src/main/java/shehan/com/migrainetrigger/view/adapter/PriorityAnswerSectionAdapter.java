@@ -106,13 +106,13 @@ public class PriorityAnswerSectionAdapter extends RecyclerView.Adapter<PriorityA
         notifyDataSetChanged();
     }
 
+    public interface DataOrderChangeListener {
+        void onDataReordered(List<AnswerSectionViewData> answerList);
+    }
+
     //Listener interface to sent recycler click to containing fragment or activity
     public interface PriorityAnswersRowClickListener {
         void onPriorityAnswerRawClicked(AnswerSectionViewData answerSectionViewData);
-    }
-
-    public interface DataOrderChangeListener {
-        void onDataReordered(List<AnswerSectionViewData> answerList);
     }
 
     public interface PriorityDataItemRemoveListener {

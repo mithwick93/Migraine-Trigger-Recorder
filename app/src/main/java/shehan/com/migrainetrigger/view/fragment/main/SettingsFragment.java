@@ -97,10 +97,29 @@ public class SettingsFragment extends PreferenceFragment {
         });
     }
 
-
-    private void initiateSendEmail() {
-        if (isStoragePermissionGranted(PERMISSION_WRITE_EXTERNAL_STORAGE_BACKUP)) {
-            new CreateTempDBTask().execute();
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_WRITE_EXTERNAL_STORAGE_BACKUP:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    new BackupDatabaseTask().execute();
+                } else {
+                    // Permission Denied
+                    AppUtil.showToast(getActivity(), "SD card access Denied");
+                }
+                break;
+            case PERMISSION_WRITE_EXTERNAL_STORAGE_RESTORE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    new RestoreDatabaseTask().execute();
+                } else {
+                    // Permission Denied
+                    AppUtil.showToast(getActivity(), "SD card access Denied");
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
@@ -138,6 +157,12 @@ public class SettingsFragment extends PreferenceFragment {
                 .show();
     }
 
+    private void initiateSendEmail() {
+        if (isStoragePermissionGranted(PERMISSION_WRITE_EXTERNAL_STORAGE_BACKUP)) {
+            new CreateTempDBTask().execute();
+        }
+    }
+
     private boolean isStoragePermissionGranted(final int request) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -170,38 +195,18 @@ public class SettingsFragment extends PreferenceFragment {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_WRITE_EXTERNAL_STORAGE_BACKUP:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission Granted
-                    new BackupDatabaseTask().execute();
-                } else {
-                    // Permission Denied
-                    AppUtil.showToast(getActivity(), "SD card access Denied");
-                }
-                break;
-            case PERMISSION_WRITE_EXTERNAL_STORAGE_RESTORE:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission Granted
-                    new RestoreDatabaseTask().execute();
-                } else {
-                    // Permission Denied
-                    AppUtil.showToast(getActivity(), "SD card access Denied");
-                }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
-
     /**
      * Async task to backup database
      */
     private class BackupDatabaseTask extends AsyncTask<String, Void, String> {
 
         private ProgressDialog nDialog;
+
+        /* Checks if external storage is available for read and write */
+        public boolean isExternalStorageWritable() {
+            String state = Environment.getExternalStorageState();
+            return Environment.MEDIA_MOUNTED.equals(state);
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -266,12 +271,6 @@ public class SettingsFragment extends PreferenceFragment {
                 e.printStackTrace();
                 return e.getMessage();
             }
-        }
-
-        /* Checks if external storage is available for read and write */
-        public boolean isExternalStorageWritable() {
-            String state = Environment.getExternalStorageState();
-            return Environment.MEDIA_MOUNTED.equals(state);
         }
 
         @Override

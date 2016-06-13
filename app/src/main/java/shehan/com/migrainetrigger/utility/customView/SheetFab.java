@@ -43,6 +43,26 @@ public class SheetFab extends FloatingActionButton implements AnimatedFab {
     }
 
     /**
+     * Hides the FAB.
+     */
+    @Override
+    public void hide() {
+        // Only use scale animation if FAB is visible
+        if (getVisibility() == View.VISIBLE) {
+            // Pivots indicate where the animation begins from
+            float pivotX = getPivotX() + getTranslationX();
+            float pivotY = getPivotY() + getTranslationY();
+
+            // Animate FAB shrinking
+            ScaleAnimation anim = new ScaleAnimation(1, 0, 1, 0, pivotX, pivotY);
+            anim.setDuration(FAB_ANIM_DURATION);
+            anim.setInterpolator(getInterpolator());
+            startAnimation(anim);
+        }
+        setVisibility(View.INVISIBLE);
+    }
+
+    /**
      * Shows the FAB and sets the FAB's translation.
      *
      * @param translationX translation X value
@@ -77,32 +97,12 @@ public class SheetFab extends FloatingActionButton implements AnimatedFab {
         setVisibility(View.VISIBLE);
     }
 
-    private void setTranslation(float translationX, float translationY) {
-        animate().setInterpolator(getInterpolator()).setDuration(FAB_ANIM_DURATION)
-                .translationX(translationX).translationY(translationY);
-    }
-
     private Interpolator getInterpolator() {
         return AnimationUtils.loadInterpolator(getContext(), R.interpolator.msf_interpolator);
     }
 
-    /**
-     * Hides the FAB.
-     */
-    @Override
-    public void hide() {
-        // Only use scale animation if FAB is visible
-        if (getVisibility() == View.VISIBLE) {
-            // Pivots indicate where the animation begins from
-            float pivotX = getPivotX() + getTranslationX();
-            float pivotY = getPivotY() + getTranslationY();
-
-            // Animate FAB shrinking
-            ScaleAnimation anim = new ScaleAnimation(1, 0, 1, 0, pivotX, pivotY);
-            anim.setDuration(FAB_ANIM_DURATION);
-            anim.setInterpolator(getInterpolator());
-            startAnimation(anim);
-        }
-        setVisibility(View.INVISIBLE);
+    private void setTranslation(float translationX, float translationY) {
+        animate().setInterpolator(getInterpolator()).setDuration(FAB_ANIM_DURATION)
+                .translationX(translationX).translationY(translationY);
     }
 }

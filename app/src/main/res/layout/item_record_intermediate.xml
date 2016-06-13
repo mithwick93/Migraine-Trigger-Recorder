@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view_record_intermediate"
     android:layout_width="match_parent"
@@ -43,7 +42,7 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:text="@string/record_lbl_triggers"
-                    android:textAppearance="?android:attr/textAppearanceLarge"/>
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <EditText
                     android:id="@+id/txt_record_triggers"
@@ -55,7 +54,7 @@
                     android:ems="10"
                     android:focusable="false"
                     android:inputType="textNoSuggestions|textLongMessage|textMultiLine"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
 
@@ -84,7 +83,7 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:text="@string/record_lbl_symptoms"
-                    android:textAppearance="?android:attr/textAppearanceLarge"/>
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <EditText
                     android:id="@+id/txt_record_symptoms"
@@ -96,7 +95,7 @@
                     android:ems="10"
                     android:focusable="false"
                     android:inputType="textNoSuggestions|textMultiLine"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
 
@@ -125,7 +124,7 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:text="@string/record_lbl_activities"
-                    android:textAppearance="?android:attr/textAppearanceLarge"/>
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <EditText
                     android:id="@+id/txt_record_activities"
@@ -137,7 +136,7 @@
                     android:ems="10"
                     android:focusable="false"
                     android:inputType="textNoSuggestions|textMultiLine"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
         </RelativeLayout>

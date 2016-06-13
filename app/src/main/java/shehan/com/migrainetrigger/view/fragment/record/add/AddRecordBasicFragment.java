@@ -96,7 +96,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     }
 
     /**
-     * Called when location is recieved
+     * Called when location is received
      *
      * @param location location object
      */
@@ -159,200 +159,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
     }
 
-    /**
-     * Save record,
-     * In subclasses handle this separately
-     */
-    private void saveBasicRecord() {
-        Log.d("AddRecordBasic", "saveRecord");
-        //validations
-        //check start<end
-        Timestamp startTimestamp;
-
-        //Check for start date
-        if (startDate[0] != -1) {
-
-            if (startTime[0] != -1) {
-                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " "
-                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":00";
-
-                startTimestamp = getTimeStampDate(tmpStr);
-            } else {
-                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " 00:00:00";
-                startTimestamp = getTimeStampDate(tmpStr);
-            }
-        } else {
-            AppUtil.showMsg(getContext(), "Record must have start time");
-            return;
-        }
-
-        Calendar c = Calendar.getInstance();
-        if (startTimestamp.after(c.getTime())) {
-            AppUtil.showMsg(getContext(), "Start Date is past current time");
-            return;
-        }
-
-        //Check for end date
-        Timestamp endTimestamp = null;
-        if (endDate[0] != -1) {
-
-            if (endTime[0] != -1) {
-                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " "
-                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":00";
-                endTimestamp = getTimeStampDate(tmpStr);
-            } else {
-                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " 00:00:00";
-                endTimestamp = getTimeStampDate(tmpStr);
-            }
-
-        }
-
-        if (endTimestamp != null) {
-            if (endTimestamp.after(c.getTime())) {
-                AppUtil.showMsg(getContext(), "End Date is past current time");
-                return;
-            }
-        }
-
-        //validate times
-        if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
-
-            new AsyncTask<String, Void, Boolean>() {
-                @Override
-                protected Boolean doInBackground(String... params) {
-                    return RecordController.addNewRecord(getBasicRecordBuilder().createRecord(), 0);//Level 0
-                }
-
-                @Override
-                protected void onPostExecute(Boolean result) {
-                    if (result) {
-                        AppUtil.showToast(getContext(), "Record was saved successfully");
-                        if (mCallback != null) {
-                            mCallback.onAddRecordBasicRequest(0);
-                        }
-
-                    } else {
-                        AppUtil.showToast(getContext(), "Record save failed");
-                    }
-                }
-            }.execute();
-        } else {
-            AppUtil.showMsg(getContext(), "Start time is greater than the end time");
-        }
-    }
-
-    /**
-     * Show weather data
-     * use this in subclasses also
-     */
-    protected void showWeather() {
-        Log.d("AddRecordBasic", "showWeather");
-        if (isLocationPermissionGranted()) {
-            getWeatherFromService();
-        }
-    }
-
-    /**
-     * Get basic data of record
-     * Does not check constraints
-     *
-     * @return record builder with basic data saved
-     */
-    protected RecordBuilder getBasicRecordBuilder() {
-        Log.d("AddRecordBasic", "getBasicRecordBuilder");
-        RecordBuilder recordBuilder = new RecordBuilder().setRecordId(RecordController.getLastId() + 1);
-
-        if (weatherData != null) {
-            Log.d("AddRecordBasic", "getBasicRecordBuilder - weatherData");
-            recordBuilder = recordBuilder.setWeatherData(weatherData);
-        }
-
-        if (intensity > 0) {
-            Log.d("AddRecordBasic", "getBasicRecordBuilder - intensity ");
-            recordBuilder = recordBuilder.setIntensity(intensity);
-        }
-
-        if (startDate[0] != -1) {
-            Log.d("AddRecordBasic", "getBasicRecordBuilder - startDate");
-            Timestamp startTimestamp;
-            if (startTime[0] != -1) {
-                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " "
-                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":00";
-
-                startTimestamp = getTimeStampDate(tmpStr);
-            } else {
-                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " 00:00:00";
-
-                startTimestamp = getTimeStampDate(tmpStr);
-            }
-            recordBuilder = recordBuilder.setStartTime(startTimestamp);
-        }
-
-        if (endDate[0] != -1) {
-            Log.d("AddRecordBasic", "getBasicRecordBuilder - endDate");
-            Timestamp endTimestamp;
-            if (endTime[0] != -1) {
-                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " "
-                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":00";
-                endTimestamp = getTimeStampDate(tmpStr);
-            } else {
-                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " 00:00:00";
-                endTimestamp = getTimeStampDate(tmpStr);
-            }
-            recordBuilder = recordBuilder.setEndTime(endTimestamp);
-        }
-
-        return recordBuilder;
-    }
-
-    private boolean isLocationPermissionGranted() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                Log.v("AddRecordBasic", "Permission is granted");
-                return true;
-            } else {
-                Log.v("AddRecordBasic", "Permission is revoked");
-                if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    new MaterialDialog.Builder(getContext())
-                            .content("This app wants to access your fine location.")
-                            .positiveText("Agree")
-                            .negativeText("Disagree")
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, GeoLocationService.PERMISSION_ACCESS_FINE_LOCATION);
-                                }
-                            })
-                            .show();
-                    return false;
-                }
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, GeoLocationService.PERMISSION_ACCESS_FINE_LOCATION);
-                return false;
-            }
-        } else { //permission is automatically granted on sdk<23 upon installation
-            Log.v("AddRecordBasic", "Permission is granted");
-            return true;
-        }
-    }
-
-    private void getWeatherFromService() {
-        try {
-            if (geoLocationService != null) {
-                geoLocationService.disconnect();
-            }
-
-            geoLocationService = new GeoLocationService(getActivity(), this);
-            Log.d("GeoLocationService", "GeoLocationService - created googleApiClient");
-        } catch (Exception e) {
-            if (geoLocationService != null) {
-                geoLocationService.disconnect();
-            }
-            Log.e("AddRecordBasic", "exception :");
-            AppUtil.showToast(getContext(), "Something went wrong");
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public String toString() {
         return "Basic";
@@ -408,9 +214,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         Log.d("AddRecordBasic-onCreate", "variables initialized, onCreate complete");
         return view;
     }
-    //
-    //
-    //
 
     @Override
     public void onStart() {
@@ -453,6 +256,9 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         super.onDetach();
         mCallback = null;
     }
+    //
+    //
+    //
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -469,6 +275,59 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Get basic data of record
+     * Does not check constraints
+     *
+     * @return record builder with basic data saved
+     */
+    protected RecordBuilder getBasicRecordBuilder() {
+        Log.d("AddRecordBasic", "getBasicRecordBuilder");
+        RecordBuilder recordBuilder = new RecordBuilder().setRecordId(RecordController.getLastId() + 1);
+
+        if (weatherData != null) {
+            Log.d("AddRecordBasic", "getBasicRecordBuilder - weatherData");
+            recordBuilder = recordBuilder.setWeatherData(weatherData);
+        }
+
+        if (intensity > 0) {
+            Log.d("AddRecordBasic", "getBasicRecordBuilder - intensity ");
+            recordBuilder = recordBuilder.setIntensity(intensity);
+        }
+
+        if (startDate[0] != -1) {
+            Log.d("AddRecordBasic", "getBasicRecordBuilder - startDate");
+            Timestamp startTimestamp;
+            if (startTime[0] != -1) {
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " "
+                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":00";
+
+                startTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " 00:00:00";
+
+                startTimestamp = getTimeStampDate(tmpStr);
+            }
+            recordBuilder = recordBuilder.setStartTime(startTimestamp);
+        }
+
+        if (endDate[0] != -1) {
+            Log.d("AddRecordBasic", "getBasicRecordBuilder - endDate");
+            Timestamp endTimestamp;
+            if (endTime[0] != -1) {
+                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " "
+                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":00";
+                endTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " 00:00:00";
+                endTimestamp = getTimeStampDate(tmpStr);
+            }
+            recordBuilder = recordBuilder.setEndTime(endTimestamp);
+        }
+
+        return recordBuilder;
     }
 
     /**
@@ -778,6 +637,147 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         }
     }
 
+    /**
+     * Show weather data
+     * use this in subclasses also
+     */
+    protected void showWeather() {
+        Log.d("AddRecordBasic", "showWeather");
+        if (isLocationPermissionGranted()) {
+            getWeatherFromService();
+        }
+    }
+
+    private void getWeatherFromService() {
+        try {
+            if (geoLocationService != null) {
+                geoLocationService.disconnect();
+            }
+
+            geoLocationService = new GeoLocationService(getActivity(), this);
+            Log.d("GeoLocationService", "GeoLocationService - created googleApiClient");
+        } catch (Exception e) {
+            if (geoLocationService != null) {
+                geoLocationService.disconnect();
+            }
+            Log.e("AddRecordBasic", "exception :");
+            AppUtil.showToast(getContext(), "Something went wrong");
+            e.printStackTrace();
+        }
+    }
+
+    private boolean isLocationPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                Log.v("AddRecordBasic", "Permission is granted");
+                return true;
+            } else {
+                Log.v("AddRecordBasic", "Permission is revoked");
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    new MaterialDialog.Builder(getContext())
+                            .content("This app wants to access your fine location.")
+                            .positiveText("Agree")
+                            .negativeText("Disagree")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, GeoLocationService.PERMISSION_ACCESS_FINE_LOCATION);
+                                }
+                            })
+                            .show();
+                    return false;
+                }
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, GeoLocationService.PERMISSION_ACCESS_FINE_LOCATION);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("AddRecordBasic", "Permission is granted");
+            return true;
+        }
+    }
+
+    /**
+     * Save record,
+     * In subclasses handle this separately
+     */
+    private void saveBasicRecord() {
+        Log.d("AddRecordBasic", "saveRecord");
+        //validations
+        //check start<end
+        Timestamp startTimestamp;
+
+        //Check for start date
+        if (startDate[0] != -1) {
+
+            if (startTime[0] != -1) {
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " "
+                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":00";
+
+                startTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " 00:00:00";
+                startTimestamp = getTimeStampDate(tmpStr);
+            }
+        } else {
+            AppUtil.showMsg(getContext(), "Record must have start time","Validation error");
+            return;
+        }
+
+        Calendar c = Calendar.getInstance();
+        if (startTimestamp.after(c.getTime())) {
+            AppUtil.showMsg(getContext(), "Start Date is past current time","Validation error");
+            return;
+        }
+
+        //Check for end date
+        Timestamp endTimestamp = null;
+        if (endDate[0] != -1) {
+
+            if (endTime[0] != -1) {
+                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " "
+                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":00";
+                endTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " 00:00:00";
+                endTimestamp = getTimeStampDate(tmpStr);
+            }
+
+        }
+
+        if (endTimestamp != null) {
+            if (endTimestamp.after(c.getTime())) {
+                AppUtil.showMsg(getContext(), "End Date is past current time","Validation error");
+                return;
+            }
+        }
+
+        //validate times
+        if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
+
+            new AsyncTask<String, Void, Boolean>() {
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    return RecordController.addNewRecord(getBasicRecordBuilder().createRecord(), 0);//Level 0
+                }
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if (result) {
+                        AppUtil.showToast(getContext(), "Record was saved successfully");
+                        if (mCallback != null) {
+                            mCallback.onAddRecordBasicRequest(0);
+                        }
+
+                    } else {
+                        AppUtil.showToast(getContext(), "Record save failed");
+                    }
+                }
+            }.execute();
+        } else {
+            AppUtil.showMsg(getContext(), "Start time is greater than the end time","Validation error");
+        }
+    }
+
     //
     //
     //
@@ -925,7 +925,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                 layoutWeather.setVisibility(View.GONE);
 
                 if (networkProblem) {
-                    AppUtil.showMsg(getContext(), "There was an error connecting to the weather service. Please check network connectivity and try again.", "Could not get weather data");
+                    AppUtil.showMsg(getContext(), "There was an error connecting to the weather service. Please check network connectivity and try again.", "Service error");
                 } else {
                     Toast.makeText(getContext(), "Task canceled", Toast.LENGTH_SHORT).show();
                 }
@@ -946,7 +946,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
             } else {
                 Log.d("showWeather", "null weather data");
-                AppUtil.showMsg(getContext(), "network service disconnected");
+                AppUtil.showMsg(getContext(), "network service disconnected","Network Error");
             }
         }
     }

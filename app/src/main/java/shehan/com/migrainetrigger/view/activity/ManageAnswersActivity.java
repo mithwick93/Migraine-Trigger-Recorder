@@ -21,7 +21,6 @@ public class ManageAnswersActivity extends BaseActivity {
         super.onResume();
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEVELOPER_MODE) {

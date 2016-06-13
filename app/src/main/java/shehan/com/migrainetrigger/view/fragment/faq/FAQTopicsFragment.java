@@ -71,7 +71,7 @@ public class FAQTopicsFragment extends Fragment implements FAQTopicsViewAdapter.
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // 3. create an adapter
-        FAQTopicsViewAdapter faqTopicsViewAdapter = new FAQTopicsViewAdapter(getContext(), this, faqTopicsData);
+        FAQTopicsViewAdapter faqTopicsViewAdapter = new FAQTopicsViewAdapter(this, faqTopicsData);
 
         // 4. set adapter
         recyclerView.setAdapter(faqTopicsViewAdapter);

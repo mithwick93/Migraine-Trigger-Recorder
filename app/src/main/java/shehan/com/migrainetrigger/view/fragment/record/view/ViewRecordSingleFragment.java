@@ -150,6 +150,91 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     }
 
     /**
+     * update record
+     */
+    public void updateRecord() {
+        Log.d("ViewRecordSingle", "updateRecord");
+
+        //validations
+        //check start<end
+        Timestamp startTimestamp;
+
+        //Check for start date
+        if (startDate[0] != -1) {
+
+            if (startTime[0] != -1) {
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " "
+                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":00";
+
+                startTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " 00:00:00";
+                startTimestamp = getTimeStampDate(tmpStr);
+            }
+        } else {
+            AppUtil.showMsg(getContext(), "Record must have start time","Validation error");
+            return;
+        }
+
+        Calendar c = Calendar.getInstance();
+        if (startTimestamp.after(c.getTime())) {
+            AppUtil.showMsg(getContext(), "Start Date is past current time","Validation error");
+            return;
+        }
+
+        //Check for end date
+        Timestamp endTimestamp = null;
+        if (endDate[0] != -1) {
+
+            if (endTime[0] != -1) {
+                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " "
+                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":00";
+                endTimestamp = getTimeStampDate(tmpStr);
+            } else {
+                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " 00:00:00";
+                endTimestamp = getTimeStampDate(tmpStr);
+            }
+
+        }
+
+        if (endTimestamp != null) {
+            if (endTimestamp.after(c.getTime())) {
+                AppUtil.showMsg(getContext(), "End Date is past current time","Validation error");
+                return;
+            }
+        }
+
+        //validate times
+        if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
+
+            new AsyncTask<String, Void, Boolean>() {
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    return RecordController.updateRecord(getFullRecordBuilder().setRecordId(recordId).createRecord());
+                }
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if (result) {
+                        AppUtil.showToast(getContext(), "Record was updated successfully");
+                        if (mCallback != null) {
+                            mCallback.onSingleRecordViewRequest(0);
+                        }
+
+                    } else {
+                        AppUtil.showToast(getContext(), "Record update failed");
+                    }
+                }
+            }.execute();
+
+        } else {
+            AppUtil.showMsg(getContext(), "Start time is greater than the end time","Validation error");
+        }
+
+
+    }
+
+    /**
      * delete record
      */
     private void deleteRecord() {
@@ -196,91 +281,6 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     }
 
     /**
-     * update record
-     */
-    public void updateRecord() {
-        Log.d("ViewRecordSingle", "updateRecord");
-
-        //validations
-        //check start<end
-        Timestamp startTimestamp;
-
-        //Check for start date
-        if (startDate[0] != -1) {
-
-            if (startTime[0] != -1) {
-                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " "
-                        + String.valueOf(startTime[0]) + ":" + String.valueOf(startTime[1]) + ":00";
-
-                startTimestamp = getTimeStampDate(tmpStr);
-            } else {
-                String tmpStr = String.valueOf(startDate[0]) + "-" + String.valueOf(startDate[1]) + "-" + String.valueOf(startDate[2]) + " 00:00:00";
-                startTimestamp = getTimeStampDate(tmpStr);
-            }
-        } else {
-            AppUtil.showMsg(getContext(), "Record must have start time");
-            return;
-        }
-
-        Calendar c = Calendar.getInstance();
-        if (startTimestamp.after(c.getTime())) {
-            AppUtil.showMsg(getContext(), "Start Date is past current time");
-            return;
-        }
-
-        //Check for end date
-        Timestamp endTimestamp = null;
-        if (endDate[0] != -1) {
-
-            if (endTime[0] != -1) {
-                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " "
-                        + String.valueOf(endTime[0]) + ":" + String.valueOf(endTime[1]) + ":00";
-                endTimestamp = getTimeStampDate(tmpStr);
-            } else {
-                String tmpStr = String.valueOf(endDate[0]) + "-" + String.valueOf(endDate[1]) + "-" + String.valueOf(endDate[2]) + " 00:00:00";
-                endTimestamp = getTimeStampDate(tmpStr);
-            }
-
-        }
-
-        if (endTimestamp != null) {
-            if (endTimestamp.after(c.getTime())) {
-                AppUtil.showMsg(getContext(), "End Date is past current time");
-                return;
-            }
-        }
-
-        //validate times
-        if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
-
-            new AsyncTask<String, Void, Boolean>() {
-                @Override
-                protected Boolean doInBackground(String... params) {
-                    return RecordController.updateRecord(getFullRecordBuilder().setRecordId(recordId).createRecord());
-                }
-
-                @Override
-                protected void onPostExecute(Boolean result) {
-                    if (result) {
-                        AppUtil.showToast(getContext(), "Record was updated successfully");
-                        if (mCallback != null) {
-                            mCallback.onSingleRecordViewRequest(0);
-                        }
-
-                    } else {
-                        AppUtil.showToast(getContext(), "Record update failed");
-                    }
-                }
-            }.execute();
-
-        } else {
-            AppUtil.showMsg(getContext(), "Start time is greater than the end time");
-        }
-
-
-    }
-
-    /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
@@ -304,25 +304,57 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
     private class LoadRecordTask extends AsyncTask<String, Void, Record> {
 
 
-        private void setStartTime(Record record) {
-            //Get start time
-            if (record.getStartTime() != null) {
-                Log.d("LoadRecordTask", "setStartTime - " + AppUtil.getStringDate(record.getStartTime()));
-                long timestamp = record.getStartTime().getTime();
-                Calendar cal = Calendar.getInstance();
-                cal.setTimeInMillis(timestamp);
-                mYear = startDate[0] = cal.get(Calendar.YEAR);
-                mMonth = startDate[1] = cal.get(Calendar.MONTH) + 1;
-                mDay = startDate[2] = cal.get(Calendar.DAY_OF_MONTH);
+        private void setActivities(Record record) {
+            //Get activities
+            if (record.getActivities() != null) {
+                selectedActivities = record.getActivities();
+                Integer[] selectedIndexes = new Integer[selectedActivities.size()];
+                String selectedStr = "";
 
-                editTxtStartDate.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", mDay, mMonth, mYear));
+                for (int i = 0; i < selectedActivities.size(); i++) {//Adding indexes
+                    LifeActivity tmp = selectedActivities.get(i);
+                    int index = activities.indexOf(tmp);
+                    if (index > -1) {//if contain tmp
+                        selectedIndexes[i] = index;
 
-                editTxtStartTime.setEnabled(true);
+                        String name = tmp.toString();
+                        selectedStr = selectedStr + ", " + name;
+                    }
+                }
 
-                mHour = startTime[0] = cal.get(Calendar.HOUR_OF_DAY);
-                mMinute = startTime[1] = cal.get(Calendar.MINUTE);
+                selectedActivityIndexes = selectedIndexes;
+                if (selectedStr.contains(",")) {
+                    selectedStr = selectedStr.replaceFirst(",", "");
+                }
+                editTxtActivities.setText(selectedStr);
 
-                editTxtStartTime.setText(AppUtil.getFormattedTime(mHour, mMinute));
+            }
+        }
+
+        private void setBodyAreas(Record record) {
+            //Get pain in
+            if (record.getBodyAreas() != null) {
+                selectedBodyAreas = record.getBodyAreas();
+
+                Integer[] selectedIndexes = new Integer[selectedBodyAreas.size()];
+                String selectedStr = "";
+
+                for (int i = 0; i < selectedBodyAreas.size(); i++) {//Adding indexes
+                    BodyArea tmp = selectedBodyAreas.get(i);
+                    int index = bodyAreas.indexOf(tmp);
+                    if (index > -1) {//if contain tmp
+                        selectedIndexes[i] = index;
+
+                        String name = tmp.toString();
+                        selectedStr = selectedStr + ", " + name;
+                    }
+                }
+
+                selectedBodyIndexes = selectedIndexes;
+                if (selectedStr.contains(",")) {
+                    selectedStr = selectedStr.replaceFirst(",", "");
+                }
+                editTxtBodyAreas.setText(selectedStr);
             }
         }
 
@@ -355,105 +387,6 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
             setIntensityIcon(intensity);
         }
 
-        private void setWeatherData(Record record) {
-            //Get weather data
-            if (record.getWeatherData() != null) {
-                weatherData = record.getWeatherData();//load weather to variable
-
-                txtViewWeatherTemp.setText(String.format(Locale.getDefault(), "%.2f °C", weatherData.getTemperature()));
-                txtViewWeatherHumidity.setText(String.format(Locale.getDefault(), "%.2f %%", weatherData.getHumidity()));
-                txtViewWeatherPressure.setText(String.format(Locale.getDefault(), "%.2f KPa", weatherData.getPressure()));
-                weatherDataLoaded = true;
-                layoutWeather.setVisibility(View.VISIBLE);
-            } else {
-                weatherDataLoaded = false;
-            }
-        }
-
-
-        private void setTriggers(Record record) {
-            //Get triggers
-            if (record.getTriggers() != null) {
-                selectedTriggers = record.getTriggers();
-
-                Integer[] selectedIndexes = new Integer[selectedTriggers.size()];
-                String selectedStr = "";
-
-                for (int i = 0; i < selectedTriggers.size(); i++) {//Adding indexes
-                    Trigger tmp = selectedTriggers.get(i);
-                    int index = triggers.indexOf(tmp);
-                    if (index > -1) {//if contain tmp
-                        selectedIndexes[i] = index;
-
-                        String name = tmp.toString();
-                        selectedStr = selectedStr + ", " + name;
-                    }
-                }
-
-                selectedTriggerIndexes = selectedIndexes;
-                if (selectedStr.contains(",")) {
-                    selectedStr = selectedStr.replaceFirst(",", "");
-                }
-                editTxtTriggers.setText(selectedStr);
-
-            }
-        }
-
-        private void setSymptoms(Record record) {
-            //Get symptoms
-            if (record.getSymptoms() != null) {
-                selectedSymptoms = record.getSymptoms();
-
-                Integer[] selectedIndexes = new Integer[selectedSymptoms.size()];
-                String selectedStr = "";
-
-                for (int i = 0; i < selectedSymptoms.size(); i++) {//Adding indexes
-                    Symptom tmp = selectedSymptoms.get(i);
-                    int index = symptoms.indexOf(tmp);
-                    if (index > -1) {//if contain tmp
-                        selectedIndexes[i] = index;
-
-                        String name = tmp.toString();
-                        selectedStr = selectedStr + ", " + name;
-                    }
-                }
-
-                selectedSymptomsIndexes = selectedIndexes;
-                if (selectedStr.contains(",")) {
-                    selectedStr = selectedStr.replaceFirst(",", "");
-                }
-                editTxtSymptoms.setText(selectedStr);
-            }
-        }
-
-        private void setActivities(Record record) {
-            //Get activities
-            if (record.getActivities() != null) {
-                selectedActivities = record.getActivities();
-                Integer[] selectedIndexes = new Integer[selectedActivities.size()];
-                String selectedStr = "";
-
-                for (int i = 0; i < selectedActivities.size(); i++) {//Adding indexes
-                    LifeActivity tmp = selectedActivities.get(i);
-                    int index = activities.indexOf(tmp);
-                    if (index > -1) {//if contain tmp
-                        selectedIndexes[i] = index;
-
-                        String name = tmp.toString();
-                        selectedStr = selectedStr + ", " + name;
-                    }
-                }
-
-                selectedActivityIndexes = selectedIndexes;
-                if (selectedStr.contains(",")) {
-                    selectedStr = selectedStr.replaceFirst(",", "");
-                }
-                editTxtActivities.setText(selectedStr);
-
-            }
-        }
-
-
         private void setLocation(Record record) {
             //Get location
             if (record.getLocation() != null) {
@@ -463,33 +396,6 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
                     selectedLocation = index;
                 }
                 editTxtLocation.setText(location.toString());
-            }
-        }
-
-        private void setBodyAreas(Record record) {
-            //Get pain in
-            if (record.getBodyAreas() != null) {
-                selectedBodyAreas = record.getBodyAreas();
-
-                Integer[] selectedIndexes = new Integer[selectedBodyAreas.size()];
-                String selectedStr = "";
-
-                for (int i = 0; i < selectedBodyAreas.size(); i++) {//Adding indexes
-                    BodyArea tmp = selectedBodyAreas.get(i);
-                    int index = bodyAreas.indexOf(tmp);
-                    if (index > -1) {//if contain tmp
-                        selectedIndexes[i] = index;
-
-                        String name = tmp.toString();
-                        selectedStr = selectedStr + ", " + name;
-                    }
-                }
-
-                selectedBodyIndexes = selectedIndexes;
-                if (selectedStr.contains(",")) {
-                    selectedStr = selectedStr.replaceFirst(",", "");
-                }
-                editTxtBodyAreas.setText(selectedStr);
             }
         }
 
@@ -605,6 +511,98 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
                     }
                     editTxtReliefEffective.setText(selectedStrEffective);
                 }
+            }
+        }
+
+        private void setStartTime(Record record) {
+            //Get start time
+            if (record.getStartTime() != null) {
+                Log.d("LoadRecordTask", "setStartTime - " + AppUtil.getStringDate(record.getStartTime()));
+                long timestamp = record.getStartTime().getTime();
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(timestamp);
+                mYear = startDate[0] = cal.get(Calendar.YEAR);
+                mMonth = startDate[1] = cal.get(Calendar.MONTH) + 1;
+                mDay = startDate[2] = cal.get(Calendar.DAY_OF_MONTH);
+
+                editTxtStartDate.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", mDay, mMonth, mYear));
+
+                editTxtStartTime.setEnabled(true);
+
+                mHour = startTime[0] = cal.get(Calendar.HOUR_OF_DAY);
+                mMinute = startTime[1] = cal.get(Calendar.MINUTE);
+
+                editTxtStartTime.setText(AppUtil.getFormattedTime(mHour, mMinute));
+            }
+        }
+
+        private void setSymptoms(Record record) {
+            //Get symptoms
+            if (record.getSymptoms() != null) {
+                selectedSymptoms = record.getSymptoms();
+
+                Integer[] selectedIndexes = new Integer[selectedSymptoms.size()];
+                String selectedStr = "";
+
+                for (int i = 0; i < selectedSymptoms.size(); i++) {//Adding indexes
+                    Symptom tmp = selectedSymptoms.get(i);
+                    int index = symptoms.indexOf(tmp);
+                    if (index > -1) {//if contain tmp
+                        selectedIndexes[i] = index;
+
+                        String name = tmp.toString();
+                        selectedStr = selectedStr + ", " + name;
+                    }
+                }
+
+                selectedSymptomsIndexes = selectedIndexes;
+                if (selectedStr.contains(",")) {
+                    selectedStr = selectedStr.replaceFirst(",", "");
+                }
+                editTxtSymptoms.setText(selectedStr);
+            }
+        }
+
+        private void setTriggers(Record record) {
+            //Get triggers
+            if (record.getTriggers() != null) {
+                selectedTriggers = record.getTriggers();
+
+                Integer[] selectedIndexes = new Integer[selectedTriggers.size()];
+                String selectedStr = "";
+
+                for (int i = 0; i < selectedTriggers.size(); i++) {//Adding indexes
+                    Trigger tmp = selectedTriggers.get(i);
+                    int index = triggers.indexOf(tmp);
+                    if (index > -1) {//if contain tmp
+                        selectedIndexes[i] = index;
+
+                        String name = tmp.toString();
+                        selectedStr = selectedStr + ", " + name;
+                    }
+                }
+
+                selectedTriggerIndexes = selectedIndexes;
+                if (selectedStr.contains(",")) {
+                    selectedStr = selectedStr.replaceFirst(",", "");
+                }
+                editTxtTriggers.setText(selectedStr);
+
+            }
+        }
+
+        private void setWeatherData(Record record) {
+            //Get weather data
+            if (record.getWeatherData() != null) {
+                weatherData = record.getWeatherData();//load weather to variable
+
+                txtViewWeatherTemp.setText(String.format(Locale.getDefault(), "%.2f °C", weatherData.getTemperature()));
+                txtViewWeatherHumidity.setText(String.format(Locale.getDefault(), "%.2f %%", weatherData.getHumidity()));
+                txtViewWeatherPressure.setText(String.format(Locale.getDefault(), "%.2f KPa", weatherData.getPressure()));
+                weatherDataLoaded = true;
+                layoutWeather.setVisibility(View.VISIBLE);
+            } else {
+                weatherDataLoaded = false;
             }
         }
 

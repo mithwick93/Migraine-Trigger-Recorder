@@ -110,19 +110,6 @@ public class ViewRecordListFragment extends Fragment
         refreshRecordList();
     }
 
-    //Called when a record delete is detected
-    private void refreshRecordList() {
-        if (mView != null) {
-            //update
-            if (selectedFilters != null && selectedFilters.size() == 7) {
-                new GetRecordFilteredListTask(selectedFilters).execute();//record deleted when filter applied , apply again
-            } else {
-                new GetRecordListTask().execute();//Load records to list view
-            }
-        }
-
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -146,15 +133,28 @@ public class ViewRecordListFragment extends Fragment
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onRecordListRowClicked(int recordId) {
+        mCallback.onRecordListRequest(recordId);
+    }
+
     private void initiateFiltering() {
         Log.d("ViewRecordListFragment", "initiateFiltering");
         new GetRecordFilterListTask().execute();
 
     }
 
-    @Override
-    public void onRecordListRowClicked(int recordId) {
-        mCallback.onRecordListRequest(recordId);
+    //Called when a record delete is detected
+    private void refreshRecordList() {
+        if (mView != null) {
+            //update
+            if (selectedFilters != null && selectedFilters.size() == 7) {
+                new GetRecordFilteredListTask(selectedFilters).execute();//record deleted when filter applied , apply again
+            } else {
+                new GetRecordListTask().execute();//Load records to list view
+            }
+        }
+
     }
 
 
