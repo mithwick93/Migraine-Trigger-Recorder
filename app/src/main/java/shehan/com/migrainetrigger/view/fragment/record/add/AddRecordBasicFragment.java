@@ -53,8 +53,8 @@ import shehan.com.migrainetrigger.data.builders.RecordBuilder;
 import shehan.com.migrainetrigger.data.builders.WeatherDataBuilder;
 import shehan.com.migrainetrigger.data.model.WeatherData;
 import shehan.com.migrainetrigger.utility.AppUtil;
-import shehan.com.migrainetrigger.utility.GeoLocationService;
-import shehan.com.migrainetrigger.utility.InternetService;
+import shehan.com.migrainetrigger.utility.service.GeoLocationService;
+import shehan.com.migrainetrigger.utility.service.InternetService;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFragment;
 
 import static shehan.com.migrainetrigger.utility.AppUtil.getStringWeatherDate;
@@ -75,7 +75,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     protected int[] endTime;
     protected int intensity;//Value 1-10
     protected CardView layoutWeather;
-    protected Toast mToast;
     protected int mYear, mMonth, mDay, mHour, mMinute;
     protected int[] startDate;
     protected int[] startTime;
@@ -724,7 +723,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         }
 
         Calendar c = Calendar.getInstance();
-        if (startTimestamp.after(c.getTime())) {
+        if (startTimestamp != null && startTimestamp.after(c.getTime())) {
             AppUtil.showMsg(getContext(), "Start Date is past current time", "Validation error");
             return;
         }
@@ -752,7 +751,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         }
 
         //validate times
-        if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
+        if ((startTimestamp != null && endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
 
             new AsyncTask<String, Void, Boolean>() {
                 @Override

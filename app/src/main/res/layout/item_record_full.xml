@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view_record_full"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    android:layout_marginEnd="7dp"
+                                    xmlns:tools="http://schemas.android.com/tools"
+                                    android:id="@+id/card_view_record_full"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginEnd="7dp"
 
-    android:layout_marginStart="7dp"
-    android:layout_marginTop="10dp"
-    tools:cardCornrRadius="2dp">
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginTop="10dp"
+                                    tools:cardCornrRadius="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:text="@string/record_lbl_location"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <EditText
                     android:id="@+id/txt_record_location"
@@ -54,7 +54,7 @@
                     android:ems="10"
                     android:focusable="false"
                     android:inputType="textNoSuggestions|textMultiLine"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             </LinearLayout>
 
@@ -83,7 +83,7 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:text="@string/record_lbl_pain_in"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <EditText
                     android:id="@+id/txt_record_affected_areas"
@@ -95,7 +95,7 @@
                     android:ems="10"
                     android:focusable="false"
                     android:inputType="textNoSuggestions|textMultiLine"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             </LinearLayout>
 
@@ -124,7 +124,7 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:text="@string/record_lbl_medicine"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <EditText
                     android:id="@+id/txt_record_medicine"
@@ -136,7 +136,7 @@
                     android:ems="10"
                     android:focusable="false"
                     android:inputType="textNoSuggestions|textMultiLine"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             </LinearLayout>
         </RelativeLayout>
@@ -166,7 +166,7 @@
                     android:paddingStart="5dp"
                     android:text="@string/record_lbl_effective_medicine"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <EditText
                     android:id="@+id/txt_record_effective_medicine"
@@ -178,7 +178,7 @@
                     android:ems="10"
                     android:focusable="false"
                     android:inputType="textNoSuggestions|textMultiLine"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             </LinearLayout>
 
@@ -207,7 +207,7 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:text="@string/record_lbl_relief"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <EditText
                     android:id="@+id/txt_record_relief"
@@ -219,7 +219,7 @@
                     android:ems="10"
                     android:focusable="false"
                     android:inputType="textNoSuggestions|textMultiLine"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             </LinearLayout>
 
@@ -250,7 +250,7 @@
                     android:paddingStart="5dp"
                     android:text="@string/record_lbl_effective_reliefs"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <EditText
                     android:id="@+id/txt_record_effective_reliefs"
@@ -262,7 +262,7 @@
                     android:ems="10"
                     android:focusable="false"
                     android:inputType="textNoSuggestions|textMultiLine"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             </LinearLayout>
 

@@ -1,4 +1,4 @@
-package shehan.com.migrainetrigger.utility;
+package shehan.com.migrainetrigger.utility.service;
 
 
 import java.sql.Timestamp;

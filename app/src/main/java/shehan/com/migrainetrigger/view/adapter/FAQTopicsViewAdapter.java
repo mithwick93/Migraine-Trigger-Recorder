@@ -17,14 +17,14 @@ public class FAQTopicsViewAdapter
         extends RecyclerView.Adapter<FAQTopicsViewAdapter.ViewHolder> {
 
     private static FAQTopicsRowClickListener itemListener;
-    private FAQViewData[] faqViewDatas;
+    private FAQViewData[] faqViewData;
 
     public FAQTopicsViewAdapter(
             FAQTopicsRowClickListener itemListener,
-            FAQViewData[] faqViewDatas) {
+            FAQViewData[] faqViewData) {
 
         FAQTopicsViewAdapter.itemListener = itemListener;
-        this.faqViewDatas = faqViewDatas;
+        this.faqViewData = faqViewData;
     }
 
     // Create new views (invoked by the layout manager)
@@ -42,13 +42,13 @@ public class FAQTopicsViewAdapter
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.txtViewDefinition.setText(faqViewDatas[position].getDefinition());
+        viewHolder.txtViewDefinition.setText(faqViewData[position].getDefinition());
     }
 
     // Return the size of your itemsData (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return faqViewDatas.length;
+        return faqViewData.length;
     }
 
 

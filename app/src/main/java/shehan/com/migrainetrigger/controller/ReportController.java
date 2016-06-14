@@ -23,6 +23,13 @@ import shehan.com.migrainetrigger.utility.AppUtil;
  */
 public class ReportController {
 
+    /**
+     * get average duration of migraines
+     *
+     * @param from start time
+     * @param to   end time
+     * @return average duration
+     */
     public static String getAverage(Timestamp from, Timestamp to) {
         ArrayList<Record> averageRecords = DBRecordDAO.getAverageReportRecords(from, to);
         String strTotal = "-";
@@ -54,6 +61,13 @@ public class ReportController {
         return strTotal;
     }
 
+    /**
+     * get average intensity
+     *
+     * @param from start time
+     * @param to   end time
+     * @return average intensity
+     */
     public static double getIntensity(Timestamp from, Timestamp to) {
         ArrayList<Record> averageRecords = DBRecordDAO.getAverageReportRecords(from, to);
         double intensity = 0;

@@ -31,7 +31,7 @@ public class AppUtilTest {
 
     @Test
     public void testGetFormattedTimeAMBoundary() throws Exception {
-        String expected = "00:15 am";
+        String expected = "12:15 am";
         String result = AppUtil.getFormattedTime(0, 15);
 
         assertEquals(expected, result);

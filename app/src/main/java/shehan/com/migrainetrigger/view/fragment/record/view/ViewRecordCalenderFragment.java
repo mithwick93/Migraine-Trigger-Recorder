@@ -68,7 +68,6 @@ public class ViewRecordCalenderFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_view_record_calender, container, false);
         initCalenderView(mView);
 
-        //loadEvents();
         new GetRecordCalenderListTask().execute();//load calender events
         return mView;
     }

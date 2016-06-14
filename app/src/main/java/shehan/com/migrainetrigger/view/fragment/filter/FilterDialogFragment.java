@@ -20,7 +20,6 @@ import shehan.com.migrainetrigger.R;
 
 public class FilterDialogFragment extends DialogFragment implements View.OnClickListener {
 
-    private static final String ARG_FILTERS = "param1";
     private static TextView filterDetailsTextView;
     private String appTheme;
     private ArrayList<ArrayList<String>> filterList;

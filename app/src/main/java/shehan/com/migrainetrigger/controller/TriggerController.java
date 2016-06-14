@@ -22,25 +22,12 @@ public class TriggerController {
         return DBTriggerDAO.addTrigger(trigger);
     }
 
-    public static long addTriggerRecord(int triggerId, int recordId) {
-        Log.d("TriggerController", " addTriggerRecord ");
-        return DBTriggerDAO.addTriggerRecord(triggerId, recordId);
-    }
-
-    public static long addTriggers(ArrayList<Trigger> lst) {
-        for (Trigger itm : lst) {
-            long result = addTrigger(itm);
-            if (result < 1) {
-                return 0;
-            }
-        }
-        return lst.size();
-    }
-
-    public static long deleteTrigger(int id) {
-        return DBTriggerDAO.deleteTrigger(id);
-    }
-
+    /**
+     * Get all triggers, apply sort
+     *
+     * @param applySuggestions enable suggestions
+     * @return ArrayList<Trigger>
+     */
     public static ArrayList<Trigger> getAllTriggers(boolean applySuggestions) {
         Log.d("TriggerController", " getAllTriggers ");
         ArrayList<Trigger> lst = DBTriggerDAO.getAllTriggers();
@@ -91,10 +78,6 @@ public class TriggerController {
         }
 
         return lst;
-    }
-
-    public static Trigger getTriggerById(int id) {
-        return DBTriggerDAO.getTrigger(id);
     }
 
     public static ArrayList<Trigger> getTriggersForRecord(int recordId) {

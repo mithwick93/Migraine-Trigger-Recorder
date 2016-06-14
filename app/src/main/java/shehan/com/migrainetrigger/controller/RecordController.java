@@ -48,6 +48,17 @@ public class RecordController {
         return DBRecordDAO.getAllRecordsOrderByDate();
     }
 
+    public static ArrayList<String[]> getAllRecordsOrderByDateRAW() {
+        return DBRecordDAO.getAllRecordsOrderByDateRAW();
+    }
+
+    /**
+     * get filtered record list
+     *
+     * @param filterList           filters to apply
+     * @param fullDetailRecordList full record list
+     * @return filtered record list
+     */
     private static ArrayList<Record> getFilteredRecords(@NotNull ArrayList<ArrayList<String>> filterList, @NotNull ArrayList<Record> fullDetailRecordList) {
         ArrayList<Record> filteredRecordList = new ArrayList<>();//get filtered record list
 
@@ -161,6 +172,11 @@ public class RecordController {
         return filteredRecordList;
     }
 
+    /**
+     * get start time of 1st record
+     *
+     * @return timestamp
+     */
     public static Timestamp getFirstRecordStartTimestamp() {
         Record firstRecord = DBRecordDAO.getFirstRecord();
         if (firstRecord != null && firstRecord.getStartTime() != null) {
@@ -299,6 +315,13 @@ public class RecordController {
         return recordViewData;
     }
 
+    /**
+     * get filtered record data
+     *
+     * @param filterList filter list to apply
+     * @return record view data array
+     */
+    @Nullable
     public static RecordViewData[] getRecordViewDataFiltered(@NotNull ArrayList<ArrayList<String>> filterList) {
         Log.d("RecordController", "getRecordViewDataFiltered");
         if (filterList.size() == 7) {

@@ -17,10 +17,10 @@ import shehan.com.migrainetrigger.view.model.ReportViewData;
  */
 public class ReportViewAdapter extends RecyclerView.Adapter<ReportViewAdapter.ViewHolder> {
 
-    private ReportViewData[] reportViewDatas;
+    private ReportViewData[] reportViewData;
 
-    public ReportViewAdapter(ReportViewData[] reportViewDatas) {
-        this.reportViewDatas = reportViewDatas;
+    public ReportViewAdapter(ReportViewData[] reportViewData) {
+        this.reportViewData = reportViewData;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ReportViewAdapter extends RecyclerView.Adapter<ReportViewAdapter.Vi
         if (getItemCount() < 1) {
             return;
         }
-        ReportViewData reportViewData = reportViewDatas[position];
+        ReportViewData reportViewData = this.reportViewData[position];
         holder.txtViewTopic.setText(reportViewData.getTopic());
 
         String content_1 = reportViewData.getContent_1();
@@ -74,7 +74,7 @@ public class ReportViewAdapter extends RecyclerView.Adapter<ReportViewAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return reportViewDatas.length;
+        return reportViewData.length;
     }
 
     // inner class to hold a reference to each item of RecyclerView

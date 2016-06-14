@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -36,7 +37,7 @@ public class MainActivity
         implements NavigationView.OnNavigationItemSelectedListener, ManageAnswersFragment.ManageAnswersFragmentListener, View.OnClickListener {
 
     private static final boolean DEVELOPER_MODE = false;
-
+    private boolean doubleBackToExitPressedOnce = false;
     private boolean isRecordsAvailable;
     private MaterialSheetFab materialSheetFab;
 
@@ -72,7 +73,26 @@ public class MainActivity
         } else if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //double press to exit
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                super.onBackPressed();
+                return;
+            }
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            AppUtil.showToast(this, "Please click BACK again to exit");
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
         }
 
     }
@@ -86,7 +106,6 @@ public class MainActivity
 
     @Override
     public void onClick(View v) {
-        //Toast.makeText(this, R.string.sheet_item_pressed, Toast.LENGTH_SHORT).show();
         materialSheetFab.hideSheet();
 
         TextView textView = (TextView) v;

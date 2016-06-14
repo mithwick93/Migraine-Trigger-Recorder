@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.sql.Timestamp;
@@ -47,32 +46,6 @@ public class DBBodyAreaDAO {
     }
 
     /**
-     * Add body area record
-     *
-     * @param bodyAreaId body area id
-     * @param recordId   record id
-     * @return row id
-     */
-    public static long addBodyAreaRecord(int bodyAreaId, int recordId) {
-        Log.d("DBBodyAreaDAO", "DB - addBodyAreaRecord");
-
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
-            ContentValues values = new ContentValues();
-
-            values.put(DatabaseDefinition.BODY_AREA_RECORD_AREA_ID_KEY, bodyAreaId);
-
-            values.put(DatabaseDefinition.BODY_AREA_RECORD_RECORD_ID_KEY, recordId);
-
-            return db.insert(DatabaseDefinition.BODY_AREA_RECORD_TABLE, null, values);
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    /**
      * Add body area record in a transaction
      *
      * @param db         sql database
@@ -92,24 +65,6 @@ public class DBBodyAreaDAO {
 
         return db.insert(DatabaseDefinition.BODY_AREA_RECORD_TABLE, null, values);
 
-    }
-
-    /**
-     * delete Body Area
-     *
-     * @param id id
-     * @return affected no of rows
-     */
-    public static long deleteBodyArea(int id) {
-        Log.d("DBBodyAreaDAO", "deleteBodyArea");
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
-            return (long) db.delete(DatabaseDefinition.BODY_AREA_TABLE, DatabaseDefinition.BODY_AREA_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
     }
 
     /**
@@ -173,53 +128,6 @@ public class DBBodyAreaDAO {
             }
         }
         return bodyAreaArrayList;
-    }
-
-    /**
-     * get Body Area
-     *
-     * @param id id
-     * @return BodyArea
-     */
-    @Nullable
-    public static BodyArea getBodyArea(int id) {
-        Log.d("DBBodyAreaDAO", "getBodyArea");
-
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
-
-            cursor = db.query(DatabaseDefinition.BODY_AREA_TABLE, null, DatabaseDefinition.BODY_AREA_ID_KEY + " = ?", new String[]{String.valueOf(id)}, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-
-
-                int bodyAreaId = cursor.getInt(0);
-
-                BodyAreaBuilder bodyAreaBuilder = new BodyAreaBuilder().setBodyAreaId(bodyAreaId);
-
-                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.BODY_AREA_NAME_KEY);
-
-                if (!cursor.isNull(index)) {
-                    String name = cursor.getString(index);
-                    bodyAreaBuilder = bodyAreaBuilder.setBodyAreaName(name);
-                }
-
-
-                return bodyAreaBuilder.createBodyArea();
-            }
-
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
-        }
-        return null;
     }
 
     /**

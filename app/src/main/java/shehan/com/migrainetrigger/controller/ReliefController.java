@@ -22,25 +22,12 @@ public class ReliefController {
         return DBReliefDAO.addRelief(relief);
     }
 
-    public static long addReliefRecord(int reliefId, int recordId, boolean effective) {
-        Log.d("ReliefController", " addReliefRecord ");
-        return DBReliefDAO.addReliefRecord(reliefId, recordId, effective);
-    }
-
-    public static long addReliefs(ArrayList<Relief> lst) {
-        for (Relief itm : lst) {
-            long result = addRelief(itm);
-            if (result < 1) {
-                return 0;
-            }
-        }
-        return lst.size();
-    }
-
-    public static long deleteRelief(int id) {
-        return DBReliefDAO.deleteRelief(id);
-    }
-
+    /**
+     * Get all reliefs, apply sort
+     *
+     * @param applySuggestions enable suggestions
+     * @return ArrayList<Relief>
+     */
     public static ArrayList<Relief> getAllReliefs(boolean applySuggestions) {
         Log.d("ReliefController", " getAllReliefs ");
         ArrayList<Relief> lst = DBReliefDAO.getAllReliefs();
@@ -91,10 +78,6 @@ public class ReliefController {
         }
 
         return lst;
-    }
-
-    public static Relief getReliefById(int id) {
-        return DBReliefDAO.getRelief(id);
     }
 
     public static ArrayList<Relief> getReliefsForRecord(int recordId) {

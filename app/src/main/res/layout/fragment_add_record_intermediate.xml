@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
-    android:orientation="vertical"
-    android:padding="5dp">
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:animateLayoutChanges="true"
+              android:orientation="vertical"
+              android:padding="5dp">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -17,15 +17,15 @@
 
             <include
                 android:id="@+id/basic_layout"
-                layout="@layout/item_record_basic" />
+                layout="@layout/item_record_basic"/>
 
             <include
                 android:id="@+id/weather_layout"
-                layout="@layout/item_record_weather" />
+                layout="@layout/item_record_weather"/>
 
             <include
                 android:id="@+id/intermediate"
-                layout="@layout/item_record_intermediate" />
+                layout="@layout/item_record_intermediate"/>
 
         </LinearLayout>
     </ScrollView>

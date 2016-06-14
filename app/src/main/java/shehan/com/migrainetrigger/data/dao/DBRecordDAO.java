@@ -27,55 +27,6 @@ public final class DBRecordDAO {
     /**
      * add Record To DB
      *
-     * @param record record
-     * @return raw id
-     */
-    public static long addRecord(Record record) {
-        Log.d("DBRecordDAO", "addRecord");
-
-        if (record == null) {
-            Log.e("DAO-add", "null record");
-            return -1;
-        }
-
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
-            ContentValues values = new ContentValues();
-
-            values.put(DatabaseDefinition.RECORD_ID_KEY, record.getRecordId());
-            //Start time
-            if (record.getStartTime() != null) {
-                values.put(DatabaseDefinition.RECORD_START_TIME_KEY, getStringDate(record.getStartTime()));
-            }
-            //End time
-            if (record.getEndTime() != null) {
-                values.put(DatabaseDefinition.RECORD_END_TIME_KEY, getStringDate(record.getEndTime()));
-            }
-
-            //Intensity
-            values.put(DatabaseDefinition.RECORD_INTENSITY_KEY, record.getIntensity());
-
-            //Location
-            if (record.getLocation() != null) {
-                values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, record.getLocation().getLocationId());
-            } else {
-                //A sign nil to location
-                values.put(DatabaseDefinition.RECORD_LOCATION_ID_KEY, 0);
-            }
-
-            // Inserting Row
-
-            return db.insert(DatabaseDefinition.RECORD_TABLE, null, values);
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    /**
-     * add Record To DB
-     *
      * @param db     SQLiteDatabase
      * @param record record
      * @return raw id
@@ -266,6 +217,65 @@ public final class DBRecordDAO {
         }
 
 
+        return records;
+    }
+
+    /**
+     * get All Records , in descending order
+     *
+     * @return Arraylist of string array
+     */
+    public static ArrayList<String[]> getAllRecordsOrderByDateRAW() {
+        Log.d("DBRecordDAO", "getAllRecordsOrderByDateRAW");
+
+        ArrayList<String[]> records = new ArrayList<>();
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            db = DatabaseHandler.getReadableDatabase();
+
+            cursor = db.query(DatabaseDefinition.RECORD_TABLE, null, null, null, null, null, DatabaseDefinition.RECORD_START_TIME_KEY + " DESC");
+            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
+                do {
+
+                    String recordId = cursor.getString(0);
+                    String startTime = "-";
+                    String endTime = "-";
+                    String intensity = "-";
+
+                    int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_START_TIME_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        startTime = cursor.getString(index);
+                    }
+
+                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_END_TIME_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        endTime = cursor.getString(index);
+                    }
+
+                    index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RECORD_INTENSITY_KEY);
+
+                    if (!cursor.isNull(index)) {
+                        intensity = cursor.getString(index);
+                        intensity = intensity.trim().equals("0") ? "-" : intensity;
+                    }
+
+                    records.add(new String[]{recordId, startTime, endTime, intensity});
+
+                } while (cursor.moveToNext());
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
         return records;
     }
 

@@ -1,4 +1,4 @@
-package shehan.com.migrainetrigger.utility;
+package shehan.com.migrainetrigger.utility.service;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -32,13 +32,9 @@ public class GeoLocationService implements GoogleApiClient.ConnectionCallbacks, 
 
     }
 
-    public void connect() {
-        if (googleApiClient != null) {
-            googleApiClient.connect();
-            Log.d("GeoLocationService", "googleApiClient.connect");
-        }
-    }
-
+    /**
+     * disconnect google api client
+     */
     public void disconnect() {
         if (googleApiClient != null && googleApiClient.isConnected()) {
             googleApiClient.stopAutoManage(activity);
@@ -76,6 +72,9 @@ public class GeoLocationService implements GoogleApiClient.ConnectionCallbacks, 
         Log.e("GeoLocationService", "Can't connect to Google Play Services!");
     }
 
+    /**
+     * interface to communicate upon receiving location
+     */
     public interface GeoLocationListener {
         void onLocationReceived(Location location);
     }

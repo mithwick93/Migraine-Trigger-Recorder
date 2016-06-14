@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:scrollbars="none">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -39,7 +39,7 @@
                     android:layout_marginStart="24dp"
                     android:text="@string/manage_answers_triggers"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
             </RelativeLayout>
 
@@ -73,7 +73,7 @@
                     android:layout_marginStart="24dp"
                     android:text="@string/manage_answers_symptoms"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
             </RelativeLayout>
 
@@ -107,7 +107,7 @@
                     android:layout_marginStart="24dp"
                     android:text="@string/manage_answers_activities"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
             </RelativeLayout>
 
@@ -141,7 +141,7 @@
                     android:layout_marginStart="24dp"
                     android:text="@string/manage_answers_locations"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
             </RelativeLayout>
 
@@ -175,7 +175,7 @@
                     android:layout_marginStart="24dp"
                     android:text="@string/manage_answers_pain_areas"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
             </RelativeLayout>
 
@@ -209,7 +209,7 @@
                     android:layout_marginStart="24dp"
                     android:text="@string/manage_answers_medicines"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
             </RelativeLayout>
 
@@ -243,7 +243,7 @@
                     android:layout_marginStart="24dp"
                     android:text="@string/manage_answers_reliefs"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
             </RelativeLayout>
 

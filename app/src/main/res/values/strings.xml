@@ -108,7 +108,7 @@
     <string name="new_record_sync">Sync</string>
     <string name="pref_suggestions_summery">"Reorder answer list to show most used answers first "</string>
     <string name="pref_suggestions_title">"Answer suggestions "</string>
-    <string name="pref_send_summery">"Send migraine records via email "</string>
+    <string name="pref_send_summery">"Send entire migraine records database via email "</string>
     <string name="pref_send_title">"Send statistics "</string>
     <string name="answers_filter">Filter</string>
     <string name="record_filter_title">Filter records</string>

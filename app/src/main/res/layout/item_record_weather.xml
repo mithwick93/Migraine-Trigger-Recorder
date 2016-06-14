@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:animateLayoutChanges="true"
-    android:orientation="vertical">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:animateLayoutChanges="true"
+              android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_weather"
@@ -44,7 +44,7 @@
                     android:paddingTop="10dp"
                     android:text="@string/record_lbl_weather"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    tools:ignore="NestedWeights" />
+                    tools:ignore="NestedWeights"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                     android:textAppearance="?android:attr/textAppearanceSmallPopupMenu"
                     android:textColor="#00bcd4"
                     android:textSize="12sp"
-                    tools:ignore="NestedWeights" />
+                    tools:ignore="NestedWeights"/>
 
             </LinearLayout>
 
@@ -83,7 +83,7 @@
                         android:layout_below="@+id/imageView2"
                         android:gravity="center"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <ImageView
                         android:id="@+id/imageView2"
@@ -92,7 +92,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:contentDescription="@string/content_desc_temperature"
-                        android:src="?attr/themedWeatherTemperature" />
+                        android:src="?attr/themedWeatherTemperature"/>
                 </RelativeLayout>
 
                 <LinearLayout
@@ -119,7 +119,7 @@
                             android:layout_toEndOf="@+id/img_weather_humidity"
                             android:text="@string/record_txt_humidity"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"/>
 
                         <ImageView
                             android:id="@+id/img_weather_humidity"
@@ -130,7 +130,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_marginStart="0dp"
                             android:contentDescription="@string/content_desc_humidity"
-                            android:src="?attr/themedWeatherHumidity" />
+                            android:src="?attr/themedWeatherHumidity"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -151,7 +151,7 @@
                             android:layout_toEndOf="@+id/img_weather_pressure"
                             android:text="@string/record_txt_pressure"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"/>
 
                         <ImageView
                             android:id="@+id/img_weather_pressure"
@@ -161,7 +161,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_marginStart="0dp"
                             android:contentDescription="@string/content_desc_pressure"
-                            android:src="?attr/themedWeatherPressure" />
+                            android:src="?attr/themedWeatherPressure"/>
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

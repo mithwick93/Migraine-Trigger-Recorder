@@ -45,7 +45,6 @@ import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
  */
 public class ViewRecordSingleFragment extends AddRecordFullFragment {
     private static final String ARG_RECORD_ID = "recordId";
-    private boolean hasWeatherData;
     private SingleRecordViewFragmentListener mCallback;
     private int recordId;
 
@@ -177,7 +176,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         }
 
         Calendar c = Calendar.getInstance();
-        if (startTimestamp.after(c.getTime())) {
+        if (startTimestamp != null && startTimestamp.after(c.getTime())) {
             AppUtil.showMsg(getContext(), "Start Date is past current time", "Validation error");
             return;
         }
@@ -205,7 +204,7 @@ public class ViewRecordSingleFragment extends AddRecordFullFragment {
         }
 
         //validate times
-        if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
+        if ((startTimestamp != null && endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
 
             new AsyncTask<String, Void, Boolean>() {
                 @Override

@@ -22,25 +22,12 @@ public class MedicineController {
         return DBMedicineDAO.addMedicine(medicine);
     }
 
-    public static long addMedicineRecord(int medicineId, int recordId, boolean effective) {
-        Log.d("MedicineController", " addMedicineRecord ");
-        return DBMedicineDAO.addMedicineRecord(medicineId, recordId, effective);
-    }
-
-    public static long addMedicines(ArrayList<Medicine> lst) {
-        for (Medicine itm : lst) {
-            long result = addMedicine(itm);
-            if (result < 1) {
-                return 0;
-            }
-        }
-        return lst.size();
-    }
-
-    public static long deleteMedicine(int id) {
-        return DBMedicineDAO.deleteMedicine(id);
-    }
-
+    /**
+     * Get all medicines, apply sort
+     *
+     * @param applySuggestions enable suggestions
+     * @return ArrayList<Medicine>
+     */
     public static ArrayList<Medicine> getAllMedicines(boolean applySuggestions) {
         Log.d("MedicineController", " getAllMedicines ");
         ArrayList<Medicine> lst = DBMedicineDAO.getAllMedicines();
@@ -71,10 +58,6 @@ public class MedicineController {
 
     public static int getLastRecordId() {
         return DBMedicineDAO.getLastRecordId();
-    }
-
-    public static Medicine getMedicineById(int id) {
-        return DBMedicineDAO.getMedicine(id);
     }
 
     public static ArrayList<Medicine> getMedicinesForRecord(int recordId) {

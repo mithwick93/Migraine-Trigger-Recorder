@@ -13,20 +13,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.controller.ReportController;
+
+import static java.util.Locale.getDefault;
 
 /**
  * Created by Shehan on 4/17/2016.
  */
 public class AppUtil {
 
-    public final static long SECONDS = 60;
-    public final static long MINUTES = 60;
-    public final static long HOURS = 24;
     private final static long ONE_SECOND = 1000;
     private final static long ONE_MINUTE = ONE_SECOND * 60;
     private final static long ONE_HOUR = ONE_MINUTE * 60;
@@ -41,18 +39,20 @@ public class AppUtil {
      * @param minute    Range 0-59
      * @return String FormattedTime
      */
+    @NonNull
     public static String getFormattedTime(int hourOfDay,
                                           int minute) {
 
-        String suffix = "am";
-        if (hourOfDay > 12) {
-            hourOfDay -= 12;
-            suffix = "pm";
+        try {
+            String _24HourTime = String.valueOf(hourOfDay) + ":" + String.valueOf(minute);
+            SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm", getDefault());
+            SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a", getDefault());
+            Date _24HourDt = _24HourSDF.parse(_24HourTime);
+            return _12HourSDF.format(_24HourDt).toLowerCase();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Err";
         }
-        if (hourOfDay == 12) {
-            suffix = "pm";
-        }
-        return String.format(Locale.getDefault(), "%02d:%02d %s", hourOfDay, minute, suffix);
     }
 
     /**
@@ -116,7 +116,12 @@ public class AppUtil {
      */
     public static String getFriendlyStringDate(Timestamp timestamp) {
         Log.d("AppUtil", "getFriendlyStringDate timestamp value : " + timestamp.toString());
-        return new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.getDefault()).format(timestamp);
+        try {
+            return new SimpleDateFormat("dd/MM/yyyy h:mm a", getDefault()).format(timestamp);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Err";
+        }
     }
 
     /**
@@ -128,7 +133,12 @@ public class AppUtil {
      */
     public static String getStringDate(Timestamp timestamp) {
         Log.d("AppUtil", "getStringDate timestamp value : " + timestamp.toString());
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(timestamp);
+        try {
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", getDefault()).format(timestamp);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Err";
+        }
     }
 
     /**
@@ -140,7 +150,12 @@ public class AppUtil {
      */
     public static String getStringWeatherDate(Timestamp timestamp) {
         Log.d("AppUtil", "getStringDate timestamp value : " + timestamp.toString());
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(timestamp).replace(" ", "T");
+        try {
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", getDefault()).format(timestamp).replace(" ", "T");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Err";
+        }
     }
 
     /**
@@ -150,11 +165,12 @@ public class AppUtil {
      * @param str string to convert to timestamp
      * @return timestamp object with time .nullable
      */
+    @Nullable
     public static Timestamp getTimeStampDate(String str) {
         Log.d("AppUtil", "getTimeStampDate str value : " + str);
         Timestamp timestamp = null;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", getDefault());
             Date parsedDate = dateFormat.parse(str);
             timestamp = new java.sql.Timestamp(parsedDate.getTime());
         } catch (Exception e) {//this generic but you can control another types of exception
@@ -174,7 +190,7 @@ public class AppUtil {
         Log.d("AppUtil", "getTimeStampDay str value : " + str);
         Timestamp timestamp = null;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", getDefault());
             Date parsedDate = dateFormat.parse(str);
             timestamp = new java.sql.Timestamp(parsedDate.getTime());
         } catch (Exception e) {//this generic but you can control another types of exception
@@ -184,7 +200,7 @@ public class AppUtil {
     }
 
     /**
-     * Get Top list
+     * Get Top list of each answers
      *
      * @param type class of model (LifeActivity,Medicine,Relief,Symptom,Trigger)
      * @return list of top factors
@@ -200,7 +216,7 @@ public class AppUtil {
         int sMonth = sCal.get(Calendar.MONTH) + 1;
         int sDay = sCal.get(Calendar.DAY_OF_MONTH);
 
-        Timestamp fromTimestamp = getTimeStampDate(String.format(Locale.getDefault(), "%02d-%02d-%d 00:00:00", sYear, sMonth, sDay));
+        Timestamp fromTimestamp = getTimeStampDate(String.format(getDefault(), "%02d-%02d-%d 00:00:00", sYear, sMonth, sDay));
 
         //get today
         java.util.Date date = new java.util.Date();
@@ -211,7 +227,7 @@ public class AppUtil {
         int eMonth = eCal.get(Calendar.MONTH) + 1;
         int eDay = eCal.get(Calendar.DAY_OF_MONTH);
 
-        Timestamp toTimestamp = getTimeStampDate((String.format(Locale.getDefault(), "%02d-%02d-%d 00:00:00", eYear, eMonth, eDay)));
+        Timestamp toTimestamp = getTimeStampDate((String.format(getDefault(), "%02d-%02d-%d 00:00:00", eYear, eMonth, eDay)));
 
         switch (type) {
             case "BodyArea":

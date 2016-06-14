@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_cancel"
         android:background="?android:attr/selectableItemBackground"
         android:icon="@drawable/ic_clear_white_24dp"
         android:orderInCategory="4"
         android:title="@string/answers_cancel"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
     <item
 
         android:id="@+id/action_save"
@@ -15,13 +15,13 @@
         android:icon="@drawable/ic_done_white_24dp"
         android:orderInCategory="4"
         android:title="@string/answers_save"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_add"
         android:background="?android:attr/selectableItemBackground"
         android:icon="@drawable/ic_fab_plus"
         android:orderInCategory="5"
         android:title="@string/answers_add"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
 
 </menu>

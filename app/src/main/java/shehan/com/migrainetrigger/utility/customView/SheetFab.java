@@ -17,6 +17,9 @@ import com.gordonwong.materialsheetfab.AnimatedFab;
 
 import shehan.com.migrainetrigger.R;
 
+/**
+ * Custom fab with sheet view on click
+ */
 public class SheetFab extends FloatingActionButton implements AnimatedFab {
 
 

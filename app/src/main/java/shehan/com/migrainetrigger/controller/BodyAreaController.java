@@ -22,25 +22,12 @@ public class BodyAreaController {
         return DBBodyAreaDAO.addBodyArea(bodyArea);
     }
 
-    public static long addBodyAreaRecord(int bodyAreaId, int recordId) {
-        Log.d("BodyAreaController", " addBodyAreaRecord ");
-        return DBBodyAreaDAO.addBodyAreaRecord(bodyAreaId, recordId);
-    }
-
-    public static long addBodyAreas(ArrayList<BodyArea> lst) {
-        for (BodyArea itm : lst) {
-            long result = addBodyArea(itm);
-            if (result < 1) {
-                return 0;
-            }
-        }
-        return lst.size();
-    }
-
-    public static long deleteBodyArea(int id) {
-        return DBBodyAreaDAO.deleteBodyArea(id);
-    }
-
+    /**
+     * Get all pain areas, apply sort
+     *
+     * @param applySuggestions enable suggestions
+     * @return ArrayList<BodyArea>
+     */
     public static ArrayList<BodyArea> getAllBodyAreas(boolean applySuggestions) {
         Log.d("BodyAreaController", " getAllBodyAreas ");
         ArrayList<BodyArea> lst = DBBodyAreaDAO.getAllBodyAreas();
@@ -65,10 +52,6 @@ public class BodyAreaController {
             answerSectionViewDataLst.add(new AnswerSectionViewData(bodyArea.getBodyAreaId(), bodyArea.getBodyAreaName()));
         }
         return answerSectionViewDataLst;
-    }
-
-    public static BodyArea getBodyAreaById(int id) {
-        return DBBodyAreaDAO.getBodyArea(id);
     }
 
     public static ArrayList<BodyArea> getBodyAreasForRecord(int recordId) {

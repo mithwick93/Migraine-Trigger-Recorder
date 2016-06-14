@@ -341,12 +341,6 @@ public class ViewRecordListFragment extends Fragment
         protected void onPostExecute(RecordViewData recordViewData[]) {
             Log.d("GetRecordList", " onPostExecute - update ui");
 
-            if (recordViewData.length == 0) {//Records in db
-                AppUtil.showToast(ViewRecordListFragment.this.getContext(), "No records found in database");
-                mCallback.onRecordListRequest(-1);
-                return;
-            }
-
             RecyclerView recyclerView = (RecyclerView) mView.findViewById(R.id.record_list_recycler_view);
 
             recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());

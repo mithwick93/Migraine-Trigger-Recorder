@@ -30,7 +30,6 @@ public interface DatabaseDefinition {
     //
     String ACTIVITY_RECORD_TABLE = "activity_record";
     String BODY_AREA_RECORD_TABLE = "body_area_record";
-    //    String LOCATION_RECORD_TABLE = "location_record";
     String MEDICINE_RECORD_TABLE = "medicine_record";
     String RELIEF_RECORD_TABLE = "relief_record";
     String SYMPTOM_RECORD_TABLE = "symptom_record";
@@ -97,10 +96,6 @@ public interface DatabaseDefinition {
     // BODY_AREA_RECORD_TABLE  Columns names
     String BODY_AREA_RECORD_AREA_ID_KEY = "area_id";
     String BODY_AREA_RECORD_RECORD_ID_KEY = "record_id";
-
-//    // LOCATION_RECORD_TABLE  Columns names
-//    String LOCATION_RECORD_LOCATION_ID_KEY = "location_id";
-//    String LOCATION_RECORD_RECORD_ID_KEY = "record_id";
 
     // MEDICINE_RECORD_TABLE  Columns names
     String MEDICINE_RECORD_MEDICINE_ID_KEY = "medicine_id";

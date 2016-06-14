@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_centerVertical="true"
         android:gravity="center_vertical|center_horizontal"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="30sp" />
+        android:textSize="30sp"/>
 
     <TextView
         android:id="@+id/txt_home_help"
@@ -26,7 +26,7 @@
         android:layout_marginTop="50dp"
         android:gravity="center_vertical|center_horizontal"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="17sp" />
+        android:textSize="17sp"/>
 
     <ImageView
         android:id="@+id/img_view_emoji"
@@ -35,5 +35,5 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="91dp"
-        android:contentDescription="@string/home_emoji" />
+        android:contentDescription="@string/home_emoji"/>
 </RelativeLayout>

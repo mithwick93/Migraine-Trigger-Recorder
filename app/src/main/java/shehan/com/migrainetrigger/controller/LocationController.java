@@ -22,20 +22,12 @@ public class LocationController {
         return DBLocationDAO.addLocation(location);
     }
 
-    public static long addLocations(ArrayList<Location> lst) {
-        for (Location itm : lst) {
-            long result = addLocation(itm);
-            if (result < 1) {
-                return 0;
-            }
-        }
-        return lst.size();
-    }
-
-    public static long deleteLocation(int id) {
-        return DBLocationDAO.deleteLocation(id);
-    }
-
+    /**
+     * Get all locations, apply sort
+     *
+     * @param applySuggestions enable suggestions
+     * @return ArrayList<Location>
+     */
     public static ArrayList<Location> getAllLocations(boolean applySuggestions) {
         Log.d("LocationController", " getAllLocations ");
         ArrayList<Location> lst = DBLocationDAO.getAllLocations();

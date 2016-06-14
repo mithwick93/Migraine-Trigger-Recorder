@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinearLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
-    android:orientation="vertical">
+              android:id="@+id/LinearLayout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:animateLayoutChanges="true"
+              android:orientation="vertical">
 
     <View
         android:id="@+id/viewDivider"
@@ -12,7 +12,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:background="?attr/filterDialogSeparatorColor" />
+        android:background="?attr/filterDialogSeparatorColor"/>
 
     <TextView
         android:id="@+id/textView_tagTypeLabel"
@@ -21,12 +21,12 @@
         android:clickable="true"
         android:drawableEnd="?attr/themedFilterDown"
         android:padding="6dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <LinearLayout
         android:id="@+id/linearLayout_tagTypeContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:orientation="vertical" />
+        android:orientation="vertical"/>
 </LinearLayout>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Shehan on 4/13/2016.
+ * Wrapper model to contain all data about a migraine record
  */
 public class Record {
     //Holders

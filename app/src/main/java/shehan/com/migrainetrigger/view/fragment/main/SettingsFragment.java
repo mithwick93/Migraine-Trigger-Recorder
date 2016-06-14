@@ -26,14 +26,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.nio.channels.FileChannel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 import shehan.com.migrainetrigger.R;
+import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.utility.AppUtil;
+import shehan.com.migrainetrigger.utility.csv.CSVWriter;
 
 /**
  * Created by Shehan on 12/05/2016.
@@ -42,7 +46,6 @@ public class SettingsFragment extends PreferenceFragment {
 
     public static final int PERMISSION_WRITE_EXTERNAL_STORAGE_BACKUP = 10;
     public static final int PERMISSION_WRITE_EXTERNAL_STORAGE_RESTORE = 20;
-    private static final String ARG_THEME_CHANGE_LISTENER = "themeChangeListener";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -159,7 +162,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     private void initiateSendEmail() {
         if (isStoragePermissionGranted(PERMISSION_WRITE_EXTERNAL_STORAGE_BACKUP)) {
-            new CreateTempDBTask().execute();
+            new SendEmailTask().execute();
         }
     }
 
@@ -301,126 +304,6 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     /**
-     * Async task to create temporary db on external and open email
-     */
-    private class CreateTempDBTask extends AsyncTask<String, Void, File> {
-
-        private ProgressDialog nDialog;
-
-        /* Checks if external storage is available for read and write */
-        public boolean isExternalStorageWritable() {
-            String state = Environment.getExternalStorageState();
-            return Environment.MEDIA_MOUNTED.equals(state);
-        }
-
-        /**
-         * Create copy of application data
-         */
-        @Nullable
-        private File performTempCopy() {
-            try {
-                if (!isExternalStorageWritable()) {
-                    throw new Exception("Cannot access sd card");
-                }
-                File sd = Environment.getExternalStorageDirectory();
-                File data = Environment.getDataDirectory();
-                if (sd.canWrite()) {
-
-                    sd = new File(Environment.getExternalStorageDirectory() + "/tmp");
-                    //Create app directory if not exists
-                    boolean result = false;
-                    if (!sd.exists()) {
-                        result = sd.mkdir();
-                    }
-
-                    if (sd.exists() || result) {
-                        String currentDBPath = "//data//" + "shehan.com.migrainetrigger"
-                                + "//databases//" + "MigraineTrigger";
-
-                        String tempDBPath = "MigraineTrigger"; // From SD directory.
-                        File currentDB = new File(data, currentDBPath);
-                        File tmpDB = new File(sd, tempDBPath);
-
-                        FileChannel src = new FileInputStream(currentDB).getChannel();
-                        FileChannel dst = new FileOutputStream(tmpDB).getChannel();
-                        dst.transferFrom(src, 0, src.size());
-                        src.close();
-                        dst.close();
-
-                        if (tmpDB.exists()) {
-                            return tmpDB;
-                        }
-                        throw new Exception("Tmp file does not exist");
-                    } else {
-                        throw new Exception("Cannot create app folder");
-                    }
-
-                } else {
-                    throw new Exception("Cannot access sdcard");
-                }
-
-            } catch (FileNotFoundException e) {
-                Log.e("SettingsFragment", "File Not Found exception");
-                e.printStackTrace();
-                return null;
-
-            } catch (Exception e) {
-                Log.e("SettingsFragment", "create temp exception");
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected File doInBackground(String... params) {
-            Log.d("CreateTempDBTask", "doInBackground");
-
-            File tmp = performTempCopy();
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return tmp;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            nDialog = new ProgressDialog(getActivity());
-            nDialog.setMessage("Preparing records ...");
-            nDialog.setTitle("Processing");
-            nDialog.setIndeterminate(false);
-            nDialog.setCancelable(false);
-            nDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(File tmp) {
-            Log.d("CreateTempDBTask", " onPostExecute - show email intent");
-            if (nDialog != null) {
-                nDialog.dismiss();
-            }
-            if (tmp != null) {
-
-                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.getDefault());
-                Date date = new Date();
-                String currentTime = dateFormat.format(date);//get current time
-
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Migraine Trigger data");
-                intent.putExtra(Intent.EXTRA_TEXT, String.format("Record data as of : %s", currentTime));
-                intent.setType("application/octet-stream");
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tmp));
-                startActivity(Intent.createChooser(intent, "Send e-mail"));
-
-            } else {
-                Log.e("SettingsFragment", "null temp file");
-            }
-        }
-    }
-
-    /**
      * Async task to restore database
      */
     private class RestoreDatabaseTask extends AsyncTask<String, Void, String> {
@@ -518,6 +401,196 @@ public class SettingsFragment extends PreferenceFragment {
                 AppUtil.showToast(getActivity(), "Restore Successful!");
             } else {
                 AppUtil.showToast(getActivity(), "Restore Failed : " + result);
+            }
+        }
+    }
+
+    /**
+     * Async task to create temporary db on external and open email
+     */
+    private class SendEmailTask extends AsyncTask<String, Void, File> {
+
+        private ProgressDialog nDialog;
+
+        /* Checks if external storage is available for read and write */
+        public boolean isExternalStorageWritable() {
+            String state = Environment.getExternalStorageState();
+            return Environment.MEDIA_MOUNTED.equals(state);
+        }
+
+        /**
+         * Create copy of records to csv file
+         */
+        @Nullable
+        private File performCSVCopy() {
+            try {
+
+                ArrayList<String[]> recordLst = RecordController.getAllRecordsOrderByDateRAW();
+
+                if (recordLst.size() < 1) {
+                    throw new Exception("No records found to send");
+                }
+
+                if (!isExternalStorageWritable()) {
+                    throw new Exception("Cannot access sd card");
+                }
+
+                File sd = Environment.getExternalStorageDirectory();
+                if (sd.canWrite()) {
+
+                    sd = new File(Environment.getExternalStorageDirectory() + "/tmp");
+                    //Create app directory if not exists
+                    boolean result = false;
+                    if (!sd.exists()) {
+                        result = sd.mkdir();
+                    }
+
+                    if (sd.exists() || result) {
+
+                        String csvName = "MigraineTrigger.csv"; // From SD directory.
+                        File csvFile = new File(sd, csvName);
+
+                        final boolean createResult = csvFile.createNewFile();
+
+                        CSVWriter csvWrite = new CSVWriter(new FileWriter(csvFile));
+
+                        csvWrite.writeNext(new String[]{"Record No", "Start", "End", "Intensity"});
+
+                        for (String[] strArray : recordLst) {
+                            csvWrite.writeNext(strArray);
+                        }
+
+                        csvWrite.close();
+
+                        if (csvFile.exists()) {
+                            return csvFile;
+                        }
+
+                        throw new Exception("Tmp file does not exist");
+                    } else {
+                        throw new Exception("Cannot create app folder");
+                    }
+
+                } else {
+                    throw new Exception("Cannot access sdcard");
+                }
+
+            } catch (FileNotFoundException e) {
+                Log.e("SettingsFragment", "File Not Found exception");
+                e.printStackTrace();
+                return null;
+
+            } catch (Exception e) {
+                Log.e("SettingsFragment", "Create temp exception");
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        /**
+         * Create copy of application data
+         */
+        @Nullable
+        private File performTempCopy() {
+            try {
+                if (!isExternalStorageWritable()) {
+                    throw new Exception("Cannot access sd card");
+                }
+                File sd = Environment.getExternalStorageDirectory();
+                File data = Environment.getDataDirectory();
+                if (sd.canWrite()) {
+
+                    sd = new File(Environment.getExternalStorageDirectory() + "/tmp");
+                    //Create app directory if not exists
+                    boolean result = false;
+                    if (!sd.exists()) {
+                        result = sd.mkdir();
+                    }
+
+                    if (sd.exists() || result) {
+                        String currentDBPath = "//data//" + "shehan.com.migrainetrigger"
+                                + "//databases//" + "MigraineTrigger";
+
+                        String tempDBPath = "MigraineTrigger"; // From SD directory.
+                        File currentDB = new File(data, currentDBPath);
+                        File tmpDB = new File(sd, tempDBPath);
+
+                        FileChannel src = new FileInputStream(currentDB).getChannel();
+                        FileChannel dst = new FileOutputStream(tmpDB).getChannel();
+                        dst.transferFrom(src, 0, src.size());
+                        src.close();
+                        dst.close();
+
+                        if (tmpDB.exists()) {
+                            return tmpDB;
+                        }
+                        throw new Exception("Tmp file does not exist");
+                    } else {
+                        throw new Exception("Cannot create app folder");
+                    }
+
+                } else {
+                    throw new Exception("Cannot access sdcard");
+                }
+
+            } catch (FileNotFoundException e) {
+                Log.e("SettingsFragment", "File Not Found exception");
+                e.printStackTrace();
+                return null;
+
+            } catch (Exception e) {
+                Log.e("SettingsFragment", "create temp exception");
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected File doInBackground(String... params) {
+            Log.d("SendEmailTask", "doInBackground");
+
+            File tmp = performTempCopy();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return tmp;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            nDialog = new ProgressDialog(getActivity());
+            nDialog.setMessage("Preparing records ...");
+            nDialog.setTitle("Processing");
+            nDialog.setIndeterminate(false);
+            nDialog.setCancelable(false);
+            nDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(File tmp) {
+            Log.d("SendEmailTask", " onPostExecute - show email intent");
+            if (nDialog != null) {
+                nDialog.dismiss();
+            }
+            if (tmp != null) {
+
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.getDefault());
+                Date date = new Date();
+                String currentTime = dateFormat.format(date);//get current time
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Migraine Trigger data");
+                intent.putExtra(Intent.EXTRA_TEXT, String.format("Record database as of : %s", currentTime));
+                intent.setType("application/octet-stream");
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tmp));
+                startActivity(Intent.createChooser(intent, "Send via e-mail"));
+
+            } else {
+                Log.e("SettingsFragment", "null temp file");
+                AppUtil.showToast(SettingsFragment.this.getActivity(), "Something went wrong");
             }
         }
     }

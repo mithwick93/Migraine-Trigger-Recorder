@@ -49,27 +49,6 @@ public final class DBLocationDAO {
     /**
      * delete Location
      *
-     * @param id id
-     * @return affected no of rows
-     */
-    public static long deleteLocation(int id) {
-        Log.d("DBLocationDAO", "deleteLocation");
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-            if (id == 0) {
-                Log.e("DBLocationDAO", "attempting to delete readonly nil value");
-                return -1;
-            }
-            return (long) db.delete(DatabaseDefinition.LOCATION_TABLE, DatabaseDefinition.LOCATION_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    /**
-     * delete Location
-     *
      * @param db SQLiteDatabase
      * @param id id
      * @return affected no of rows

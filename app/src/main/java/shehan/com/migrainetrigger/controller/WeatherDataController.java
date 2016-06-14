@@ -13,7 +13,6 @@ public class WeatherDataController {
     }
 
     public static WeatherData getWeatherDataByRecordId(int recordId) {
-
         return DBWeatherDataDAO.getWeatherDataByRecordId(recordId);
     }
 }

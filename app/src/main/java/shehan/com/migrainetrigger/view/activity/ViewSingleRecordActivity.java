@@ -14,7 +14,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import shehan.com.migrainetrigger.R;
-import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFragment;
 
 public class ViewSingleRecordActivity
@@ -119,10 +118,6 @@ public class ViewSingleRecordActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.single_record_container, mViewRecordSingleFragment);
         fragmentTransaction.commit();
-        if (mViewRecordSingleFragment != null) {
-            AppUtil.showToast(ViewSingleRecordActivity.this, "Selected record Id : " + recordId);
-        }
-
         fabSetup();
 
     }

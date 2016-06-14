@@ -22,25 +22,12 @@ public class SymptomController {
         return DBSymptomDAO.addSymptom(symptom);
     }
 
-    public static long addSymptomRecord(int symptomId, int recordId) {
-        Log.d("SymptomController", " addSymptomRecord ");
-        return DBSymptomDAO.addSymptomRecord(symptomId, recordId);
-    }
-
-    public static long addSymptoms(ArrayList<Symptom> lst) {
-        for (Symptom itm : lst) {
-            long result = addSymptom(itm);
-            if (result < 1) {
-                return 0;
-            }
-        }
-        return lst.size();
-    }
-
-    public static long deleteSymptom(int id) {
-        return DBSymptomDAO.deleteSymptom(id);
-    }
-
+    /**
+     * Get all symptoms, apply sort
+     *
+     * @param applySuggestions enable suggestions
+     * @return ArrayList<Symptom>
+     */
     public static ArrayList<Symptom> getAllSymptoms(boolean applySuggestions) {
         Log.d("SymptomController", " getAllSymptoms ");
         ArrayList<Symptom> lst = DBSymptomDAO.getAllSymptoms();
@@ -91,10 +78,6 @@ public class SymptomController {
         }
 
         return lst;
-    }
-
-    public static Symptom getSymptomById(int id) {
-        return DBSymptomDAO.getSymptom(id);
     }
 
     public static ArrayList<Symptom> getSymptomsForRecord(int recordId) {

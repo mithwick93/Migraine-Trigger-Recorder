@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="themedWeatherTemperature" format="reference" />
-    <attr name="themedWeatherHumidity" format="reference" />
-    <attr name="themedWeatherPressure" format="reference" />
-    <attr name="themedFAQChevron" format="reference" />
-    <attr name="themedFilterUp" format="reference" />
-    <attr name="themedFilterDown" format="reference" />
-    <attr name="themedNavHeaderColor" format="color" />
-    <attr name="filterDialogSeparatorColor" format="color" />
+    <attr name="themedWeatherTemperature" format="reference"/>
+    <attr name="themedWeatherHumidity" format="reference"/>
+    <attr name="themedWeatherPressure" format="reference"/>
+    <attr name="themedFAQChevron" format="reference"/>
+    <attr name="themedFilterUp" format="reference"/>
+    <attr name="themedFilterDown" format="reference"/>
+    <attr name="themedNavHeaderColor" format="color"/>
+    <attr name="filterDialogSeparatorColor" format="color"/>
 
 </resources>

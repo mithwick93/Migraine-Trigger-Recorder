@@ -57,7 +57,6 @@ public final class DBWeatherDataDAO {
 
     }
 
-
     /**
      * delete Weather Record
      *

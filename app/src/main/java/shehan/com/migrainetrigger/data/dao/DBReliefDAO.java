@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.sql.Timestamp;
@@ -51,35 +50,6 @@ public final class DBReliefDAO {
     /**
      * add Relief Record
      *
-     * @param reliefId  reliefId
-     * @param recordId  recordId
-     * @param effective effective
-     * @return raw id
-     */
-    public static long addReliefRecord(int reliefId, int recordId, boolean effective) {
-        Log.d("DBReliefDAO", "DB - addReliefRecord");
-
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
-            ContentValues values = new ContentValues();
-
-            values.put(DatabaseDefinition.RELIEF_RECORD_RELIEF_ID_KEY, reliefId);
-
-            values.put(DatabaseDefinition.RELIEF_RECORD_RECORD_ID_KEY, recordId);
-
-            values.put(DatabaseDefinition.RELIEF_RECORD_EFFECTIVE_KEY, effective ? "t" : "f");
-
-            return db.insert(DatabaseDefinition.RELIEF_RECORD_TABLE, null, values);
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    /**
-     * add Relief Record
-     *
      * @param db        SQLiteDatabase
      * @param reliefId  reliefId
      * @param recordId  recordId
@@ -105,24 +75,6 @@ public final class DBReliefDAO {
     /**
      * delete Relief
      *
-     * @param id id
-     * @return affected no of rows
-     */
-    public static long deleteRelief(int id) {
-        Log.d("DBReliefDAO", "deleteMedicine");
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
-            return (long) db.delete(DatabaseDefinition.RELIEF_TABLE, DatabaseDefinition.RELIEF_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    /**
-     * delete Relief
-     *
      * @param db SQLiteDatabase
      * @param id id
      * @return affected no of rows
@@ -132,7 +84,6 @@ public final class DBReliefDAO {
 
         return (long) db.delete(DatabaseDefinition.RELIEF_TABLE, DatabaseDefinition.RELIEF_ID_KEY + " = ?", new String[]{String.valueOf(id)});
     }
-
 
     /**
      * delete Relief Records
@@ -227,59 +178,6 @@ public final class DBReliefDAO {
 
         }
         return recordId;
-    }
-
-    /**
-     * get Relief
-     *
-     * @param id id
-     * @return Relief
-     */
-    @Nullable
-    public static Relief getRelief(int id) {
-        Log.d("DBReliefDAO", "getRelief");
-
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
-
-            cursor = db.query(DatabaseDefinition.RELIEF_TABLE, null, DatabaseDefinition.RELIEF_ID_KEY + " = ?", new String[]{String.valueOf(id)}, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-
-
-                int reliefId = cursor.getInt(0);
-
-                ReliefBuilder reliefBuilder = new ReliefBuilder().setReliefId(reliefId);
-
-                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RELIEF_NAME_KEY);
-
-                if (!cursor.isNull(index)) {
-                    String name = cursor.getString(index);
-                    reliefBuilder = reliefBuilder.setReliefName(name);
-                }
-
-                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.RELIEF_PRIORITY_KEY);
-
-                if (!cursor.isNull(index)) {
-                    String priority = cursor.getString(index);
-                    reliefBuilder = reliefBuilder.setPriority(Integer.parseInt(priority));
-                }
-
-                return reliefBuilder.createRelief();
-            }
-
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
-        }
-        return null;
     }
 
     /**

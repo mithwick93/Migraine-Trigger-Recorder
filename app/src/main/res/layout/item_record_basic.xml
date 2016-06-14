@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view_record_basic"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    android:layout_marginEnd="7dp"
+                                    xmlns:tools="http://schemas.android.com/tools"
+                                    android:id="@+id/card_view_record_basic"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginEnd="7dp"
 
-    android:layout_marginStart="7dp"
-    android:layout_marginTop="10dp"
-    tools:cardCornerRadius="2dp">
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginTop="10dp"
+                                    tools:cardCornerRadius="2dp">
 
     <GridLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                     android:paddingStart="5dp"
                     android:paddingTop="10dp"
                     android:text="@string/record_lbl_start"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 
                 <LinearLayout
@@ -59,7 +59,7 @@
                         android:hint="@string/record_txt_start_date_hint"
                         android:inputType="textMultiLine"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"/>
 
                     <EditText
                         android:id="@+id/txt_record_start_time"
@@ -71,7 +71,7 @@
                         android:hint="@string/record_txt_start_time_hint"
                         android:inputType="textMultiLine"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"/>
                 </LinearLayout>
 
 
@@ -102,7 +102,7 @@
                     android:paddingStart="5dp"
                     android:paddingTop="10dp"
                     android:text="@string/record_lbl_end"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 
                 <LinearLayout
@@ -121,7 +121,7 @@
                         android:hint="@string/record_txt_end_date_hint"
                         android:inputType="textMultiLine"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"/>
 
                     <EditText
                         android:id="@+id/txt_record_end_time"
@@ -133,7 +133,7 @@
                         android:hint="@string/record_txt_end_time_hint"
                         android:inputType="textMultiLine"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -164,7 +164,7 @@
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:text="@string/record_lbl_intensity"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <RelativeLayout
                     android:id="@+id/layout_intensity"
@@ -184,7 +184,7 @@
                         android:gravity="center_vertical|center_horizontal"
                         android:hint="@string/record_txt_intensity_hint"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
                 </RelativeLayout>
 
             </LinearLayout>

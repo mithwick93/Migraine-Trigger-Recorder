@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.sql.Timestamp;
@@ -51,31 +50,6 @@ public final class DBSymptomDAO {
     /**
      * add Symptom Record
      *
-     * @param symptomId symptomId
-     * @return raw id
-     */
-    public static long addSymptomRecord(int symptomId, int recordId) {
-        Log.d("DBSymptomDAO", "DB - addSymptomRecord");
-
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
-            ContentValues values = new ContentValues();
-
-            values.put(DatabaseDefinition.SYMPTOM_RECORD_SYMPTOM_ID_KEY, symptomId);
-
-            values.put(DatabaseDefinition.SYMPTOM_RECORD_RECORD_ID_KEY, recordId);
-
-            return db.insert(DatabaseDefinition.SYMPTOM_RECORD_TABLE, null, values);
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    /**
-     * add Symptom Record
-     *
      * @param db        SQLiteDatabase
      * @param symptomId symptomId
      * @param recordId  recordId
@@ -93,24 +67,6 @@ public final class DBSymptomDAO {
 
         return db.insert(DatabaseDefinition.SYMPTOM_RECORD_TABLE, null, values);
 
-    }
-
-    /**
-     * delete Symptom
-     *
-     * @param id id
-     * @return affected no of rows
-     */
-    public static long deleteSymptom(int id) {
-        Log.d("DBSymptomDAO", "deleteSymptom");
-        try (SQLiteDatabase db = DatabaseHandler.getWritableDatabase()) {
-
-            return (long) db.delete(DatabaseDefinition.SYMPTOM_TABLE, DatabaseDefinition.SYMPTOM_ID_KEY + " = ?", new String[]{String.valueOf(id)});
-        } catch (SQLiteException e) {
-
-            e.printStackTrace();
-            return -1;
-        }
     }
 
     /**
@@ -221,59 +177,6 @@ public final class DBSymptomDAO {
 
         }
         return recordId;
-    }
-
-    /**
-     * get Symptom
-     *
-     * @param id id
-     * @return Symptom
-     */
-    @Nullable
-    public static Symptom getSymptom(int id) {
-        Log.d("DBSymptomDAO", "getSymptom");
-
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = DatabaseHandler.getReadableDatabase();
-
-            cursor = db.query(DatabaseDefinition.SYMPTOM_TABLE, null, DatabaseDefinition.SYMPTOM_ID_KEY + " = ?", new String[]{String.valueOf(id)}, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {// If records are found process them
-
-
-                int symptomId = cursor.getInt(0);
-
-                SymptomBuilder symptomBuilder = new SymptomBuilder().setSymptomId(symptomId);
-
-                int index = cursor.getColumnIndexOrThrow(DatabaseDefinition.SYMPTOM_NAME_KEY);
-
-                if (!cursor.isNull(index)) {
-                    String name = cursor.getString(index);
-                    symptomBuilder = symptomBuilder.setSymptomName(name);
-                }
-
-                index = cursor.getColumnIndexOrThrow(DatabaseDefinition.SYMPTOM_PRIORITY_KEY);
-
-                if (!cursor.isNull(index)) {
-                    String priority = cursor.getString(index);
-                    symptomBuilder = symptomBuilder.setPriority(Integer.parseInt(priority));
-                }
-
-                return symptomBuilder.createSymptom();
-            }
-
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
-        }
-        return null;
     }
 
     /**

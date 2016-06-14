@@ -18,37 +18,20 @@ import shehan.com.migrainetrigger.view.model.AnswerSectionViewData;
  */
 public class LifeActivityController {
 
-    public static long addActivities(ArrayList<LifeActivity> lst) {
-        for (LifeActivity itm : lst) {
-            long result = addActivity(itm);
-            if (result < 1) {
-                return 0;
-            }
-        }
-        return lst.size();
-    }
-
     public static long addActivity(LifeActivity lifeActivity) {
         return DBActivityDAO.addActivity(lifeActivity);
-    }
-
-    public static long addActivityRecord(int activityId, int recordId) {
-        Log.d("LifeActivityController", "addActivityRecord ");
-        return DBActivityDAO.addActivityRecord(activityId, recordId);
-    }
-
-    public static long deleteActivity(int id) {
-        return DBActivityDAO.deleteActivity(id);
     }
 
     public static ArrayList<LifeActivity> getActivitiesForRecord(int recordId) {
         return DBActivityDAO.getActivitiesForRecord(recordId);
     }
 
-    public static LifeActivity getActivityById(int id) {
-        return DBActivityDAO.getActivity(id);
-    }
-
+    /**
+     * Get all activities, apply sort
+     *
+     * @param applySuggestions enable suggestions
+     * @return ArrayList<LifeActivity>
+     */
     public static ArrayList<LifeActivity> getAllActivities(boolean applySuggestions) {
         Log.d("LifeActivityController", "getAllActivities ");
 

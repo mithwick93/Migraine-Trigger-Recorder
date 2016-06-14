@@ -10,6 +10,9 @@ public abstract class PriorityEntity implements Comparable<PriorityEntity> {
     protected int priority;
 
     @Override
+    /**
+     * Logic to compare two answers priorities
+     */
     public int compareTo(@NonNull PriorityEntity priorityEntity) {
         return (priority - priorityEntity.priority);
     }
