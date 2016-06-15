@@ -15,7 +15,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppThemeLight.RedOnYellow"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:theme">
         <activity
             android:name=".view.activity.SplashScreenActivity"
