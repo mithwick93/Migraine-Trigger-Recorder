@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.LifeActivityController;
@@ -33,7 +35,6 @@ import shehan.com.migrainetrigger.utility.AppUtil;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFragment;
 
 import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
-import static shehan.com.migrainetrigger.utility.AppUtil.showToast;
 
 
 /**
@@ -41,16 +42,11 @@ import static shehan.com.migrainetrigger.utility.AppUtil.showToast;
  */
 public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
 
-    //Data storage
     protected ArrayList<LifeActivity> activities;
     protected EditText editTxtActivities;
     protected EditText editTxtSymptoms;
-    //intermediate
-    //Controls
     protected EditText editTxtTriggers;
-    //
     protected ArrayList<LifeActivity> selectedActivities;
-    //Track selected incises
     protected Integer[] selectedActivityIndexes;
     protected ArrayList<Symptom> selectedSymptoms;
     protected Integer[] selectedSymptomsIndexes;
@@ -58,7 +54,6 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
     protected ArrayList<Trigger> selectedTriggers;
     protected ArrayList<Symptom> symptoms;
     protected ArrayList<Trigger> triggers;
-    //Callback
     private AddRecordIntermediateFragmentListener mCallback;
 
     public AddRecordIntermediateFragment() {
@@ -224,125 +219,15 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         selectedTriggerIndexes = null;
         selectedSymptomsIndexes = null;
 
-//--------------------------------------------------
-        //start time
-        editTxtTriggers.setCursorVisible(false);
-        editTxtTriggers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*
-                Show dialog with multi choice to choose items.
-                when selected add to selected list
-                when unchecked remove from list
-                Show the names in edit text
-                 */
-                if (triggers.size() > 0) {
-                    new MaterialDialog.Builder(getContext())
-                            .title("Select triggers")
-                            .items(triggers)
-                            .itemsCallbackMultiChoice(selectedTriggerIndexes, new MaterialDialog.ListCallbackMultiChoice() {
-                                @Override
-                                public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                    String selectedStr = "";
-                                    selectedTriggers.clear();
-                                    selectedTriggerIndexes = which;
+        triggerSetup();
+        symptomSetup();
+        activitySetup();
 
-                                    for (Integer integer : which) {
-                                        String name = triggers.get(integer).toString();
-                                        selectedStr = selectedStr + ", " + name;
-                                        selectedTriggers.add(triggers.get(integer));
-                                    }
-                                    if (selectedStr.contains(",")) {
-                                        selectedStr = selectedStr.replaceFirst(",", "");
-                                    }
 
-                                    editTxtTriggers.setText(selectedStr);
-                                    return true; // allow selection
-                                }
-                            })
-                            .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    AppUtil.showToast(getContext(), "Selection cleared");
+    }
 
-                                    if (triggers.size() > 0) {
-                                        dialog.clearSelectedIndices();
-                                        selectedTriggers.clear();
-                                    }
-                                    selectedTriggerIndexes = null;
-                                    editTxtTriggers.setText("");
-                                }
-                            })
-                            .positiveText(R.string.confirmButtonDialog)
-                            .neutralText(R.string.clear_selection)
-                            .show();
-                } else {
-                    showToast(getContext(), "Triggers not defined. Add them in answers");
-                }
-
-            }
-        });
-
-//--------------------------------------------------
-        //start time
-        editTxtSymptoms.setCursorVisible(false);
-        editTxtSymptoms.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*
-                Show dialog with multi choice to choose items.
-                when selected add to selected list
-                when unchecked remove from list
-                Show the names in edit text
-                 */
-                if (symptoms.size() > 0) {
-                    new MaterialDialog.Builder(getContext())
-                            .title("Select Symptoms")
-                            .items(symptoms)
-                            .itemsCallbackMultiChoice(selectedSymptomsIndexes, new MaterialDialog.ListCallbackMultiChoice() {
-                                @Override
-                                public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                    String selectedStr = "";
-                                    selectedSymptoms.clear();
-                                    selectedSymptomsIndexes = which;
-
-                                    for (Integer integer : which) {
-                                        String name = symptoms.get(integer).toString();
-                                        selectedStr = selectedStr + ", " + name;
-                                        selectedSymptoms.add(symptoms.get(integer));
-                                    }
-                                    if (selectedStr.contains(",")) {
-                                        selectedStr = selectedStr.replaceFirst(",", "");
-                                    }
-
-                                    editTxtSymptoms.setText(selectedStr);
-                                    return true; // allow selection
-                                }
-                            })
-                            .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    AppUtil.showToast(getContext(), "Selection cleared");
-
-                                    if (symptoms.size() > 0) {
-                                        selectedSymptoms.clear();
-                                        dialog.clearSelectedIndices();
-                                    }
-                                    selectedSymptomsIndexes = null;
-                                    editTxtSymptoms.setText("");
-                                }
-                            })
-                            .positiveText(R.string.confirmButtonDialog)
-                            .neutralText(R.string.clear_selection)
-                            .show();
-                } else {
-                    showToast(getContext(), "Symptoms not defined. Add them in answers");
-                }
-
-            }
-        });
-
-//--------------------------------------------------
+    private void activitySetup() {
+        //--------------------------------------------------
         //activities
         editTxtActivities.setCursorVisible(false);
         editTxtActivities.setOnClickListener(new View.OnClickListener() {
@@ -354,52 +239,62 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
                 when unchecked remove from list
                 Show the names in edit text
                  */
-                if (activities.size() > 0) {
-                    new MaterialDialog.Builder(getContext())
-                            .title("Select Activities")
-                            .items(activities)
-                            .itemsCallbackMultiChoice(selectedActivityIndexes, new MaterialDialog.ListCallbackMultiChoice() {
-                                @Override
-                                public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                    String selectedStr = "";
-                                    selectedActivities.clear();
-                                    selectedActivityIndexes = which;
+                new MaterialDialog.Builder(getContext())
+                        .title("Select Activities")
+                        .items(activities)
+                        .itemsCallbackMultiChoice(selectedActivityIndexes, new MaterialDialog.ListCallbackMultiChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                String selectedStr = "";
+                                selectedActivities.clear();
+                                selectedActivityIndexes = which;
 
-                                    for (Integer integer : which) {
-                                        String name = activities.get(integer).toString();
-                                        selectedStr = selectedStr + ", " + name;
-                                        selectedActivities.add(activities.get(integer));
-                                    }
-                                    if (selectedStr.contains(",")) {
-                                        selectedStr = selectedStr.replaceFirst(",", "");
-                                    }
-
-                                    editTxtActivities.setText(selectedStr);
-                                    return true; // allow selection
+                                for (Integer integer : which) {
+                                    String name = activities.get(integer).toString();
+                                    selectedStr = selectedStr + ", " + name;
+                                    selectedActivities.add(activities.get(integer));
                                 }
-                            })
-                            .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    AppUtil.showToast(getContext(), "Selection cleared");
-
-                                    if (activities.size() > 0) {
-                                        selectedActivities.clear();
-                                        dialog.clearSelectedIndices();
-                                    }
-                                    selectedActivityIndexes = null;
-                                    editTxtActivities.setText("");
+                                if (selectedStr.contains(",")) {
+                                    selectedStr = selectedStr.replaceFirst(",", "");
                                 }
-                            })
-                            .positiveText(R.string.confirmButtonDialog)
-                            .neutralText(R.string.clear_selection)
-                            .show();
-                } else {
-                    showToast(getContext(), "Activities not defined. Add them in answers");
-                }
 
+                                editTxtActivities.setText(selectedStr);
+                                return true; // allow selection
+                            }
+                        })
+                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                handleAnswerAdd("Activities");
+                            }
+                        })
+                        .positiveText(R.string.confirmButtonDialog)
+                        .neutralText(R.string.addNewAnswer)
+                        .show();
             }
         });
+    }
+
+    private void handleAnswerAdd(final String answerSection) {
+        //On add new button click, show dialog to get name, place at bottom , add to db
+        String content = answerSection.substring(0, answerSection.length() - 1).toLowerCase(Locale.getDefault());
+        if (answerSection.equals("Activities")) {
+            content = "activity";
+        }
+        new MaterialDialog.Builder(this.getContext())
+                .title("Add new answer")
+                .content("Enter new " + content)
+                .inputType(InputType.TYPE_CLASS_TEXT |
+                        InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
+                .inputRange(1, 64)
+                .positiveText("Submit")
+                .negativeText("Cancel")
+                .input("New answer", "", false, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        new AddNewAnswerIntermediateTask(answerSection).execute(input.toString());
+                    }
+                }).show();
     }
 
     /**
@@ -430,7 +325,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         }
 
         Calendar c = Calendar.getInstance();
-        if (startTimestamp.after(c.getTime())) {
+        if (startTimestamp != null && startTimestamp.after(c.getTime())) {
             AppUtil.showMsg(getContext(), "Start Date is past current time", "Validation error");
             return;
         }
@@ -458,7 +353,7 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         }
 
         //validate times
-        if ((endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
+        if ((startTimestamp != null && endTimestamp != null && startTimestamp.before(endTimestamp)) || endTimestamp == null) {
 
             new AsyncTask<String, Void, Boolean>() {
                 @Override
@@ -483,6 +378,113 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         }
     }
 
+    private void symptomSetup() {
+        //--------------------------------------------------
+        //Symptoms
+        editTxtSymptoms.setCursorVisible(false);
+        editTxtSymptoms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*
+                Show dialog with multi choice to choose items.
+                when selected add to selected list
+                when unchecked remove from list
+                Show the names in edit text
+                 */
+                new MaterialDialog.Builder(getContext())
+                        .title("Select Symptoms")
+                        .items(symptoms)
+                        .itemsCallbackMultiChoice(selectedSymptomsIndexes, new MaterialDialog.ListCallbackMultiChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                String selectedStr = "";
+                                selectedSymptoms.clear();
+                                selectedSymptomsIndexes = which;
+
+                                for (Integer integer : which) {
+                                    String name = symptoms.get(integer).toString();
+                                    selectedStr = selectedStr + ", " + name;
+                                    selectedSymptoms.add(symptoms.get(integer));
+                                }
+                                if (selectedStr.contains(",")) {
+                                    selectedStr = selectedStr.replaceFirst(",", "");
+                                }
+
+                                editTxtSymptoms.setText(selectedStr);
+                                return true; // allow selection
+                            }
+                        })
+                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                                AppUtil.showToast(getContext(), "Selection cleared");
+//
+//                                if (symptoms.size() > 0) {
+//                                    selectedSymptoms.clear();
+//                                    dialog.clearSelectedIndices();
+//                                }
+//                                selectedSymptomsIndexes = null;
+//                                editTxtSymptoms.setText("");
+                                handleAnswerAdd("Symptoms");
+                            }
+                        })
+                        .positiveText(R.string.confirmButtonDialog)
+                        .neutralText(R.string.addNewAnswer)
+                        .show();
+            }
+        });
+    }
+
+    private void triggerSetup() {
+        //--------------------------------------------------
+        //Triggers
+        editTxtTriggers.setCursorVisible(false);
+        editTxtTriggers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*
+                Show dialog with multi choice to choose items.
+                when selected add to selected list
+                when unchecked remove from list
+                Show the names in edit text
+                 */
+                //if (triggers.size() > 0) {
+                new MaterialDialog.Builder(getContext())
+                        .title("Select triggers")
+                        .items(triggers)
+                        .itemsCallbackMultiChoice(selectedTriggerIndexes, new MaterialDialog.ListCallbackMultiChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                String selectedStr = "";
+                                selectedTriggers.clear();
+                                selectedTriggerIndexes = which;
+
+                                for (Integer integer : which) {
+                                    String name = triggers.get(integer).toString();
+                                    selectedStr = selectedStr + ", " + name;
+                                    selectedTriggers.add(triggers.get(integer));
+                                }
+                                if (selectedStr.contains(",")) {
+                                    selectedStr = selectedStr.replaceFirst(",", "");
+                                }
+
+                                editTxtTriggers.setText(selectedStr);
+                                return true; // allow selection
+                            }
+                        })
+                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                handleAnswerAdd("Triggers");
+                            }
+                        })
+                        .positiveText(R.string.confirmButtonDialog)
+                        .neutralText(R.string.addNewAnswer)
+                        .show();
+            }
+        });
+    }
+
     //
     //
     //
@@ -497,4 +499,113 @@ public class AddRecordIntermediateFragment extends AddRecordBasicFragment {
         void onAddRecordIntermediateRequest(int request);
     }
 
+
+    /**
+     * Async task to add new Answer
+     */
+    private class AddNewAnswerIntermediateTask extends AsyncTask<String, Void, Long> {
+
+        private String answerSection;
+
+        private AddNewAnswerIntermediateTask(String answerSection) {
+            this.answerSection = answerSection;
+        }
+
+        @Override
+        protected Long doInBackground(String... answer) {
+            Log.d("AddNewAnswerTask", " doInBackground - save answers");
+
+            String name = answer[0].trim();
+            long response = -1;
+            int id;
+            switch (answerSection) {
+                case "Triggers": {
+                    int priority = -1;
+                    id = TriggerController.getLastRecordId() + 1;
+                    ArrayList<Trigger> tmpLst = TriggerController.getAllTriggers(false);
+                    if (tmpLst.size() > 0) {
+                        Trigger trigger = tmpLst.get(tmpLst.size() - 1);
+                        if (trigger != null) {
+                            priority = trigger.getPriority();
+                        }
+                    }
+                    priority++;
+                    response = TriggerController.addTrigger(new Trigger(id, name, priority));
+                    break;
+                }
+                case "Symptoms": {
+                    int priority = -1;
+                    id = SymptomController.getLastRecordId() + 1;
+                    ArrayList<Symptom> tmpLst = SymptomController.getAllSymptoms(false);
+                    if (tmpLst.size() > 0) {
+                        Symptom symptom = tmpLst.get(tmpLst.size() - 1);
+                        if (symptom != null) {
+                            priority = symptom.getPriority();
+                        }
+                    }
+                    priority++;
+                    response = SymptomController.addSymptom(new Symptom(id, name, priority));
+                    break;
+                }
+                case "Activities": {
+                    int priority = -1;
+                    id = LifeActivityController.getLastRecordId() + 1;
+                    ArrayList<LifeActivity> tmpLst = LifeActivityController.getAllActivities(false);
+                    if (tmpLst.size() > 0) {
+                        LifeActivity lifeActivity = tmpLst.get(tmpLst.size() - 1);
+                        if (lifeActivity != null) {
+                            priority = lifeActivity.getPriority();
+                        }
+                    }
+                    priority++;
+                    response = LifeActivityController.addActivity(new LifeActivity(id, name, priority));
+                    break;
+                }
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(Long response) {
+            Log.d("AddNewAnswerTask", " onPostExecute - show result");
+
+            if (response > 0) {
+                AppUtil.showToast(getContext(), "Answer added successfully");
+                switch (answerSection) {
+                    case "Triggers": {
+                        new AsyncTask<String, Void, String>() {
+                            @Override
+                            protected String doInBackground(String... params) {
+                                triggers = TriggerController.getAllTriggers(true);
+                                return "";
+                            }
+                        }.execute();
+                        break;
+                    }
+                    case "Symptoms": {
+                        new AsyncTask<String, Void, String>() {
+                            @Override
+                            protected String doInBackground(String... params) {
+                                symptoms = SymptomController.getAllSymptoms(true);
+                                return "";
+                            }
+                        }.execute();
+                        break;
+                    }
+                    case "Activities": {
+                        new AsyncTask<String, Void, String>() {
+                            @Override
+                            protected String doInBackground(String... params) {
+                                activities = LifeActivityController.getAllActivities(true);
+                                return "";
+                            }
+                        }.execute();
+                        break;
+                    }
+                }
+            } else {
+                AppUtil.showToast(getContext(), "Answer add failed");
+            }
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package shehan.com.migrainetrigger.utility.database;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,12 @@ public class DatabaseHandlerTest {
 
     @Test
     public void testDatabaseTest() {
-        DatabaseHandler.testDatabase();
+        try {
+            DatabaseHandler.testDatabase();
+            assert true;
+        } catch (Exception ex) {
+            Log.e("DatabaseHandler", "Database test failed");
+            ex.printStackTrace();
+        }
     }
 }

@@ -463,7 +463,7 @@ public class MainActivity
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
-        final int newBackStackLength = fragmentManager.getBackStackEntryCount() + 1;
+        //final int newBackStackLength = fragmentManager.getBackStackEntryCount() + 1;
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -473,26 +473,32 @@ public class MainActivity
         }
         fragmentTransaction.commit();
 
-        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                int nowCount = fragmentManager.getBackStackEntryCount();
-                if (newBackStackLength != nowCount) {
-                    // we don't really care if going back or forward. we already performed the logic here.
-                    fragmentManager.removeOnBackStackChangedListener(this);
-
-                    if (newBackStackLength > nowCount) { // user pressed back
-                        fragmentManager.popBackStackImmediate();
-                    }
-                }
-            }
-        });
-
+//        if (!onBackStackChangedListenerSet) {
+//            onBackStackChangedListenerSet = true;
+//            FragmentManager.OnBackStackChangedListener listener = new FragmentManager.OnBackStackChangedListener() {
+//                @Override
+//                public void onBackStackChanged() {
+//                    try {
+//                        int nowCount = fragmentManager.getBackStackEntryCount();
+//                        if (newBackStackLength != nowCount) {
+//                            // we don't really care if going back or forward. we already performed the logic here.
+//                            fragmentManager.removeOnBackStackChangedListener(this);
+//
+//                            if (newBackStackLength > nowCount) { // user pressed back
+//                                fragmentManager.popBackStackImmediate();
+//                            }
+//                        }
+//                    } catch (Exception ex) {
+//                        Log.e("MainActivity", "FragmentManager error: " + ex.getMessage());
+//                    }
+//
+//                }
+//            };
+//            fragmentManager.addOnBackStackChangedListener(listener);
+//        }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(toolBarTitle);
         }
-
-
     }
 
     /**

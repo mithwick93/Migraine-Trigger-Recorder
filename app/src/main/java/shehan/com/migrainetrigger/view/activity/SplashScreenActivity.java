@@ -3,6 +3,7 @@ package shehan.com.migrainetrigger.view.activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.utility.database.DatabaseHandler;
@@ -29,29 +30,40 @@ public class SplashScreenActivity extends BaseActivity {
     /**
      * Async task to initialize db and load Main activity
      */
-    private class InitializerTask extends AsyncTask<Void, Void, Void> {
+    private class InitializerTask extends AsyncTask<Void, Void, Boolean> {
         Intent intent;
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
             //First initialization
-            DatabaseHandler.testDatabase();
-            intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+
+            try {
+                DatabaseHandler.testDatabase();
+                intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
 
             try {
                 Thread.sleep(1500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return null;
+            return true;
         }
 
         @Override
-        protected void onPostExecute(Void v) {
+        protected void onPostExecute(Boolean result) {
             //enable suggestions
-
-            startActivity(intent);
-            finish();
+            if (result && intent != null) {
+                startActivity(intent);
+                finish();
+            } else {
+                Log.e("MigraineTrigger", "Invalid database detected. Migraine trigger will exit");
+                android.os.Process.killProcess(android.os.Process.myPid());
+                SplashScreenActivity.super.onDestroy();
+            }
         }
 
     }

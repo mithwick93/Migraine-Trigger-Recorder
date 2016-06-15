@@ -67,8 +67,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
     protected EditText editTxtEndDate;
     protected EditText editTxtEndTime;
-    //basic
-    //Controls
     protected EditText editTxtStartDate;
     protected EditText editTxtStartTime;
     protected int[] endDate;
@@ -81,12 +79,9 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     protected TextView txtViewWeatherHumidity;
     protected TextView txtViewWeatherPressure;
     protected TextView txtViewWeatherTemp;
-    //Data storage
     protected WeatherData weatherData;
     protected boolean weatherDataLoaded;
-    //Location
     private GeoLocationService geoLocationService;
-    //Callback
     private AddRecordBasicFragmentListener mCallback;
     private TextView viewTxtIntensity;
 
@@ -99,6 +94,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
      *
      * @param location location object
      */
+    @Override
     public void onLocationReceived(Location location) {
         Log.d("AddRecordBasic", "onLocationReceived ");
         Timestamp startTimestamp;
@@ -119,8 +115,10 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
         } else {
             Log.d("AddRecordBasic", "fallback to default coordinates ");
-            AppUtil.showToast(getContext(), "Using default coordinates");
-            new GetWeatherTask(6.6839861, 79.9275146, startTimestamp).execute();
+            // AppUtil.showToast(getContext(), "Using default coordinates");
+            final double latitude = 6.6839861;
+            final double longitude = 79.9275146;
+            new GetWeatherTask(latitude, longitude, startTimestamp).execute();
         }
     }
 
@@ -212,24 +210,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
         Log.d("AddRecordBasic-onCreate", "variables initialized, onCreate complete");
         return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (geoLocationService != null) {
-//            geoLocationService.connect();
-            Log.d("AddRecordBasicFragment", "geoLocationService.connect");
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (geoLocationService != null) {
-//            geoLocationService.connect();
-            Log.d("AddRecordBasicFragment", "geoLocationService.connect");
-        }
     }
 
     @Override
@@ -382,212 +362,12 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
         layoutWeather.setVisibility(View.GONE);
 
-//--------------------------------------------------
-        //start date
-        editTxtStartDate.setCursorVisible(false);
-        editTxtStartDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
+        startDateSetup();
+        startTimeSetup();
+        endDateSetup();
+        endTimeSetup();
+        intensitySetup(viewLayoutIntensity);
 
-                                editTxtStartDate.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
-                                AppUtil.showToast(getContext(), "Long press to clear date");
-                                mYear = startDate[0] = year;
-                                mMonth = startDate[1] = monthOfYear + 1;
-                                mDay = startDate[2] = dayOfMonth;
-
-                                editTxtStartTime.setEnabled(true);
-
-                                weatherData = null;
-                                weatherDataLoaded = false;
-                                layoutWeather.setVisibility(View.GONE);
-
-
-                            }
-                        }, mYear, mMonth - 1, mDay);
-                datePickerDialog.show();
-            }
-
-
-        });
-        editTxtStartDate.setOnLongClickListener(new View.OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-                editTxtStartDate.setText("");
-                startDate = new int[3];
-                startDate[0] = -1;
-
-                editTxtStartTime.setText("");
-                editTxtStartTime.setEnabled(false);
-                startTime = new int[2];
-                startTime[0] = -1;
-
-                weatherData = null;
-                weatherDataLoaded = false;
-                layoutWeather.setVisibility(View.GONE);
-
-                return true;
-            }
-        });
-//--------------------------------------------------
-        //start time
-        editTxtStartTime.setCursorVisible(false);
-        editTxtStartTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
-                        new TimePickerDialog.OnTimeSetListener() {
-
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-
-                                editTxtStartTime.setText(AppUtil.getFormattedTime(hourOfDay, minute));
-                                AppUtil.showToast(getContext(), "Long press to clear time");
-                                mHour = startTime[0] = hourOfDay;
-                                mMinute = startTime[1] = minute;
-
-                                weatherData = null;
-                                weatherDataLoaded = false;
-                                layoutWeather.setVisibility(View.GONE);
-
-                            }
-                        }, mHour, mMinute, false);
-                timePickerDialog.show();
-            }
-
-        });
-        editTxtStartTime.setOnLongClickListener(new View.OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-                editTxtStartTime.setText("");
-                startTime = new int[2];
-                startTime[0] = -1;
-
-                weatherData = null;
-                weatherDataLoaded = false;
-                layoutWeather.setVisibility(View.GONE);
-
-                return true;
-            }
-        });
-
-//--------------------------------------------------
-        //End date
-        editTxtEndDate.setCursorVisible(false);
-        editTxtEndDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-
-                                editTxtEndDate.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
-                                AppUtil.showToast(getContext(), "Long press to clear date");
-                                mYear = endDate[0] = year;
-                                mMonth = endDate[1] = monthOfYear + 1;
-                                mDay = endDate[2] = dayOfMonth;
-
-                                editTxtEndTime.setEnabled(true);
-                            }
-                        }, mYear, mMonth - 1, mDay);
-                datePickerDialog.show();
-            }
-
-        });
-        editTxtEndDate.setOnLongClickListener(new View.OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-                editTxtEndDate.setText("");
-                endDate = new int[3];
-                endDate[0] = -1;
-
-                editTxtEndTime.setText("");
-                editTxtEndTime.setEnabled(false);
-                endTime = new int[2];
-                endTime[0] = -1;
-
-                return true;
-            }
-        });
-//--------------------------------------------------
-        //End time
-        editTxtEndTime.setCursorVisible(false);
-        editTxtEndTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
-                        new TimePickerDialog.OnTimeSetListener() {
-
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-
-                                editTxtEndTime.setText(AppUtil.getFormattedTime(hourOfDay, minute));
-                                AppUtil.showToast(getContext(), "Long press to clear time");
-                                mHour = endTime[0] = hourOfDay;
-                                mMinute = endTime[1] = minute;
-                            }
-                        }, mHour, mMinute, false);
-                timePickerDialog.show();
-            }
-
-        });
-        editTxtEndTime.setOnLongClickListener(new View.OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-                editTxtEndTime.setText("");
-                endTime = new int[2];
-                endTime[0] = -1;
-                return true;
-            }
-        });
-//--------------------------------------------------
-        //intensity
-        viewTxtIntensity.setCursorVisible(false);
-        View.OnClickListener intensityListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new MaterialDialog.Builder(getContext())
-                        .title(R.string.migraineIntensityLevelDialog)
-                        .items(R.array.migraineIntensityLevel)
-                        .itemsCallbackSingleChoice(intensity - 1, new MaterialDialog.ListCallbackSingleChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                intensity = which + 1;
-                                setIntensityIcon(intensity);
-                                AppUtil.showToast(getContext(), "Long press to clear");
-                                return true; // allow selection
-                            }
-                        })
-                        .negativeText(R.string.cancelButtonDialog)
-                        .show();
-            }
-        };
-        View.OnLongClickListener intensityLongListener = new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                intensity = -1;
-                setIntensityIcon(intensity);
-                return true;
-            }
-        };
-
-        viewTxtIntensity.setOnClickListener(intensityListener);
-        viewLayoutIntensity.setOnClickListener(intensityListener);
-
-        viewTxtIntensity.setOnLongClickListener(intensityLongListener);
-        viewLayoutIntensity.setOnLongClickListener(intensityLongListener);
     }
 
     /**
@@ -647,6 +427,86 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         }
     }
 
+    private void endDateSetup() {
+        //--------------------------------------------------
+        //End date
+        editTxtEndDate.setCursorVisible(false);
+        editTxtEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+                                editTxtEndDate.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
+                                AppUtil.showToast(getContext(), "Long press to clear date");
+                                mYear = endDate[0] = year;
+                                mMonth = endDate[1] = monthOfYear + 1;
+                                mDay = endDate[2] = dayOfMonth;
+
+                                editTxtEndTime.setEnabled(true);
+                            }
+                        }, mYear, mMonth - 1, mDay);
+                datePickerDialog.show();
+            }
+
+        });
+        editTxtEndDate.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                editTxtEndDate.setText("");
+                endDate = new int[3];
+                endDate[0] = -1;
+
+                editTxtEndTime.setText("");
+                editTxtEndTime.setEnabled(false);
+                endTime = new int[2];
+                endTime[0] = -1;
+
+                return true;
+            }
+        });
+    }
+
+    private void endTimeSetup() {
+        //--------------------------------------------------
+        //End time
+        editTxtEndTime.setCursorVisible(false);
+        editTxtEndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+                                editTxtEndTime.setText(AppUtil.getFormattedTime(hourOfDay, minute));
+                                AppUtil.showToast(getContext(), "Long press to clear time");
+                                mHour = endTime[0] = hourOfDay;
+                                mMinute = endTime[1] = minute;
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+            }
+
+        });
+        editTxtEndTime.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                editTxtEndTime.setText("");
+                endTime = new int[2];
+                endTime[0] = -1;
+                return true;
+            }
+        });
+    }
+
     private void getWeatherFromService() {
         try {
             if (geoLocationService != null) {
@@ -663,6 +523,45 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
             AppUtil.showToast(getContext(), "Something went wrong");
             e.printStackTrace();
         }
+    }
+
+    private void intensitySetup(RelativeLayout viewLayoutIntensity) {
+        //--------------------------------------------------
+        //Intensity
+        viewTxtIntensity.setCursorVisible(false);
+        View.OnClickListener intensityListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialDialog.Builder(getContext())
+                        .title(R.string.migraineIntensityLevelDialog)
+                        .items(R.array.migraineIntensityLevel)
+                        .itemsCallbackSingleChoice(intensity - 1, new MaterialDialog.ListCallbackSingleChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                intensity = which + 1;
+                                setIntensityIcon(intensity);
+                                AppUtil.showToast(getContext(), "Long press to clear");
+                                return true; // allow selection
+                            }
+                        })
+                        .negativeText(R.string.cancelButtonDialog)
+                        .show();
+            }
+        };
+        View.OnLongClickListener intensityLongListener = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                intensity = -1;
+                setIntensityIcon(intensity);
+                return true;
+            }
+        };
+
+        viewTxtIntensity.setOnClickListener(intensityListener);
+        viewLayoutIntensity.setOnClickListener(intensityListener);
+
+        viewTxtIntensity.setOnLongClickListener(intensityLongListener);
+        viewLayoutIntensity.setOnLongClickListener(intensityLongListener);
     }
 
     private boolean isLocationPermissionGranted() {
@@ -775,6 +674,107 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         } else {
             AppUtil.showMsg(getContext(), "Start time is greater than the end time", "Validation error");
         }
+    }
+
+    private void startDateSetup() {
+        //--------------------------------------------------
+        //start date
+        editTxtStartDate.setCursorVisible(false);
+        editTxtStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+                                editTxtStartDate.setText(String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, monthOfYear + 1, year));
+                                AppUtil.showToast(getContext(), "Long press to clear date");
+                                mYear = startDate[0] = year;
+                                mMonth = startDate[1] = monthOfYear + 1;
+                                mDay = startDate[2] = dayOfMonth;
+
+                                editTxtStartTime.setEnabled(true);
+
+                                weatherData = null;
+                                weatherDataLoaded = false;
+                                layoutWeather.setVisibility(View.GONE);
+
+
+                            }
+                        }, mYear, mMonth - 1, mDay);
+                datePickerDialog.show();
+            }
+
+
+        });
+        editTxtStartDate.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                editTxtStartDate.setText("");
+                startDate = new int[3];
+                startDate[0] = -1;
+
+                editTxtStartTime.setText("");
+                editTxtStartTime.setEnabled(false);
+                startTime = new int[2];
+                startTime[0] = -1;
+
+                weatherData = null;
+                weatherDataLoaded = false;
+                layoutWeather.setVisibility(View.GONE);
+
+                return true;
+            }
+        });
+    }
+
+    private void startTimeSetup() {
+        //--------------------------------------------------
+        //start time
+        editTxtStartTime.setCursorVisible(false);
+        editTxtStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+                                editTxtStartTime.setText(AppUtil.getFormattedTime(hourOfDay, minute));
+                                AppUtil.showToast(getContext(), "Long press to clear time");
+                                mHour = startTime[0] = hourOfDay;
+                                mMinute = startTime[1] = minute;
+
+                                weatherData = null;
+                                weatherDataLoaded = false;
+                                layoutWeather.setVisibility(View.GONE);
+
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+            }
+
+        });
+        editTxtStartTime.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                editTxtStartTime.setText("");
+                startTime = new int[2];
+                startTime[0] = -1;
+
+                weatherData = null;
+                weatherDataLoaded = false;
+                layoutWeather.setVisibility(View.GONE);
+
+                return true;
+            }
+        });
     }
 
     //

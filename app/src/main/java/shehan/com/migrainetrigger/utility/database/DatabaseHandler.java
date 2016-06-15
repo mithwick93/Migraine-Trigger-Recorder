@@ -59,14 +59,18 @@ public class DatabaseHandler implements DatabaseDefinition {
     /**
      * Initialize or test database
      */
-    public static void testDatabase() {
+    public static void testDatabase() throws Exception {
         Log.d("DatabaseHandler", "testing database");
+
+        getReadableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
         try {
-            getWritableDatabase();
-            getReadableDatabase();
-        } catch (SQLiteException ex) {
-            Log.e("DatabaseHandler", "Database test failed");
-            ex.printStackTrace();
+            db.getVersion();
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+            db.close();
         }
     }
 

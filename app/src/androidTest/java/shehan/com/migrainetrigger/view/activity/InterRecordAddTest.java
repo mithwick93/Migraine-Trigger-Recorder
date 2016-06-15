@@ -15,8 +15,6 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.action.ViewActions.swipeDown;
-import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
@@ -150,38 +148,6 @@ public class InterRecordAddTest {
         onView(withId(R.id.txt_record_activities)).perform(scrollTo());
         onView(withId(R.id.txt_record_activities)).perform(replaceText(" Could not fall asleep, Slow to work, Missed social activity"));
 
-        // Click at AppCompatEditText with id R.id.txt_record_triggers
-        onView(withId(R.id.txt_record_triggers)).perform(scrollTo());
-        onView(withId(R.id.txt_record_triggers)).perform(click());
-
-        // Click at MDButton with id R.id.buttonDefaultNeutral
-        onView(withId(R.id.buttonDefaultNeutral)).perform(click());
-
-        onView(withId(R.id.txt_record_triggers)).perform(replaceText(""));
-        // Set text to '' in AppCompatEditText with id R.id.txt_record_triggers
-        onView(withId(R.id.txt_record_triggers)).perform(scrollTo());
-
-        // Click at AppCompatEditText with id R.id.txt_record_triggers
-        onView(withId(R.id.txt_record_triggers)).perform(scrollTo());
-        onView(withId(R.id.txt_record_triggers)).perform(click());
-
-        // Click at item with value 'Irregular sleep' in ListView
-        onData(allOf(is(instanceOf(java.lang.String.class)), is("Irregular sleep"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Click at item with value 'Odd smell' in ListView
-        onData(allOf(is(instanceOf(java.lang.String.class)), is("Odd smell"))).inAdapterView(withId(R.id.contentListView)).perform(click());
-
-        // Swipe up at ListView with id R.id.contentListView
-        onView(withId(R.id.contentListView)).perform(swipeUp());
-
-        // Swipe down at ListView with id R.id.contentListView
-        onView(withId(R.id.contentListView)).perform(swipeDown());
-
-        // Click at MDButton with id R.id.buttonDefaultPositive
-        onView(withId(R.id.buttonDefaultPositive)).perform(click());
-
-        onView(withId(R.id.txt_record_triggers)).perform(replaceText(" Odd smell, Irregular sleep"));
-        onView(withId(R.id.txt_record_triggers)).perform(scrollTo());
 
         // Click at AppCompatEditText with id R.id.txt_record_symptoms
         onView(withId(R.id.txt_record_symptoms)).perform(scrollTo());
