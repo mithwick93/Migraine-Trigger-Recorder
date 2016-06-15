@@ -98,6 +98,7 @@ public class ReportFragment extends Fragment {
             case PERMISSION_WRITE_EXTERNAL_STORAGE_BACKUP:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
+                    refreshSummery(true);
                 } else {
                     // Permission Denied
                     AppUtil.showToast(getActivity(), "SD card access Denied");
