@@ -97,6 +97,7 @@ public class AddRecordActivity
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("New Migraine record");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         initialSetup();

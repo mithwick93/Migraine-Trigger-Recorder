@@ -21,7 +21,7 @@
     <string name="title_faq">MigraineFAQActivity</string>
 
     <string name="cancelButtonGeneral">Cancel</string>
-    <string name="clear_selection">clear</string>
+    <string name="clear_selection">Clear</string>
 
     <string name="cancelButtonDialog">Dismiss</string>
     <string name="confirmButtonDialog">Confirm</string>

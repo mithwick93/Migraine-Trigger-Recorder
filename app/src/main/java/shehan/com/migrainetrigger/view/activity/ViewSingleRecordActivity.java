@@ -80,6 +80,7 @@ public class ViewSingleRecordActivity
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("View record");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         initialSetup();
