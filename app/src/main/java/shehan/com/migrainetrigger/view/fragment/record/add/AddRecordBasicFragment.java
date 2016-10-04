@@ -33,9 +33,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.johnhiott.darkskyandroidlib.RequestBuilder;
-import com.johnhiott.darkskyandroidlib.models.Request;
-import com.johnhiott.darkskyandroidlib.models.WeatherResponse;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -43,9 +40,6 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Locale;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.controller.WeatherDataController;
@@ -819,61 +813,8 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
 
         @Override
         public void getWeatherData(double wLatitude, double wLongitude, Timestamp wTimestamp) {
-            RequestBuilder weather = new RequestBuilder();//weather requester and initialization
-            Request request = new Request();
-            request.setLat(String.valueOf(wLatitude));
-            request.setLng(String.valueOf(wLongitude));
-            request.setTime(getStringWeatherDate(wTimestamp));
-            request.setUnits(Request.Units.SI);
-            request.setLanguage(Request.Language.PIG_LATIN);
-            request.addExcludeBlock(Request.Block.CURRENTLY);
-            request.removeExcludeBlock(Request.Block.CURRENTLY);
-
-            weather.getWeather(request, new Callback<WeatherResponse>()
-
-                    {
-                        @Override
-                        public void success(WeatherResponse weatherResponse, Response response) {
-                            try {
-                                @Nullable
-                                String humidity = weatherResponse.getCurrently().getHumidity();
-                                @Nullable
-                                String pressure = weatherResponse.getCurrently().getPressure();
-                                double temp = weatherResponse.getCurrently().getTemperature();
-
-                                WeatherDataBuilder weatherDataBuilder = new WeatherDataBuilder();
-
-                                if (humidity == null) {
-                                    throw new Exception("Humidity null");
-                                }
-                                if (pressure == null) {
-                                    throw new Exception("Pressure null");
-                                }
-                                weatherDataBuilder = weatherDataBuilder.setHumidity(Double.valueOf(humidity.trim()) * 100);
-                                weatherDataBuilder = weatherDataBuilder.setPressure(Double.valueOf(pressure.trim()) / 10);
-                                weatherDataBuilder = weatherDataBuilder.setTemperature(temp);
-
-                                tmpWeatherData = weatherDataBuilder.createWeatherData();
-
-                            } catch (Exception e) {
-                                Log.e("getWeatherData", "fatal error");
-                                e.printStackTrace();
-                                //cancel(true);
-                                cancelTask = true;
-                                networkProblem = true;
-                            }
-                        }
-
-                        @Override
-                        public void failure(RetrofitError retrofitError) {
-                            Log.d("getWeatherData", "Error while calling: " + retrofitError.getUrl());
-                            Log.d("getWeatherData", retrofitError.toString());
-                            // cancel(true);
-                            cancelTask = true;
-                            networkProblem = true;
-                        }
-                    }
-            );
+            // TODO : Implement native weather client
+            cancelTask = true;
         }
 
         @Override
