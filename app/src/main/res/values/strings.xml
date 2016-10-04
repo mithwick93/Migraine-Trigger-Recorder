@@ -14,7 +14,7 @@
 
     <string name="app_icon">app icon</string>
     <string name="dev_name">M.S. Wickramarathne</string>
-    <string name="app_version">v 1.0 - beta</string>
+    <string name="app_version">v 2.0 - alpha</string>
 
     <string name="title_activity_add_record">AddRecordActivity</string>
     <string name="title_view_records">MigraineViewRecordsActivity</string>
