@@ -45,9 +45,9 @@ dependencies {
     compile('com.afollestad.material-dialogs:commons:0.9.0.2') {
         transitive = true
     }
-    compile 'com.github.johnhiott:DarkSkyApi:v0.1.4'
     compile 'com.github.sundeepk:compact-calendar-view:1.8.3' // deprecated
     compile 'com.wang.avi:library:1.0.5' //deprecated
     compile 'com.gordonwong:material-sheet-fab:1.2.1'
     compile 'org.jetbrains:annotations-java5:15.0'
+    compile 'com.loopj.android:android-async-http:1.4.9'
 }

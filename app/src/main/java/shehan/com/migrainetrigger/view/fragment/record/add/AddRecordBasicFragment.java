@@ -33,19 +33,13 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.johnhiott.darkskyandroidlib.RequestBuilder;
-import com.johnhiott.darkskyandroidlib.models.Request;
-import com.johnhiott.darkskyandroidlib.models.WeatherResponse;
 
-import org.jetbrains.annotations.Nullable;
+import org.json.JSONObject;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Locale;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import shehan.com.migrainetrigger.R;
 import shehan.com.migrainetrigger.controller.RecordController;
 import shehan.com.migrainetrigger.controller.WeatherDataController;
@@ -57,7 +51,6 @@ import shehan.com.migrainetrigger.utility.service.GeoLocationService;
 import shehan.com.migrainetrigger.utility.service.InternetService;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFragment;
 
-import static shehan.com.migrainetrigger.utility.AppUtil.getStringWeatherDate;
 import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
 
 /**
@@ -796,7 +789,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     //
     //
     //
-    private class GetWeatherTask extends AsyncTask<String, Void, WeatherData> implements InternetService {
+    private class GetWeatherTask extends AsyncTask<String, Void, WeatherData> implements InternetService.InternetServiceListener {
         double latitude;
         double longitude;
         Timestamp timestamp;
@@ -818,62 +811,30 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         }
 
         @Override
-        public void getWeatherData(double wLatitude, double wLongitude, Timestamp wTimestamp) {
-            RequestBuilder weather = new RequestBuilder();//weather requester and initialization
-            Request request = new Request();
-            request.setLat(String.valueOf(wLatitude));
-            request.setLng(String.valueOf(wLongitude));
-            request.setTime(getStringWeatherDate(wTimestamp));
-            request.setUnits(Request.Units.SI);
-            request.setLanguage(Request.Language.PIG_LATIN);
-            request.addExcludeBlock(Request.Block.CURRENTLY);
-            request.removeExcludeBlock(Request.Block.CURRENTLY);
+        public void onInternetResponseReceived(JSONObject response) {
+            try {
+                if (response != null) {
+                    // Log.d("GetWeatherTask", "weather api response " + response);
+                    JSONObject currentlyJsonObject = response.getJSONObject("currently");
 
-            weather.getWeather(request, new Callback<WeatherResponse>()
+                    String humidity = currentlyJsonObject.getString("humidity");
+                    String pressure = currentlyJsonObject.getString("pressure");
+                    String temperature = currentlyJsonObject.getString("temperature");
 
-                    {
-                        @Override
-                        public void success(WeatherResponse weatherResponse, Response response) {
-                            try {
-                                @Nullable
-                                String humidity = weatherResponse.getCurrently().getHumidity();
-                                @Nullable
-                                String pressure = weatherResponse.getCurrently().getPressure();
-                                double temp = weatherResponse.getCurrently().getTemperature();
-
-                                WeatherDataBuilder weatherDataBuilder = new WeatherDataBuilder();
-
-                                if (humidity == null) {
-                                    throw new Exception("Humidity null");
-                                }
-                                if (pressure == null) {
-                                    throw new Exception("Pressure null");
-                                }
-                                weatherDataBuilder = weatherDataBuilder.setHumidity(Double.valueOf(humidity.trim()) * 100);
-                                weatherDataBuilder = weatherDataBuilder.setPressure(Double.valueOf(pressure.trim()) / 10);
-                                weatherDataBuilder = weatherDataBuilder.setTemperature(temp);
-
-                                tmpWeatherData = weatherDataBuilder.createWeatherData();
-
-                            } catch (Exception e) {
-                                Log.e("getWeatherData", "fatal error");
-                                e.printStackTrace();
-                                //cancel(true);
-                                cancelTask = true;
-                                networkProblem = true;
-                            }
-                        }
-
-                        @Override
-                        public void failure(RetrofitError retrofitError) {
-                            Log.d("getWeatherData", "Error while calling: " + retrofitError.getUrl());
-                            Log.d("getWeatherData", retrofitError.toString());
-                            // cancel(true);
-                            cancelTask = true;
-                            networkProblem = true;
-                        }
-                    }
-            );
+                    tmpWeatherData = new WeatherDataBuilder()
+                            .setHumidity(Double.valueOf(humidity.trim()) * 100)
+                            .setPressure(Double.valueOf(pressure.trim()) / 10)
+                            .setTemperature(Double.valueOf(temperature.trim()))
+                            .createWeatherData();
+                } else {
+                    throw new Exception("Response is null");
+                }
+            } catch (Exception e) {
+                Log.e("getWeatherData", "fatal error");
+                e.printStackTrace();
+                cancelTask = true;
+                networkProblem = true;
+            }
         }
 
         @Override
@@ -899,7 +860,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         protected WeatherData doInBackground(String... params) {
 
             //get weather from Internet service interface
-            getWeatherData(latitude, longitude, timestamp);
+            new InternetService(this).getWeatherData(latitude, longitude, timestamp);
 
             //Loop till weather is fetched
             while (tmpWeatherData == null) {
@@ -928,7 +889,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                 } else {
                     Toast.makeText(getContext(), "Task canceled", Toast.LENGTH_SHORT).show();
                 }
-
 
                 return;
             }

@@ -1,12 +1,7 @@
 package shehan.com.migrainetrigger.utility;
 
-
 import android.app.Application;
 import android.content.Context;
-
-import com.johnhiott.darkskyandroidlib.ForecastApi;
-
-import shehan.com.migrainetrigger.BuildConfig;
 
 /**
  * This class is used to get the context of the application to the DatabaseHandler.DataBaseHelper inner class which extends from SQLiteOpenHelper
@@ -27,6 +22,5 @@ public class MigraineTriggerApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-        ForecastApi.create(BuildConfig.FORECAST_API_KEY);
     }
 }
