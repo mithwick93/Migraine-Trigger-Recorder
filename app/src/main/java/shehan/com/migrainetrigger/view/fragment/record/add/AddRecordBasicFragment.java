@@ -34,7 +34,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.jetbrains.annotations.Nullable;
+import org.json.JSONObject;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -51,7 +51,6 @@ import shehan.com.migrainetrigger.utility.service.GeoLocationService;
 import shehan.com.migrainetrigger.utility.service.InternetService;
 import shehan.com.migrainetrigger.view.fragment.record.view.ViewRecordSingleFragment;
 
-import static shehan.com.migrainetrigger.utility.AppUtil.getStringWeatherDate;
 import static shehan.com.migrainetrigger.utility.AppUtil.getTimeStampDate;
 
 /**
@@ -790,7 +789,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
     //
     //
     //
-    private class GetWeatherTask extends AsyncTask<String, Void, WeatherData> implements InternetService {
+    private class GetWeatherTask extends AsyncTask<String, Void, WeatherData> implements InternetService.InternetServiceListener {
         double latitude;
         double longitude;
         Timestamp timestamp;
@@ -812,9 +811,30 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         }
 
         @Override
-        public void getWeatherData(double wLatitude, double wLongitude, Timestamp wTimestamp) {
-            // TODO : Implement native weather client
-            cancelTask = true;
+        public void onInternetResponseReceived(JSONObject response) {
+            try {
+                if (response != null) {
+                    // Log.d("GetWeatherTask", "weather api response " + response);
+                    JSONObject currentlyJsonObject = response.getJSONObject("currently");
+
+                    String humidity = currentlyJsonObject.getString("humidity");
+                    String pressure = currentlyJsonObject.getString("pressure");
+                    String temperature = currentlyJsonObject.getString("temperature");
+
+                    tmpWeatherData = new WeatherDataBuilder()
+                            .setHumidity(Double.valueOf(humidity.trim()) * 100)
+                            .setPressure(Double.valueOf(pressure.trim()) / 10)
+                            .setTemperature(Double.valueOf(temperature.trim()))
+                            .createWeatherData();
+                } else {
+                    throw new Exception("Response is null");
+                }
+            } catch (Exception e) {
+                Log.e("getWeatherData", "fatal error");
+                e.printStackTrace();
+                cancelTask = true;
+                networkProblem = true;
+            }
         }
 
         @Override
@@ -840,7 +860,7 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
         protected WeatherData doInBackground(String... params) {
 
             //get weather from Internet service interface
-            getWeatherData(latitude, longitude, timestamp);
+            new InternetService(this).getWeatherData(latitude, longitude, timestamp);
 
             //Loop till weather is fetched
             while (tmpWeatherData == null) {
@@ -869,7 +889,6 @@ public class AddRecordBasicFragment extends Fragment implements GeoLocationServi
                 } else {
                     Toast.makeText(getContext(), "Task canceled", Toast.LENGTH_SHORT).show();
                 }
-
 
                 return;
             }

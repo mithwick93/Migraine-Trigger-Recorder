@@ -49,4 +49,5 @@ dependencies {
     compile 'com.wang.avi:library:1.0.5' //deprecated
     compile 'com.gordonwong:material-sheet-fab:1.2.1'
     compile 'org.jetbrains:annotations-java5:15.0'
+    compile 'com.loopj.android:android-async-http:1.4.9'
 }
