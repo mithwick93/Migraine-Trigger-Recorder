@@ -70,8 +70,8 @@
     <string name="content_desc_pressure">Pressure</string>
     <string name="content_desc_humidity">Humidity</string>
     <string name="content_desc_temperature">Temperature</string>
-    <string name="report_from">"From : "</string>
-    <string name="report_to">"| To : "</string>
+    <string name="report_from">"From "</string>
+    <string name="report_to">" |  To "</string>
     <string name="report_total">Total</string>
     <string name="report_intensity">Intensity</string>
     <string name="report_average_duration">Average duration</string>
@@ -121,7 +121,7 @@
     <string name="new_fab_basic">Basic</string>
     <string name="new_fab_inter">Intermediate</string>
     <string name="new_fab_full">Full</string>
-    <string name="weather_credit_text">Powered by Forecast</string>
+    <string name="weather_credit_text">Powered by Dark Sky</string>
     <string name="addNewAnswer">New answer</string>
 
 </resources>
