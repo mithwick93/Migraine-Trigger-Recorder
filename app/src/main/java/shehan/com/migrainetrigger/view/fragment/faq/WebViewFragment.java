@@ -1,6 +1,8 @@
 package shehan.com.migrainetrigger.view.fragment.faq;
 
+import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,8 +14,11 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
+
 import shehan.com.migrainetrigger.R;
-import shehan.com.migrainetrigger.utility.AppUtil;
 
 public class WebViewFragment extends Fragment {
     private static final String ARG_FAQ_SECTION = "faqSection";
@@ -59,40 +64,40 @@ public class WebViewFragment extends Fragment {
 
     private void loadPage(View view) {
         final WebView webView = (WebView) view.findViewById(R.id.webView);
-        String strUrl = "NULL";
+        String htmlContent = "NULL";
         switch (faqSection) {
             case "Definition":
-                strUrl = "http://www.mayoclinic.org/diseases-conditions/migraine-headache/basics/definition/con-20026358";
+                htmlContent = getHTML("definition");
                 break;
             case "Symptoms":
-                strUrl = "http://www.mayoclinic.org/diseases-conditions/migraine-headache/basics/symptoms/con-20026358";
+                htmlContent = getHTML("symptoms");
                 break;
             case "Causes":
-                strUrl = "http://www.mayoclinic.org/diseases-conditions/migraine-headache/basics/causes/con-20026358";
+                htmlContent = getHTML("causes");
                 break;
             case "Risk":
-                strUrl = "http://www.mayoclinic.org/diseases-conditions/migraine-headache/basics/risk-factors/con-20026358";
+                htmlContent = getHTML("risk");
                 break;
             case "Complications":
-                strUrl = "http://www.mayoclinic.org/diseases-conditions/migraine-headache/basics/complications/con-20026358";
+                htmlContent = getHTML("complications");
                 break;
             case "Diagnosis":
-                strUrl = "http://www.mayoclinic.org/diseases-conditions/migraine-headache/basics/tests-diagnosis/con-20026358";
+                htmlContent = getHTML("diagnosis");
                 break;
             case "Treatments":
-                strUrl = "http://www.mayoclinic.org/diseases-conditions/migraine-headache/basics/treatment/con-20026358";
+                htmlContent = getHTML("treatments");
                 break;
             case "Remedies":
-                strUrl = "http://www.mayoclinic.org/diseases-conditions/migraine-headache/basics/lifestyle-home-remedies/con-20026358";
+                htmlContent = getHTML("remedies");
                 break;
             case "Alternative":
-                strUrl = "http://www.mayoclinic.org/diseases-conditions/migraine-headache/basics/alternative-medicine/con-20026358";
+                htmlContent = getHTML("alternative");
                 break;
             case "Prevention":
-                strUrl = "http://www.mayoclinic.org/diseases-conditions/migraine-headache/basics/prevention/con-20026358";
+                htmlContent = getHTML("prevention");
                 break;
         }
-        if (!strUrl.equals("NULL")) {
+        if (!htmlContent.equals("NULL")) {
             webView.setClickable(false);
             webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
             //webView.setBackgroundColor(0);
@@ -130,9 +135,64 @@ public class WebViewFragment extends Fragment {
 
             });
 
-            webView.loadUrl(strUrl);
-            AppUtil.showToast(getContext(), "Redirecting to www.mayoclinic.org");
+            webView.loadData(composeWebPage(htmlContent), "text/html", "utf-8");
         }
 
+    }
+
+    /**
+     * Method to get html file contents from a file
+     *
+     * @param htmlFile html file name
+     * @return returns html file content
+     */
+    private String getHTML(String htmlFile) {
+        try {
+            AssetManager assetManager = getContext().getAssets();
+            InputStream is = assetManager.open("html/faq/" + htmlFile + ".html");
+            int size = is.available();
+
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+
+            return new String(buffer);
+        } catch (IOException e) {
+            Log.e("WebViewFragment", e.getMessage());
+        }
+        return "NULL";
+    }
+
+    /**
+     * compose html web page
+     *
+     * @param htmlBody html body to render
+     * @return full html page
+     */
+    private String composeWebPage(String htmlBody) {
+        String theme = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("pref_appTheme", "Light");
+        String htmlContent;
+
+        if (Objects.equals(theme, "Dark")) {
+            htmlContent = "<html>"
+                    + "<head>"
+                    + "<style type=\"text/css\">"
+                    + "body{font-family: Arial,sans-serif; margin: 10px; color: #e2e2e2; background-color: #212121;}"
+                    + "</style>"
+                    + "</head>"
+                    + "<body>";
+        } else {
+            htmlContent = "<html>"
+                    + "<head>"
+                    + "<style type=\"text/css\">"
+                    + "body{font-family: Arial,sans-serif; margin: 10px; color: #3c3c3c; background-color: #ededed;}"
+                    + "</style>"
+                    + "</head>"
+                    + "<body>";
+        }
+
+        htmlContent += htmlBody + "</body></html>";
+
+        return htmlContent;
     }
 }
