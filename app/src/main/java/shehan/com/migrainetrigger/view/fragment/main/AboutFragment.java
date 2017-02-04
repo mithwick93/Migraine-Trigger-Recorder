@@ -46,7 +46,7 @@ public class AboutFragment extends Fragment {
 
     private void displayLicensesAlertDialog() {
         @SuppressLint("InflateParams") WebView webView = (WebView) LayoutInflater.from(getContext()).inflate(R.layout.dialog_licenses, null);
-        webView.loadUrl("file:///android_asset/open_source_licenses.html");
+        webView.loadUrl("file:///android_asset/html/license/open_source_licenses.html");
         new MaterialDialog.Builder(getContext())
                 .title("Open source licenses")
                 .customView(webView, true)

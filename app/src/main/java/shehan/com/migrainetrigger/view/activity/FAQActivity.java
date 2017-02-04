@@ -124,6 +124,6 @@ public class FAQActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.faq_container, fragment);
         fragmentTransaction.commit();
-        AppUtil.showToast(this, "This feature requires an active internet connection");
+        AppUtil.showToast(this, "Content provided by mayoclinic.org");
     }
 }
