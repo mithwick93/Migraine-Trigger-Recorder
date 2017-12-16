@@ -10,7 +10,7 @@ Minimum android SDK version 19
 #License Information
 
 <pre>
-        Copyright(c) 2016 M.S. Wickramarathne
+        Copyright(c) 2017 M.S. Wickramarathne
 
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
